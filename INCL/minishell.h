@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:28:07 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <readline/history.h>
 # include <stdlib.h>
 #include "libft.h"
+
+// ----------------------- STRUCTURES --------------
 
 typedef enum s_enum
 {
@@ -37,6 +39,8 @@ typedef struct s_list
 	struct s_list	*next;
 } t_list;
 
+// ----------------------- FUNCTIONS ---------------
 
+void	free_tab(char **str);
 
 #endif

@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror -g3
 LDFLAGS = -lreadline -pthread
 
 # Fichiers sources
-SRC = tokenisation.c
+SRC = initialisation.c tokenisation.c init_error.c
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))

@@ -5,13 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:38:08 by elaudrez         ###   ########.fr       */
+/*   Created: 2025/05/21 14:51:50 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/05/21 16:56:07 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Crée un nouveau nœud de liste chaînée.
+ *
+ * Alloue dynamiquement un élément de type `t_list` et y affecte les données fournies.
+ *
+ * @param str Une chaîne associée au nœud (non dupliquée, le pointeur est conservé tel quel).
+ * @param type Une valeur de type `t_enum` définissant le type de ce nœud.
+ * @return Un pointeur vers le nouveau nœud, ou NULL en cas d’erreur d’allocation.
+ *
+ * @warning Le contenu de `str` n'est pas dupliqué. Il doit rester valide tant que le nœud existe.
+ */
 t_list	*create_node(char *str, t_enum type)
 {
 	t_list	*new_node;
@@ -25,42 +36,13 @@ t_list	*create_node(char *str, t_enum type)
 	return (new_node);
 }
 
-char	**get_env(char **env)
-{
-	char	**new_env;
-	int		i;
+// void	tokenizer(char *str)
+// {
+// 	int	i;
 
-	i = 0;
-	while (env[i])
-		i++;
-	new_env = malloc((i + 1) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while(env[i])
-	{
-		new_env[i] = ft_strdup(env[i]);
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
-
-int	main(int ac, char *av[], char **env)
-{
-	(void)ac;
-	(void)av;
-	int	i;
-	char **new_env;
-
-	i = 0;
-	char	*rl;
-	rl = readline("Minishell > ");
-	printf("%s\n", rl);
-	new_env = get_env(env);
-	
-	return (0);
-}
-
-
-
+// 	i = 0;
+// 	while (str[i])
+// 	{
+		
+// 	}
+// }

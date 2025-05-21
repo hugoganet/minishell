@@ -1,27 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/20 17:52:05 by elaudrez         ###   ########.fr       */
+/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/05/21 12:20:20 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	main()
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdlib.h>
+
+typedef enum s_enum
 {
-	char	*rl;
-	rl = readline("Minishell > ");
-	printf("%s\n", rl);
-	return (0);
-}
+	INPUT,
+	HEREDOC,
+	TRUNC,
+	APPEND,
+	CMD,
+	PIPE,
+	ARG,
+} t_enum;
 
-t_list	create_node(char *str, int type)
+typedef struct s_list
 {
-	
-}
+	t_enum	type;
+	char *str;
+	struct s_list	*next;
+} t_list;
 
+
+
+#endif

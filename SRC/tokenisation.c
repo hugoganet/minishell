@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   tokenisation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/20 17:49:06 by elaudrez         ###   ########.fr       */
+/*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/05/21 12:06:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_list
+t_list	*create_node(char *str, t_enum type)
 {
-	int	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
+	t_list	*new_node;
+	
+	new_node = malloc(sizeof(new_node));
+	if (!new_node)
+		return (NULL);
+	new_node->type = type;
+	new_node->str = str;
+	new_node->next = NULL;
+	return (new_node);
+}
 
-#endif
+int	main()
+{
+	char	*rl;
+	rl = readline("Minishell > ");
+	printf("%s\n", rl);
+	return (0);
+}
+
+
+

@@ -1,42 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/18 15:33:20 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/12/02 18:00:35 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	char	*s3;
+	int		i;
+	int		j;
 
-typedef struct s_list
+	s3 = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (s3 == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		s3[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		s3[i] = s2[j];
+		j++;
+		i++;
+	}
+	s3[i] = '\0';
+	return (s3);
+}
+/*int	main()
 {
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
+	char const	s1[] = "";
+	char const	s2[] = "e";
 
-
-
-#endif
+	printf("%s",  ft_strjoin(s1, s2));
+}*/

@@ -1,42 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/13 16:42:54 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/11/29 18:51:24 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+void	ft_bzero(void *s, size_t n)
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	char	*temp;
+	size_t	i;
 
-typedef struct s_list
+	i = 0;
+	temp = (char *)s;
+	while (i < n)
+	{
+		temp[i] = 0;
+		i++;
+	}
+}
+
+/*int main(void)
 {
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
-
-
-
-#endif
+	char 	str[] = "BONJOUR";
+	printf("%s\n", str);
+	ft_bzero(str, 1);
+	printf("%s\n", str);
+	return (0);
+}*/

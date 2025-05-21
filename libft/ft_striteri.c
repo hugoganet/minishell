@@ -1,42 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/26 19:30:23 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/11/29 18:59:19 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	unsigned int	i;
 
-typedef struct s_list
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
+}
+
+/*int	main()
 {
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
-
-
-
-#endif
+	je sais pas pourquoi on a pas besoin de mettre str[i] = f(i, &s[i]);
+}*/

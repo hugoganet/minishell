@@ -1,42 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/14 18:05:11 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/11/29 18:59:39 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+char	*ft_strrchr(const char *s, int c)
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	int	i;
 
-typedef struct s_list
+	i = 0;
+	while (s[i])
+		i++;
+	while (i > 0)
+	{
+		if (i > 0 && s[i] == (unsigned char) c)
+			return ((char *) &s[i]);
+		i--;
+	}
+	if (s[i] == (unsigned char) c)
+		return ((char *) &s[i]);
+	return (NULL);
+}
+
+/*int	main()
 {
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
+	char	*s;
 
-
-
-#endif
+	s = "\0";
+	printf("%s", ft_strrchr(s, 'l'));
+}*/

@@ -1,42 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/14 15:44:24 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/12/03 13:28:13 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	size_t	i;
+	size_t	j;
+	size_t	lsrc;
 
-typedef struct s_list
-{
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
-
-
-
-#endif
+	i = ft_strlen(dst);
+	lsrc = ft_strlen(src);
+	j = 0;
+	if (dstsize <= i)
+		return (lsrc + dstsize);
+	while (src[j] && (i + j) < dstsize - 1)
+	{
+			dst[i + j] = src[j];
+			j++;
+	}
+	dst[i + j] = '\0';
+	return (i + lsrc);
+}

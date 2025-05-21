@@ -5,6 +5,7 @@ NAME = Minishell
 SRC_DIR = SRC
 OBJ_DIR = executable
 INCL_DIR = INCL
+LIBFT_DIR = libft
 
 # Commandes et options de compilation
 CC = cc
@@ -20,15 +21,19 @@ SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
 # Fichiers objets
 OBJS = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRCS:.c=.o))
 
+# Liens vers les librairies des sous-projets
+LIBFT = $(LIBFT_DIR)/libft.a
+
 # Drapeaux pour les librairies
-INC = -I$(INCL_DIR)
+LIBS = -L$(LIBFT_DIR) -lft
+INC = -I$(LIBFT_DIR) -I$(INCL_DIR)
 
 # Règle par défaut
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
 # Compilation de l'exécutable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
 	@echo "Compilation réussie de $(NAME)"
 
 # Règle pour compiler les objets dans SRC (autres fichiers)
@@ -40,12 +45,18 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
+# Générer les librairies des sous-projets
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
+
 # Nettoyer les objets et librairies compilés
 clean:
 	rm -rf $(OBJ_DIR)/*.o
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 # Tout reconstruire
 re: fclean all

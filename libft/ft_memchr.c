@@ -1,42 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/14 18:37:02 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/12/02 15:35:09 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	size_t			i;
+	unsigned char	*ss;
+	unsigned char	cc;
 
-typedef struct s_list
+	ss = (unsigned char *) s;
+	cc = (unsigned char) c;
+	i = 0;
+	while (i < n)
+	{
+		if (ss[i] == cc)
+			return ((void *) &ss[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+/*int	main(void)
 {
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
-
-
-
-#endif
+	const void	*s;
+	char	*ss;
+	
+	s = "koi";
+	ss = ft_memchr(s, 105, 3);
+	printf("%s", ss);
+}*/

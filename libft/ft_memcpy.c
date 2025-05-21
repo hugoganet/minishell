@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/11/13 16:59:16 by elaudrez          #+#    #+#             */
+/*   Updated: 2024/12/03 13:38:26 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	unsigned char		*temp_dst;
+	const unsigned char	*temp_src;
+	size_t				i;
 
-typedef struct s_list
-{
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
-
-
-
-#endif
+	if ((src == NULL && dst == NULL) || !n)
+		return (dst);
+	temp_dst = (unsigned char *) dst;
+	temp_src = (unsigned char *) src;
+	i = 0;
+	while (i < n)
+	{
+		temp_dst[i] = temp_src[i];
+		i++;
+	}
+	return (dst);
+}

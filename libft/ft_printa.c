@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_printa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 14:10:45 by elaudrez         ###   ########.fr       */
+/*   Created: 2024/12/10 14:06:29 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/04/03 14:23:04 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 #include "libft.h"
 
-typedef enum s_enum
+int	ft_printa(unsigned long nb, char *base)
+{	
+	if (!nb)
+	{
+		write(1, "(nil)", 5);
+		return (5);
+	}
+	write (1, "0x", 2);
+	return (ft_putnbr_base1((unsigned long)nb, base) + 2);
+}
+
+/*int	main()
 {
-	INPUT,
-	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
-	PIPE,
-	ARG,
-} t_enum;
+	char	*p;
+	char	*base;
+	// int	i;
 
-typedef struct s_list
-{
-	t_enum	type;
-	char *str;
-	struct s_list	*next;
-} t_list;
-
-
-
-#endif
+	base = "0123456789abcdef";
+	p = "k";
+	ft_printa(*p, base);
+	// printf("\n%d", i);
+	// printf("%p", p);
+}*/

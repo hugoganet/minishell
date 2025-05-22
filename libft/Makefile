@@ -5,7 +5,7 @@ SRC = ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_strlen
 OBJ = $(SRC:.c=.o)
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -I../INCL
+CFLAGS = -Wall -Wextra -Werror -I.
 
 all: $(NAME)
 

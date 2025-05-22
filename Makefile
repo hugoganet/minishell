@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror -g3
 LDFLAGS = -lreadline -pthread
 
 # Fichiers sources
-SRC = SRC = main.c initialisation.c tokenisation.c init_error.c input/signals.c
+SRC = main.c initialisation.c tokenisation.c init_error.c input/signals.c
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -37,7 +37,8 @@ $(NAME): $(OBJS)
 	@echo "Compilation réussie de $(NAME)"
 
 # Règle pour compiler les objets dans SRC (autres fichiers)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@) 
 	@echo "Compilation de $< en $@"
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 

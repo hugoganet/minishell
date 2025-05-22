@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 15:28:07 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:01:23 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@
 typedef enum s_enum
 {
 	INPUT,
+	OUTPUT,
 	HEREDOC,
-	TRUNC,
-	APPEND,
-	CMD,
+	WORD,
 	PIPE,
-	ARG,
+	REDIR_APPEND,
 } t_enum;
 
 typedef struct s_list

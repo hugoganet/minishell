@@ -2,9 +2,9 @@
 NAME = Minishell
 
 # Dossiers personnalisés
-SRC_DIR = SRC
+SRC_DIR = src
 OBJ_DIR = executable
-INCL_DIR = INCL
+INCL_DIR = includes
 LIBFT_DIR = libft
 
 # Commandes et options de compilation
@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror -g3
 LDFLAGS = -lreadline -pthread
 
 # Fichiers sources
-SRC = initialisation.c tokenisation.c init_error.c
+SRC = SRC = main.c initialisation.c tokenisation.c init_error.c input/signals.c
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -49,9 +49,9 @@ $(OBJ_DIR):
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-# Nettoyer les objets et librairies compilés
+# Nettoyer les objets et librairies compilés y compris les sous-dossiers dans executable/
 clean:
-	rm -rf $(OBJ_DIR)/*.o
+	rm -rf $(OBJ_DIR)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean

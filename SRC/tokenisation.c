@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenisation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:51:50 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/21 16:56:07 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:50:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@
  *
  * @warning Le contenu de `str` n'est pas dupliqué. Il doit rester valide tant que le nœud existe.
  */
-t_list	*create_node(char *str, t_enum type)
-{
-	t_list	*new_node;
+// t_list	*create_node(char *str, t_enum type)
+// {
+// 	t_list	*new_node;
 	
-	new_node = malloc(sizeof(new_node));
-	if (!new_node)
-		return (NULL);
-	new_node->type = type;
-	new_node->str = str;
-	new_node->next = NULL;
-	return (new_node);
-}
+// 	new_node = malloc(sizeof(new_node));
+// 	if (!new_node)
+// 		return (NULL);
+// 	new_node->type = type;
+// 	new_node->str = str;
+// 	new_node->next = NULL;
+// 	return (new_node);
+// }
 
 // void	tokenizer(char *str)
 // {

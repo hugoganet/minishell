@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/22 17:35:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 13:12:11 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ typedef struct s_shell
 	int last_exit_status;
 } t_shell;
 
-// ----------------------- FUNCTIONS ---------------
+// ! ----------------------- FUNCTIONS ---------------
 
 void	init_signals(void);
+void	init_shell(t_shell *shell, char **envp);
 char	**copy_env(char **envp);
 void	free_env(char **env);
 void	handle_signal(int signo);
+char	*prompt_readline(void);
 
 #endif

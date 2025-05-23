@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 13:07:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 13:14:02 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,18 @@ int main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	shell.env = copy_env(envp);
-	shell.last_exit_status = 0;
-	init_signals();
+	init_shell(&shell, envp); // Initialise le shell avec l'environnement
 	while (1)
 	{
-		input = prompt_readline();
-		if (!input)
+		input = prompt_readline(); // Affiche le prompt et lit l'entrée utilisateur
+		if (!input) // Si Ctrl+D est pressé, on sort de la boucle
 		{
 			write(1, "exit\n", 5);
 			break;
 		}
-		free(input);
+		free(input); // Libère la mémoire allouée pour l'entrée
 	}
-	rl_clear_history();
-	free_env(shell.env);
+	rl_clear_history(); // Efface l'historique
+	free_env(shell.env); // Libère la mémoire allouée pour l'environnement
 	return (0);
 }

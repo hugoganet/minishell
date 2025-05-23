@@ -6,11 +6,25 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 12:10:30 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 13:14:42 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Initialise la structure du shell : copie de l'environnement,
+ *        initialisation des signaux et du statut de sortie.
+ *
+ * @param shell Pointeur vers la structure à initialiser.
+ * @param envp Environnement système (non modifiable directement).
+ */
+void init_shell(t_shell *shell, char **envp)
+{
+	shell->env = copy_env(envp); // Copie de l'environnement
+	shell->last_exit_status = 0; // Initialisation du statut de sortie
+	init_signals(); // Initialisation des signaux
+}
 
 /**
  * @brief Copie l'environnement système dans un tableau de chaînes alloué.
@@ -48,6 +62,6 @@ void free_env(char **env)
 	int i = 0;
 
 	while (env && env[i])
-		free(env[i++]);
-	free(env);
+		free(env[i++]); // Libère chaque chaîne
+	free(env); // Libère le tableau
 }

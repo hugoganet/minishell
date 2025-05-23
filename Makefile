@@ -22,14 +22,14 @@ macos: clean
 
 # Fichiers sources
 SRC = 	main.c \
-		loop.c \
-		initialisation.c \
-		tokenisation.c \
-		init_error.c \
+		init/initialisation.c \
+		utils/init_error.c \
+		input/loop.c \
 		input/prompt.c \
 		input/readline_hooks.c \
 		syntax/syntax_check.c \
 		syntax/syntax_utils.c \
+		syntax/tokenisation.c \
 
 
 # Rassembler les sources

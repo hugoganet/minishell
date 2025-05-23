@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 15:51:53 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 16:04:48 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void shell_loop(t_shell *shell)
 				ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
 			else if (has_invalid_redirections(input))
 				ft_putendl_fd("minishell: syntax error near unexpected token `>'", 2);
+			else if (has_unmatched_parentheses(input))
+				ft_putendl_fd("minishell: syntax error: unmatched or empty parentheses", 2);
 			else
 			{
 				// parsing à venir

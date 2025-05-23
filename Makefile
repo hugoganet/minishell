@@ -34,6 +34,7 @@ SRC = 	main.c \
 		syntax/token_utils.c \
 		syntax/validation.c \
 		parsing/process_input.c \
+		utils/free_token_list.c \
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))

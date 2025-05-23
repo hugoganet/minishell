@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:52:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 17:56:56 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 19:05:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void process_input(char *input, t_shell *shell)
 		ft_putendl_fd("minishell: error: failed to tokenize input", 2);
 		return;
 	}
-
 	// TODO : parser_logique(tokens);
-	// TODO : free_token_list(tokens);
+	free_token_list(tokens); // Libération de la liste de tokens
 }

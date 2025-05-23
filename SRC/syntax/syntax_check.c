@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:01:02 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 14:12:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 15:41:47 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,74 @@ int is_line_empty(char *input)
 int has_unclosed_quotes(char *input)
 {
 	int i;
-	char current_quote;
+	char quote_state;
 
 	i = 0;
-	current_quote = 0; // Initialise le caractère de quote actuel à 0 (aucune quote ouverte)
+	quote_state = 0; // Initialise le caractère de quote actuel à 0 (aucune quote ouverte)
 	while (input[i])
 	{
-		if (!current_quote && (input[i] == '\'' || input[i] == '"')) // Si aucune quote n'est ouverte et que le caractère est une quote
-			current_quote = input[i]; // Set la quote actuelle
-		else if (current_quote && input[i] == current_quote) // Si une quote est ouverte et que le caractère est la même quote
-			current_quote = 0; // Ferme la quote
+		update_quote_state(&quote_state, input[i]); // Met à jour l'état de la quote
 		i++;
 	}
-	return (current_quote != 0); // Si current_quote n'est pas 0, cela signifie qu'il y a une quote non fermée
+	return (quote_state != 0); // Forme simplifié de booléen. Return 1 si current_quote n'est pas 0 (donc une quote est ouverte), sinon return 0
+}
+
+/**
+ * @brief Vérifie si les pipes sont mal placés : en début ou en fin.
+ *
+ * @param input Ligne entrée par l’utilisateur
+ * @return int 1 si erreur, 0 si syntaxe correcte
+ */
+int has_invalid_pipes(char *input)
+{
+	int i;
+	char quote_state;
+
+	i = 0;
+	quote_state = 0;
+	while (input[i])
+	{
+		update_quote_state(&quote_state, input[i]); // Met à jour l'état de la quote
+		if (!quote_state && input[i] == '|') // Si pas dans une quote et que le caractère est un pipe
+		{
+			if (i == 0 || input[i + 1] == '\0') // Si le pipe est au début ou à la fin de la ligne
+				return (1); // Erreur de syntaxe
+		}
+		i++;
+	}
+	return (0);
+}
+
+/**
+ * @brief Vérifie si les redirections sont mal placées ou incomplètes.
+ *
+ * @param input La ligne utilisateur
+ * @return int 1 si erreur, 0 si syntaxe correcte
+ */
+int has_invalid_redirections(char *input)
+{
+	int i;
+	char quote_state;
+	int redir_len;
+
+	i = 0;
+	quote_state = 0;
+	while (input[i])
+	{
+		update_quote_state(&quote_state, input[i]); // Met à jour l'état de la quote_state
+		if (!quote_state && (input[i] == '<' || input[i] == '>')) // Si pas dans une quote_state et que le caractère est une redirection			
+		{
+			redir_len = 1; // Par défaut : redirection simple
+			if (input[i + 1] == input[i]) // Si redirection double (ex: >> ou <<)
+				redir_len = 2; // On augmente la longueur de la redirection
+			i += redir_len;	 // On saute les caractères de redirection
+			while (input[i] == ' ' || input[i] == '\t') // Ignore les espaces et tabulations
+				i++;
+			if (input[i] == '\0' || input[i] == '|' || input[i] == '<' || input[i] == '>') // Erreur : fin de ligne ou opérateur juste après
+				return (1);
+			continue; // On évite le i++ final pour ne pas sauter un caractère utile
+		}
+		i++;
+	}
+	return (0);
 }

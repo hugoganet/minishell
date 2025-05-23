@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 16:18:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 17:53:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ void shell_loop(t_shell *shell)
 			write(1, "exit\n", 5);
 			break;
 		}
-		if (!is_line_empty(input) && !is_syntax_valid(input)) // Vérifie si la ligne n'est pas vide et si la syntaxe est valide		
-		{
-			// parsing futur
-		}
+		if (!is_line_empty(input) && !is_syntax_valid(input)) // Vérifie si la ligne n'est pas vide et si la syntaxe est valide
+			process_input(input, shell); // Traite l'entrée
 		free(input);
 	}
 }

@@ -33,7 +33,7 @@ SRC = 	main.c \
 		syntax/tokenize.c \
 		syntax/token_utils.c \
 		syntax/validation.c \
-
+		parsing/process_input.c \
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -83,4 +83,4 @@ fclean: clean
 re: fclean all
 
 # Pas de fichiers de sortie ici
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re macos

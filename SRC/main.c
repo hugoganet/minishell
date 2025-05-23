@@ -6,15 +6,14 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 12:57:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 13:07:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Point d'entrée du shell. Initialise l'environnement, les signaux,
- *        puis boucle sur l'affichage du prompt.
+ * @brief Initialise le shell, affiche le prompt, et lance la boucle interactive.
  *
  * @param argc Nombre d’arguments (non utilisé)
  * @param argv Liste des arguments (non utilisé)
@@ -23,27 +22,25 @@
  */
 int main(int argc, char **argv, char **envp)
 {
-	t_shell	shell;  // Structure pour stocker l'environnement et le statut de sortie
-	char	*input; // Variable pour stocker l'entrée utilisateur
+	t_shell shell;
+	char *input;
 
 	(void)argc;
 	(void)argv;
-	shell.env = copy_env(envp); // Copie de l'environnement système
-	shell.last_exit_status = 0; // Initialisation du statut de sortie
-	init_signals(); // Initialisation des signaux
+	shell.env = copy_env(envp);
+	shell.last_exit_status = 0;
+	init_signals();
 	while (1)
 	{
-		input = readline("minishell> "); // Affichage du prompt et lecture de l'entrée utilisateur
-		if (!input) // Si l'entrée est NULL (Ctrl+D)
+		input = prompt_readline();
+		if (!input)
 		{
 			write(1, "exit\n", 5);
 			break;
 		}
-		if (*input) // Si l'entrée n'est pas vide
-			add_history(input); // Ajout de l'entrée à l'historique
-		free(input); // On libère l’entrée
+		free(input);
 	}
-	rl_clear_history(); // Libération de l'historique
-	free_env(shell.env); // Libération de l'environnement
+	rl_clear_history();
+	free_env(shell.env);
 	return (0);
 }

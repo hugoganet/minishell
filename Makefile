@@ -21,7 +21,13 @@ macos: clean
 	@echo "Compilation macOS réussie de $(NAME) avec Homebrew Readline."
 
 # Fichiers sources
-SRC = main.c initialisation.c tokenisation.c init_error.c input/signals.c
+SRC = 	main.c \
+		initialisation.c \
+		tokenisation.c \
+		init_error.c \
+		input/prompt.c \
+		input/readline_hooks.c \
+
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))

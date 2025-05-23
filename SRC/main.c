@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/22 17:52:01 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 12:57:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,27 @@
  */
 int main(int argc, char **argv, char **envp)
 {
-	t_shell shell;
-	char *input;
+	t_shell	shell;  // Structure pour stocker l'environnement et le statut de sortie
+	char	*input; // Variable pour stocker l'entrée utilisateur
 
 	(void)argc;
 	(void)argv;
-	shell.env = copy_env(envp);
-	shell.last_exit_status = 0;
-	init_signals();
+	shell.env = copy_env(envp); // Copie de l'environnement système
+	shell.last_exit_status = 0; // Initialisation du statut de sortie
+	init_signals(); // Initialisation des signaux
 	while (1)
 	{
-		input = readline("minishell> ");
-		if (!input) // Ctrl-D
+		input = readline("minishell> "); // Affichage du prompt et lecture de l'entrée utilisateur
+		if (!input) // Si l'entrée est NULL (Ctrl+D)
 		{
 			write(1, "exit\n", 5);
 			break;
 		}
-		if (*input)
-			add_history(input);
-		free(input); // On libère l’entrée, parsing à faire dans les prochaines phases
+		if (*input) // Si l'entrée n'est pas vide
+			add_history(input); // Ajout de l'entrée à l'historique
+		free(input); // On libère l’entrée
 	}
-	free_env(shell.env);
+	rl_clear_history(); // Libération de l'historique
+	free_env(shell.env); // Libération de l'environnement
 	return (0);
 }

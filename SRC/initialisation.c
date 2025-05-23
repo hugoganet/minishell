@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/22 17:38:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 12:10:30 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,17 @@ char **copy_env(char **envp)
 	char **env;
 
 	i = 0;
-	while (envp[i])
+	while (envp[i])	// Compte le nombre d'éléments dans envp
 		i++;
-	env = malloc((i + 1) * sizeof(char *));
+	env = ft_calloc((i + 1),  sizeof(char *)); // Alloue de la mémoire pour le tableau et set à NULL
 	if (!env)
 		return (NULL);
 	i = 0;
 	while (envp[i])
 	{
-		env[i] = strdup(envp[i]);
+		env[i] = strdup(envp[i]); // Copie chaque élément de envp dans le nouveau tableau
 		i++;
 	}
-	env[i] = NULL;
 	return (env);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 17:27:38 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 17:34:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,11 @@ int				has_invalid_pipes(char *input);
 int				has_invalid_redirections(char *input);
 int				has_unmatched_parentheses(char *input);
 int				is_syntax_valid(char *input);
+int				is_parenthesis_empty(char *input, int i);
 void			update_quote_state(char *quote_state, char c);
 void			shell_loop(t_shell *shell);
 t_token			*tokenize(char *input);
 t_token			*token_new(char *value, t_token_type type);
 t_token_type	get_token_type(char *str);
-
+void			print_tokens(t_token *head);
 #endif

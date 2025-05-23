@@ -24,12 +24,15 @@ macos: clean
 SRC = 	main.c \
 		init/initialisation.c \
 		utils/init_error.c \
+		utils/print.c \
 		input/loop.c \
 		input/prompt.c \
 		input/readline_hooks.c \
 		syntax/syntax_check.c \
 		syntax/syntax_utils.c \
 		syntax/tokenize.c \
+		syntax/token_utils.c \
+		syntax/validation.c \
 
 
 # Rassembler les sources

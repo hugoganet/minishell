@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 17:25:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 17:29:54 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,56 @@ t_token *token_new(char *value, t_token_type type)
 }
 
 /**
+ * @brief Lit un token depuis l’entrée et avance l’index.
+ *
+ * @param input La chaîne d’entrée
+ * @param i Pointeur vers la position actuelle
+ * @return t_token* Le token extrait, ou NULL si fin
+ */
+static t_token *get_next_token(char *input, int *i)
+{
+	int start;
+	char *substr;
+	t_token_type type;
+
+	while (input[*i] == ' ' || input[*i] == '\t')
+		(*i)++;
+	if (input[*i] == '\0')
+		return (NULL);
+
+	start = *i;
+
+	if ((input[*i] == '<' || input[*i] == '>') && input[*i + 1] == input[*i])
+		*i += 2;
+	else if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|' || input[*i] == '(' || input[*i] == ')')
+		(*i)++;
+	else
+	{
+		while (input[*i] && input[*i] != ' ' && input[*i] != '\t' && input[*i] != '<' && input[*i] != '>' && input[*i] != '|' && input[*i] != '(' && input[*i] != ')')
+			(*i)++;
+	}
+	substr = ft_substr(input, start, *i - start);
+	type = get_token_type(substr);
+	return (token_new(substr, type));
+}
+
+/**
+ * @brief Ajoute un token à la fin de la liste.
+ *
+ * @param head Début de la liste
+ * @param last Dernier élément actuel
+ * @param new Nouveau token à ajouter
+ */
+static void append_token(t_token **head, t_token **last, t_token *new)
+{
+	if (!*head)
+		*head = new;
+	else
+		(*last)->next = new;
+	*last = new;
+}
+
+/**
  * @brief Découpe la ligne en tokens simples (mots et symboles)
  *
  * @param input La ligne utilisateur
@@ -42,36 +92,14 @@ t_token *tokenize(char *input)
 {
 	t_token *head = NULL;
 	t_token *last = NULL;
+	t_token *new;
 	int i = 0;
 
 	while (input[i])
 	{
-		while (input[i] == ' ' || input[i] == '\t')
-			i++;
-		if (input[i] == '\0')
-			break;
-		int start = i;
-		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == input[i])
-			i += 2;
-		else if (input[i] == '<' || input[i] == '>' || input[i] == '|' || input[i] == '(' || input[i] == ')')
-			i++;
-		else
-		{
-			// mot (commande ou argument)
-			while (input[i] && input[i] != ' ' && input[i] != '\t' &&
-				   input[i] != '<' && input[i] != '>' && input[i] != '|' && input[i] != '(' && input[i] != ')')
-				i++;
-		}
-
-		char *substr = ft_substr(input, start, i - start);
-		t_token_type type = get_token_type(substr);
-		t_token *new = token_new(substr, type);
-
-		if (!head)
-			head = new;
-		else
-			last->next = new;
-		last = new;
+		new = get_next_token(input, &i);
+		if (new)
+			append_token(&head, &last, new);
 	}
 	return (head);
 }

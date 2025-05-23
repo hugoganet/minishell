@@ -1,8 +1,12 @@
 # Ignore les fichiers binaires de la libft
 libft/*.o
 
+# Ignore libft library
+libft/libft.a
+
 # Ignore les fichiers binaires de minishell
-executable
+executables
+
 
 # Ignore l'executable de minishell
 Minishell

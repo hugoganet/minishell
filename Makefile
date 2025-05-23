@@ -3,7 +3,7 @@ NAME = Minishell
 
 # Dossiers personnalisés
 SRC_DIR = src
-OBJ_DIR = executable
+OBJ_DIR = executables
 INCL_DIR = includes
 LIBFT_DIR = libft
 
@@ -11,6 +11,14 @@ LIBFT_DIR = libft
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 LDFLAGS = -lreadline -pthread
+
+# macOS Homebrew Readline paths
+BREW_READLINE = /opt/homebrew/opt/readline
+
+# macOS build rule (avoids recursive variable reference)
+macos: clean
+	$(MAKE) CFLAGS="-Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include" LDFLAGS="-lreadline -pthread -L$(BREW_READLINE)/lib" all
+	@echo "Compilation macOS réussie de $(NAME) avec Homebrew Readline."
 
 # Fichiers sources
 SRC = main.c initialisation.c tokenisation.c init_error.c input/signals.c
@@ -33,7 +41,7 @@ all: $(LIBFT) $(NAME)
 
 # Compilation de l'exécutable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
 	@echo "Compilation réussie de $(NAME)"
 
 # Règle pour compiler les objets dans SRC (autres fichiers)

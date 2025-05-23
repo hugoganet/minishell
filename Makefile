@@ -29,7 +29,7 @@ SRC = 	main.c \
 		input/readline_hooks.c \
 		syntax/syntax_check.c \
 		syntax/syntax_utils.c \
-		syntax/tokenisation.c \
+		syntax/tokenize.c \
 
 
 # Rassembler les sources

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 17:19:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 17:27:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,22 @@ typedef struct s_token
 
 // ! ----------------------- FUNCTIONS ---------------
 
-void	init_signals(void);
-void	init_shell(t_shell *shell, char **envp);
-char	**copy_env(char **envp);
-void	free_env(char **env);
-void	handle_signal(int signo);
-char	*prompt_readline(void);
-int		is_line_empty(char *input);
-int		has_unclosed_quotes(char *input);
-int		has_invalid_pipes(char *input);
-int		has_invalid_redirections(char *input);
-int		has_unmatched_parentheses(char *input);
-int		is_syntax_valid(char *input);
-void	update_quote_state(char *quote_state, char c);
-void	shell_loop(t_shell *shell);
-
+void			init_signals(void);
+void			init_shell(t_shell *shell, char **envp);
+char			**copy_env(char **envp);
+void			free_env(char **env);
+void			handle_signal(int signo);
+char			*prompt_readline(void);
+int				is_line_empty(char *input);
+int				has_unclosed_quotes(char *input);
+int				has_invalid_pipes(char *input);
+int				has_invalid_redirections(char *input);
+int				has_unmatched_parentheses(char *input);
+int				is_syntax_valid(char *input);
+void			update_quote_state(char *quote_state, char c);
+void			shell_loop(t_shell *shell);
+t_token			*tokenize(char *input);
+t_token			*token_new(char *value, t_token_type type);
+t_token_type	get_token_type(char *str);
 
 #endif

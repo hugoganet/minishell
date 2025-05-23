@@ -10,3 +10,12 @@ executables
 
 # Ignore l'executable de minishell
 Minishell
+
+# Ignore le program de génération de la structure de projet
+project_structure
+
+# Ignore le fichier de structure de projet
+project_structure_miniShell.txt
+
+# Ignore le fichier de structure de projet visée
+minishell_project_structure_goal.txt

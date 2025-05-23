@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 15:37:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 15:51:25 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ char	*prompt_readline(void);
 int		is_line_empty(char *input);
 int		has_unclosed_quotes(char *input);
 int		has_invalid_pipes(char *input);
-void	update_quote_state(char *quote_state, char c);	
+int		has_invalid_redirections(char *input);
+void	update_quote_state(char *quote_state, char c);
 void	shell_loop(t_shell *shell);
 
 

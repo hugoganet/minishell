@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:01:02 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 16:06:46 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 16:17:06 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int has_invalid_redirections(char *input)
 int has_unmatched_parentheses(char *input)
 {
 	int i;
-	int j;
 	int count;
 	char quote;
 
@@ -134,22 +133,19 @@ int has_unmatched_parentheses(char *input)
 	while (input[i])
 	{
 		update_quote_state(&quote, input[i]); // Met à jour l'état de la quote
-		if (!quote && input[i] == '(') // Si pas dans une quote et que le caractère est une parenthèse ouvrante
+		if (!quote && input[i] == '(') // Si pas dans une quote et que le caractère est une parenthèse ouvrante			
 		{
-			count++; // Incrémente le compteur de parenthèses ouvrantes
-			j = i + 1; // Set le j à la position suivante
-			while (input[j] == ' ' || input[j] == '\t') // Ignore les espaces et tabulations
-				j++;
-			if (input[j] == ')') // Si la parenthèse ouvrante est suivie d'une parenthèse fermante
+			count++; // On incrémente le compteur de parenthèses
+			if (is_parenthesis_empty(input, i)) // Vérifie si la parenthèse est vide
 				return (1); // Erreur : parenthèse vide
 		}
 		else if (!quote && input[i] == ')') // Si pas dans une quote et que le caractère est une parenthèse fermante
 		{
-			if (count == 0) // Si le compteur est à 0, il n'y a pas de parenthèse ouvrante correspondante
+			if (count == 0) // Si le compteur est à 0, il y a une parenthèse fermante sans ouvrante
 				return (1); // Erreur : parenthèse fermante sans ouvrante
-			count--; // Décrémente le compteur de parenthèses ouvrantes
+			count--; // On décrémente le compteur de parenthèses
 		}
-		i++;
+		i++; // On passe au caractère suivant
 	}
-	return (count != 0); // Si > 0, il manque des fermetures
+	return (count != 0);
 }

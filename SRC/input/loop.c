@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 16:04:48 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 16:18:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,9 @@ void shell_loop(t_shell *shell)
 			write(1, "exit\n", 5);
 			break;
 		}
-		if (!is_line_empty(input)) // Si la ligne n'est pas vide
+		if (!is_line_empty(input) && !is_syntax_valid(input)) // Vérifie si la ligne n'est pas vide et si la syntaxe est valide		
 		{
-			if (has_unclosed_quotes(input)) // Vérifie si la ligne a une quote non fermée
-				ft_putendl_fd("minishell: syntax error: unclosed quote", 2);
-			else if (has_invalid_pipes(input)) // Vérifie si la ligne a des pipes mal placés
-				ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
-			else if (has_invalid_redirections(input))
-				ft_putendl_fd("minishell: syntax error near unexpected token `>'", 2);
-			else if (has_unmatched_parentheses(input))
-				ft_putendl_fd("minishell: syntax error: unmatched or empty parentheses", 2);
-			else
-			{
-				// parsing à venir
-			}
+			// parsing futur
 		}
 		free(input);
 	}

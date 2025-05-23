@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 14:01:47 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 14:13:42 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void	free_env(char **env);
 void	handle_signal(int signo);
 char	*prompt_readline(void);
 int		is_line_empty(char *input);
+int		has_unclosed_quotes(char *input);
 
 #endif

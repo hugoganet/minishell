@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 14:02:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 14:14:54 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ void shell_loop(t_shell *shell)
 		}
 		if (!is_line_empty(input))
 		{
-
+			if (has_unclosed_quotes(input))
+				ft_putendl_fd("minishell: syntax error: unclosed quote", 2);
+			else
+			{
+				// parsing à venir
+			}
 		}
 		free(input);
 	}

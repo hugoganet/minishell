@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop.c                                             :+:      :+:    :+:   */
+/*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 14:02:22 by hugoganet        ###   ########.fr       */
+/*   Created: 2025/05/23 14:01:02 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/05/23 14:01:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Boucle principale du shell : lit les entrées, les traite,
- *        et quitte proprement sur Ctrl+D.
+ * @brief Vérifie si une ligne est vide (ne contient que des espaces/tabs).
  *
- * @param shell Pointeur vers la structure du shell.
+ * @param input La ligne entrée par l’utilisateur.
+ * @return int 1 si vide, 0 sinon.
  */
-void shell_loop(t_shell *shell)
+int is_line_empty(char *input)
 {
-	char *input;
+	int i;
 
-	while (1)
+	if (!input)
+		return (1);
+	i = 0;
+	while (input[i])
 	{
-		input = prompt_readline();
-		if (!input)
-		{
-			write(1, "exit\n", 5);
-			break;
-		}
-		if (!is_line_empty(input))
-		{
-
-		}
-		free(input);
+		if (input[i] != ' ' && input[i] != '\t')
+			return (0);
+		i++;
 	}
+	return (1);
 }

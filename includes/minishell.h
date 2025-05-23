@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 16:21:02 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/23 17:19:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,43 @@ typedef struct s_shell
 {
 	char **env;
 	int last_exit_status;
-} t_shell;
+} 		t_shell;
+
+/**
+ * @enum e_token_type
+ * @brief Représente le type d'un token dans la ligne de commande.
+ */
+typedef enum e_token_type
+{
+	TOK_WORD,		   /**< Mot (commande ou argument) */
+	TOK_PIPE,		   /**< Pipe '|' */
+	TOK_REDIR_IN,	   /**< Redirection d'entrée '<' */
+	TOK_REDIR_OUT,	   /**< Redirection de sortie '>' */
+	TOK_REDIR_APPEND,  /**< Redirection en append '>>' */
+	TOK_REDIR_HEREDOC, /**< Heredoc '<<' */
+	TOK_AND,		   /**< Opérateur logique '&&' */
+	TOK_OR,			   /**< Opérateur logique '||' */
+	TOK_PAREN_LEFT,	   /**< Parenthèse ouvrante '(' */
+	TOK_PAREN_RIGHT	   /**< Parenthèse fermante ')' */
+} t_token_type;
+
+/**
+ * @struct s_token
+ * @brief Structure représentant un token dans la ligne de commande.
+ *
+ * @var s_token::value
+ * Valeur du token (chaîne de caractères).
+ * @var s_token::type
+ * Type du token (voir enum e_token_type).
+ * @var s_token::next
+ * Pointeur vers le token suivant dans la liste chaînée.
+ */
+typedef struct s_token
+{
+	char			*value;
+	t_token_type	type;
+	struct s_token	*next;
+} 					t_token;
 
 // ! ----------------------- FUNCTIONS ---------------
 

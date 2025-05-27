@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/27 17:29:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/27 18:20:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void			shell_loop(t_shell *shell);
 t_token			*tokenize(char *input);
 t_token			*token_new(char *value, t_token_type type);
 t_token_type	get_token_type(char *str);
-void			print_tokens(t_token *head);
 void			process_input(char *input, t_shell *shell);
 void			free_token_list(t_token *head);
+void			print_token_list(t_token *tokens);
 
 #endif

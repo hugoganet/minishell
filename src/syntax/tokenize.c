@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 17:29:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/27 17:46:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,34 @@ static t_token *get_next_token(char *input, int *i)
 	char *substr;
 	t_token_type type;
 
-	while (input[*i] == ' ' || input[*i] == '\t')
+	while (input[*i] == ' ' || input[*i] == '\t') // Ignorer les espaces et tabulations
 		(*i)++;
-	if (input[*i] == '\0')
+	if (input[*i] == '\0') // Si on atteint la fin de la chaîne
 		return (NULL);
-
-	start = *i;
-
-	if ((input[*i] == '<' || input[*i] == '>') && input[*i + 1] == input[*i])
+	start = *i; // Enregistrer le début du token
+	// vérifier les opérateurs doubles et avancer l'index de 2
+	if ((input[*i] == '<' && input[*i + 1] == '<') ||
+		(input[*i] == '>' && input[*i + 1] == '>') ||
+		(input[*i] == '&' && input[*i + 1] == '&') ||
+		(input[*i] == '|' && input[*i + 1] == '|'))
 		*i += 2;
+	// vérifier les opérateurs simples et avancer l'index de 1
 	else if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|' || input[*i] == '(' || input[*i] == ')')
 		(*i)++;
-	else
+	else // Sinon, c'est un mot (commande ou argument)
 	{
-		while (input[*i] && input[*i] != ' ' && input[*i] != '\t' && input[*i] != '<' && input[*i] != '>' && input[*i] != '|' && input[*i] != '(' && input[*i] != ')')
+		// Avancer l'index jusqu'à la fin du mot
+		while (input[*i] && input[*i] != ' ' && input[*i] != '\t'
+				&& input[*i] != '<' && input[*i] != '>' && input[*i] != '|'
+				&& input[*i] != '&' && input[*i] != '(' && input[*i] != ')')
 			(*i)++;
 	}
+	if (start == *i) // Si on n'a pas avancé, c'est un token vide
+		return (NULL);
+	// Extraire le sous-texte du token
 	substr = ft_substr(input, start, *i - start);
+	if (!substr) // Vérifier l'allocation
+		return (NULL);
 	type = get_token_type(substr);
 	return (token_new(substr, type));
 }

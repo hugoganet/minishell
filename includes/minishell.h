@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 19:04:38 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/27 17:29:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef enum e_token_type
 	TOK_OR,			   /**< Opérateur logique '||' */
 	TOK_PAREN_LEFT,	   /**< Parenthèse ouvrante '(' */
 	TOK_PAREN_RIGHT	   /**< Parenthèse fermante ')' */
-} t_token_type;
+}	t_token_type;
 
 /**
  * @struct s_token

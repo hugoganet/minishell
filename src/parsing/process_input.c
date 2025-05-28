@@ -6,11 +6,12 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:52:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/27 18:23:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 11:52:32 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "ast.h"
 
 /**
  * @brief Traite la ligne de commande : tokenisation, parsing logique à venir.
@@ -21,6 +22,7 @@
 void process_input(char *input, t_shell *shell)
 {
 	t_token *tokens;
+	t_ast *ast;
 
 	(void)shell; // utile plus tard
 	tokens = tokenize(input); // Tokenisation de la ligne d'entrée
@@ -30,6 +32,7 @@ void process_input(char *input, t_shell *shell)
 		return;
 	}
 	print_token_list(tokens);
-	// TODO : parser_logique(tokens);
-	free_token_list(tokens); // Libération de la liste de tokens
+	ast = build_ast(tokens);
+	print_ast(ast, 0);
+	free_token_list(tokens);
 }

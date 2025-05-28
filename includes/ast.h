@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:24:19 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 11:01:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 11:51:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_ast
 
 // ! ----------------------- FUNCTIONS ---------------
 
-t_ast *build_ast(t_token *tokens);
+t_ast	*build_ast(t_token *tokens);
+void	print_ast(t_ast *node, int depth);
 
 #endif

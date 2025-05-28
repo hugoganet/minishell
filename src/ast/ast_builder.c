@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 10:25:38 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 11:46:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 11:55:56 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,6 @@ t_ast *build_ast(t_token *tokens)
 	node->left = build_ast(tokens);
 	// Appel récursif pour construire la branche droite et on coupe la liste de tokens à partir de l'opérateur trouvé
 	node->right = build_ast(split_token_list(tokens, op));
+	printf("Building AST: %s\n", op->value);
 	return (node);
 }

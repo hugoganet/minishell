@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:24:19 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 10:37:38 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 11:01:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define AST_H
 
 #include "minishell.h"
+
+// ! ----------------------- STRUCTURES --------------
 
 /**
  * @enum e_ast_type
@@ -50,5 +52,9 @@ typedef struct s_ast
 	struct s_ast	*left; /** Pointeur vers la branche gauche */
 	struct s_ast	*right; /** Pointeur vers la branche droite */
 }					t_ast;
+
+// ! ----------------------- FUNCTIONS ---------------
+
+t_ast *build_ast(t_token *tokens);
 
 #endif

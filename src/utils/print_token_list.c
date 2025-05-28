@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/27 18:32:19 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 17:36:27 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,32 @@
 
 static const char *token_type_str(t_token_type type)
 {
-	if (type == TOK_WORD)
-		return ("TOK_WORD");
-	if (type == TOK_PIPE)
-		return ("TOK_PIPE");
-	if (type == TOK_REDIR_IN)
-		return ("TOK_REDIR_IN");
-	if (type == TOK_REDIR_OUT)
-		return ("TOK_REDIR_OUT");
-	if (type == TOK_REDIR_APPEND)
-		return ("TOK_REDIR_APPEND");
-	if (type == TOK_REDIR_HEREDOC)
-		return ("TOK_REDIR_HEREDOC");
-	if (type == TOK_AND)
-		return ("TOK_AND");
-	if (type == TOK_OR)
-		return ("TOK_OR");
-	if (type == TOK_PAREN_LEFT)
-		return ("TOK_PAREN_LEFT");
-	if (type == TOK_PAREN_RIGHT)
-		return ("TOK_PAREN_RIGHT");
+	if (type == WORD)
+		return ("WORD");
+	if (type == CMD)
+		return ("CMD");
+	if (type == ARG)
+		return ("ARG");
+	if (type == FILES)
+		return ("FILES");
+	if (type == PIPE)
+		return ("PIPE");
+	if (type == REDIR_INPUT)
+		return ("REDIR_INPUT");
+	if (type == REDIR_OUTPUT)
+		return ("REDIR_OUTPUT");
+	if (type == REDIR_APPEND)
+		return ("REDIR_APPEND");
+	if (type == HEREDOC)
+		return ("HEREDOC");
+	if (type == AND)
+		return ("AND");
+	if (type == OR)
+		return ("OR");
+	if (type == PAREN_LEFT)
+		return ("PAREN_LEFT");
+	if (type == PAREN_RIGHT)
+		return ("PAREN_RIGHT");
 	return ("UNKNOWN");
 }
 

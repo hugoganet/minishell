@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 13:14:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 15:56:45 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
  */
 void init_shell(t_shell *shell, char **envp)
 {
+	// ? Where is the memory allocation ?!
 	shell->env = copy_env(envp); // Copie de l'environnement
 	shell->last_exit_status = 0; // Initialisation du statut de sortie
 	init_signals(); // Initialisation des signaux

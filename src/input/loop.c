@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 17:53:38 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 16:05:17 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void shell_loop(t_shell *shell)
 {
 	char *input;
 
-	shell->last_exit_status = 0; // À supprimer après, c'est juste pour -Werror
 	while (1)
 	{
 		input = prompt_readline(); // Affiche le prompt et lit l'entrée utilisateur

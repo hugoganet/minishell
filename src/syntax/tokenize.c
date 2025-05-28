@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/27 17:46:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 18:54:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ t_token *token_new(char *value, t_token_type type)
 	if (!token)
 		return (NULL);
 	token->value = value; // Assigner la valeur du token
-	token->type = type; // Assigner le type du token
-	token->next = NULL; // Initialiser le pointeur suivant à NULL
+	token->type = type;	  // Assigner le type du token
+	token->next = NULL;	  // Initialiser le pointeur suivant à NULL
 	return (token);
 }
 
 /**
- * @brief Lit un token depuis l’entrée et avance l’index.
+ * @brief Lit un token depuis l’entrée, ajoute son type et avance l’index.
  *
  * @param input La chaîne d’entrée
  * @param i Pointeur vers la position actuelle
@@ -42,7 +42,7 @@ t_token *token_new(char *value, t_token_type type)
 static t_token *get_next_token(char *input, int *i)
 {
 	int start;
-	char *substr;
+	char *substr; // Sous-chaîne pour le token
 	t_token_type type;
 
 	while (input[*i] == ' ' || input[*i] == '\t') // Ignorer les espaces et tabulations
@@ -62,9 +62,7 @@ static t_token *get_next_token(char *input, int *i)
 	else // Sinon, c'est un mot (commande ou argument)
 	{
 		// Avancer l'index jusqu'à la fin du mot
-		while (input[*i] && input[*i] != ' ' && input[*i] != '\t'
-				&& input[*i] != '<' && input[*i] != '>' && input[*i] != '|'
-				&& input[*i] != '&' && input[*i] != '(' && input[*i] != ')')
+		while (input[*i] && input[*i] != ' ' && input[*i] != '\t' && input[*i] != '<' && input[*i] != '>' && input[*i] != '|' && input[*i] != '&' && input[*i] != '(' && input[*i] != ')')
 			(*i)++;
 	}
 	if (start == *i) // Si on n'a pas avancé, c'est un token vide
@@ -112,5 +110,6 @@ t_token *tokenize(char *input)
 		if (new)
 			append_token(&head, &last, new);
 	}
+	refine_token_types(head);
 	return (head);
 }

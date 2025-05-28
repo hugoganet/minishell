@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/28 17:39:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 19:40:04 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,20 @@ typedef enum e_token_type
  */
 typedef struct s_token
 {
-	char *value;
+	char *str;
 	t_token_type type;
 	struct s_token *next;
 } t_token;
+
+typedef struct s_ast t_ast;
+
+typedef struct s_ast 
+{
+	t_token_type	type;
+	char	*str;
+	t_ast	*left;
+	t_ast	*right;
+} t_ast;
 
 // ! ----------------------- FUNCTIONS ---------------
 

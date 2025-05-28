@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 17:40:01 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 19:41:35 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void logic_groups(t_token *head)
 	if (ptr && ptr->type == WORD)
 	{
 		ptr->type = CMD;
-		printf("Token %s is %u\n", ptr->value, ptr->type);
+		printf("Token %s is %u\n", ptr->str, ptr->type);
 	}
 	while (ptr)
 	{

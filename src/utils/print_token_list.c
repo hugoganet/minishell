@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_token_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 17:36:27 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 19:40:39 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void print_token_list(t_token *tokens)
 	printf("\n=== Token List ===\n");
 	while (tokens)
 	{
-		printf(" - %-10s → %s\n", tokens->value, token_type_str(tokens->type));
+		printf(" - %-10s → %s\n", tokens->str, token_type_str(tokens->type));
 		tokens = tokens->next;
 	}
 	printf("==================\n\n");

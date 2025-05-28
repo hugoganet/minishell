@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 10:25:38 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 11:55:56 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 12:57:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ t_ast *build_ast(t_token *tokens)
 {
 	t_token *op;
 	t_ast *node;
+	// t_token *left_tokens;
+	t_token *right_tokens;
 
 	// Si la liste de tokens est vide, on retourne NULL
 	if (!tokens)
@@ -184,10 +186,14 @@ t_ast *build_ast(t_token *tokens)
 		node->type = AST_PIPE;
 	// On initialise le nœud pour les commandes
 	node->cmd = NULL;
+	
+	// On divise la liste de tokens en deux parties : gauche et droite
+	// La partie gauche contient tous les tokens avant l'opérateur trouvé
+	right_tokens = split_token_list(tokens, op);
+
 	// Appel récursif pour construire la branche gauche
 	node->left = build_ast(tokens);
 	// Appel récursif pour construire la branche droite et on coupe la liste de tokens à partir de l'opérateur trouvé
-	node->right = build_ast(split_token_list(tokens, op));
-	printf("Building AST: %s\n", op->value);
+	node->right = build_ast(right_tokens);
 	return (node);
 }

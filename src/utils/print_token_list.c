@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/27 18:32:19 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/28 12:31:03 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ static const char *token_type_str(t_token_type type)
  * @brief Affiche chaque token de la liste avec son type.
  *
  * @param tokens Liste chaînée de tokens
+ * @param title Titre pour la section d'affichage
  */
-void print_token_list(t_token *tokens)
+void print_token_list(t_token *tokens, char *title)
 {
-	printf("\n=== Token List ===\n");
+	printf("\n=== %s ===\n", title);
 	while (tokens)
 	{
 		printf(" - %-10s → %s\n", tokens->value, token_type_str(tokens->type));
 		tokens = tokens->next;
 	}
-	printf("==================\n\n");
+	printf("=========================\n\n");
 }

@@ -36,6 +36,7 @@ SRC = 	main.c \
 		syntax/validation.c \
 		parsing/process_input.c \
 		ast/ast_builder.c \
+		env/var_expand.c
 		
 
 # Rassembler les sources

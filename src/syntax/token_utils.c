@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 13:55:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 17:31:16 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,34 @@ void refine_token_types(t_token *head)
 			curr->next->type = CMD;
 		curr = curr->next;
 	}
+}
+
+/**
+ * @brief Extrait une sous-chaîne entre quotes simples ou doubles.
+ *
+ * @param input Chaîne d'entrée
+ * @param i Pointeur vers l'index courant (pointant sur la quote ouvrante)
+ * @return char* Sous-chaîne allouée (sans les quotes), ou NULL en cas d'erreur
+ */
+char *parse_quoted_token(char *input, int *i)
+{
+	char quote;
+	int start;
+	int end;
+	char *token_new;
+
+	quote = input[*i];
+	start = *i;
+	// On commence à parcourir input juste après la quote ouvrante
+	end = start + 1;
+	// Avance l'index jusqu'à la quote fermante correspondante	
+	while (input[end] && input[end] != quote)
+		end++;
+	// On set l'index à la fin de la quote fermante
+	*i = end + 1;
+	// On extrait la sous-chaîne avec les quotes
+	token_new = ft_substr(input, start + 1, end - start - 1);
+	if (!token_new)
+		return (NULL);
+	return (token_new); 
 }

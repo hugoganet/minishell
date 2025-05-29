@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 16:17:34 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 17:50:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@
  */
 void update_quote_state(char *quote_state, char c)
 {
-	if (!*quote_state && (c == '\'' || c == '"')) // Si aucune quote ouverte
-		*quote_state = c; // Ouvre une quote
-	else if (*quote_state && c == *quote_state) // Si une quote est ouverte et que le caractère courant est la même quote
-		*quote_state = 0; // Ferme la quote
+	// Si aucune quote ouverte
+	// Ouvre une quote
+	if (!*quote_state && (c == '\'' || c == '"'))
+		*quote_state = c;
+	// Si une quote est ouverte et que le caractère courant est la même quote
+	// Ferme la quote
+	else if (*quote_state && c == *quote_state)
+		*quote_state = 0;
 }
 
 /**
@@ -33,8 +37,12 @@ void update_quote_state(char *quote_state, char c)
  */
 int is_parenthesis_empty(char *input, int i)
 {
-	i++; // On passe le caractère '('
-	while (input[i] == ' ' || input[i] == '\t') // Ignore les espaces et tabulations
-		i++; // On passe les espaces
-	return (input[i] == ')'); // Si le caractère suivant est ')', la parenthèse est vide
+	// On passe le caractère '('
+	i++;
+	// Ignore les espaces et tabulations
+	while (input[i] == ' ' || input[i] == '\t')
+		i++;
+	// Si le caractère suivant est ')', la parenthèse est vide
+	// return 1
+	return (input[i] == ')');
 }

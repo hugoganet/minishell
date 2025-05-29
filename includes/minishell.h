@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/29 08:57:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 17:31:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ typedef enum e_token_type
  */
 typedef struct s_token
 {
-	char *str;
-	t_token_type type;
-	struct s_token *next;
+	char			*str;
+	t_token_type	type;
+	struct s_token	*next;
 } t_token;
 
 // ! ----------------------- FUNCTIONS ---------------
@@ -103,8 +103,9 @@ t_token_type get_token_type(char *str);
 void process_input(char *input, t_shell *shell);
 void free_token_list(t_token *head);
 void print_token_list(t_token *tokens);
-t_token *is_logic(t_token **node);
 bool is_redirection(t_token_type type);
 void refine_token_types(t_token *head);
+char *parse_quoted_token(char *input, int *i);
+void append_token(t_token **head, t_token **last, t_token *new);
 
 #endif

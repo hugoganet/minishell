@@ -35,6 +35,7 @@ SRC = 	main.c \
 		syntax/token_utils.c \
 		syntax/validation.c \
 		parsing/process_input.c \
+		syntax/build_token_list.c \
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -100,6 +101,7 @@ token_tests_mac:
 		src/utils/free_token_list.c \
 		src/utils/init_error.c \
 		src/syntax/token_utils.c \
+		src/syntax/build_token_list.c \
 		-o tokenizer_tests
 	@echo "✅ Binaire de test créé : ./tokenizer_tests"
 	@echo "==> Lancement avec leaks..."
@@ -116,6 +118,7 @@ token_tests:
 		src/utils/free_token_list.c \
 		src/utils/init_error.c \
 		src/syntax/token_utils.c \
+		src/syntax/build_token_list.c \
 		-o tokenizer_tests
 	@echo "✅ Binaire de test créé : ./tokenizer_tests"
 	@echo "==> Lancement avec leaks..."

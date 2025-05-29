@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 08:56:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 13:55:25 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ void refine_token_types(t_token *head)
 	curr = head;
 	// Le tout premier WORD est une commande
 	if (curr && curr->type == WORD)
-	{
 		curr->type = CMD;
-		printf("Token %s is %u\n", curr->str, curr->type);
-	}
 	while (curr)
 	{
 		// Si le token courant est une redirection et qu'il y a un token suivant,

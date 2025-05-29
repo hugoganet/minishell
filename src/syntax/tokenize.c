@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 19:41:08 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:51:10 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_token *token_new(char *value, t_token_type type)
  * @param i Pointeur vers la position actuelle
  * @return t_token* Le token extrait, ou NULL si fin
  */
+
 static t_token *get_next_token(char *input, int *i)
 {
 	int start;

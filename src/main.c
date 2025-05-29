@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 13:17:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 13:47:20 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
  * @param envp Environnement système
  * @return int Code de retour du shell
  */
+
+
+
+ 
 int main(int argc, char **argv, char **envp)
 {
 	t_shell shell; // Structure du shell

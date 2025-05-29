@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 18:55:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 08:56:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void refine_token_types(t_token *head)
 	if (curr && curr->type == WORD)
 	{
 		curr->type = CMD;
-		printf("Token %s is %u\n", curr->value, curr->type);
+		printf("Token %s is %u\n", curr->str, curr->type);
 	}
 	while (curr)
 	{

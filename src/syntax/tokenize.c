@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 18:54:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/29 08:57:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 /**
  * @brief Crée un nouveau token avec sa valeur et son type.
  *
- * @param value Le texte du token
+ * @param str Le texte du token
  * @param type  Le type (enum)
  * @return t_token* Le pointeur vers le nouveau token
  */
-t_token *token_new(char *value, t_token_type type)
+t_token *token_new(char *str, t_token_type type)
 {
 	t_token *token; // Pointeur vers le token
 
 	token = malloc(sizeof(t_token)); // Allocation de mémoire pour le token
 	if (!token)
 		return (NULL);
-	token->value = value; // Assigner la valeur du token
+	token->str = str; // Assigner la valeur du token
 	token->type = type;	  // Assigner le type du token
 	token->next = NULL;	  // Initialiser le pointeur suivant à NULL
 	return (token);

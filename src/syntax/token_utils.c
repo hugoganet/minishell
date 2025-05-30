@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 10:07:11 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/30 10:54:30 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,41 +55,40 @@ bool is_redirection(t_token_type type)
 }
 
 /**
- * @brief Reclasse les tokens WORD en CMD, ARG ou FILES selon leur contexte.
+ * @brief Reclasse les tokens WORD en CMD, ARG ou FILES selon leur contexte, de façon robuste.
  *
- * Cette fonction est appelée après la tokenisation brute. Elle examine la liste
- * chaînée de tokens et met à jour le type des tokens initialement de type WORD
- * en fonction de leur rôle dans la commande :
- *
- * - Le premier WORD est une CMD
- * - Un WORD après une redirection devient FILES
- * - Un WORD après une CMD devient ARG
- * - Un WORD après un PIPE devient CMD
+ * Cette fonction parcourt la liste chaînée de tokens et met à jour le type des tokens initialement de type WORD
+ * en fonction de leur rôle dans la commande :
+ * - Le premier WORD ou le premier WORD après un PIPE devient CMD
+ * - Un ou plusieurs WORD après une redirection deviennent FILES jusqu'à un opérateur
+ * - Un ou plusieurs WORD après une CMD ou un ARG deviennent ARG jusqu'à un opérateur
  *
  * @param head Pointeur vers le premier token de la liste
  */
 void refine_token_types(t_token *head)
 {
+	int expect_cmd;
+	int expect_file;
 	t_token *curr;
 
+	expect_cmd = 1;
+	expect_file = 0;
 	curr = head;
-	// Le tout premier WORD est une commande
-	if (curr && curr->type == WORD)
-		curr->type = CMD;
 	while (curr)
 	{
-		// Si le token courant est une redirection et qu'il y a un token suivant,
-		// on le transforme en FILES
-		if (is_redirection(curr->type) && curr->next)
-			curr->next->type = FILES;
-		// Si le token courant est une CMD et qu'il y a un token suivant de type WORD,
-		// on le transforme en ARG
-		else if (curr->type == CMD && curr->next && curr->next->type == WORD)
-			curr->next->type = ARG;
-		// Si le token courant est un PIPE et qu'il y a un token suivant de type WORD,
-		// on le transforme en CMD
-		else if (curr->type == PIPE && curr->next && curr->next->type == WORD)
-			curr->next->type = CMD;
+		if (curr->type == WORD)
+		{
+			if (expect_cmd)
+				curr->type = CMD;
+			else if (expect_file)
+				curr->type = FILES;
+			else
+				curr->type = ARG;
+		}
+		expect_cmd = (curr->type == PIPE);
+		expect_file = is_redirection(curr->type);
+		if (curr->type == CMD || curr->type == ARG)
+			expect_cmd = 0;
 		curr = curr->next;
 	}
 }
@@ -112,7 +111,7 @@ char *parse_quoted_token(char *input, int *i)
 	start = *i;
 	// On commence à parcourir input juste après la quote ouvrante
 	end = start + 1;
-	// Avance l'index jusqu'à la quote fermante correspondante	
+	// Avance l'index jusqu'à la quote fermante correspondante
 	while (input[end] && input[end] != quote)
 		end++;
 	// On set l'index à la fin de la quote fermante
@@ -121,7 +120,7 @@ char *parse_quoted_token(char *input, int *i)
 	token_new = ft_substr(input, start + 1, end - start - 1);
 	if (!token_new)
 		return (NULL);
-	return (token_new); 
+	return (token_new);
 }
 
 /**

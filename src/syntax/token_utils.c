@@ -125,10 +125,21 @@ char *parse_quoted_token(char *input, int *i)
 }
 
 /**
+ * @brief Vérifie si le type est un opérateur logique (PIPE, OR, AND).
+ *
+ * @param type Le type du token à vérifier
+ * @return true si c'est un opérateur logique, false sinon
+ */
+static bool is_logical_operator(t_token_type type)
+{
+	return (type == PIPE || type == OR || type == AND);
+}
+
+/**
  * @brief Vérifie la validité syntaxique de la séquence de tokens.
  *
  * Cette fonction s'assure qu'il n'y a pas d'opérateurs consécutifs,
- * ni d'opérateur en début ou fin de ligne, ni d'opérateurs sans commande valide.
+ * ni d'opérateur en début ou fin de ligne.
  * Affiche un message d'erreur approprié en cas d'erreur.
  *
  * @param head Pointeur vers le premier token de la liste
@@ -136,42 +147,27 @@ char *parse_quoted_token(char *input, int *i)
  */
 int validate_token_sequence(t_token *head)
 {
-    t_token *curr;
-    t_token *prev;
-
-    if (!head)
-        return (0);
-    curr = head;
-    prev = NULL;
-    while (curr)
-    {
-        // Vérifie opérateur en début de ligne
-        if (!prev && (curr->type == PIPE || curr->type == OR || curr->type == AND))
-        {
-            ft_putendl_fd("minishell: syntax error near unexpected token '" \
-                "'", 2);
-            return (1);
-        }
-        // Vérifie deux opérateurs consécutifs
-        if (prev &&
-            (prev->type == PIPE || prev->type == OR || prev->type == AND) &&
-            (curr->type == PIPE || curr->type == OR || curr->type == AND))
-        {
-            ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-            ft_putstr_fd(curr->str, 2);
-            ft_putendl_fd("'", 2);
-            return (1);
-        }
-        prev = curr;
-        curr = curr->next;
-    }
-    // Vérifie opérateur en fin de ligne
-    if (prev && (prev->type == PIPE || prev->type == OR || prev->type == AND))
-    {
-        ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-        ft_putstr_fd(prev->str, 2);
-        ft_putendl_fd("'", 2);
-        return (1);
-    }
-    return (0);
+	t_token *prev = NULL;
+	t_token *curr = head;
+	while (curr)
+	{
+		if ((!prev && is_logical_operator(curr->type)) ||
+			(prev && is_logical_operator(prev->type) && is_logical_operator(curr->type)))
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+			ft_putstr_fd(curr->str, 2);
+			ft_putendl_fd("'", 2);
+			return (1);
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	if (prev && is_logical_operator(prev->type))
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+		ft_putstr_fd(prev->str, 2);
+		ft_putendl_fd("'", 2);
+		return (1);
+	}
+	return (0);
 }

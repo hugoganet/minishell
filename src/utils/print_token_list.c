@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 14:32:15 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:51:12 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static const char *token_type_str(t_token_type type)
 }
 
 /**
- * @brief Affiche chaque token de la liste avec son type.
+ * @brief Affiche chaque token de la liste avec son type
  *
  * @param tokens Liste chaînée de tokens
  */

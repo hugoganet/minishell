@@ -7,7 +7,6 @@ libft/libft.a
 # Ignore les fichiers binaires de minishell
 executables
 
-
 # Ignore l'executable de minishell
 Minishell
 
@@ -19,3 +18,6 @@ project_structure_miniShell.txt
 
 # Ignore le fichier de structure de projet visée
 minishell_project_structure_goal.txt
+
+# Ignore les fichiers de tests macOS
+tokenizer_tests*

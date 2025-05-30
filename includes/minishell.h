@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/30 14:40:30 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:25:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ bool is_redirection(t_token_type type);
 void refine_token_types(t_token *head);
 char *parse_quoted_token(char *input, int *i);
 void append_token(t_token **head, t_token **last, t_token *new);
+int validate_token_sequence(t_token *head);
 
 #endif

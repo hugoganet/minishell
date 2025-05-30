@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:52:10 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 13:54:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/30 09:43:05 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,17 @@ static void run_token_test(const char *input)
 int main(void)
 {
 	run_token_test("ls");
+	run_token_test("ls -l");
+	run_token_test("echo \"hello\"\'you\'\"");
 	run_token_test("echo \"bonjour\"");
 	run_token_test("echo 'test'");
 	run_token_test("echo bonjour > file.txt");
 	run_token_test("cat < infile | grep toto > outfile");
-	run_token_test("echo \"bonjour"); // Erreur : quotes non fermées
-	run_token_test("ls ||| grep");	  // Erreur syntaxique
 	run_token_test(">");
 	run_token_test("ls | wc -l");
 	run_token_test("echo \"$HOME\"");
 	run_token_test("echo '$HOME'");
+	run_token_test("echo \"bonjour"); // Erreur : quotes non fermées
+	run_token_test("ls ||| grep");	  // Erreur syntaxique
 	return (0);
 }

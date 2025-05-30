@@ -36,6 +36,7 @@ SRC = 	main.c \
 		syntax/validation.c \
 		parsing/process_input.c \
 		syntax/build_token_list.c \
+	
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -88,6 +89,10 @@ re: fclean all
 go: macos
 	@echo "==> Lancement de Minishell..."
 	@./$(NAME)
+
+leaks_macos:
+	@echo "==> Lancement de Minishell avec leaks..."
+	@leaks --atExit -- ./$(NAME)
 
 # Cible pour les tests de tokenisation sur macOS
 token_tests_mac:

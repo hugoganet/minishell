@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 17:31:16 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/30 10:07:11 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,56 @@ char *parse_quoted_token(char *input, int *i)
 	if (!token_new)
 		return (NULL);
 	return (token_new); 
+}
+
+/**
+ * @brief Vérifie la validité syntaxique de la séquence de tokens.
+ *
+ * Cette fonction s'assure qu'il n'y a pas d'opérateurs consécutifs,
+ * ni d'opérateur en début ou fin de ligne, ni d'opérateurs sans commande valide.
+ * Affiche un message d'erreur approprié en cas d'erreur.
+ *
+ * @param head Pointeur vers le premier token de la liste
+ * @return int 0 si la séquence est valide, 1 sinon
+ */
+int validate_token_sequence(t_token *head)
+{
+    t_token *curr;
+    t_token *prev;
+
+    if (!head)
+        return (0);
+    curr = head;
+    prev = NULL;
+    while (curr)
+    {
+        // Vérifie opérateur en début de ligne
+        if (!prev && (curr->type == PIPE || curr->type == OR || curr->type == AND))
+        {
+            ft_putendl_fd("minishell: syntax error near unexpected token '" \
+                "'", 2);
+            return (1);
+        }
+        // Vérifie deux opérateurs consécutifs
+        if (prev &&
+            (prev->type == PIPE || prev->type == OR || prev->type == AND) &&
+            (curr->type == PIPE || curr->type == OR || curr->type == AND))
+        {
+            ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+            ft_putstr_fd(curr->str, 2);
+            ft_putendl_fd("'", 2);
+            return (1);
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    // Vérifie opérateur en fin de ligne
+    if (prev && (prev->type == PIPE || prev->type == OR || prev->type == AND))
+    {
+        ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+        ft_putstr_fd(prev->str, 2);
+        ft_putendl_fd("'", 2);
+        return (1);
+    }
+    return (0);
 }

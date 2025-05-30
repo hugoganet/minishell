@@ -151,5 +151,11 @@ t_token *tokenize(char *input)
 			append_token(&head, &last, new);
 	}
 	refine_token_types(head);
+	// Validation syntaxique de la séquence de tokens
+	if (validate_token_sequence(head))
+	{
+		free_token_list(head);
+		return (NULL);
+	}
 	return (head);
 }

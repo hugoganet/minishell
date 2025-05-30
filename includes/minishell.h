@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/29 15:45:47 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:40:30 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef enum e_token_type
  *
  * Chaque token a :
  *
- * - `value`: la chaîne de caractères du token.
+ * - `str`: la chaîne de caractères du token.
  *
  * - `type`: le type du token (défini par l'énumération `e_token_type`).
  *
@@ -75,19 +75,20 @@ typedef enum e_token_type
  */
 typedef struct s_token
 {
-	char *str;
-	t_token_type type;
-	struct s_token *next;
+	char			*str;
+	t_token_type	type;
+	struct s_token	*next;
 } t_token;
+
 
 typedef struct s_ast t_ast;
 
-typedef struct s_ast 
+typedef struct s_ast
 {
 	t_token_type	type;
-	char	*str;
-	t_ast	*left;
-	t_ast	*right;
+	char			*str;
+	t_ast 			*left;
+	t_ast			*right;
 } t_ast;
 
 // ! ----------------------- FUNCTIONS ---------------
@@ -108,13 +109,14 @@ int is_parenthesis_empty(char *input, int i);
 void update_quote_state(char *quote_state, char c);
 void shell_loop(t_shell *shell);
 t_token *tokenize(char *input);
-t_token *token_new(char *value, t_token_type type);
+t_token *token_new(char *str, t_token_type type);
 t_token_type get_token_type(char *str);
 void process_input(char *input, t_shell *shell);
 void free_token_list(t_token *head);
 void print_token_list(t_token *tokens);
-t_token *is_logic(t_token **node);
 bool is_redirection(t_token_type type);
-void logic_groups(t_token *head);
+void refine_token_types(t_token *head);
+char *parse_quoted_token(char *input, int *i);
+void append_token(t_token **head, t_token **last, t_token *new);
 
 #endif

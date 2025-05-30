@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/29 18:32:24 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:53:06 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ int	ft_is_dbl_quote(char c)
 	if (c == 34)
 		i = 1;
 	return (i);
+}
+
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
+	
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 char	**split_path(char **envp)

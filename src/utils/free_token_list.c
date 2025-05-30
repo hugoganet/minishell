@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 19:03:24 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 19:40:53 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:32:12 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,16 @@ void free_token_list(t_token *head)
 {
 	t_token *tmp;
 
+	// Tant qu'il y a des tokens dans la liste
 	while (head)
 	{
-		tmp = head->next; // Sauvegarde le pointeur vers le prochain token
-		free(head->str); // Libère la valeur du token
-		free(head); // Libère le token lui-même
-		head = tmp; // Avance au prochain token
+		// Sauvegarde le pointeur vers le prochain token
+		tmp = head->next;
+		// Libère la valeur du token
+		free(head->str);
+		// Libère le token lui-même
+		free(head);
+		// Avance au prochain token
+		head = tmp;
 	}
 }

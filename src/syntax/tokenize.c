@@ -6,97 +6,128 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 14:51:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:32:01 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Crée un nouveau token avec sa valeur et son type.
+ * @brief Vérifie si le caractère courant est un séparateur de token
  *
- * @param value Le texte du token
- * @param type  Le type (enum)
- * @return t_token* Le pointeur vers le nouveau token
+ * Utilisé pour détecter les limites des mots, quotes ou opérateurs.
+ *
+ * @param c Le caractère à tester
+ * @return `true` si c'est un séparateur (espace, tab, symbole shell)
  */
-t_token *token_new(char *value, t_token_type type)
+static bool is_token_delim(char c)
 {
-	t_token *token; // Pointeur vers le token
-
-	token = malloc(sizeof(t_token)); // Allocation de mémoire pour le token
-	if (!token)
-		return (NULL);
-	token->str = value; // Assigner la valeur du token
-	token->type = type;	  // Assigner le type du token
-	token->next = NULL;	  // Initialiser le pointeur suivant à NULL
-	return (token);
+	return (c == ' ' || c == '\t' || c == '<' || c == '>' ||
+			c == '|' || c == '&' || c == '(' || c == ')');
 }
 
 /**
- * @brief Lit un token depuis l’entrée, ajoute son type et avance l’index.
+ * @brief Lit un token brut : soit un mot, soit une séquence entre quotes
  *
- * @param input La chaîne d’entrée
- * @param i Pointeur vers la position actuelle
- * @return t_token* Le token extrait, ou NULL si fin
+ * Si on est sur une quote, appelle parse_quoted_token.
+ * Sinon lit jusqu'à la prochaine quote ou un séparateur.
+ *
+ * @param input Ligne d’entrée
+ * @param i Pointeur vers l’index courant (sera avancé)
+ * @return char* Le fragment alloué, avec quotes si présentes
  */
-
-static t_token *get_next_token(char *input, int *i)
+static char *read_simple_token(char *input, int *i)
 {
 	int start;
-	char *substr; // Sous-chaîne pour le token
-	t_token_type type;
+	char *token_new;
 
-	while (input[*i] == ' ' || input[*i] == '\t') // Ignorer les espaces et tabulations
+	// Si on est sur une quote, on appelle la fonction dédiée
+	if (input[*i] == '\'' || input[*i] == '"')
+		return (parse_quoted_token(input, i));
+	// Sinon, on lit jusqu'à la prochaine quote ou un séparateur
+	start = *i;
+	while (input[*i] && !is_token_delim(input[*i]) &&
+		   input[*i] != '\'' && input[*i] != '"')
 		(*i)++;
-	if (input[*i] == '\0') // Si on atteint la fin de la chaîne
+	// On extrait le token
+	token_new = ft_substr(input, start, *i - start);
+	if (!token_new)
 		return (NULL);
-	start = *i; // Enregistrer le début du token
-	// vérifier les opérateurs doubles et avancer l'index de 2
+	return (token_new);
+}
+
+/**
+ * @brief Lit un opérateur spécial (|, >>, &&, etc.)
+ *
+ * @param input Ligne d’entrée
+ * @param i Index à avancer
+ * @return char* Opérateur alloué
+ */
+static char *read_operator(char *input, int *i)
+{
+	char *op;
+
 	if ((input[*i] == '<' && input[*i + 1] == '<') ||
 		(input[*i] == '>' && input[*i + 1] == '>') ||
 		(input[*i] == '&' && input[*i + 1] == '&') ||
 		(input[*i] == '|' && input[*i + 1] == '|'))
-		*i += 2;
-	// vérifier les opérateurs simples et avancer l'index de 1
-	else if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|' || input[*i] == '(' || input[*i] == ')')
-		(*i)++;
-	else // Sinon, c'est un mot (commande ou argument)
 	{
-		// Avancer l'index jusqu'à la fin du mot
-		while (input[*i] && input[*i] != ' ' && input[*i] != '\t' && input[*i] != '<' && input[*i] != '>' && input[*i] != '|' && input[*i] != '&' && input[*i] != '(' && input[*i] != ')')
-			(*i)++;
+		// Si on a un opérateur de 2 caractères, on l'extrait dans op
+		op = ft_substr(input, *i, 2);
+		if (!op)
+			return (NULL);
+		*i += 2;
 	}
-	if (start == *i) // Si on n'a pas avancé, c'est un token vide
-		return (NULL);
-	// Extraire le sous-texte du token
-	substr = ft_substr(input, start, *i - start);
-	if (!substr) // Vérifier l'allocation
-		return (NULL);
-	type = get_token_type(substr);
-	return (token_new(substr, type));
-}
-
-/**
- * @brief Ajoute un token à la fin de la liste.
- *
- * @param head Début de la liste
- * @param last Dernier élément actuel
- * @param new Nouveau token à ajouter
- */
-static void append_token(t_token **head, t_token **last, t_token *new)
-{
-	if (!*head)
-		*head = new;
 	else
-		(*last)->next = new;
-	*last = new;
+	{
+		// Sinon on extrait un seul caractère
+		op = ft_substr(input, *i, 1);
+		if (!op)
+			return (NULL);
+		(*i)++;
+	}
+	// On retourne l'opérateur extrait
+	return (op);
 }
 
 /**
- * @brief Découpe la ligne en tokens simples (mots et symboles)
+ * @brief Lit un token complet (quote, mot ou opérateur) à partir de l’index donné
  *
- * @param input La ligne utilisateur
- * @return t_token* Liste chaînée de tokens
+ * Crée systématiquement un nouveau token dès qu’un bloc (mot, quote ou opérateur) est détecté.
+ *
+ * @param input Ligne utilisateur
+ * @param i Pointeur vers l’index actuel (sera mis à jour)
+ * @return t_token* Un token alloué, ou NULL en cas d’erreur
+ */
+static t_token *get_next_token(char *input, int *i)
+{
+	char *content;
+	t_token_type type;
+
+	// Ignore les espaces et tabulations au début
+	while (input[*i] == ' ' || input[*i] == '\t')
+		(*i)++;
+	// Si on tombe sur une quote ou que un caractère non délimité (charactère alphanumérique, etc.),
+	// on lit un mot ou une séquence entre quotes.
+	if (input[*i] == '\'' || input[*i] == '"' || (!is_token_delim(input[*i]) && input[*i]))
+		content = read_simple_token(input, i);
+	// Sinon, on lit un opérateur spécial (|, >>, &&, etc.)
+	else
+		content = read_operator(input, i);
+	// Si on a atteint la fin de la ligne ou si le contenu est vide, on retourne NULL
+	if (!content)
+		return (NULL);
+	// On détermine le type du token
+	type = get_token_type(content);
+	// On retourne un nouveau token avec le contenu et son type
+	return (token_new(content, type));
+}
+
+/**
+ * @brief Fonction principale de découpage : transforme la ligne en une liste de tokens
+ *
+ * @param input Chaîne entrée par l’utilisateur
+ * @return t_token* Liste chaînée des tokens
  */
 t_token *tokenize(char *input)
 {
@@ -107,10 +138,18 @@ t_token *tokenize(char *input)
 
 	while (input[i])
 	{
+		// On récupère le prochain token à partir de l'index i
 		new = get_next_token(input, &i);
+		if (!new && input[i])
+		{
+			// Si malloc fail ou erreur de parsing on free la liste et retourne NULL
+			ft_putendl_fd("minishell: error: failed to tokenize input", 2);
+			free_token_list(head);
+			return (NULL);
+		}
 		if (new)
 			append_token(&head, &last, new);
 	}
-	logic_groups(head);
+	refine_token_types(head);
 	return (head);
 }

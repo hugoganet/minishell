@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 16:05:17 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/30 14:33:16 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,20 @@ void shell_loop(t_shell *shell)
 
 	while (1)
 	{
-		input = prompt_readline(); // Affiche le prompt et lit l'entrée utilisateur
-		if (!input) // Si l'entrée est NULL (Ctrl+D)
+		// Affiche le prompt et lit l'entrée utilisateur
+		input = prompt_readline();
+		if (!input)
 		{
+			// Si l'entrée est NULL (Ctrl+D) ou erreur de lecture on sort du loop
 			write(1, "exit\n", 5);
 			break;
 		}
+		// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
+		// l'entrée et on continue à la boucle.
+		// Sinon, on traite l'entrée.
 		if (!is_line_empty(input) && !is_syntax_valid(input)) // Vérifie si la ligne n'est pas vide et si la syntaxe est valide
-			process_input(input, shell); // Traite l'entrée
+			process_input(input, shell);
+		// On libère la mémoire allouée pour l'entrée
 		free(input);
 	}
 }

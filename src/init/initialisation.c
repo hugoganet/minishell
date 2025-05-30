@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/28 15:56:45 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/30 14:42:10 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@
  */
 void init_shell(t_shell *shell, char **envp)
 {
-	// ? Where is the memory allocation ?!
-	shell->env = copy_env(envp); // Copie de l'environnement
-	shell->last_exit_status = 0; // Initialisation du statut de sortie
-	init_signals(); // Initialisation des signaux
+	// Copie de l'environnement dans la structure shell
+	shell->env = copy_env(envp);
+	if (!shell->env)
+	{
+		ft_putendl_fd("minishell: error: failed to copy environment", 2);
+		exit(1);
+	}
+	// Initialisation du statut de sortie
+	shell->last_exit_status = 0;
+	// Initialisation des signaux
+	init_signals();
 }
 
 /**
@@ -39,15 +46,18 @@ char **copy_env(char **envp)
 	char **env;
 
 	i = 0;
-	while (envp[i])	// Compte le nombre d'éléments dans envp
+	// Compte le nombre d'éléments dans envp
+	while (envp[i])
 		i++;
-	env = ft_calloc((i + 1),  sizeof(char *)); // Alloue de la mémoire pour le tableau et set à NULL
+	// Alloue de la mémoire pour le tableau et set à NULL
+	env = ft_calloc((i + 1),  sizeof(char *));
 	if (!env)
 		return (NULL);
 	i = 0;
 	while (envp[i])
 	{
-		env[i] = strdup(envp[i]); // Copie chaque élément de envp dans le nouveau tableau
+		// Copie chaque élément de envp dans le nouveau tableau
+		env[i] = strdup(envp[i]);
 		i++;
 	}
 	return (env);
@@ -62,7 +72,9 @@ void free_env(char **env)
 {
 	int i = 0;
 
+	// Libère chaque chaîne dans le tableau
 	while (env && env[i])
-		free(env[i++]); // Libère chaque chaîne
-	free(env); // Libère le tableau
+		free(env[i++]);
+	// Libère le tableau lui-même
+	free(env);
 }

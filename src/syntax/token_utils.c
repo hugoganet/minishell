@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 10:54:30 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/05/30 12:56:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char *parse_quoted_token(char *input, int *i)
 	// On set l'index à la fin de la quote fermante
 	*i = end + 1;
 	// On extrait la sous-chaîne avec les quotes
-	token_new = ft_substr(input, start + 1, end - start - 1);
+	token_new = ft_substr(input, start, (size_t)end - start + 1);
 	if (!token_new)
 		return (NULL);
 	return (token_new);

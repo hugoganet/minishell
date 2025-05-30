@@ -89,6 +89,10 @@ go: macos
 	@echo "==> Lancement de Minishell..."
 	@./$(NAME)
 
+leaks_macos:
+	@echo "==> Lancement de Minishell avec leaks..."
+	@leaks --atExit -- ./$(NAME)
+
 # Cible pour les tests de tokenisation sur macOS
 token_tests_mac:
 	@echo "==> Compilation des tests de tokenisation..."

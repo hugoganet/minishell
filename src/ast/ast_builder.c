@@ -3,15 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/28 19:25:50 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:55:01 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Retourne la priorité d'un token en fonction de son type.
+ * Cette fonction attribue une priorité aux tokens 
+ * pour déterminer l'ordre de traitement
+ * dans l'arbre de syntaxe abstraite (AST).
+ * La priorité est définie comme suit :
+ * 
+ * - `PIPE` a la priorité la plus basse (1).
+ * 
+ * - Les redirections (`REDIR_APPEND`, `REDIR_INPUT`, `REDIR_OUTPUT`, `HEREDOC`) 
+ *  ont une priorité intermédiaire (2).
+ * 
+ * - Les autres tokens (comme `WORD`, `CMD`, `ARG`, `FILES`)
+ * ont la priorité la plus haute (3).
+ * @param type Le type du token dont on veut connaître la priorité.
+ * @return `int` La priorité du token.
+ */
 int	token_priority(t_token_type type)
 {
 	if (type == PIPE)
@@ -22,10 +39,20 @@ int	token_priority(t_token_type type)
 	return (3);
 }
 
+/**
+ * @brief Crée un nouveau nœud de l'arbre de syntaxe abstraite (AST) à partir d'un token.
+ * 
+ * Cette fonction alloue de la mémoire pour un nouveau nœud AST,
+ * initialise ses champs `type` et `str` à partir du token fourni,
+ * et initialise les pointeurs `left` et `right` à NULL.
+ * @param node Pointeur vers le token à partir duquel créer le nœud AST.
+ * @return `t_ast*` Pointeur vers le nouveau nœud AST créé.
+ */
 t_ast	*new_ast_node(t_token *node)
 {
 	t_ast	*new_ast;
 	
+	// TODO : Utiliser ft_calloc pour initialiser les pointeurs left et right à NULL
 	new_ast = malloc(sizeof(t_ast));
 	if (!new_ast)
 		return (NULL);
@@ -34,10 +61,20 @@ t_ast	*new_ast_node(t_token *node)
 	return (new_ast);
 }
 
+/**
+ * @brief Trouve le token à diviser dans la liste de tokens.
+ * 
+ * Cette fonction parcourt la liste de tokens à partir du nœud `node` jusqu'à `end`
+ * et cherche le token avec la priorité la plus basse.
+ * Elle retourne le token à diviser, qui sera utilisé pour construire l'arbre de syntaxe abstraite (AST).
+ * @param node Pointeur vers le premier token de la liste.
+ * @param end Pointeur vers le token de fin (NULL si on veut aller jusqu'à la fin de la liste).
+ * @return `t_token*` Pointeur vers le token à diviser.
+ */
 t_token	*token_to_split(t_token *node, t_token *end)
 {
-	int	current_priority;
-	int	lowest_priority;
+	int		current_priority;
+	int		lowest_priority;
 	t_token	*ptr;
 	t_token	*to_split;
 
@@ -57,6 +94,22 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	return (to_split);
 }
 
+/**
+ * @brief Construit récursivement l'arbre de syntaxe abstraite (AST) à partir d'une liste de tokens.
+ * 
+ * Cette fonction prend en entrée un pointeur vers le premier token de la liste
+ * et un pointeur vers le token de fin (NULL si on veut aller jusqu'à la fin de la liste).
+ * Elle cherche le token à diviser en fonction de sa priorité, puis crée un nœud AST
+ * avec ce token. Ensuite, elle divise récursivement la liste de tokens
+ * en deux sous-listes :
+ * 
+ * - La sous-liste gauche contient les tokens avant le token à diviser.
+ * 
+ * - La sous-liste droite contient les tokens après le token à diviser.
+ * @param node Pointeur vers le premier token de la liste.
+ * @param end Pointeur vers le token de fin (NULL si on veut aller jusqu'à la fin de la liste).
+ * @return `t_ast*` Pointeur vers la racine de l'AST construit.
+ */
 t_ast	*spliter(t_token *node, t_token *end)
 {
 	t_ast	*node_ast;
@@ -65,7 +118,7 @@ t_ast	*spliter(t_token *node, t_token *end)
 	to_split = NULL;
 	if (!node || node == end)
 		return (NULL);
-		
+
 	to_split = token_to_split(node, end);
 		
 	node_ast = new_ast_node(to_split);
@@ -79,6 +132,15 @@ t_ast	*spliter(t_token *node, t_token *end)
 	return (node_ast);
 }
 
+/**
+ * @brief Construit l'arbre de syntaxe abstraite (AST) à partir d'une liste de tokens.
+ * 
+ * Cette fonction prend en entrée un pointeur vers le premier token de la liste
+ * et construit un arbre de syntaxe abstraite (AST) en utilisant la fonction `spliter`.
+ * 
+ * @param node Pointeur vers le premier token de la liste.
+ * @return t_ast* Pointeur vers la racine de l'AST construit.
+ */
 t_ast	*build_ast(t_token *node)
 {
 	t_ast	*new_ast;

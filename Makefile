@@ -1,4 +1,4 @@
-# Nom de l'exécutable
+ # Nom de l'exécutable
 NAME = Minishell
 
 # Dossiers personnalisés
@@ -36,6 +36,9 @@ SRC = 	main.c \
 		syntax/validation.c \
 		parsing/process_input.c \
 		syntax/build_token_list.c \
+		ast/ast_builder.c \
+		env/var_expand.c \
+		env/var_utils.c \
 	
 
 # Rassembler les sources
@@ -131,4 +134,4 @@ token_tests:
 
 
 # Pas de fichiers de sortie ici
-.PHONY: all clean fclean re macos go leaks token_tests
+.PHONY: all clean fclean re macos go leaks token_tests 

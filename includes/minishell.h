@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 15:13:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 16:50:46 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include "libft.h"
+#include <sys/wait.h>
 
 // ! ----------------------- STRUCTURES --------------
 
@@ -75,6 +76,28 @@ typedef struct s_token
 	t_token_type type;
 	struct s_token *next;
 } t_token;
+
+/**
+ * @struct s_ast
+ * @brief Représente un nœud de l'arbre de syntaxe abstraite (AST).
+ * 
+ * Chaque nœud a :	
+ * 
+ * - `type`: le type du nœud (défini par l'énumération `e_token_type`).
+ * 
+ * - `str`: la chaîne de caractères associée au nœud.
+ * 
+ * - `left`: un pointeur vers le sous-arbre gauche.
+ * 
+ * - `right`: un pointeur vers le sous-arbre droit.
+ */
+typedef struct s_ast
+{
+	t_token_type type;
+	char *str;
+	t_ast *left;
+	t_ast *right;
+} t_ast;
 
 /**
  * @struct s_env

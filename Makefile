@@ -27,6 +27,7 @@ SRC = 	main.c \
 		utils/print_token_list.c \
 		utils/free_token_list.c \
 		utils/print_env_list.c \
+		utils/print_ast.c \
 		input/loop.c \
 		input/prompt.c \
 		input/readline_hooks.c \

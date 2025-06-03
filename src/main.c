@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 15:46:43 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 17:28:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int argc, char **argv, char **envp)
 		free_env(shell.env);
 		exit(1);
 	}
-	print_env_list(env_list);
+	// print_env_list(env_list);
 	shell_loop(&shell); // Boucle principale du shell
 	rl_clear_history(); // Efface l'historique
 	free_env(shell.env); // Libère la mémoire allouée pour l'environnement

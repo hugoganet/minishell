@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 17:20:40 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 17:42:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int count_args(t_ast *cmd_node)
  * 
  * Cette fonction parcourt l'AST à partir du noeud CMD et extrait les
  * arguments (`CMD` et `ARG`) pour les stocker dans un tableau de chaînes de caractères.
+ * C'est essentiel pour pouvoir exécuter la commande avec `execve`.
  * 
  * @param cmd_node Pointer vers le noeud CMD de l'AST
  * @return `char **` Un tableau de chaînes de caractères contenant les arguments
@@ -95,7 +96,8 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	argv = build_argv(cmd_node);
 	if (!argv || !argv[0])
 		return (1);
-	// TODO : Afficher la commande et les arguments pour debug
+	// Affiche la commande pour le debug
+	print_ast_cmd_node(argv);
 	// Création du processus enfant pour exécuter la commande
 	pid = fork();
 	if (pid < 0)

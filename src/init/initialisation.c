@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 15:35:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 17:27:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
  */
 void init_shell(t_shell *shell, char **envp)
 {
-	t_env *env_list;
-	
 	// Copie de l'environnement dans la structure shell
 	shell->env = copy_env(envp);
 	if (!shell->env)

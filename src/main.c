@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 13:47:20 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:40:06 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,21 @@
  * @return int Code de retour du shell
  */
 
+int main(int argc, char **argv, char **envp)
+{
+	t_shell shell; // Structure du shell
 
+	(void)argc;
+	(void)argv;
+	init_shell(&shell, envp); // Initialise le shell avec l'environnement
+	shell_loop(&shell); // Boucle principale du shell
+	
+	free_env(shell.env); // Libère la mémoire allouée pour l'environnement
+	return (0);
+}
 
  
-int main(int argc, char **argv, char **envp)
+/* int main(int argc, char **argv, char **envp)
 {
 	t_shell shell; // Structure du shell
 
@@ -35,4 +46,4 @@ int main(int argc, char **argv, char **envp)
 	rl_clear_history(); // Efface l'historique
 	free_env(shell.env); // Libère la mémoire allouée pour l'environnement
 	return (0);
-}
+} */

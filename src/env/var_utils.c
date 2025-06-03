@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/30 15:53:06 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:04:47 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ int	ft_is_dbl_quote(char c)
 	if (c == 34)
 		i = 1;
 	return (i);
+}
+
+int	which_quote(t_ast *node)
+{
+	if (node->str[0] == 34)
+		return (1);
+	return (0);
 }
 
 char	*ft_strcpy(char *dest, char *src)

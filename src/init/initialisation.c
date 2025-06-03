@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/29 17:43:17 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 15:02:05 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
  */
 void init_shell(t_shell *shell, char **envp)
 {
+	t_env *env_list;
+	
 	// Copie de l'environnement dans la structure shell
 	shell->env = copy_env(envp);
 	if (!shell->env)
@@ -28,6 +30,15 @@ void init_shell(t_shell *shell, char **envp)
 		ft_putendl_fd("minishell: error: failed to copy environment", 2);
 		exit(1);
 	}
+	// Initialisation de la liste chaînée d'environnement
+	env_list = init_env(envp);
+	if (!env_list)
+	{
+		ft_putendl_fd("minishell: error: failed to initialize environment list", 2);
+		free_env_list(env_list);
+		exit(1);
+	}
+	print_env_list(env_list);
 	// Initialisation du statut de sortie
 	shell->last_exit_status = 0;
 	// Initialisation des signaux
@@ -50,7 +61,7 @@ char **copy_env(char **envp)
 	while (envp[i])
 		i++;
 	// Alloue de la mémoire pour le tableau et set à NULL
-	env = ft_calloc((i + 1),  sizeof(char *));
+	env = ft_calloc((i + 1), sizeof(char *));
 	if (!env)
 		return (NULL);
 	i = 0;
@@ -77,4 +88,26 @@ void free_env(char **env)
 		free(env[i++]);
 	// Libère le tableau lui-même
 	free(env);
+}
+
+/**
+ * @brief Libère la mémoire de la structure t_env
+ * 
+ * @param env La liste chaînée d'environnement à libérer.
+ */
+void free_env_list(t_env *env)
+{
+	t_env *temp;
+
+	if (!env)
+		return;
+	// Libère chaque nœud de la liste chaînée
+	while (env)
+	{
+		temp = env;
+		env = env->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
 }

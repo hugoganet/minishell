@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/30 10:08:11 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 12:20:58 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ typedef enum e_token_type
 	CMD,		  /**< Commande (premier mot d'une ligne) */
 	ARG,		  /**< Argument (mot après la commande) */
 	FILES,		  /**< Fichiers (après une redirection) */
-	AND,		  /**< Opérateur logique '&&' */
-	OR,			  /**< Opérateur logique '||' */
-	PAREN_LEFT,	  /**< Parenthèse ouvrante '(' */
-	PAREN_RIGHT	  /**< Parenthèse fermante ')' */
 } t_token_type;
 
 /**

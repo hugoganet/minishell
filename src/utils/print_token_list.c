@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 08:57:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 14:50:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,6 @@ static const char *token_type_str(t_token_type type)
 		return ("REDIR_APPEND");
 	if (type == HEREDOC)
 		return ("HEREDOC");
-	if (type == AND)
-		return ("AND");
-	if (type == OR)
-		return ("OR");
-	if (type == PAREN_LEFT)
-		return ("PAREN_LEFT");
-	if (type == PAREN_RIGHT)
-		return ("PAREN_RIGHT");
 	return ("UNKNOWN");
 }
 

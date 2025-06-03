@@ -9,11 +9,11 @@ LIBFT_DIR = libft
 
 # Commandes et options de compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
-LDFLAGS = -lreadline -pthread
+CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include
+LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 
-# macOS Homebrew Readline paths
-BREW_READLINE = /opt/homebrew/opt/readline
+# Détection automatique du chemin readline via brew
+BREW_READLINE = $(shell brew --prefix readline)
 
 # macOS build rule (avoids recursive variable reference)
 macos: clean

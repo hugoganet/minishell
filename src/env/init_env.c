@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 14:57:12 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 15:13:34 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param envp Tableau de chaînes représentant l'environnement système.
  * @return t_env* Pointeur vers la tête de la liste chaînée d'environnement.
  */
-t_env *init_env(char **envp)
+t_env *init_env_list(char **envp)
 {
 	int i;
 	t_env *head;

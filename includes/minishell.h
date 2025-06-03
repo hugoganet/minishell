@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 15:02:37 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 15:13:25 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char *parse_quoted_token(char *input, int *i);
 void append_token(t_token **head, t_token **last, t_token *new);
 int validate_token_sequence(t_token *head);
 void skip_spaces(char *input, int *i);
-t_env *init_env(char **envp);
+t_env *init_env_list(char **envp);
 void print_env_list(t_env *env);
 void free_env_list(t_env *env);
 

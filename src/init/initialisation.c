@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 15:02:05 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 15:35:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,6 @@ void init_shell(t_shell *shell, char **envp)
 		ft_putendl_fd("minishell: error: failed to copy environment", 2);
 		exit(1);
 	}
-	// Initialisation de la liste chaînée d'environnement
-	env_list = init_env(envp);
-	if (!env_list)
-	{
-		ft_putendl_fd("minishell: error: failed to initialize environment list", 2);
-		free_env_list(env_list);
-		exit(1);
-	}
-	print_env_list(env_list);
 	// Initialisation du statut de sortie
 	shell->last_exit_status = 0;
 	// Initialisation des signaux

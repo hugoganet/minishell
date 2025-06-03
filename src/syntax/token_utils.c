@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 12:56:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 10:37:43 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_token_type get_token_type(char *str)
  */
 bool is_redirection(t_token_type type)
 {
-	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND || type == HEREDOC);
+	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND);
 }
 
 /**
@@ -146,8 +146,11 @@ static bool is_logical_operator(t_token_type type)
  */
 int validate_token_sequence(t_token *head)
 {
-	t_token *prev = NULL;
-	t_token *curr = head;
+	t_token *prev;
+	t_token *curr;
+	
+	prev = NULL;
+	curr = head;
 	while (curr)
 	{
 		if ((!prev && is_logical_operator(curr->type)) ||

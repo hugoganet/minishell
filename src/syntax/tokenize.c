@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 10:22:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 10:46:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,8 @@ t_token *tokenize(char *input)
 		}
 		if (new)
 			append_token(&head, &last, new);
-		skip_spaces(input, &i); // Ignore les espaces entre tokens et en fin d'input
+		// Ignore les espaces entre tokens et en fin d'input
+		skip_spaces(input, &i);
 	}
 	refine_token_types(head);
 	// Validation syntaxique de la séquence de tokens

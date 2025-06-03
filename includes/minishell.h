@@ -108,5 +108,6 @@ void refine_token_types(t_token *head);
 char *parse_quoted_token(char *input, int *i);
 void append_token(t_token **head, t_token **last, t_token *new);
 int validate_token_sequence(t_token *head);
+void skip_spaces(char *input, int *i);
 
 #endif

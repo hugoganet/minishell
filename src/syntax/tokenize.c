@@ -6,11 +6,25 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 17:38:49 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 10:22:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Ignore les espaces et tabulations à partir d'un index donné.
+ *
+ * Avance l'index jusqu'au premier caractère non espace ou tabulation.
+ *
+ * @param input La chaîne d'entrée
+ * @param i Pointeur vers l'index à avancer
+ */
+void skip_spaces(char *input, int *i)
+{
+	while (input[*i] == ' ' || input[*i] == '\t')
+		(*i)++;
+}
 
 /**
  * @brief Vérifie si le caractère courant est un séparateur de token
@@ -104,9 +118,6 @@ static t_token *get_next_token(char *input, int *i)
 	char *content;
 	t_token_type type;
 
-	// Ignore les espaces et tabulations au début
-	while (input[*i] == ' ' || input[*i] == '\t')
-		(*i)++;
 	// Si on tombe sur une quote ou que un caractère non délimité (charactère alphanumérique, etc.),
 	// on lit un mot ou une séquence entre quotes.
 	if (input[*i] == '\'' || input[*i] == '"' || (!is_token_delim(input[*i]) && input[*i]))
@@ -131,11 +142,16 @@ static t_token *get_next_token(char *input, int *i)
  */
 t_token *tokenize(char *input)
 {
-	t_token *head = NULL;
-	t_token *last = NULL;
+	t_token *head;
+	t_token *last;
 	t_token *new;
-	int i = 0;
+	int i;
 
+	head = NULL;
+	last = NULL;
+	i = 0;
+	// Ignore les espaces initiaux
+	skip_spaces(input, &i);
 	while (input[i])
 	{
 		// On récupère le prochain token à partir de l'index i
@@ -149,6 +165,7 @@ t_token *tokenize(char *input)
 		}
 		if (new)
 			append_token(&head, &last, new);
+		skip_spaces(input, &i); // Ignore les espaces entre tokens et en fin d'input
 	}
 	refine_token_types(head);
 	// Validation syntaxique de la séquence de tokens

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 10:46:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 11:24:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void skip_spaces(char *input, int *i)
  */
 static bool is_token_delim(char c)
 {
-	return (c == ' ' || c == '\t' || c == '<' || c == '>' ||
-			c == '|' || c == '&' || c == '(' || c == ')');
+	return (c == ' ' || c == '\t' || c == '<' || c == '>' || c == '|');
 }
 
 /**
@@ -71,7 +70,7 @@ static char *read_simple_token(char *input, int *i)
 }
 
 /**
- * @brief Lit un opérateur spécial (|, >>, &&, etc.)
+ * @brief Lit un opérateur spécial (>> / <<)
  *
  * @param input Ligne d’entrée
  * @param i Index à avancer
@@ -82,9 +81,7 @@ static char *read_operator(char *input, int *i)
 	char *op;
 
 	if ((input[*i] == '<' && input[*i + 1] == '<') ||
-		(input[*i] == '>' && input[*i + 1] == '>') ||
-		(input[*i] == '&' && input[*i + 1] == '&') ||
-		(input[*i] == '|' && input[*i + 1] == '|'))
+		(input[*i] == '>' && input[*i + 1] == '>'))
 	{
 		// Si on a un opérateur de 2 caractères, on l'extrait dans op
 		op = ft_substr(input, *i, 2);

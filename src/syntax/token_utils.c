@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 10:37:43 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 11:44:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ t_token_type get_token_type(char *str)
 {
 	if (!str)
 		return (WORD);
-	if (!ft_strncmp(str, "&&", 3))
-		return (AND);
-	if (!ft_strncmp(str, "||", 3))
-		return (OR);
 	if (!ft_strncmp(str, "<<", 3))
 		return (HEREDOC);
 	if (!ft_strncmp(str, ">>", 3))
@@ -36,10 +32,6 @@ t_token_type get_token_type(char *str)
 		return (REDIR_OUTPUT);
 	if (!ft_strncmp(str, "|", 2))
 		return (PIPE);
-	if (!ft_strncmp(str, "(", 2))
-		return (PAREN_LEFT);
-	if (!ft_strncmp(str, ")", 2))
-		return (PAREN_RIGHT);
 	return (WORD);
 }
 
@@ -124,14 +116,14 @@ char *parse_quoted_token(char *input, int *i)
 }
 
 /**
- * @brief Vérifie si le type est un opérateur logique (PIPE, OR, AND).
+ * @brief Vérifie si le type est un opérateur logique (PIPE).
  *
  * @param type Le type du token à vérifier
  * @return true si c'est un opérateur logique, false sinon
  */
 static bool is_logical_operator(t_token_type type)
 {
-	return (type == PIPE || type == OR || type == AND);
+	return (type == PIPE);
 }
 
 /**

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   readline_hooks.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:24:56 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/23 15:47:35 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/03 15:31:28 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /**
  * @brief Fonction de gestion des signaux reçus.

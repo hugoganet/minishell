@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:52:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 15:44:53 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 12:46:22 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ void print_ast(t_ast *node, int depth)
 	(void)shell; // Utile plus tard
 	// Tokenisation de la ligne d'entrée
 	tokens = tokenize(input);
+	printf("Tokens:\n");
+	for (t_token *tmp = tokens; tmp; tmp = tmp->next)
+    printf("  Token Type: %d, Str: '%s'\n", tmp->type, tmp->str);
+
 	if (!tokens)
 	{
 		// Si la tokenisation échoue, on affiche un message d'erreur et on quitte

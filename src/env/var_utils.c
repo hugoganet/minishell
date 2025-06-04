@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 16:19:27 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 15:34:59 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	ft_is_dbl_quote(char c)
 
 int	which_quote(t_ast *node)
 {
-	if (node->str[0] == 34)
-		return (1);
-	return (0);
+	if (node->str[0] == 39)
+		return (0);
+	return (1);
 }
 
 char	*ft_strcpy(char *dest, char *src)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/28 19:25:50 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:12:24 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	while (ptr && ptr != end)
 	{
 		current_priority = token_priority(ptr->type);
-		if (current_priority <= lowest_priority)
+		if (current_priority < lowest_priority)
 		{
 			to_split = ptr;
 			lowest_priority = current_priority;
@@ -69,10 +69,6 @@ t_ast	*spliter(t_token *node, t_token *end)
 	to_split = token_to_split(node, end);
 		
 	node_ast = new_ast_node(to_split);
-	
-	if (token_priority(to_split->type) == 3)
-		return (node_ast);
-		
 	node_ast->left = spliter(node, to_split);
 	
 	node_ast->right = spliter(to_split->next, end);

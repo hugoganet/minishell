@@ -6,23 +6,11 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 16:18:36 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 15:33:44 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Boucler en recursif sur l'ast : 
-	descendre tout en bas avec travel_in_ast()
-	Puis remonter en executant
-	*/
-void	travel_in_ast(t_ast *node)
-{
-	if (!node)
-		return;
-	travel_in_ast(node->left);
-	travel_in_ast(node->right);
-}
 
 /* Extraire le nom de la variable appelée dans l'input */
 char	*find_var(t_ast *node, int *start, int *end)
@@ -120,19 +108,26 @@ void	join_str(t_ast *node, t_shell *data)
 		free(node->str);
 		node->str = final_str;
 	}
-	
 	free(final_str);
 }
 
 void	expand_vars(t_ast *node, t_shell *data)
 {
+	if(!node)
+		return ;
 	if (node->type == ARG)
 	{
 		if (ft_strchr(node->str, '$'))
 		{
+			printf("In strchr\n");
 			if (which_quote(node) == 1)
+			{
+				printf()
 				join_str(node, data);
+			}
+				
 		}
 	}
-	travel_in_ast(node);
+	expand_vars(node->left, data);
+	expand_vars(node->right, data);
 }

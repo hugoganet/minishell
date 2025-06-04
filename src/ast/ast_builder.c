@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 13:41:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 15:36:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	token_priority(t_token_type type)
 {
 	if (type == PIPE)
 		return (1);
-	else if (type == REDIR_APPEND || type == REDIR_INPUT || type == REDIR_OUTPUT
-		|| type == HEREDOC)
+	else if (type == REDIR_APPEND || type == REDIR_INPUT
+			|| type == REDIR_OUTPUT || type == HEREDOC)
 		return (2);
 	return (3);
 }
@@ -52,7 +52,7 @@ t_ast	*new_ast_node(t_token *node)
 {
 	t_ast	*new_ast;
 	
-	// TODO : Utiliser ft_calloc pour initialiser les pointeurs left et right à NULL
+	// Utiliser ft_calloc pour initialiser les pointeurs left et right à NULL
 	new_ast = ft_calloc(sizeof(t_ast), 1);
 	if (!new_ast)
 		return (NULL);
@@ -84,7 +84,8 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	while (ptr && ptr != end)
 	{
 		current_priority = token_priority(ptr->type);
-		if (current_priority <= lowest_priority)
+		// On check si la priorité courante est strictement inférieur à la plus basse
+		if (current_priority < lowest_priority)
 		{
 			to_split = ptr;
 			lowest_priority = current_priority;
@@ -93,6 +94,54 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	}
 	return (to_split);
 }
+/**
+ * @brief Gère les tokens de faible priorité (CMD, ARG, FILES) en construisant une chaîne linéaire.
+ *
+ * Cette fonction prend un token de priorité 3 (`CMD`, `ARG`, `FILES`) et construit une
+ * chaîne d’éléments connectés via le champ `right` du nœud AST, en incluant tous les
+ * tokens consécutifs de type `ARG` ou `FILES` qui suivent immédiatement.
+ *
+ * Cela permet de modéliser correctement des commandes comme :
+ *   echo hello world > out.txt
+ * Avec un AST de la forme :
+ *   CMD "echo"
+ *     └── ARG "hello"
+ *         └── ARG "world"
+ *         └── FILES "out.txt"
+ *
+ * @param to_split Pointeur vers le token courant (`CMD`, `ARG` ou `FILES`)
+ * @param node_ast Nœud AST initial créé à partir de `to_split`
+ * @return `t_ast*` Racine de la chaîne AST construite à droite
+ */
+static t_ast *handle_low_priority(t_token *to_split, t_ast *node_ast)
+{
+	t_token *next;
+	t_ast *curr;
+	t_ast *next_node;
+
+	// On initialise le token suivant à celui après to_split
+	next = to_split->next;
+	// Le pointeur courant AST commence sur le noeud racine (CMD, ARG ou FILES)
+	curr = node_ast;
+	// Tant qu'on rencontre un ARG ou FILES, on les ajoute en chaîne à droite
+	while (next && (next->type == ARG || next->type == FILES))
+	{
+		// Création d’un nouveau nœud AST à partir du token
+		next_node = new_ast_node(next);
+		// Si erreur d’allocation, on interrompt proprement la boucle
+		if (!next_node)
+			break;
+		// On rattache le nouveau nœud à droite du courant
+		curr->right = next_node;
+		// Le nouveau nœud devient le courant pour la prochaine itération
+		curr = curr->right;
+		// On passe au token suivant
+		next = next->next;
+	}
+	// On retourne la racine du sous-arbre (inchangée)
+	return (node_ast);
+}
+
 
 /**
  * @brief Construit récursivement l'arbre de syntaxe abstraite (AST) à partir d'une liste de tokens.
@@ -116,15 +165,17 @@ t_ast	*spliter(t_token *node, t_token *end)
 	t_token	*to_split;
 
 	to_split = NULL;
+	// Si le nœud est NULL ou si c'est le dernier nœud, on retourne NULL
 	if (!node || node == end)
 		return (NULL);
-
+	
 	to_split = token_to_split(node, end);
 		
 	node_ast = new_ast_node(to_split);
-	
+
+	// Si le token à diviser est de priorité 3
 	if (token_priority(to_split->type) == 3)
-		return (node_ast);
+		return (handle_low_priority(to_split, node_ast));
 
 	node_ast->left = spliter(node, to_split);
 	
@@ -144,7 +195,9 @@ t_ast	*spliter(t_token *node, t_token *end)
 t_ast	*build_ast(t_token *node)
 {
 	t_ast	*new_ast;
-	
+
+	//printf("\nnode->str = %s\n", node->str);
+	// à ce niveau, on récupère bien le premier token
 	new_ast = spliter(node, NULL);
 	return (new_ast);
 }

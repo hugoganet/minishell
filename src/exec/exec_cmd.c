@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 17:42:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 17:26:18 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,17 @@ static char **build_argv(t_ast *cmd_node)
 
 /**
  * @brief Exécute une commande simple à partir d’un noeud AST CMD
+ * 
+ * Cette fonction crée un processus enfant pour exécuter la commande
+ * représentée par le noeud CMD de l'AST. Elle construit d'abord un tableau
+ * `argv` à partir du noeud CMD, puis utilise `fork()` pour créer un processus enfant.
+ * 
+ * Si le processus enfant réussit, il exécutera la commande avec `execve`.
+ * Le processus parent attend la fin de l'exécution et récupère le statut de sortie.
+ * 
+ * @param cmd_node Le noeud CMD de l'AST
+ * @param env La structure de l'environnement
+ * @return ìnt`
  */
 int exec_cmd(t_ast *cmd_node, t_env *env)
 {
@@ -89,6 +100,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	int		status;
 	char	**argv;
 
+	(void)env; // L'environnement n'est pas encore utilisé ici
 	// Vérifie que le noeud est bien de type CMD
 	if (!cmd_node || cmd_node->type != CMD)
 		return (1);
@@ -112,7 +124,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	if (pid == 0)
 	{
 		// Processus enfant : prépare l'environnement et exécute la commande
-		ft_putendl_fd("child: ready to exec", 1);
+		ft_putendl_fd("\nchild: ready to exec", 1);
 		// Si pas d'erreur, le exit ne sera pas atteint
 		exit(0);
 	}

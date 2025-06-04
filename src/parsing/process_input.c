@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 13:56:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 16:10:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void print_ast(t_ast *node, int depth)
 	t_token *tokens;
 	t_ast	*ast_root;
 
-	(void)shell; // Utile plus tard
+	//(void)shell; // Utile plus tard
 	// Tokenisation de la ligne d'entrée
 	tokens = tokenize(input);
 	if (!tokens)
@@ -68,19 +68,14 @@ void print_ast(t_ast *node, int depth)
 		return;
 	}
 	// print_token_list(tokens);
-	// build_ast(tokens);
 	ast_root = build_ast(tokens);
-	
 	pretty_print_ast(ast_root, 0);
-
+	execute_ast(ast_root, shell->env_list);
 	// printf("Avant expansion :\n");
-    // print_ast(ast_root, 3);
-
-    // expand_vars(ast_root, shell);
-
-    // printf("Après expansion :\n");
-    // print_ast(ast_root, 3);
-	
+	// print_ast(ast_root, 3);
+	// expand_vars(ast_root, shell);
+	// printf("Après expansion :\n");
+	// print_ast(ast_root, 3);
 	// Libération de la liste de tokens
 	free_token_list(tokens);
 }

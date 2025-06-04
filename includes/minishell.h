@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 13:45:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 17:02:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 // ! ----------------------- STRUCTURES --------------
 
+typedef struct s_env t_env;
+
 /**
  * @struct s_shell
  * @brief Structure principale pour stocker l'état du shell.
@@ -38,6 +40,7 @@
 typedef struct s_shell
 {
 	char **env;
+	t_env *env_list;
 	int last_exit_status;
 } t_shell;
 
@@ -118,7 +121,7 @@ typedef struct s_env
 	char *key;
 	char *value;
 	struct s_env *next;
-} t_env;
+} 	t_env;
 
 // Définition des couleurs ANSI
 #define COLOR_CMD "\033[1;36m"	 // Cyan clair
@@ -165,5 +168,8 @@ int which_quote(t_ast *node);
 void pretty_print_ast(t_ast *node, int depth);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
+int execute_ast(t_ast *node, t_env *env);
+int exec_cmd(t_ast *cmd_node, t_env *env);
+void print_ast_cmd_node(char **argv);
 
 #endif

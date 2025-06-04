@@ -39,9 +39,11 @@ SRC = 	main.c \
 		parsing/process_input.c \
 		syntax/build_token_list.c \
 		ast/ast_builder.c \
+		ast/ast_executor.c \
 		env/init_env.c \
 		env/var_expand.c \
 		env/var_utils.c \
+		exec/exec_cmd.c \
 	
 
 # Rassembler les sources

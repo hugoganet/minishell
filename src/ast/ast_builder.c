@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 11:43:46 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 13:41:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_ast	*new_ast_node(t_token *node)
 	t_ast	*new_ast;
 	
 	// TODO : Utiliser ft_calloc pour initialiser les pointeurs left et right à NULL
-	new_ast = malloc(sizeof(t_ast));
+	new_ast = ft_calloc(sizeof(t_ast), 1);
 	if (!new_ast)
 		return (NULL);
 	new_ast->type = node->type;
@@ -125,7 +125,7 @@ t_ast	*spliter(t_token *node, t_token *end)
 	
 	if (token_priority(to_split->type) == 3)
 		return (node_ast);
-		
+
 	node_ast->left = spliter(node, to_split);
 	
 	node_ast->right = spliter(to_split->next, end);

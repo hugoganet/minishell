@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 12:37:28 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 13:36:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,19 @@ void print_ast(t_ast *node, int depth)
 		ft_putendl_fd("minishell: error: failed to tokenize input", 2);
 		return;
 	}
+	print_token_list(tokens);
+	// build_ast(tokens);
 	ast_root = build_ast(tokens);
+	
+	pretty_print_ast(ast_root, 0);
 
-	printf("Avant expansion :\n");
-    print_ast(ast_root, 3);
+	// printf("Avant expansion :\n");
+    // print_ast(ast_root, 3);
 
-    expand_vars(ast_root, shell);
+    // expand_vars(ast_root, shell);
 
-    printf("Après expansion :\n");
-    print_ast(ast_root, 3);
+    // printf("Après expansion :\n");
+    // print_ast(ast_root, 3);
 	
 	// Libération de la liste de tokens
 	free_token_list(tokens);

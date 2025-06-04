@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 12:40:30 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 13:45:41 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,15 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
+// Définition des couleurs ANSI
+#define COLOR_CMD "\033[1;36m"	 // Cyan clair
+#define COLOR_ARG "\033[1;34m"	 // Bleu
+#define COLOR_PIPE "\033[1;32m"	 // Vert
+#define COLOR_REDIR "\033[1;35m" // Magenta
+#define COLOR_HEREDOC "\033[1;33m" // Jaune
+#define COLOR_FILES "\033[1;31m" // Rouge
+#define COLOR_RESET "\033[0m"	 // Reset
+
 // ! ----------------------- FUNCTIONS ---------------
 
 void init_signals(void);
@@ -153,5 +162,8 @@ t_ast *build_ast(t_token *node);
 void expand_vars(t_ast *node, t_shell *data);
 char *ft_strcpy(char *dest, char *src);
 int which_quote(t_ast *node);
+void pretty_print_ast(t_ast *node, int depth);
+const char *token_type_str(t_token_type type);
+const char *token_color(t_token_type type);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 14:43:05 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/03 16:17:14 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,10 @@ void refine_token_types(t_token *head);
 char *parse_quoted_token(char *input, int *i);
 void append_token(t_token **head, t_token **last, t_token *new);
 int validate_token_sequence(t_token *head);
+t_ast *build_ast(t_token *node);
+void	expand_vars(t_ast *node, t_shell *data);
+char	*ft_strcpy(char *dest, char *src);
+int	which_quote(t_ast *node);
+
 
 #endif

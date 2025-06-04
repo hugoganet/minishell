@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 10:49:16 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/03 16:18:36 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*find_var(t_ast *node, int *start, int *end)
 	*start = i;
 	i++;
 	// Cas ${VAR}
+	name_var = NULL;
 	if (node->str[i] == '{')
 	{
 		i++;
@@ -66,8 +67,8 @@ char	*find_var(t_ast *node, int *start, int *end)
 			i++;
 		*end = i;
 	}
-	len = i - start; //Definir la longueur de la substring ex : 10 - 5
-	ft_strlcpy(name_var, &node->str[start], len + 1); //ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
+	len = i - *start; //Definir la longueur de la substring ex : 10 - 5
+	ft_strlcpy(name_var, &node->str[name_start], len + 1); //ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
 	return (name_var);
 }
 
@@ -79,8 +80,9 @@ char	*copy_var_content(t_ast *node, t_shell *data, int *start, int *end)
 	char	*var;
 	
 	i = 0;
-	name_var = find_var(node, &start, &end); // Recuperer variable appelée dans le terminal
+	name_var = find_var(node, start, end); // Recuperer variable appelée dans le terminal
 	len = ft_strlen(name_var); 
+	var = NULL;
 	while (data->env[i]) //Parcourir tableau des variables d'env pour trouver concordance avec name_var
 	{
 		if (ft_strncmp(data->env[i], name_var, len) == 0) // Si meme nom trouvé, strncmp renvoie 0 donc on arrete de parcourir le tableau et on sort de la boucle
@@ -89,7 +91,7 @@ char	*copy_var_content(t_ast *node, t_shell *data, int *start, int *end)
 	}
 	if (data->env[i] == NULL) // Si on a parcouru tout le tableau -> pas de concordance trouvée, nom invalide
 		return (NULL);
-	var = ft_strcpy(var, data->env[i][len + 1]); // Recuperer le contenu sans le nom ex : USER=elaudrez, prendre que elaudrez donc len = taille du nom de la variable +1 pour le '='
+	var = ft_strcpy(var, &data->env[i][len + 1]); // Recuperer le contenu sans le nom ex : USER=elaudrez, prendre que elaudrez donc len = taille du nom de la variable +1 pour le '='
 	return (var);
 }
 
@@ -126,7 +128,7 @@ void	expand_vars(t_ast *node, t_shell *data)
 {
 	if (node->type == ARG)
 	{
-		if (ft_strchr(node->str, '$') == '$');
+		if (ft_strchr(node->str, '$'))
 		{
 			if (which_quote(node) == 1)
 				join_str(node, data);

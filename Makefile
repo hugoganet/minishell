@@ -43,7 +43,10 @@ SRC = 	main.c \
 		env/init_env.c \
 		env/var_expand.c \
 		env/var_utils.c \
+		env/env.c \
+		env/env_utils.c \
 		exec/exec_cmd.c \
+		exec/resolve_command_path.c \
 	
 
 # Rassembler les sources

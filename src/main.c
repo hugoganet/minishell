@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 17:45:30 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 18:52:33 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int main(int argc, char **argv, char **envp)
 		free_env(shell.env);
 		exit(1);
 	}
+	// TODO : initialiser shell.env_list ailleurs
+	shell.env_list = env_list;
 	// print_env_list(env_list);
 	shell_loop(&shell); // Boucle principale du shell
 	

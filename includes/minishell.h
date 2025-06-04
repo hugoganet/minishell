@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 17:02:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 18:11:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,10 @@ const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env);
 int exec_cmd(t_ast *cmd_node, t_env *env);
 void print_ast_cmd_node(char **argv);
+void free_split(char **split);
+char *get_env_value(t_env *env, const char *key);
+char **env_to_char_array(t_env *env);
+char *resolve_command_path(char *cmd_name, t_env *env);
+int ft_strcmp(char *s1, const char *s2);
 
 #endif

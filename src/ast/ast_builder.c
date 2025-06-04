@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 15:36:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 18:59:11 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,6 @@ t_ast	*build_ast(t_token *node)
 {
 	t_ast	*new_ast;
 
-	//printf("\nnode->str = %s\n", node->str);
 	// à ce niveau, on récupère bien le premier token
 	new_ast = spliter(node, NULL);
 	return (new_ast);

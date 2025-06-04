@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 15:13:34 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 18:53:28 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_env *init_env_list(char **envp)
 	int i;
 	t_env *head;
 	t_env *current;
+	t_env *node;
 	char *equal;
 
 	head = NULL;
@@ -34,7 +35,7 @@ t_env *init_env_list(char **envp)
 	// Parcourt le tableau envp et crée des nœuds pour chaque variable
 	while (envp && envp[i])
 	{
-		t_env *node = malloc(sizeof(t_env));
+		node = malloc(sizeof(t_env));
 		if (!node)
 			return NULL;
 		equal = ft_strchr(envp[i], '=');

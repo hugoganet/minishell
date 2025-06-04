@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 17:26:18 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 19:00:05 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,17 +99,17 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	pid_t	pid;
 	int		status;
 	char	**argv;
+	char	*path;
+	char	**envp;
 
-	(void)env; // L'environnement n'est pas encore utilisé ici
 	// Vérifie que le noeud est bien de type CMD
-	if (!cmd_node || cmd_node->type != CMD)
-		return (1);
+	if (!cmd_node || cmd_node->type != CMD) return (1);
 	// Construit le tableau argv à partir du noeud CMD
 	argv = build_argv(cmd_node);
 	if (!argv || !argv[0])
 		return (1);
 	// Affiche la commande pour le debug
-	print_ast_cmd_node(argv);
+	// print_ast_cmd_node(argv);
 	// Création du processus enfant pour exécuter la commande
 	pid = fork();
 	if (pid < 0)
@@ -123,8 +123,23 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	}
 	if (pid == 0)
 	{
+		// dprintf(2, ">>> calling resolve_command_path(%s)\n", argv[0]);
 		// Processus enfant : prépare l'environnement et exécute la commande
-		ft_putendl_fd("\nchild: ready to exec", 1);
+		path = resolve_command_path(argv[0], env);
+		if (!path)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(argv[0], 2);
+			ft_putendl_fd(": command not found", 2);
+			exit(127);
+		}
+		// Si le chemin est trouvé, on prépare l'environnement pour execve
+		envp = env_to_char_array(env);
+		if (execve(path, argv, envp) == -1)
+		{
+			perror("minishell: execve");
+			exit(126); // 126 = erreur lors de l’exécution
+		}
 		// Si pas d'erreur, le exit ne sera pas atteint
 		exit(0);
 	}

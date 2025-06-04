@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 11:37:17 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 12:37:28 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ void print_ast(t_ast *node, int depth)
 	ast_root = build_ast(tokens);
 
 	printf("Avant expansion :\n");
-	print_ast(ast_root, 0);
+    print_ast(ast_root, 3);
 
-	// expand_vars(ast_root, shell);
+    expand_vars(ast_root, shell);
 
-	// printf("Après expansion :\n");
-    // print_ast(ast);
+    printf("Après expansion :\n");
+    print_ast(ast_root, 3);
 	
 	// Libération de la liste de tokens
 	free_token_list(tokens);

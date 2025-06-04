@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLIN
 LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 
 # Détection automatique du chemin readline via brew
-BREW_READLINE = $(shell brew --prefix readline)
+BREW_READLINE := $(shell brew --prefix readline)
 
 # macOS build rule (avoids recursive variable reference)
 macos: clean
@@ -62,11 +62,11 @@ all: $(LIBFT) $(NAME)
 
 # Compilation de l'exécutable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
 	@echo "Compilation réussie de $(NAME)"
 
 # Règle pour compiler les objets dans SRC (autres fichiers)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@) 
 	@echo "Compilation de $< en $@"
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
@@ -74,6 +74,14 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # Création du dossier des fichiers objets, y compris les sous-dossiers
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/input
+	mkdir -p $(OBJ_DIR)/syntax
+	mkdir -p $(OBJ_DIR)/ast
+	mkdir -p $(OBJ_DIR)/env
+	mkdir -p $(OBJ_DIR)/input
+	mkdir -p $(OBJ_DIR)/init
+	mkdir -p $(OBJ_DIR)/parsing
+	mkdir -p $(OBJ_DIR)/utils
 
 # Générer les librairies des sous-projets
 $(LIBFT):

@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/02 22:04:47 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/03 16:19:27 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ char	*get_path(char *envp[], char *cmd)
 		free(tmp);
 		if (access(pathname, X_OK) == 0)
 		{
-			free_tab(path);
+			// free_tab(path);
 			return (pathname);
 		}
 		free(pathname);
 		i++;
 	}
-	free_tab(path);
+	// free_tab(path);
 	return (NULL);
 }

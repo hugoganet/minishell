@@ -38,8 +38,8 @@ SRC = 	main.c \
 		syntax/validation.c \
 		parsing/process_input.c \
 		syntax/build_token_list.c \
-		env/init_env.c \
 		ast/ast_builder.c \
+		env/init_env.c \
 		env/var_expand.c \
 		env/var_utils.c \
 	

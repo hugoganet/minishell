@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 10:49:16 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 11:25:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ char	*find_var(t_ast *node, int *start, int *end)
 			i++;
 		*end = i;
 	}
-	len = i - start; //Definir la longueur de la substring ex : 10 - 5
-	ft_strlcpy(name_var, &node->str[start], len + 1); //ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
+	len = i - *start; //Definir la longueur de la substring ex : 10 - 5
+	ft_strlcpy(name_var, &node->str[*start], len + 1); //ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
 	return (name_var);
 }
 

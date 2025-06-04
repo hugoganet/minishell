@@ -6,11 +6,13 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 17:58:56 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 11:37:17 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 
 void print_ast(t_ast *node, int depth)
 {
@@ -51,8 +53,6 @@ void print_ast(t_ast *node, int depth)
  * @param input La ligne brute saisie par l'utilisateur
  * @param shell Structure principale du shell
  */
-
- 
  void process_input(char *input, t_shell *shell)
 {
 	t_token *tokens;
@@ -67,15 +67,15 @@ void print_ast(t_ast *node, int depth)
 		ft_putendl_fd("minishell: error: failed to tokenize input", 2);
 		return;
 	}
-	ast_root = built_ast(ast_root);
+	ast_root = build_ast(tokens);
 
 	printf("Avant expansion :\n");
-    print_ast(ast);
+	print_ast(ast_root, 0);
 
-    expand_vars(ast, shell);
+	// expand_vars(ast_root, shell);
 
-    printf("Après expansion :\n");
-    print_ast(ast);
+	// printf("Après expansion :\n");
+    // print_ast(ast);
 	
 	// Libération de la liste de tokens
 	free_token_list(tokens);

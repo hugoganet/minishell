@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 17:55:01 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 11:43:46 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_ast	*spliter(t_token *node, t_token *end)
  * et construit un arbre de syntaxe abstraite (AST) en utilisant la fonction `spliter`.
  * 
  * @param node Pointeur vers le premier token de la liste.
- * @return t_ast* Pointeur vers la racine de l'AST construit.
+ * @return `t_ast*` Pointeur vers la racine de l'AST construit.
  */
 t_ast	*build_ast(t_token *node)
 {

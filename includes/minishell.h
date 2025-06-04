@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 17:44:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/04 11:25:57 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,7 @@ void print_env_list(t_env *env);
 void free_env_list(t_env *env);
 int exec_cmd(t_ast *cmd_node, t_env *env);
 void print_ast_cmd_node(char **argv);
+t_ast *build_ast(t_token *node);
+void expand_vars(t_ast *node, t_shell *data);
 
 #endif

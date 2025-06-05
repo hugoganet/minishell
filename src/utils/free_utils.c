@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_token_list.c                                  :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 19:03:24 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 17:37:39 by hugoganet        ###   ########.fr       */
+/*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/06/05 11:15:16 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -48,4 +49,21 @@ void free_split(char **split)
 	while (split && split[i])
 		free(split[i++]);
 	free(split);
+}
+
+/**
+ * @brief Libère récursivement un arbre de syntaxe abstraite (AST).
+ *
+ * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit.
+ *
+ * @param node Pointeur vers la racine de l'AST à libérer.
+ */
+void free_ast(t_ast *node)
+{
+	if (!node)
+		return;
+	// Libération récursive des branches
+	free_ast(node->left);
+	free_ast(node->right);
+	free(node);
 }

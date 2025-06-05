@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 18:11:14 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/05 11:20:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,27 +84,27 @@ typedef struct s_token
 // Initialisation de la structure de l'arbre de syntaxe abstraite (AST)
 typedef struct s_ast t_ast;
 
-	/**
-	 * @struct s_ast
-	 * @brief Représente un nœud de l'arbre de syntaxe abstraite (AST).
-	 *
-	 * Chaque nœud a :
-	 *
-	 * - `type`: le type du nœud (défini par l'énumération `e_token_type`).
-	 *
-	 * - `str`: la chaîne de caractères associée au nœud.
-	 *
-	 * - `left`: un pointeur vers le sous-arbre gauche.
-	 *
-	 * - `right`: un pointeur vers le sous-arbre droit.
-	 */
-	typedef struct s_ast
+/**
+ * @struct s_ast
+ * @brief Représente un nœud de l'arbre de syntaxe abstraite (AST).
+ *
+ * Chaque nœud a :
+ *
+ * - `type`: le type du nœud (défini par l'énumération `e_token_type`).
+ *
+ * - `str`: la chaîne de caractères associée au nœud.
+ *
+ * - `left`: un pointeur vers le sous-arbre gauche.
+ *
+ * - `right`: un pointeur vers le sous-arbre droit.
+ */
+typedef struct s_ast
 {
-	t_token_type type;
-	char *str;
-	t_ast *left;
-	t_ast *right;
-} t_ast;
+	t_token_type	type;
+	char			*str;
+	t_ast			*left;
+	t_ast			*right;
+} 					t_ast;
 
 /**
  * @struct s_env
@@ -176,5 +176,6 @@ char *get_env_value(t_env *env, const char *key);
 char **env_to_char_array(t_env *env);
 char *resolve_command_path(char *cmd_name, t_env *env);
 int ft_strcmp(char *s1, const char *s2);
+void free_ast(t_ast *node);
 
 #endif

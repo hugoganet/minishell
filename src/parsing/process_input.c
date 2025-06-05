@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 18:58:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/05 10:47:33 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ void print_ast(t_ast *node, int depth)
 	}
 	// print_token_list(tokens);
 	ast_root = build_ast(tokens);
+	if (!ast_root)
+	{
+		ft_putendl_fd("minishell: error: failed to build AST", 2);
+		free_token_list(tokens);
+		return;
+	}
 	// pretty_print_ast(ast_root, 0);
 	execute_ast(ast_root, shell->env_list);
 	// printf("Avant expansion :\n");
@@ -78,6 +84,8 @@ void print_ast(t_ast *node, int depth)
 	// print_ast(ast_root, 3);
 	// Libération de la liste de tokens
 	free_token_list(tokens);
+	// Libération de l'AST
+	free_ast(ast_root);
 }
 
 

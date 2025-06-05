@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 18:59:11 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/05 11:27:16 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 /**
  * @brief Retourne la priorité d'un token en fonction de son type.
- * Cette fonction attribue une priorité aux tokens 
+ * Cette fonction attribue une priorité aux tokens
  * pour déterminer l'ordre de traitement
  * dans l'arbre de syntaxe abstraite (AST).
  * La priorité est définie comme suit :
- * 
+ *
  * - `PIPE` a la priorité la plus basse (1).
- * 
- * - Les redirections (`REDIR_APPEND`, `REDIR_INPUT`, `REDIR_OUTPUT`, `HEREDOC`) 
- *  ont une priorité intermédiaire (2).
- * 
+ *
+ * - Les redirections (`<`, `>`, `>>`, `<<`) ont une priorité intermédiaire (2),
+ *   donc évaluées avant les pipes mais après les commandes et arguments.
+ *
  * - Les autres tokens (comme `WORD`, `CMD`, `ARG`, `FILES`)
  * ont la priorité la plus haute (3).
  * @param type Le type du token dont on veut connaître la priorité.
@@ -51,11 +51,15 @@ int	token_priority(t_token_type type)
 t_ast	*new_ast_node(t_token *node)
 {
 	t_ast	*new_ast;
-	
+
+	// Si le token est NULL, on retourne NULL
+	if (!node)
+		return (NULL);
 	// Utiliser ft_calloc pour initialiser les pointeurs left et right à NULL
 	new_ast = ft_calloc(sizeof(t_ast), 1);
 	if (!new_ast)
 		return (NULL);
+	// On initialise les champs du nœud AST
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	return (new_ast);
@@ -78,6 +82,9 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	t_token	*ptr;
 	t_token	*to_split;
 
+	// On initialise `to_split` à NULL pour éviter les comportements indéfinis.
+	// Si aucun token de priorité inférieure à 4 n'est trouvé, on retourne NULL.
+	to_split = NULL;
 	current_priority = 4;
 	lowest_priority = 4;
 	ptr = node;
@@ -102,12 +109,11 @@ t_token	*token_to_split(t_token *node, t_token *end)
  * tokens consécutifs de type `ARG` ou `FILES` qui suivent immédiatement.
  *
  * Cela permet de modéliser correctement des commandes comme :
- *   echo hello world > out.txt
+ *   `echo hello world`
  * Avec un AST de la forme :
  *   CMD "echo"
  *     └── ARG "hello"
  *         └── ARG "world"
- *         └── FILES "out.txt"
  *
  * @param to_split Pointeur vers le token courant (`CMD`, `ARG` ou `FILES`)
  * @param node_ast Nœud AST initial créé à partir de `to_split`
@@ -128,9 +134,12 @@ static t_ast *handle_low_priority(t_token *to_split, t_ast *node_ast)
 	{
 		// Création d’un nouveau nœud AST à partir du token
 		next_node = new_ast_node(next);
-		// Si erreur d’allocation, on interrompt proprement la boucle
+		// Si erreur d’allocation, on libère l'AST et retourne NULL
 		if (!next_node)
-			break;
+		{
+			free_ast(node_ast);
+			return (NULL);
+		}
 		// On rattache le nouveau nœud à droite du courant
 		curr->right = next_node;
 		// Le nouveau nœud devient le courant pour la prochaine itération
@@ -163,6 +172,7 @@ t_ast	*spliter(t_token *node, t_token *end)
 {
 	t_ast	*node_ast;
 	t_token	*to_split;
+	t_ast	*command_node;
 
 	to_split = NULL;
 	// Si le nœud est NULL ou si c'est le dernier nœud, on retourne NULL
@@ -170,12 +180,26 @@ t_ast	*spliter(t_token *node, t_token *end)
 		return (NULL);
 	
 	to_split = token_to_split(node, end);
-		
+	// Si on n'a pas trouvé de token à diviser, on retourne NULL
+	// C'est une protection supplémentaire, normalement on ne devrait pas arriver ici
+	if (!to_split)
+		return (NULL);
 	node_ast = new_ast_node(to_split);
-
+	// Si l'allocation a échoué, on retourne NULL
+	// (inutile de libérer node_ast ici, il n’a pas encore de sous-arbres)
+	if (!node_ast)
+		return (NULL);
 	// Si le token à diviser est de priorité 3
 	if (token_priority(to_split->type) == 3)
-		return (handle_low_priority(to_split, node_ast));
+	{
+		command_node = handle_low_priority(to_split, node_ast);
+		if (!command_node)
+		{
+			free_ast(node_ast);
+			return (NULL);
+		}
+		return (command_node);
+	}
 
 	node_ast->left = spliter(node, to_split);
 	
@@ -196,7 +220,7 @@ t_ast	*build_ast(t_token *node)
 {
 	t_ast	*new_ast;
 
-	// à ce niveau, on récupère bien le premier token
+	// Point d’entrée unique pour construire l’AST à partir de la liste de tokens
 	new_ast = spliter(node, NULL);
 	return (new_ast);
 }

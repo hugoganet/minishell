@@ -25,7 +25,7 @@ SRC = 	main.c \
 		init/initialisation.c \
 		utils/init_error.c \
 		utils/print_token_list.c \
-		utils/free_token_list.c \
+		utils/free_utils.c \
 		utils/print_env_list.c \
 		utils/print_ast.c \
 		input/loop.c \

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/05 11:20:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/05 12:46:49 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,6 @@ char **env_to_char_array(t_env *env);
 char *resolve_command_path(char *cmd_name, t_env *env);
 int ft_strcmp(char *s1, const char *s2);
 void free_ast(t_ast *node);
+int execute_pipe_node(t_ast *node, t_env *env);
 
 #endif

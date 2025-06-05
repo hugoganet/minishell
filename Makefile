@@ -47,6 +47,7 @@ SRC = 	main.c \
 		env/env_utils.c \
 		exec/exec_cmd.c \
 		exec/resolve_command_path.c \
+		exec/pipe.c \
 	
 
 # Rassembler les sources

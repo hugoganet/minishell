@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 19:00:05 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/05 12:32:27 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	// Vérifie que le noeud est bien de type CMD
 	if (!cmd_node || cmd_node->type != CMD) return (1);
 	// Construit le tableau argv à partir du noeud CMD
+	// pour le passer à execve()
 	argv = build_argv(cmd_node);
 	if (!argv || !argv[0])
 		return (1);

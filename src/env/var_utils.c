@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 16:19:27 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 19:09:04 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	ft_is_dbl_quote(char c)
 
 int	which_quote(t_ast *node)
 {
-	if (node->str[0] == 34)
-		return (1);
-	return (0);
+	if (node->str[0] == 39)
+		return (0);
+	return (1);
 }
 
 char	*ft_strcpy(char *dest, char *src)
@@ -51,55 +51,4 @@ char	*ft_strcpy(char *dest, char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
-}
-
-char	**split_path(char **envp)
-{
-	int		i;
-	char	**path;
-
-	i = 0;
-	if (!envp)
-		return (NULL);
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	if (envp[i] == NULL)
-		return (NULL);
-	path = ft_split(envp[i] + 5, ':');
-	if (!path)
-		return (NULL);
-	return (path);
-}
-
-char	*get_path(char *envp[], char *cmd)
-{
-	char	**path;
-	char	*pathname;
-	char	*tmp;
-	int		i;
-
-	path = split_path(envp);
-	if (!path)
-		return (NULL);
-	i = 0;
-	pathname = NULL;
-	while (path[i])
-	{
-		tmp = ft_strjoin(path[i], "/");
-		pathname = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(pathname, X_OK) == 0)
-		{
-			// free_tab(path);
-			return (pathname);
-		}
-		free(pathname);
-		i++;
-	}
-	// free_tab(path);
-	return (NULL);
 }

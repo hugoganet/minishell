@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/05 11:27:16 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/05 14:01:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,56 +101,6 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	}
 	return (to_split);
 }
-/**
- * @brief Gère les tokens de faible priorité (CMD, ARG, FILES) en construisant une chaîne linéaire.
- *
- * Cette fonction prend un token de priorité 3 (`CMD`, `ARG`, `FILES`) et construit une
- * chaîne d’éléments connectés via le champ `right` du nœud AST, en incluant tous les
- * tokens consécutifs de type `ARG` ou `FILES` qui suivent immédiatement.
- *
- * Cela permet de modéliser correctement des commandes comme :
- *   `echo hello world`
- * Avec un AST de la forme :
- *   CMD "echo"
- *     └── ARG "hello"
- *         └── ARG "world"
- *
- * @param to_split Pointeur vers le token courant (`CMD`, `ARG` ou `FILES`)
- * @param node_ast Nœud AST initial créé à partir de `to_split`
- * @return `t_ast*` Racine de la chaîne AST construite à droite
- */
-static t_ast *handle_low_priority(t_token *to_split, t_ast *node_ast)
-{
-	t_token *next;
-	t_ast *curr;
-	t_ast *next_node;
-
-	// On initialise le token suivant à celui après to_split
-	next = to_split->next;
-	// Le pointeur courant AST commence sur le noeud racine (CMD, ARG ou FILES)
-	curr = node_ast;
-	// Tant qu'on rencontre un ARG ou FILES, on les ajoute en chaîne à droite
-	while (next && (next->type == ARG || next->type == FILES))
-	{
-		// Création d’un nouveau nœud AST à partir du token
-		next_node = new_ast_node(next);
-		// Si erreur d’allocation, on libère l'AST et retourne NULL
-		if (!next_node)
-		{
-			free_ast(node_ast);
-			return (NULL);
-		}
-		// On rattache le nouveau nœud à droite du courant
-		curr->right = next_node;
-		// Le nouveau nœud devient le courant pour la prochaine itération
-		curr = curr->right;
-		// On passe au token suivant
-		next = next->next;
-	}
-	// On retourne la racine du sous-arbre (inchangée)
-	return (node_ast);
-}
-
 
 /**
  * @brief Construit récursivement l'arbre de syntaxe abstraite (AST) à partir d'une liste de tokens.
@@ -172,37 +122,18 @@ t_ast	*spliter(t_token *node, t_token *end)
 {
 	t_ast	*node_ast;
 	t_token	*to_split;
-	t_ast	*command_node;
 
 	to_split = NULL;
 	// Si le nœud est NULL ou si c'est le dernier nœud, on retourne NULL
 	if (!node || node == end)
 		return (NULL);
-	
+	// On trouve le token à diviser en fonction de la priorité
 	to_split = token_to_split(node, end);
-	// Si on n'a pas trouvé de token à diviser, on retourne NULL
-	// C'est une protection supplémentaire, normalement on ne devrait pas arriver ici
-	if (!to_split)
-		return (NULL);
+	// On créé un nouveau noeud à partir du token à diviser
 	node_ast = new_ast_node(to_split);
-	// Si l'allocation a échoué, on retourne NULL
-	// (inutile de libérer node_ast ici, il n’a pas encore de sous-arbres)
 	if (!node_ast)
 		return (NULL);
-	// Si le token à diviser est de priorité 3
-	if (token_priority(to_split->type) == 3)
-	{
-		command_node = handle_low_priority(to_split, node_ast);
-		if (!command_node)
-		{
-			free_ast(node_ast);
-			return (NULL);
-		}
-		return (command_node);
-	}
-
 	node_ast->left = spliter(node, to_split);
-	
 	node_ast->right = spliter(to_split->next, end);
 	return (node_ast);
 }
@@ -222,5 +153,11 @@ t_ast	*build_ast(t_token *node)
 
 	// Point d’entrée unique pour construire l’AST à partir de la liste de tokens
 	new_ast = spliter(node, NULL);
+	if (!new_ast)
+	{
+		// Si il y'a un problème, on free tout l'AST récursivement en partant du head
+		free_ast(new_ast);
+		return (NULL);
+	}
 	return (new_ast);
 }

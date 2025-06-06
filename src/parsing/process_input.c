@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:52:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 12:46:22 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 19:32:55 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ void print_ast(t_ast *node, int depth)
 	// Libération de la liste de tokens
 	free_token_list(tokens);
 }
-
-
 
 
  /* void process_input(char *input, t_shell *shell)

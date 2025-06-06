@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_utils.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 19:32:22 by bernard          ###   ########.fr       */
+/*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
+/*   Updated: 2025/06/04 20:18:17 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+Boucler sur ast, si node->type == CMD. 
+regarder si built in 
 
-int	which_quote(t_ast *node)
-{
-	if (node->str[0] == 39)
-		return (0);
-	return (1);
-}
+Regarder quel built in. 
 
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-	
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+si echo
+
+node -> right ou node left 
+str -> si single quote, ecrire tout. 
+str -> 

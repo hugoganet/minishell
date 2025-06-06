@@ -6,7 +6,7 @@
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 19:10:06 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/04 19:33:13 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	*copy_var_content(t_ast *node, t_shell *data, int *start, int *end)
 	char	*var;
 	
 	i = 0;
-	
 	name_var = find_var(node, start, end); // Recuperer variable appelée dans le terminal
 	if(!name_var)
 		return (NULL);
@@ -133,9 +132,10 @@ void	expand_vars(t_ast *node, t_shell *data)
 		if (ft_strchr(node->str, '$'))
 		{
 			if (which_quote(node) == 1)
-				join_str(node, data);
+				join_str(node, data);	
 		}
 	}
 	expand_vars(node->left, data);
 	expand_vars(node->right, data);
 }
+

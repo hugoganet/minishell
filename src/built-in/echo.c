@@ -3,37 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/06 13:03:34 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/08 16:51:37 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-Boucler sur ast, si node->type == CMD. 
-regarder si built in 
-
-Regarder quel built in. 
-
-si echo
-
-node -> right ou node left 
-str -> si single quote, ecrire tout. 
-str -> 
-
-void    print_env(t_shell *data, t_ast *node)
+int   ft_echo(t_ast *node)
 {
-    int i;
-
-    i = 0;
-    if (node->type == CMD && node->str == 'env')
+    t_ast   *arg_node;
+    int     print_nl;
+    
+    print_nl = 0;
+    arg_node = node->right;
+    if (arg_node && ft_strncmp(arg_node->str, "-n", 2)) // Si il n'y a pas de node->right, alors arg_node == NULL et on ne rentre pas dans les boucles et on print direct un \n
     {
-        while (data->env[i])
+        if (!node->right->right)
+            return (NULL);
+        node = node->right->right;
+        printf("%s", node->str);
+        print_nl = 1;
+    }
+    while (arg_node)
+    {
+        printf("%s", arg_node->str);
+        if (arg_node->right)
         {
-            printf("%s\n", data->env[i]);
-            i++;
+            printf(" ");
+            arg_node = arg_node->right;
         }
     }
+    if (print_nl)
+        printf("\n");
+   return 0;
 }
+

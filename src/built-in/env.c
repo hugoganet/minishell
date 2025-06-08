@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_utils.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/08 17:31:51 by elaudrez         ###   ########.fr       */
+/*   Created: 2025/06/08 16:35:27 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/06/08 17:51:38 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	which_quote(t_ast *node)
+int   ft_env(t_shell *data, t_ast *node)
 {
-	if (node->str[0] == 39)
-		return (0);
-	return (1);
-}
+    int i;
 
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-	
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+    i = 0;
+    if (node->type == CMD && ft_strncmp(node->str,"env", 4) == 0)
+    {
+        while (data->env[i])
+        {
+            printf("%s\n", data->env[i]);
+            i++;
+        }
+    }
+    return (0);
 }

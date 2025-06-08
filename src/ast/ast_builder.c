@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 13:12:24 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/08 18:56:13 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	while (ptr && ptr != end)
 	{
 		current_priority = token_priority(ptr->type);
+		if ((ptr->type == REDIR_APPEND || ptr->type == REDIR_OUTPUT || ptr->type == REDIR_INPUT 
+			|| ptr->type == HEREDOC) && (ptr->next && ptr->next->type == FILES) && (ptr->next->next))
+		{
+			ptr = ptr->next->next;
+			if(ptr->type == ARG)
+			{
+				
+			}
+		}
+		
 		if (current_priority < lowest_priority)
 		{
 			to_split = ptr;

@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_utils.c                                        :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/08 17:31:51 by elaudrez         ###   ########.fr       */
+/*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/06/08 19:05:14 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	which_quote(t_ast *node)
-{
-	if (node->str[0] == 39)
-		return (0);
-	return (1);
-}
+/* Exporter des variables
+Definir une variable qui ne serait dispo que dans shell courant ex : VAR=25
+Export va l'integrer aux variables d'env qui se trouve dans **env
 
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-	
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+
+*/

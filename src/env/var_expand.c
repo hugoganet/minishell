@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/04 19:33:13 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/08 14:25:29 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	get_name_brace(t_ast *node, int *i, int *end, int *name_start)
 		*name_start = *i; // Indiquer start pour mesurer la len
 	if (ft_isdigit(node->str[*i])) //Si le premier est un chiffre -> invalide
 		return ;
-		while (node->str[*i] && node->str[*i] != '}') //tant qu'on a pas la quote fermante
-		{
-			if (!ft_isalnum(node->str[*i]) && node->str[*i] != '_') //Si le reste n'est pas un chiffre ou une lettre ou underscore -> invalide
-				return ;
-			(*i)++;
-		}
-		if (node->str[*i] != '}') // Si pas de quote fermante, invalide
+	while (node->str[*i] && node->str[*i] != '}') //tant qu'on a pas la quote fermante
+	{
+		if (!ft_isalnum(node->str[*i]) && node->str[*i] != '_') //Si le reste n'est pas un chiffre ou une lettre ou underscore -> invalide
 			return ;
-		*end = *i + 1; //Placer end juste apres le }
+		(*i)++;
+	}
+	if (node->str[*i] != '}') // Si pas de quote fermante, invalide
+		return ;
+	*end = *i + 1; //Placer end juste apres le }
 }
 
 void	get_name(t_ast *node, int *i, int *end, int *name_start)

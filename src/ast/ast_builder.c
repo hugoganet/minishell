@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/08 18:56:13 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:16:25 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,16 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	ptr = node;
 	while (ptr && ptr != end)
 	{
+		// if ((ptr->type == REDIR_APPEND || ptr->type == REDIR_OUTPUT || ptr->type == REDIR_INPUT 
+		// 	|| ptr->type == HEREDOC) && ptr->next && ptr->next->type == FILES)
+		// {
+		// 	ptr = ptr->next;
+		// 	while (ptr && ptr != end && ptr->type == ARG)
+		// 		ptr = ptr->next;
+
+		// 	continue;
+		// }
 		current_priority = token_priority(ptr->type);
-		if ((ptr->type == REDIR_APPEND || ptr->type == REDIR_OUTPUT || ptr->type == REDIR_INPUT 
-			|| ptr->type == HEREDOC) && (ptr->next && ptr->next->type == FILES) && (ptr->next->next))
-		{
-			ptr = ptr->next->next;
-			if(ptr->type == ARG)
-			{
-				
-			}
-		}
-		
 		if (current_priority < lowest_priority)
 		{
 			to_split = ptr;
@@ -67,6 +66,7 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	return (to_split);
 }
 
+
 t_ast	*spliter(t_token *node, t_token *end)
 {
 	t_ast	*node_ast;
@@ -75,9 +75,15 @@ t_ast	*spliter(t_token *node, t_token *end)
 	to_split = NULL;
 	if (!node || node == end)
 		return (NULL);
-		
+	// if (to_split->type == REDIR_APPEND || to_split->type == REDIR_OUTPUT 
+	// 	|| to_split->type == REDIR_INPUT || to_split->type == HEREDOC)
+	// 	{
+			
+	// 	}
 	to_split = token_to_split(node, end);
-		
+	if (!to_split)
+		return (NULL);
+
 	node_ast = new_ast_node(to_split);
 	node_ast->left = spliter(node, to_split);
 	

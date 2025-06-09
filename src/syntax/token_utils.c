@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 11:23:23 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 18:29:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ t_token_type get_token_type(char *str)
 {
 	if (!str)
 		return (WORD);
-	if (!ft_strncmp(str, "<<", 3))
+	if (!ft_strncmp(str, "<<", 2))
 		return (HEREDOC);
-	if (!ft_strncmp(str, ">>", 3))
+	if (!ft_strncmp(str, ">>", 2))
 		return (REDIR_APPEND);
-	if (!ft_strncmp(str, "<", 2))
+	if (!ft_strncmp(str, "<", 1))
 		return (REDIR_INPUT);
-	if (!ft_strncmp(str, ">", 2))
+	if (!ft_strncmp(str, ">", 1))
 		return (REDIR_OUTPUT);
 	if (!ft_strncmp(str, "|", 2))
 		return (PIPE);

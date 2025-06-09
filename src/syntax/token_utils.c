@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 16:24:30 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/04 11:23:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ t_token_type get_token_type(char *str)
 {
 	if (!str)
 		return (WORD);
-	if (!ft_strncmp(str, "&&", 3))
-		return (AND);
-	if (!ft_strncmp(str, "||", 3))
-		return (OR);
 	if (!ft_strncmp(str, "<<", 3))
 		return (HEREDOC);
 	if (!ft_strncmp(str, ">>", 3))
@@ -36,10 +32,6 @@ t_token_type get_token_type(char *str)
 		return (REDIR_OUTPUT);
 	if (!ft_strncmp(str, "|", 2))
 		return (PIPE);
-	if (!ft_strncmp(str, "(", 2))
-		return (PAREN_LEFT);
-	if (!ft_strncmp(str, ")", 2))
-		return (PAREN_RIGHT);
 	return (WORD);
 }
 
@@ -51,7 +43,7 @@ t_token_type get_token_type(char *str)
  */
 bool is_redirection(t_token_type type)
 {
-	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND || type == HEREDOC);
+	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND);
 }
 
 /**
@@ -124,14 +116,14 @@ char *parse_quoted_token(char *input, int *i)
 }
 
 /**
- * @brief Vérifie si le type est un opérateur logique (PIPE, OR, AND).
+ * @brief Vérifie si le type est un opérateur logique (PIPE).
  *
  * @param type Le type du token à vérifier
  * @return true si c'est un opérateur logique, false sinon
  */
 static bool is_logical_operator(t_token_type type)
 {
-	return (type == PIPE || type == OR || type == AND);
+	return (type == PIPE);
 }
 
 /**
@@ -146,8 +138,11 @@ static bool is_logical_operator(t_token_type type)
  */
 int validate_token_sequence(t_token *head)
 {
-	t_token *prev = NULL;
-	t_token *curr = head;
+	t_token *prev;
+	t_token *curr;
+	
+	prev = NULL;
+	curr = head;
 	while (curr)
 	{
 		if ((!prev && is_logical_operator(curr->type)) ||

@@ -25,7 +25,9 @@ SRC = 	main.c \
 		init/initialisation.c \
 		utils/init_error.c \
 		utils/print_token_list.c \
-		utils/free_token_list.c \
+		utils/free_utils.c \
+		utils/print_env_list.c \
+		utils/print_ast.c \
 		input/loop.c \
 		input/prompt.c \
 		input/readline_hooks.c \
@@ -37,8 +39,15 @@ SRC = 	main.c \
 		parsing/process_input.c \
 		syntax/build_token_list.c \
 		ast/ast_builder.c \
+		ast/ast_executor.c \
+		env/init_env.c \
 		env/var_expand.c \
 		env/var_utils.c \
+		env/env.c \
+		env/env_utils.c \
+		exec/exec_cmd.c \
+		exec/resolve_command_path.c \
+		exec/pipe.c \
 	
 
 # Rassembler les sources

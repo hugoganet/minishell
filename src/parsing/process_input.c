@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   process_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 17:52:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 19:32:55 by bernard          ###   ########.fr       */
+/*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/06/09 11:24:37 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 
 void print_ast(t_ast *node, int depth)
 {
@@ -51,38 +53,41 @@ void print_ast(t_ast *node, int depth)
  * @param input La ligne brute saisie par l'utilisateur
  * @param shell Structure principale du shell
  */
-
- 
  void process_input(char *input, t_shell *shell)
 {
 	t_token *tokens;
 	t_ast	*ast_root;
 
-	(void)shell; // Utile plus tard
 	// Tokenisation de la ligne d'entrée
 	tokens = tokenize(input);
-	printf("Tokens:\n");
-	for (t_token *tmp = tokens; tmp; tmp = tmp->next)
-    printf("  Token Type: %d, Str: '%s'\n", tmp->type, tmp->str);
-
 	if (!tokens)
 	{
 		// Si la tokenisation échoue, on affiche un message d'erreur et on quitte
 		ft_putendl_fd("minishell: error: failed to tokenize input", 2);
 		return;
 	}
+	// printf("Tokens:\n");
+	// for (t_token *tmp = tokens; tmp; tmp = tmp->next)
+	// printf("  Token Type: %d, Str: '%s'\n", tmp->type, tmp->str);
+	// print_token_list(tokens);
 	ast_root = build_ast(tokens);
-
-	printf("Avant expansion :\n");
-    print_ast(ast_root, 3);
-
-    expand_vars(ast_root, shell);
-
-    printf("Après expansion :\n");
-    print_ast(ast_root, 3);
-	
+	if (!ast_root)
+	{
+		ft_putendl_fd("minishell: error: failed to build AST", 2);
+		free_token_list(tokens);
+		return;
+	}
+	pretty_print_ast(ast_root, 0);
+	execute_ast(ast_root, shell->env_list);
+	// printf("Avant expansion :\n");
+	// print_ast(ast_root, 3);
+	// expand_vars(ast_root, shell);
+	// printf("Après expansion :\n");
+	// print_ast(ast_root, 3);
 	// Libération de la liste de tokens
 	free_token_list(tokens);
+	// Libération de l'AST
+	free_ast(ast_root);
 }
 
 

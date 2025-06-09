@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/30 14:42:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:45:12 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char **copy_env(char **envp)
 	while (envp[i])
 		i++;
 	// Alloue de la mémoire pour le tableau et set à NULL
-	env = ft_calloc((i + 1),  sizeof(char *));
+	env = ft_calloc((i + 1), sizeof(char *));
 	if (!env)
 		return (NULL);
 	i = 0;
@@ -77,4 +77,26 @@ void free_env(char **env)
 		free(env[i++]);
 	// Libère le tableau lui-même
 	free(env);
+}
+
+/**
+ * @brief Libère la mémoire de la structure t_env
+ * 
+ * @param env La liste chaînée d'environnement à libérer.
+ */
+void free_env_list(t_env *env)
+{
+	t_env *temp;
+
+	if (!env)
+		return;
+	// Libère chaque nœud de la liste chaînée
+	while (env)
+	{
+		temp = env;
+		env = env->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
 }

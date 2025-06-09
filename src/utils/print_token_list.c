@@ -3,16 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   print_token_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 16:51:12 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:49:03 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static const char *token_type_str(t_token_type type)
+/**
+ * @brief Retourne le code couleur ANSI associé à un type de token.
+ *
+ * @param type Le type de token (CMD, ARG, REDIR_OUTPUT, etc.)
+ * @return const char* Code couleur ANSI
+ */
+const char *token_color(t_token_type type)
+{
+	// Pipe = vert
+	if (type == PIPE)
+		return (COLOR_PIPE);
+	// CMD = cyan
+	if (type == CMD)
+		return (COLOR_CMD);
+	// ARG = bleu
+	if (type == ARG)
+		return (COLOR_ARG);
+	if (type == HEREDOC)
+		return (COLOR_HEREDOC);
+	// Redirections = magenta
+	if (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND)
+		return (COLOR_REDIR);
+	if (type == FILES)
+		return (COLOR_FILES);
+	// Autres types = pas de couleur
+	return (COLOR_RESET);
+}
+
+const char *token_type_str(t_token_type type)
 {
 	if (type == WORD)
 		return ("WORD");
@@ -32,14 +60,6 @@ static const char *token_type_str(t_token_type type)
 		return ("REDIR_APPEND");
 	if (type == HEREDOC)
 		return ("HEREDOC");
-	if (type == AND)
-		return ("AND");
-	if (type == OR)
-		return ("OR");
-	if (type == PAREN_LEFT)
-		return ("PAREN_LEFT");
-	if (type == PAREN_RIGHT)
-		return ("PAREN_RIGHT");
 	return ("UNKNOWN");
 }
 
@@ -53,7 +73,9 @@ void print_token_list(t_token *tokens)
 	printf("\n=== Token List ===\n");
 	while (tokens)
 	{
-		printf(" - %-10s → %s\n", tokens->str, token_type_str(tokens->type));
+		printf(" - %-10s → %s%s%s\n", 
+			tokens->str, 
+			token_color(tokens->type) , token_type_str(tokens->type), COLOR_RESET);
 		tokens = tokens->next;
 	}
 	printf("==================\n\n");

@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 14:32:01 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/04 11:23:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Ignore les espaces et tabulations à partir d'un index donné.
+ *
+ * Avance l'index jusqu'au premier caractère non espace ou tabulation.
+ *
+ * @param input La chaîne d'entrée
+ * @param i Pointeur vers l'index à avancer
+ */
+void skip_spaces(char *input, int *i)
+{
+	while (input[*i] == ' ' || input[*i] == '\t')
+		(*i)++;
+}
 
 /**
  * @brief Vérifie si le caractère courant est un séparateur de token
@@ -22,8 +36,7 @@
  */
 static bool is_token_delim(char c)
 {
-	return (c == ' ' || c == '\t' || c == '<' || c == '>' ||
-			c == '|' || c == '&' || c == '(' || c == ')');
+	return (c == ' ' || c == '\t' || c == '<' || c == '>' || c == '|');
 }
 
 /**
@@ -57,7 +70,7 @@ static char *read_simple_token(char *input, int *i)
 }
 
 /**
- * @brief Lit un opérateur spécial (|, >>, &&, etc.)
+ * @brief Lit un opérateur spécial (>> / <<)
  *
  * @param input Ligne d’entrée
  * @param i Index à avancer
@@ -68,9 +81,7 @@ static char *read_operator(char *input, int *i)
 	char *op;
 
 	if ((input[*i] == '<' && input[*i + 1] == '<') ||
-		(input[*i] == '>' && input[*i + 1] == '>') ||
-		(input[*i] == '&' && input[*i + 1] == '&') ||
-		(input[*i] == '|' && input[*i + 1] == '|'))
+		(input[*i] == '>' && input[*i + 1] == '>'))
 	{
 		// Si on a un opérateur de 2 caractères, on l'extrait dans op
 		op = ft_substr(input, *i, 2);
@@ -104,9 +115,6 @@ static t_token *get_next_token(char *input, int *i)
 	char *content;
 	t_token_type type;
 
-	// Ignore les espaces et tabulations au début
-	while (input[*i] == ' ' || input[*i] == '\t')
-		(*i)++;
 	// Si on tombe sur une quote ou que un caractère non délimité (charactère alphanumérique, etc.),
 	// on lit un mot ou une séquence entre quotes.
 	if (input[*i] == '\'' || input[*i] == '"' || (!is_token_delim(input[*i]) && input[*i]))
@@ -131,11 +139,16 @@ static t_token *get_next_token(char *input, int *i)
  */
 t_token *tokenize(char *input)
 {
-	t_token *head = NULL;
-	t_token *last = NULL;
+	t_token *head;
+	t_token *last;
 	t_token *new;
-	int i = 0;
+	int i;
 
+	head = NULL;
+	last = NULL;
+	i = 0;
+	// Ignore les espaces initiaux
+	skip_spaces(input, &i);
 	while (input[i])
 	{
 		// On récupère le prochain token à partir de l'index i
@@ -149,6 +162,8 @@ t_token *tokenize(char *input)
 		}
 		if (new)
 			append_token(&head, &last, new);
+		// Ignore les espaces entre tokens et en fin d'input
+		skip_spaces(input, &i);
 	}
 	refine_token_types(head);
 	// Validation syntaxique de la séquence de tokens

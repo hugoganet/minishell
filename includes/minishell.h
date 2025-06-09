@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/05 12:46:49 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:40:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ typedef struct s_env
 // ! ----------------------- FUNCTIONS ---------------
 
 void init_signals(void);
-void init_shell(t_shell *shell, char **envp);
+void init_shell(t_shell *shell, char **envp, t_env *env_list);
 char **copy_env(char **envp);
 void free_env(char **env);
 void handle_signal(int signo);
@@ -178,5 +178,8 @@ char *resolve_command_path(char *cmd_name, t_env *env);
 int ft_strcmp(char *s1, const char *s2);
 void free_ast(t_ast *node);
 int execute_pipe_node(t_ast *node, t_env *env);
+void free_env_list(t_env *env);
+void cleanup_shell(t_shell *shell);
+void print_env_list(t_env *env);
 
 #endif

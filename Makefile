@@ -28,6 +28,7 @@ SRC = 	main.c \
 		utils/free_utils.c \
 		utils/print_env_list.c \
 		utils/print_ast.c \
+		utils/cleanup.c \
 		input/loop.c \
 		input/prompt.c \
 		input/readline_hooks.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/30 14:33:16 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:11:42 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void shell_loop(t_shell *shell)
 		{
 			// Si l'entrée est NULL (Ctrl+D) ou erreur de lecture on sort du loop
 			write(1, "exit\n", 5);
-			break;
+			cleanup_shell(shell);
+			exit(0);
 		}
 		// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
 		// l'entrée et on continue à la boucle.

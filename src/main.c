@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 18:52:33 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:43:58 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,19 @@ int main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	env_list = NULL;
 	// Initialise le shell avec l'environnement
-	init_shell(&shell, envp);
-	// Initialisation de la liste chaînée d'environnement
-	env_list = init_env_list(envp);
-	if (!env_list)
+	init_shell(&shell, envp, env_list);
+	if (!shell.env || !shell.env_list)
 	{
-		ft_putendl_fd("minishell: error: failed to initialize environment list", 2);
-		free_env(shell.env);
+		ft_putendl_fd("minishell: error: failed to initialize shell environment", 2);
+		cleanup_shell(&shell);
 		exit(1);
 	}
-	// TODO : initialiser shell.env_list ailleurs
-	shell.env_list = env_list;
-	// print_env_list(env_list);
+	// print_env_list(shell.env_list);
 	shell_loop(&shell); // Boucle principale du shell
-	
-	free_env(shell.env); // Libère la mémoire allouée pour l'environnement
+	// Nettoyage de la mémoire
+	cleanup_shell(&shell);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/05 12:46:49 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:22:31 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef enum e_token_type
 	WORD,		  /**< Mot (commande ou argument) */
 	CMD,		  /**< Commande (premier mot d'une ligne) */
 	ARG,		  /**< Argument (mot après la commande) */
-	FILES,		  /**< Fichiers (après une redirection) */
+	FILES,		  /**< Fichiers (après une redirection) */ //A MODIFIER
 } t_token_type;
 
 /**
@@ -80,6 +80,12 @@ typedef struct s_token
 	struct s_token *next;
 } t_token;
 
+typedef struct s_redir
+{
+	t_token	*type;
+	char	*file;
+	t_redir	*next;
+} t_redir;
 
 // Initialisation de la structure de l'arbre de syntaxe abstraite (AST)
 typedef struct s_ast t_ast;
@@ -97,14 +103,18 @@ typedef struct s_ast t_ast;
  * - `left`: un pointeur vers le sous-arbre gauche.
  *
  * - `right`: un pointeur vers le sous-arbre droit.
- */
+ */ 
 typedef struct s_ast
 {
 	t_token_type	type;
 	char			*str;
+	t_redir			*redir;
 	t_ast			*left;
 	t_ast			*right;
-} 					t_ast;
+	char			**args; //fonction compte nb d'arg apres et malloc char **
+	int				fd_in;
+	int				fd_out;
+} 	t_ast;
 
 /**
  * @struct s_env

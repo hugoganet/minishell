@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/09 16:26:43 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:52:10 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	token_priority(t_token_type type)
 {
 	if (type == PIPE)
 		return (1);
-	else if (type == CMD);
+	else if (type == CMD)
 		return (2);
 	return (3);
 }
@@ -33,30 +33,26 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 	ptr = node;
 	if (ptr->next != NULL) //etre sur que pas une commande seule ex : ls
 	{
+		ptr = ptr->next;
 		while (ptr && ptr->type != PIPE && ptr->type != CMD)
 		{
-			ptr = ptr->next;
 			i++;
+			ptr = ptr->next;
 		}
 		new_ast->args = malloc((i + 1) * sizeof(char *));
 		if (!new_ast->args)
-			return NULL;
-		i = 0;
+			return ;
+		ptr = node->next;
 		while (j < i)
 		{
-			new_ast->args[i] = ft_strdup(ptr->str);
+			new_ast->args[j] = ft_strdup(ptr->str);
 			if (!new_ast->args[j])
-				return NULL;
-			i++;
+				return ;
 			j++;
 			ptr = ptr->next;
 		}
-	}	
-}
-
-void	add_redir(t_token *node)
-{
-	
+		new_ast->args[j] = NULL;
+	}
 }
 
 t_ast	*cmd_new_ast_node(t_token *node)
@@ -74,7 +70,6 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	fill_args(node, new_ast);
-	if ()
 	return (new_ast);
 }
 
@@ -93,6 +88,7 @@ t_ast	*pipe_new_ast_node(t_token *node)
 	return (new_ast);
 }
 
+/*Fonction pour trouver sur quel token il faut creer un noeud d'ast en calculant leur priorite */
 t_token	*token_to_split(t_token *node, t_token *end)
 {
 	int		current_priority;
@@ -120,38 +116,30 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	return (to_split);
 }
 
+/*Fonction recursive qui creer les noeuds de l'ast*/
 t_ast	*spliter(t_token *node, t_token *end)
 {
 	t_ast	*node_ast;
 	t_token	*to_split;
-	t_token	*ptr;
 
 	to_split = NULL;
+	node_ast = NULL;
 	// Si le nœud est NULL ou si c'est le dernier nœud, on retourne NULL
 	if (!node || node == end)
 		return (NULL);
-	to_split = token_to_split(node, end);
+	to_split = token_to_split(node, end); //Recuperer le token a partir duquel il faut creer un nouveau noeuds (d'abord les | puis les cmds)
 	if (!to_split)
 		return (NULL);
-	if (to_split->type == CMD|| to_split->type == PIPE) //to_split est toujours suppose etre CMD ou PIPE, seuls types qui creer des ast_nodes
-	{
-		if (to_split->type == CMD)
-			node_ast = cmd_new_ast_node(to_split);
-		else if (to_split->type == PIPE)
-			node_ast = pipe_new_ast_node(to_split);
-		node_ast->left = spliter(node, to_split);
-		node_ast->right = spliter(to_split->next, end);
-	}
+	if (to_split->type == CMD) //Si cmd, fonction qui va creer un noeud et ranger les arguments a la suite
+		node_ast = cmd_new_ast_node(to_split);
+	else if (to_split->type == PIPE) // Creer un noeud pipe simple.
+		node_ast = pipe_new_ast_node(to_split); 
+	node_ast->left = spliter(node, to_split); //Appel recursif pour continuer a creer les noeuds dans les branches qui viennent d'etre creees. Du debut de la chaine au token qui vient d'etre splite
+	node_ast->right = spliter(to_split->next, end); // Du token qui vient d'etre split a la fin de la chaine.
 	if (!node_ast)
 		return (NULL);
 	return (node_ast);
 }
-
-void	add_redir(t_node)
-{
-	
-}
-
 
 t_ast	*build_ast(t_token *node)
 {

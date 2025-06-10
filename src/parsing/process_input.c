@@ -6,46 +6,11 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/09 11:24:37 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:30:24 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-
-void print_ast(t_ast *node, int depth)
-{
-    if (!node)
-        return;
-
-    // Affichage de l'indentation en fonction de la profondeur
-    for (int i = 0; i < depth; i++)
-        printf("  ");
-
-    // Affichage du type et de la chaîne associée (si elle existe)
-    printf("Type: %d", node->type);
-    if (node->str)
-        printf(", Str: '%s'", node->str);
-    printf("\n");
-
-    // Appel récursif pour les enfants
-    if (node->left)
-    {
-        for (int i = 0; i < depth + 1; i++)
-            printf("  ");
-        printf("Left:\n");
-        print_ast(node->left, depth + 2);
-    }
-
-    if (node->right)
-    {
-        for (int i = 0; i < depth + 1; i++)
-            printf("  ");
-        printf("Right:\n");
-        print_ast(node->right, depth + 2);
-    }
-}
 
 /**
  * @brief Traite la ligne de commande : tokenisation, parsing logique à venir.
@@ -79,11 +44,6 @@ void print_ast(t_ast *node, int depth)
 	}
 	pretty_print_ast(ast_root, 0);
 	execute_ast(ast_root, shell->env_list);
-	// printf("Avant expansion :\n");
-	// print_ast(ast_root, 3);
-	// expand_vars(ast_root, shell);
-	// printf("Après expansion :\n");
-	// print_ast(ast_root, 3);
 	// Libération de la liste de tokens
 	free_token_list(tokens);
 	// Libération de l'AST

@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/09 15:22:31 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:32:37 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@
 
 typedef struct s_env t_env;
 
-/**
- * @struct s_shell
- * @brief Structure principale pour stocker l'état du shell.
- *
- * Elle contient :
- *
- * - `env`: un tableau de chaînes de caractères représentant les variables d'environnement.
- *
- * - `last_exit_status`: le statut de sortie de la dernière commande exécutée.
- */
 typedef struct s_shell
 {
 	char **env;
@@ -61,24 +51,14 @@ typedef enum e_token_type
 	FILES,		  /**< Fichiers (après une redirection) */ //A MODIFIER
 } t_token_type;
 
-/**
- * @struct s_token
- * @brief Structure représentant un token dans la ligne de commande.
- *
- * Chaque token a :
- *
- * - `str`: la chaîne de caractères du token.
- *
- * - `type`: le type du token (défini par l'énumération `e_token_type`).
- *
- * - `next`: un pointeur vers le token suivant dans la liste chaînée.
- */
 typedef struct s_token
 {
 	char *str;
 	t_token_type type;
 	struct s_token *next;
 } t_token;
+
+typedef struct s_redir t_redir;
 
 typedef struct s_redir
 {
@@ -87,23 +67,8 @@ typedef struct s_redir
 	t_redir	*next;
 } t_redir;
 
-// Initialisation de la structure de l'arbre de syntaxe abstraite (AST)
 typedef struct s_ast t_ast;
 
-/**
- * @struct s_ast
- * @brief Représente un nœud de l'arbre de syntaxe abstraite (AST).
- *
- * Chaque nœud a :
- *
- * - `type`: le type du nœud (défini par l'énumération `e_token_type`).
- *
- * - `str`: la chaîne de caractères associée au nœud.
- *
- * - `left`: un pointeur vers le sous-arbre gauche.
- *
- * - `right`: un pointeur vers le sous-arbre droit.
- */ 
 typedef struct s_ast
 {
 	t_token_type	type;

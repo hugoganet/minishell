@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 12:47:08 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 14:42:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int main(int argc, char **argv, char **envp)
 		exit(1);
 	}
 	// print_env_list(shell.env_list);
-	//shell_loop(&shell); // Boucle principale du shell
+	shell_loop(&shell); // Boucle principale du shell
 	// Nettoyage de la mémoire
 	cleanup_shell(&shell);
 	return (0);

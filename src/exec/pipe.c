@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/09 17:00:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 14:58:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env)
 		return (1);
 	if (*left_pid == 0)
 	{
+		printf("\nadresse de t_env dans l'enfant gauche : %p\n", (void *)env);
+		fflush(stdout);
 		// Redirige stdout vers l’extrémité d’écriture du pipe
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 		{
@@ -92,6 +94,8 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
 		return (1);
 	if (*right_pid == 0)
 	{
+		printf("\nadresse de t_env dans l'enfant droit : %p\n", (void *)env);
+		fflush(stdout);
 		// Redirige stdin vers l’extrémité de lecture du pipe
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 		{
@@ -121,10 +125,11 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
  */
 int execute_pipe_node(t_ast *node, t_env *env)
 {
-	int fd[2];
-	pid_t left_pid;
-	pid_t right_pid;
+	int		fd[2];
+	pid_t	left_pid;
+	pid_t	right_pid;
 
+	printf("\nadresse de t_env dans le parent : %p\n", (void *)env);
 	// Création du pipe
 	if (pipe(fd) == -1)
 	{

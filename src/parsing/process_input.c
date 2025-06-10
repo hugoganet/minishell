@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/05 13:59:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 14:50:33 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void print_ast(t_ast *node, int depth)
 	// for (t_token *tmp = tokens; tmp; tmp = tmp->next)
 	// printf("  Token Type: %d, Str: '%s'\n", tmp->type, tmp->str);
 	// print_token_list(tokens);
+	// TODO : ajouter le pointer de l'AST à la structure shell pour libérer tout dans cleanup_shell
 	ast_root = build_ast(tokens);
 	if (!ast_root)
 	{
@@ -77,7 +78,7 @@ void print_ast(t_ast *node, int depth)
 		free_token_list(tokens);
 		return;
 	}
-	pretty_print_ast(ast_root, 0);
+	// pretty_print_ast(ast_root, 0);
 	execute_ast(ast_root, shell->env_list);
 	// printf("Avant expansion :\n");
 	// print_ast(ast_root, 3);

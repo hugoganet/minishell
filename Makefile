@@ -1,4 +1,4 @@
- # Nom de l'exécutable
+# Nom de l'exécutable
 NAME = Minishell
 
 # Dossiers personnalisés
@@ -9,16 +9,8 @@ LIBFT_DIR = libft
 
 # Commandes et options de compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include
-LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
-
-# Détection automatique du chemin readline via brew
-BREW_READLINE := $(shell brew --prefix readline)
-
-# macOS build rule (avoids recursive variable reference)
-macos: clean
-	$(MAKE) CFLAGS="-Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include" LDFLAGS="-lreadline -pthread -L$(BREW_READLINE)/lib" all
-	@echo "Compilation macOS réussie de $(NAME) avec Homebrew Readline."
+CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR)
+LDFLAGS = -lreadline -pthread
 
 # Fichiers sources
 SRC = 	main.c \
@@ -69,7 +61,7 @@ all: $(LIBFT) $(NAME)
 
 # Compilation de l'exécutable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft $(LDFLAGS)
 	@echo "Compilation réussie de $(NAME)"
 
 # Règle pour compiler les objets dans SRC (autres fichiers)
@@ -152,4 +144,4 @@ token_tests:
 
 
 # Pas de fichiers de sortie ici
-.PHONY: all clean fclean re macos go leaks token_tests 
+.PHONY: all clean fclean re macos go leaks token_tests

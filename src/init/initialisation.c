@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/03 17:45:12 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:37:30 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
  *
  * @param shell Pointeur vers la structure à initialiser.
  * @param envp Environnement système (non modifiable directement).
+ * @param env_list Liste chaînée d'environnement (initialisée dans init_env_list).
  */
-void init_shell(t_shell *shell, char **envp)
+void init_shell(t_shell *shell, char **envp, t_env *env_list)
 {
 	// Copie de l'environnement dans la structure shell
 	shell->env = copy_env(envp);
@@ -28,6 +29,9 @@ void init_shell(t_shell *shell, char **envp)
 		ft_putendl_fd("minishell: error: failed to copy environment", 2);
 		exit(1);
 	}
+	// Initialisation de la liste chaînée d'environnement
+	env_list = init_env_list(envp);
+	shell->env_list = env_list;
 	// Initialisation du statut de sortie
 	shell->last_exit_status = 0;
 	// Initialisation des signaux
@@ -58,6 +62,11 @@ char **copy_env(char **envp)
 	{
 		// Copie chaque élément de envp dans le nouveau tableau
 		env[i] = strdup(envp[i]);
+		if (!env[i])
+		{
+			free_env(env); // Libère la mémoire en cas d'erreur
+			return (NULL);
+		}
 		i++;
 	}
 	return (env);

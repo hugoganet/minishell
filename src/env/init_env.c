@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 18:53:28 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:18:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
  */
 t_env *init_env_list(char **envp)
 {
-	int i;
-	t_env *head;
-	t_env *current;
-	t_env *node;
-	char *equal;
+	int		i;
+	t_env	*head;
+	t_env	*current;
+	t_env	*node;
+	char	*equal;
 
 	head = NULL;
 	current = NULL;
@@ -37,17 +37,35 @@ t_env *init_env_list(char **envp)
 	{
 		node = malloc(sizeof(t_env));
 		if (!node)
+		{
+			free_env_list(head);
 			return NULL;
+		}
 		equal = ft_strchr(envp[i], '=');
 		if (equal)
 		{
 			node->key = ft_substr(envp[i], 0, equal - envp[i]);
 			node->value = ft_strdup(equal + 1);
+			if (!node->value)
+			{
+				free_env_list(head);
+				return NULL;
+			}
 		}
 		else
 		{
 			node->key = ft_strdup(envp[i]);
 			node->value = NULL;
+		}
+		if (!node->key || (equal && !node->value))
+		{
+			if (node->key)
+				free(node->key);
+			if (node->value)
+				free(node->value);
+			free(node);
+			free_env_list(head);
+			return (NULL);
 		}
 		node->next = NULL;
 		if (!head)
@@ -57,5 +75,5 @@ t_env *init_env_list(char **envp)
 		current = node;
 		i++;
 	}
-	return head;
+	return (head);
 }

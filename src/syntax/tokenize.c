@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 11:23:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/09 18:25:57 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,37 @@ static char *read_operator(char *input, int *i)
 }
 
 /**
+ * @brief Concatène une redirection et le fichier cible en un seul token
+ *
+ * Exemple : si input = "> out.txt", retourne ">out.txt"
+ *
+ * @param input Ligne d’entrée utilisateur
+ * @param i Pointeur vers l’index courant (sera avancé)
+ * @return char* Contenu combiné (redir + file), ou NULL si erreur
+ */
+static char *read_redir_and_file(char *input, int *i)
+{
+	char *op;
+	char *file;
+	char *combined;
+	
+	op = read_operator(input, i);
+	if (!op)
+		return (NULL);
+	skip_spaces(input, i);
+	file = read_simple_token(input, i);
+	if (!file)
+	{
+		free(op);
+		return (NULL);
+	}
+	combined = ft_strjoin(op, file);
+	free(op);
+	free(file);
+	return (combined);
+}
+
+/**
  * @brief Lit un token complet (quote, mot ou opérateur) à partir de l’index donné
  *
  * Crée systématiquement un nouveau token dès qu’un bloc (mot, quote ou opérateur) est détecté.
@@ -115,9 +146,11 @@ static t_token *get_next_token(char *input, int *i)
 	char *content;
 	t_token_type type;
 
+	if ((input[*i] == '<' || input[*i] == '>') && input[*i] != '\0')
+		content = read_redir_and_file(input, i);
 	// Si on tombe sur une quote ou que un caractère non délimité (charactère alphanumérique, etc.),
 	// on lit un mot ou une séquence entre quotes.
-	if (input[*i] == '\'' || input[*i] == '"' || (!is_token_delim(input[*i]) && input[*i]))
+	else if (input[*i] == '\'' || input[*i] == '"' || (!is_token_delim(input[*i]) && input[*i]))
 		content = read_simple_token(input, i);
 	// Sinon, on lit un opérateur spécial (|, >>, &&, etc.)
 	else

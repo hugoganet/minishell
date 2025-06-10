@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/10 13:52:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:01:12 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,13 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	fill_args(node, new_ast);
+	if (redir)
+	{
+		create_new_node();
+		bool redir false ou true ; on creer un noeud redir ou pas 
+		rattacher redir 	
+		
+	}
 	return (new_ast);
 }
 
@@ -85,6 +92,8 @@ t_ast	*pipe_new_ast_node(t_token *node)
 		return (NULL);
 	new_ast->type = node->type;
 	new_ast->str = node->str;
+
+	
 	return (new_ast);
 }
 
@@ -133,7 +142,8 @@ t_ast	*spliter(t_token *node, t_token *end)
 	if (to_split->type == CMD) //Si cmd, fonction qui va creer un noeud et ranger les arguments a la suite
 		node_ast = cmd_new_ast_node(to_split);
 	else if (to_split->type == PIPE) // Creer un noeud pipe simple.
-		node_ast = pipe_new_ast_node(to_split); 
+		node_ast = pipe_new_ast_node(to_split);
+	else if (to_split)
 	node_ast->left = spliter(node, to_split); //Appel recursif pour continuer a creer les noeuds dans les branches qui viennent d'etre creees. Du debut de la chaine au token qui vient d'etre splite
 	node_ast->right = spliter(to_split->next, end); // Du token qui vient d'etre split a la fin de la chaine.
 	if (!node_ast)

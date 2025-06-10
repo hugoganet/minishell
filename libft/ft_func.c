@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_func.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:37:01 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/04/03 14:24:53 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:03:46 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,9 @@ int	ft_putnbr_base1(unsigned long nb, char *base)
 	i = 0;
 	if (base == 0)
 		return (0);
-	if (nb < 0)
-	{
-		ft_putchar('-');
-		nb = -nb;
-		i++;
-	}
+	ft_putchar('-');
+	nb = -nb;
+	i++;
 	if (nb >= (unsigned long long) base_l)
 		i += ft_putnbr_base1(nb / base_l, base);
 	i += ft_putchar(base[nb % base_l]);

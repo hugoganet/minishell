@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/09 18:25:57 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 16:36:15 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void skip_spaces(char *input, int *i)
  *
  * Utilisé pour détecter les limites des mots, quotes ou opérateurs.
  *
- * @param c Le caractère à tester
+ * @param c Le caractère à tester	if (!ft_strncmp(str, "<", 1))
  * @return `true` si c'est un séparateur (espace, tab, symbole shell)
  */
 static bool is_token_delim(char c)
@@ -160,6 +160,7 @@ static t_token *get_next_token(char *input, int *i)
 		return (NULL);
 	// On détermine le type du token
 	type = get_token_type(content);
+	// printf("\n%s->type = %i\n", content, type);
 	// On retourne un nouveau token avec le contenu et son type
 	return (token_new(content, type));
 }

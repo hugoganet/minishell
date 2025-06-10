@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/05 14:01:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 15:54:33 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	token_priority(t_token_type type)
 	else if (type == REDIR_APPEND || type == REDIR_INPUT
 			|| type == REDIR_OUTPUT || type == HEREDOC)
 		return (2);
-	return (3);
+	else if (type == CMD)
+		return (3);
+	return (4);
 }
 
 /**
@@ -85,8 +87,8 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	// On initialise `to_split` à NULL pour éviter les comportements indéfinis.
 	// Si aucun token de priorité inférieure à 4 n'est trouvé, on retourne NULL.
 	to_split = NULL;
-	current_priority = 4;
-	lowest_priority = 4;
+	current_priority = 5;
+	lowest_priority = 5;
 	ptr = node;
 	while (ptr && ptr != end)
 	{

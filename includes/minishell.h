@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/09 16:40:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 12:48:43 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ typedef struct s_env t_env;
  */
 typedef struct s_shell
 {
-	char **env;
-	t_env *env_list;
-	int last_exit_status;
-} t_shell;
+	char	**env;
+	t_env	*env_list;
+	int		last_exit_status;
+}			t_shell;
 
 /**
  * @enum e_token_type
@@ -59,7 +59,7 @@ typedef enum e_token_type
 	CMD,		  /**< Commande (premier mot d'une ligne) */
 	ARG,		  /**< Argument (mot après la commande) */
 	FILES,		  /**< Fichiers (après une redirection) */
-} t_token_type;
+}	t_token_type;
 
 /**
  * @struct s_token
@@ -75,10 +75,10 @@ typedef enum e_token_type
  */
 typedef struct s_token
 {
-	char *str;
-	t_token_type type;
-	struct s_token *next;
-} t_token;
+	char			*str;
+	t_token_type	type;
+	struct s_token	*next;
+}					t_token;
 
 
 // Initialisation de la structure de l'arbre de syntaxe abstraite (AST)
@@ -118,10 +118,10 @@ typedef struct s_ast
  */
 typedef struct s_env
 {
-	char *key;
-	char *value;
-	struct s_env *next;
-} 	t_env;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+} 					t_env;
 
 // Définition des couleurs ANSI
 #define COLOR_CMD "\033[1;36m"	 // Cyan clair

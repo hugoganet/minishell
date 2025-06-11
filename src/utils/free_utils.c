@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/05 11:15:16 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/10 13:21:09 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,42 @@ void free_ast(t_ast *node)
 	free_ast(node->left);
 	free_ast(node->right);
 	free(node);
+}
+
+/**
+ * @brief Libère la mémoire allouée pour l'environnement.
+ *
+ * @param env Le tableau de chaînes alloué à libérer.
+ */
+void free_env(char **env)
+{
+	int i = 0;
+
+	// Libère chaque chaîne dans le tableau
+	while (env && env[i])
+		free(env[i++]);
+	// Libère le tableau lui-même
+	free(env);
+}
+
+/**
+ * @brief Libère la mémoire de la structure t_env
+ *
+ * @param env La liste chaînée d'environnement à libérer.
+ */
+void free_env_list(t_env *env_list)
+{
+	t_env *temp;
+
+	if (!env_list)
+		return;
+	// Libère chaque nœud de la liste chaînée
+	while (env_list)
+	{
+		temp = env_list;
+		env_list = env_list->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 14:26:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:28:24 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_shell
 	char	**env;
 	t_env	*env_list;
 	t_token	*tokens;
+	t_ast	*ast;
 	int		last_exit_status;
 }			t_shell;
 

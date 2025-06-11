@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 14:21:34 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:06:29 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 	// printf("Tokens:\n");
 	// for (t_token *tmp = tokens; tmp; tmp = tmp->next)
 	// printf("  Token Type: %d, Str: '%s'\n", tmp->type, tmp->str);
-	// print_token_list(tokens);
+	print_token_list(tokens);
 	ast_root = build_ast(tokens);
 	if (!ast_root)
 	{
@@ -42,7 +42,7 @@
 		free_token_list(tokens);
 		return;
 	}
-	pretty_print_ast(ast_root, 0);
+	// pretty_print_ast(ast_root, 0);
 	execute_ast(ast_root, shell->env_list);
 	// Libération de la liste de tokens
 	free_token_list(tokens);

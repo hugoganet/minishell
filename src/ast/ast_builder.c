@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/10 17:28:43 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:06:24 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	// On initialise `to_split` à NULL pour éviter les comportements indéfinis.
 	// Si aucun token de priorité inférieure à 4 n'est trouvé, on retourne NULL.
 	to_split = NULL;
-	current_priority = 4;
-	lowest_priority = 4;
+	current_priority = 5;
+	lowest_priority = 5;
 	ptr = node;
 	while (ptr && ptr != end)
 	{

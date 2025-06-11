@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 16:36:15 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:15:43 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ static t_token *get_next_token(char *input, int *i)
 	// On détermine le type du token
 	type = get_token_type(content);
 	// printf("\n%s->type = %i\n", content, type);
+	// fflush(stdout);
 	// On retourne un nouveau token avec le contenu et son type
 	return (token_new(content, type));
 }

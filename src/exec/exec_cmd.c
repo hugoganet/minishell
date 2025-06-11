@@ -6,7 +6,11 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/11 13:52:29 by elaudrez         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/11 14:47:50 by elaudrez         ###   ########.fr       */
+>>>>>>> 08984933a5d95f031bf582ac236c9f37194855ae
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +106,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	char	*path;
 	char	**envp;
 
-	printf("\nadresse de t_env dans le parent : %p\n", (void *)env);
+	// printf("\nadresse de t_env dans le parent : %p\n", (void *)env);
 	// Vérifie que le noeud est bien de type CMD
 	if (!cmd_node || cmd_node->type != CMD) return (1);
 	// Construit le tableau argv à partir du noeud CMD
@@ -125,9 +129,6 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	}
 	if (pid == 0)
 	{
-		printf("\nadresse de t_env dans l'enfant : %p\n", (void *)env);
-		fflush(stdout);
-		// dprintf(2, ">>> calling resolve_command_path(%s)\n", argv[0]);
 		// Processus enfant : prépare l'environnement et exécute la commande
 		path = resolve_command_path(argv[0], env);
 		if (!path)

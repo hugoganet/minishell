@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:25:16 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/09 16:45:51 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:32:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
  */
 void cleanup_shell(t_shell *shell)
 {
-	printf("\nCleaning up resources...\n");
 	if (shell->env_list)
 	{
 		printf("Freeing environment list...\n");
@@ -33,5 +32,11 @@ void cleanup_shell(t_shell *shell)
 		printf("Freeing environment array...\n");	
 		free_env(shell->env);
 	}
-	// TODO : ajoute ici free_ast, free_heredoc, etc si nécessaire
+	if (shell->tokens)
+	{
+		printf("Freeing token list...\n");
+		free_token_list(shell->tokens);
+	}
+	if (shell->ast)
+		free_ast(shell->ast);
 }

@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 13:46:25 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:44:42 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 	if (ptr->next != NULL) //etre sur que pas une commande seule ex : ls
 	{
 		ptr = ptr->next;
-		while (ptr && ptr->type != PIPE && ptr->type != CMD)
+		while (ptr && ptr->type == ARG)
 		{
 			i++;
 			ptr = ptr->next;
@@ -60,10 +60,10 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 t_ast	*cmd_new_ast_node(t_token *node)
 {
 	t_ast	*new_ast;
+	int	i = 0;
 	
 	if (!node)
 		return (NULL);
-		
 	// Utiliser ft_calloc pour initialiser le contenu du bloc à NULL
 	new_ast = ft_calloc(sizeof(t_ast), 1);
 	if (!new_ast)
@@ -71,10 +71,18 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	fill_args(node, new_ast);
+	// if (new_ast->args != NULL) Pour imprimer le **char des args que contient les noeuds cmd
+	// {
+	// 	while (new_ast->args[i])
+	// 	{
+	// 		printf("args[%d] = %s\n", i, new_ast->args[i]);
+	// 		i++;
+	// 	}
+	// }
 	return (new_ast);
 }
 
-t_ast	*pipe_new_ast_node(t_token *node)
+t_ast	*new_ast_node(t_token *node)
 {
 	t_ast	*new_ast;
 
@@ -100,14 +108,14 @@ t_token	*token_to_split(t_token *node, t_token *end)
 	// On initialise `to_split` à NULL pour éviter les comportements indéfinis.
 	// Si aucun token de priorité inférieure à 4 n'est trouvé, on retourne NULL.
 	to_split = NULL;
-	current_priority = 5;
-	lowest_priority = 5;
+	current_priority = 4;
+	lowest_priority = 4;
 	ptr = node;
 	while (ptr && ptr != end)
 	{
 		current_priority = token_priority(ptr->type);
 		// On check si la priorité courante est strictement inférieur à la plus basse
-		if ((current_priority < lowest_priority) && current_priority < 3)
+		if ((current_priority < lowest_priority) && current_priority < 4)
 		{
 			to_split = ptr;
 			lowest_priority = current_priority;
@@ -133,9 +141,8 @@ t_ast	*spliter(t_token *node, t_token *end)
 		return (NULL);
 	if (to_split->type == CMD) //Si cmd, fonction qui va creer un noeud et ranger les arguments a la suite
 		node_ast = cmd_new_ast_node(to_split);
-	else if (to_split->type == PIPE) // Creer un noeud pipe simple.
-		node_ast = pipe_new_ast_node(to_split);
-	else if (to_split)
+	else if (to_split->type == PIPE || is_redirection(to_split->type))
+		node_ast = new_ast_node(to_split);
 	node_ast->left = spliter(node, to_split); //Appel recursif pour continuer a creer les noeuds dans les branches qui viennent d'etre creees. Du debut de la chaine au token qui vient d'etre splite
 	node_ast->right = spliter(to_split->next, end); // Du token qui vient d'etre split a la fin de la chaine.
 	if (!node_ast)

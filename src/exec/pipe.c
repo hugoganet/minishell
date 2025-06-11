@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 17:19:08 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:13:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ static void close_pipe_fds(int fds[2])
  * @param env Liste chaînée des variables d’environnement
  * @return 0 en cas de succès, 1 sinon
  */
-static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env)
+static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env, t_shell *shell)
 {
+	int status;
+	
 	*left_pid = fork();
 	if (*left_pid < 0)
 		return (1);
 	if (*left_pid == 0)
 	{
-		printf("\nadresse de t_env dans l'enfant gauche : %p\n", (void *)env);
-		fflush(stdout);
 		// Redirige stdout vers l’extrémité d’écriture du pipe
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 		{
@@ -71,7 +71,11 @@ static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env)
 		// Ferme les deux extrémités du pipe (déjà dupliquées)
 		close_pipe_fds(fd);
 		// Exécute récursivement la branche gauche
-		exit(execute_ast(node->left, env));
+		status = execute_ast(node->left, env, shell);
+		// Free POUR CE PROCESSUS UNIQUEMENT
+		cleanup_shell(shell);
+		// On exit en passant le statut de sortie de la commande
+		exit(status);
 	}
 	return (0);
 }
@@ -87,15 +91,15 @@ static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env)
  * @param env Liste chaînée des variables d’environnement
  * @return 0 en cas de succès, 1 sinon
  */
-static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *env)
+static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *env, t_shell *shell)
 {
+	int status;
+	
 	*right_pid = fork();
 	if (*right_pid < 0)
 		return (1);
 	if (*right_pid == 0)
 	{
-		// printf("\nadresse de t_env dans l'enfant droit : %p\n", (void *)env);
-		// fflush(stdout);
 		// Redirige stdin vers l’extrémité de lecture du pipe
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 		{
@@ -104,8 +108,12 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
 		}
 		// Ferme les deux extrémités du pipe (déjà dupliquées)
 		close_pipe_fds(fd);
-		// Exécute récursivement la branche droite
-		exit(execute_ast(node->right, env));
+		// On éxecute récursivement la branche droite
+		status = execute_ast(node->right, env, shell);
+		// Free POUR CE PROCESSUS UNIQUEMENT
+		cleanup_shell(shell);
+		// On exit en passant le statut de sortie de la commande
+		exit(status);
 	}
 	return (0);
 }
@@ -123,13 +131,12 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
  * @param env Liste chaînée des variables d’environnement
  * @return Code de sortie du processus de droite
  */
-int execute_pipe_node(t_ast *node, t_env *env)
+int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
 {
 	int		fd[2];
 	pid_t	left_pid;
 	pid_t	right_pid;
 
-	// printf("\nadresse de t_env dans le parent : %p\n", (void *)env);
 	// Création du pipe
 	if (pipe(fd) == -1)
 	{
@@ -137,13 +144,13 @@ int execute_pipe_node(t_ast *node, t_env *env)
 		return (1);
 	}
 	// Lancer le processus gauche
-	if (execute_left_pid(fd, &left_pid, node, env) != 0)
+	if (execute_left_pid(fd, &left_pid, node, env, shell) != 0)
 	{
 		close_pipe_fds(fd);
 		return (1);
 	}
 	// Lancer le processus droit
-	if (execute_right_pid(fd, &right_pid, node, env) != 0)
+	if (execute_right_pid(fd, &right_pid, node, env, shell) != 0)
 	{
 		close_pipe_fds(fd);
 		kill(left_pid, SIGTERM);

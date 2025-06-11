@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/10 12:48:43 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:12:40 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int which_quote(t_ast *node);
 void pretty_print_ast(t_ast *node, int depth);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
-int execute_ast(t_ast *node, t_env *env);
+int execute_ast(t_ast *node, t_env *env, t_shell *shell);
 int exec_cmd(t_ast *cmd_node, t_env *env);
 void print_ast_cmd_node(char **argv);
 void free_split(char **split);
@@ -177,7 +177,7 @@ char **env_to_char_array(t_env *env);
 char *resolve_command_path(char *cmd_name, t_env *env);
 int ft_strcmp(char *s1, const char *s2);
 void free_ast(t_ast *node);
-int execute_pipe_node(t_ast *node, t_env *env);
+int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell);
 void free_env_list(t_env *env);
 void cleanup_shell(t_shell *shell);
 void print_env_list(t_env *env);

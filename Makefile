@@ -29,6 +29,7 @@ SRC = 	main.c \
 		syntax/tokenize.c \
 		syntax/token_utils.c \
 		syntax/validation.c \
+		syntax/refine_token_type.c \
 		parsing/process_input.c \
 		syntax/build_token_list.c \
 		ast/ast_builder.c \

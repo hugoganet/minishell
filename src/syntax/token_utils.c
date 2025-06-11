@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 16:51:27 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:14:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,57 +46,6 @@ bool is_redirection(t_token_type type)
 	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND);
 }
 
-/**
- * @brief Reclasse les tokens WORD en CMD, ARG ou FILES selon leur contexte, de façon robuste.
- *
- * Cette fonction parcourt la liste chaînée de tokens et met à jour le type des tokens initialement de type WORD
- * en fonction de leur rôle dans la commande :
- * - Le premier WORD ou le premier WORD après un PIPE devient CMD
- * - Un ou plusieurs WORD après une redirection deviennent FILES jusqu'à un opérateur
- * - Un ou plusieurs WORD après une CMD ou un ARG deviennent ARG jusqu'à un opérateur
- *
- * @param head Pointeur vers le premier token de la liste
- */
-void refine_token_types(t_token *head)
-{
-	int		expect_cmd;
-	//int		expect_file;
-	t_token	*curr;
-
-	curr = head;
-	// TODO : Si le 1er token de la sequence est une redirection, le token suivant est une CMD
-	if (is_redirection(head->type))
-	{
-		curr = head->next;
-		curr->type = CMD;
-	}
-	expect_cmd = 1;
-	//expect_file = 0;
-	while (curr)
-	{
-		printf("\n %s->type = %i\n", curr->str, curr->type);
-		if (is_redirection(curr->type) && curr->next->type != PIPE)
-		{
-			curr = curr->next;
-			curr->type = CMD;
-			break;
-		}
-		if (curr->type == WORD)
-		{
-			if (expect_cmd)
-				curr->type = CMD;
-			// else if (expect_file)
-			// 	curr->type = FILES;
-			else
-				curr->type = ARG;
-		}
-		expect_cmd = (curr->type == PIPE);
-		// expect_file = is_redirection(curr->type);
-		if (curr->type == CMD || curr->type == ARG)
-			expect_cmd = 0;
-		curr = curr->next;
-	}
-}
 
 /**
  * @brief Extrait une sous-chaîne entre quotes simples ou doubles.

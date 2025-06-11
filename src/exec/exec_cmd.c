@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 13:44:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:33:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	if (!argv || !argv[0])
 		return (1);
 	// Affiche la commande pour le debug
-	print_ast_cmd_node(argv);
+	// print_ast_cmd_node(argv);
 	// Création du processus enfant pour exécuter la commande
 	pid = fork();
 	if (pid < 0)

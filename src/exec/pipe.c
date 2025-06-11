@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 14:13:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:35:51 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env,
 		// Free POUR CE PROCESSUS UNIQUEMENT
 		cleanup_shell(shell);
 		// On exit en passant le statut de sortie de la commande
-		exit(status);
+		_exit(status);
 	}
 	return (0);
 }
@@ -113,7 +113,7 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
 		// Free POUR CE PROCESSUS UNIQUEMENT
 		cleanup_shell(shell);
 		// On exit en passant le statut de sortie de la commande
-		exit(status);
+		_exit(status);
 	}
 	return (0);
 }

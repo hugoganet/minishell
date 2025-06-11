@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 18:15:43 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:26:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ t_token *tokenize(char *input)
 	t_token *head;
 	t_token *last;
 	t_token *new;
-	int i;
+	int		i;
 
 	head = NULL;
 	last = NULL;

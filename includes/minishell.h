@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 14:12:40 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:26:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 // ! ----------------------- STRUCTURES --------------
 
 typedef struct s_env t_env;
+typedef struct s_ast t_ast;
+typedef struct s_token t_token;
 
 /**
  * @struct s_shell
@@ -41,6 +43,7 @@ typedef struct s_shell
 {
 	char	**env;
 	t_env	*env_list;
+	t_token	*tokens;
 	int		last_exit_status;
 }			t_shell;
 
@@ -79,10 +82,6 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 }					t_token;
-
-
-// Initialisation de la structure de l'arbre de syntaxe abstraite (AST)
-typedef struct s_ast t_ast;
 
 /**
  * @struct s_ast

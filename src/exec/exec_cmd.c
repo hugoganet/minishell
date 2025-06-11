@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 14:41:09 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:47:50 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,6 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	}
 	if (pid == 0)
 	{
-		printf("\nadresse de t_env dans l'enfant : %p\n", (void *)env);
-		fflush(stdout);
-		// dprintf(2, ">>> calling resolve_command_path(%s)\n", argv[0]);
 		// Processus enfant : prépare l'environnement et exécute la commande
 		path = resolve_command_path(argv[0], env);
 		if (!path)

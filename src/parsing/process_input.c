@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 14:24:28 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:47:30 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,8 @@
 		ft_putendl_fd("minishell: error: failed to tokenize input", 2);
 		return;
 	}
-	// printf("Tokens:\n");
-	// for (t_token *tmp = tokens; tmp; tmp = tmp->next)
-	// printf("  Token Type: %d, Str: '%s'\n", tmp->type, tmp->str);
+	shell->tokens = tokens;
 	// print_token_list(tokens);
-	// TODO : ajouter le pointer de l'AST à la structure shell pour libérer tout dans cleanup_shell
-	print_token_list(tokens);
 	ast_root = build_ast(tokens);
 	if (!ast_root)
 	{
@@ -44,14 +40,15 @@
 		free_token_list(tokens);
 		return;
 	}
-	
-	pretty_print_ast(ast_root, 4);
+	// TODO : ajouter le pointer de l'AST à la structure shell pour libérer tout dans cleanup_shell
+	shell->ast = ast_root;
 	// pretty_print_ast(ast_root, 0);
-	execute_ast(ast_root, shell->env_list);
-	// Libération de la liste de tokens
-	free_token_list(tokens);
-	// Libération de l'AST
-	free_ast(ast_root);
+	execute_ast(ast_root, shell->env_list, shell);
+	// printf("Avant expansion :\n");
+	// print_ast(ast_root, 3);
+	// expand_vars(ast_root, shell);
+	// printf("Après expansion :\n");
+	// print_ast(ast_root, 3);
 }
 
 

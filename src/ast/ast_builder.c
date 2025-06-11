@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 12:06:24 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:46:25 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,9 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	new_ast = ft_calloc(sizeof(t_ast), 1);
 	if (!new_ast)
 		return (NULL);
-
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	fill_args(node, new_ast);
-	if (redir)
-	{
-		create_new_node();
-		bool redir false ou true ; on creer un noeud redir ou pas 
-		rattacher redir 	
-		
-	}
 	return (new_ast);
 }
 
@@ -94,7 +86,6 @@ t_ast	*pipe_new_ast_node(t_token *node)
 		return (NULL);
 	new_ast->type = node->type;
 	new_ast->str = node->str;
-
 	return (new_ast);
 }
 

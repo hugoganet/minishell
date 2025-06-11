@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:27:47 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 16:16:55 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:33:02 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ void	handle_heredoc(t_ast *ast_node)
 	
 }
 	
-
-
-		
 	flag = 0;
 	i = 0;
 	if(ast_node->str[2] == 34)

@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 14:47:14 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:03:05 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <stdbool.h>
 #include "libft.h"
 #include <sys/wait.h>
+#include <fcntl.h>
 
 // ! ----------------------- STRUCTURES --------------
 

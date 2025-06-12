@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 14:43:15 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 18:30:32 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,19 @@ void free_split(char **split)
 /**
  * @brief Libère récursivement un arbre de syntaxe abstraite (AST).
  *
- * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit.
+ * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit,
+ * ainsi que le tableau `args` si présent (dans les nœuds CMD).
  *
  * @param ast Pointeur vers la racine de l'AST à libérer.
  */
 void free_ast(t_ast *ast)
 {
-	int	i;
-	
+	int i;
+
 	if (!ast)
 		return;
-	// Libération récursive des branches
 	free_ast(ast->left);
 	free_ast(ast->right);
-	// Ajout de la libération du char **
 	if (ast->args)
 	{
 		i = 0;

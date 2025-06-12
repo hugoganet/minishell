@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 15:08:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 18:30:57 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,36 +40,41 @@ void print_ast_cmd_node(char **argv)
 }
 
 /**
- * @brief Affiche l’AST sous forme indentée avec couleurs.
+ * @brief Affiche joliment l'arbre de syntaxe avec indentation et couleurs.
  *
- * Chaque ligne de sortie suit le format :
- *   └── [TYPE] "valeur"   (avec couleur selon le type)
+ * Si le nœud est de type CMD, affiche aussi le tableau `args`.
  *
- * @param node Le noeud courant de l’AST à afficher
- * @param depth La profondeur dans l’arbre (0 à la racine)
+ * @param node Pointeur vers le nœud courant
+ * @param depth Niveau d'indentation
  */
 void pretty_print_ast(t_ast *node, int depth)
 {
-    int i;
+	int i;
+	int j;
 
-    // Cas de base : noeud vide
-    if (!node)
-        return;
-    // Indentation : 4 espaces par niveau
-    i = 0;
-    while (i < depth)
-    {
-        printf("    ");
-        i++;
-    }
-    // Affichage du noeud avec couleur selon le type
-    printf("└── %s%s%s", token_color(node->type),
-           token_type_str(node->type), COLOR_RESET);
-    // Affiche la chaîne associée si elle existe
-    if (node->str)
-        printf(" \"%s\"", node->str);
-    printf("\n");
-    // Appelle récursif pour les sous-arbres
-    pretty_print_ast(node->left, depth + 1);
-    pretty_print_ast(node->right, depth + 1);
+	if (!node)
+		return;
+	i = 0;
+	while (i++ < depth)
+		printf("    ");
+	printf("└── %s%s%s", token_color(node->type),
+		   token_type_str(node->type), COLOR_RESET);
+	if (node->str)
+		printf(" \"%s\"", node->str);
+	printf("\n");
+	// Affichage des arguments si disponibles
+	if (node->args)
+	{
+		j = 0;
+		while (node->args[j])
+		{
+			i = 0;
+			while (i++ <= depth)
+				printf("    ");
+			printf("arg[%d]: \"%s\"\n", j, node->args[j]);
+			j++;
+		}
+	}
+	pretty_print_ast(node->left, depth + 1);
+	pretty_print_ast(node->right, depth + 1);
 }

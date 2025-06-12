@@ -6,79 +6,11 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 15:07:07 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 18:21:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Compte le nombre d'arguments à partir d'un noeud CMD
- * 
- * Cette fonction parcourt l'AST à partir du noeud CMD et compte le nombre
- * d'arguments (`CMD` et `ARG`) jusqu'à ce qu'elle atteigne un noeud de type différent.
- * 
- * @param cmd_node Pointer vers le noeud CMD de l'AST
- * @return `int` Le nombre d'arguments trouvés
- */
-static int count_args(t_ast *cmd_node)
-{
-	t_ast	*curr;
-	int		count;
-
-	// Set le pointer courant sur le pointer reçu en argument
-	curr = cmd_node;
-	// Initialise le compteur d'arguments à 0
-	count = 0;
-	// Parcourt l'AST tant que le type est CMD ou ARG
-	while (curr && (curr->type == CMD || curr->type == ARG))
-	{
-		// Incrémente le nombre d'argument à chaque itération
-		count++;
-		// Set le pointer courant sur le noeud de droite pour accéder au prochain argument
-		curr = curr->right;
-	}
-	return (count);
-}
-
-/**
- * @brief Construit le tableau `char **argv` à partir d’un noeud CMD
- * 
- * Cette fonction parcourt l'AST à partir du noeud CMD et extrait les
- * arguments (`CMD` et `ARG`) pour les stocker dans un tableau de chaînes de caractères.
- * C'est essentiel pour pouvoir exécuter la commande avec `execve`.
- * 
- * @param cmd_node Pointer vers le noeud CMD de l'AST
- * @return `char **` Un tableau de chaînes de caractères contenant les arguments
- */
-static char **build_argv(t_ast *cmd_node)
-{
-	int		i;
-	int		count;
-	t_ast	*curr;
-	char	**argv;
-
-	// Compte le nombre d'arguments à partir du noeud CMD
-	count = count_args(cmd_node);
-	if (count == 0)
-		return (NULL);
-	// Alloue de la mémoire pour le tableau argv
-	argv = ft_calloc(sizeof(char *), (count + 1));
-	if (!argv)
-		return (NULL);
-	// Set le pointer courant sur le noeud CMD
-	curr = cmd_node;
-	i = 0;
-	// Parcourt l'AST et remplit le tableau argv avec les chaînes de caractères
-	while (curr && (curr->type == CMD || curr->type == ARG))
-	{
-		// Assigne la chaîne de caractères du noeud courant à argv
-		argv[i++] = curr->str;
-		// Avance au noeud de droite pour accéder au prochain argument
-		curr = curr->right;
-	}
-	return (argv);
-}
 
 /**
  * @brief Exécute une commande simple à partir d’un noeud AST CMD
@@ -106,7 +38,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	if (!cmd_node || cmd_node->type != CMD) 
 		return (1);
 	// Construit le tableau argv à partir du noeud CMD pour le passer à execve()
-	argv = build_argv(cmd_node);
+	argv = cmd_node->args;
 	if (!argv || !argv[0])
 		return (1);
 	// print_ast_cmd_node(cmd_node->args);
@@ -144,8 +76,6 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	}
 	// Processus parent : attend la fin du processus enfant et on récupère le statut
 	waitpid(pid, &status, 0);
-	// Libère la mémoire allouée pour argv
-	free(argv);
 	// Vérifie si le processus enfant s'est terminé normalement
 	// Si oui, retourne le code de sortie
 	if (WIFEXITED(status))

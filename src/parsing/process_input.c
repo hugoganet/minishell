@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 15:58:38 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 15:18:33 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 	shell->tokens = tokens;
 	// print_token_list(tokens);
 	ast_root = build_ast(tokens);
+	// print_ast_cmd_node(ast_root->args);
 	if (!ast_root)
 	{
 		ft_putendl_fd("minishell: error: failed to build AST", 2);
@@ -43,8 +44,8 @@
 	}
 	// Ajoute le pointer de l'AST à la structure du shell pour free proprement
 	shell->ast = ast_root;
-	pretty_print_ast(ast_root, 0);
-	execute_ast(ast_root, shell->env_list, shell);
+	// pretty_print_ast(ast_root, 0);
+	// execute_ast(ast_root, shell->env_list, shell);
 	// printf("Avant expansion :\n");
 	// print_ast(ast_root, 3);
 	// expand_vars(ast_root, shell);

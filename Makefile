@@ -99,50 +99,5 @@ fclean: clean
 # Tout reconstruire
 re: fclean all
 
-# Lancer le shell
-go: macos
-	@echo "==> Lancement de Minishell..."
-	@./$(NAME)
-
-leaks_macos:
-	@echo "==> Lancement de Minishell avec leaks..."
-	@leaks --atExit -- ./$(NAME)
-
-# Cible pour les tests de tokenisation sur macOS
-token_tests_mac:
-	@echo "==> Compilation des tests de tokenisation..."
-	$(CC) -Wall -Wextra -Werror -g3 \
-		-I$(INCL_DIR) -I$(LIBFT_DIR) -I/opt/homebrew/opt/readline/include \
-		-L$(LIBFT_DIR) -lft \
-		src/tests/tokenizer_test.c \
-		src/syntax/tokenize.c \
-		src/utils/print_token_list.c \
-		src/utils/free_token_list.c \
-		src/utils/init_error.c \
-		src/syntax/token_utils.c \
-		src/syntax/build_token_list.c \
-		-o tokenizer_tests
-	@echo "✅ Binaire de test créé : ./tokenizer_tests"
-	@echo "==> Lancement avec leaks..."
-	@leaks --atExit -- ./tokenizer_tests
-
-# Cible pour les tests de tokenisation
-token_tests:
-	@echo "==> Compilation des tests de tokenisation..."
-	$(CC) -Wall -Wextra -Werror -g3 \
-		-I$(INCL_DIR) -I$(LIBFT_DIR) \
-		src/tests/tokenizer_test.c \
-		src/syntax/tokenize.c \
-		src/utils/print_token_list.c \
-		src/utils/free_token_list.c \
-		src/utils/init_error.c \
-		src/syntax/token_utils.c \
-		src/syntax/build_token_list.c \
-		-o tokenizer_tests
-	@echo "✅ Binaire de test créé : ./tokenizer_tests"
-	@echo "==> Lancement avec leaks..."
-	@valgrind --leak-check=full --show-leak-kinds=all ./tokenizer_tests
-
-
 # Pas de fichiers de sortie ici
-.PHONY: all clean fclean re macos go leaks token_tests
+.PHONY: all clean fclean re

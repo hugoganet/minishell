@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 15:59:58 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 15:08:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void print_ast_cmd_node(char **argv)
 
     if (!argv)
     {
-        printf("[print_ast_cmd_node] argv is NULL\n");
+        printf("\n[print_ast_cmd_node] argv is NULL\n");
         return;
     }
     printf("\n=== [AST → argv] Command arguments: ===\n");

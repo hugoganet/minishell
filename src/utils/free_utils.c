@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 16:12:18 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 14:43:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,26 @@ void free_split(char **split)
  *
  * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit.
  *
- * @param node Pointeur vers la racine de l'AST à libérer.
+ * @param ast Pointeur vers la racine de l'AST à libérer.
  */
-void free_ast(t_ast *node)
+void free_ast(t_ast *ast)
 {
 	int	i;
 	
-	if (!node)
+	if (!ast)
 		return;
 	// Libération récursive des branches
-	free_ast(node->left);
-	free_ast(node->right);
+	free_ast(ast->left);
+	free_ast(ast->right);
 	// Ajout de la libération du char **
-	if (node->args)
+	if (ast->args)
 	{
 		i = 0;
-		while (node->args[i])
-			free(node->args[i++]);
-		free(node->args);
+		while (ast->args[i])
+			free(ast->args[i++]);
+		free(ast->args);
 	}
-	free(node);
+	free(ast);
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 16:18:53 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 15:14:46 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,33 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 	i = 0;
 	j = 0;
 	ptr = node;
+	// ? Elsa : Si la commande c'est juste `ls` ?  
 	if (ptr->next != NULL) //etre sur que pas une commande seule ex : ls
 	{
 		ptr = ptr->next;
+		// On compte le nombre d'arguments (ARG) après le noeud CMD
 		while (ptr && ptr->type == ARG)
 		{
 			i++;
 			ptr = ptr->next;
 		}
-		new_ast->args = malloc((i + 1) * sizeof(char *));
+		// On alloue un tableau de chaînes de caractères pour les arguments
+		// On ajoute 1 pour le CMD lui-même
+		new_ast->args = malloc((i + 2) * sizeof(char *));
 		if (!new_ast->args)
-		{
-			
 			return ;
-		}
-		ptr = node->next;
-		while (j < i)
+		// On réinitialise le pointeur sur le token de départ (CMD)
+		ptr = node;
+		// On remplit le tableau avec les arguments
+		while (j < (i + 1))
 		{
+			// 
 			new_ast->args[j] = ft_strdup(ptr->str);
 			if (!new_ast->args[j])
+			{
+				
 				return ;
+			}
 			j++;
 			ptr = ptr->next;
 		}
@@ -74,12 +81,11 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	fill_args(node, new_ast);
-	// Pour imprimer le **char des args que contient les noeuds cmd 
-	if (new_ast->args != NULL)
+	if (new_ast->args != NULL) 
 	{
 		while (new_ast->args[i])
 		{
-			printf("args[%d] = %s\n", i, new_ast->args[i]);
+			// printf("args[%d] = %s\n", i, new_ast->args[i]);
 			i++;
 		}
 	}

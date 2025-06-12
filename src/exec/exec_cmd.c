@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 16:01:14 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 15:07:07 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,14 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 	char	*path;
 	char	**envp;
 
-	// printf("\nadresse de t_env dans le parent : %p\n", (void *)env);
 	// Vérifie que le noeud est bien de type CMD
-	if (!cmd_node || cmd_node->type != CMD) return (1);
-	// Construit le tableau argv à partir du noeud CMD
-	// pour le passer à execve()
+	if (!cmd_node || cmd_node->type != CMD) 
+		return (1);
+	// Construit le tableau argv à partir du noeud CMD pour le passer à execve()
 	argv = build_argv(cmd_node);
 	if (!argv || !argv[0])
 		return (1);
-	// Affiche la commande pour le debug
-	// print_ast_cmd_node(argv);
+	// print_ast_cmd_node(cmd_node->args);
 	// Création du processus enfant pour exécuter la commande
 	pid = fork();
 	if (pid < 0)
@@ -139,7 +137,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env)
 		if (execve(path, argv, envp) == -1)
 		{
 			perror("minishell: execve");
-			exit(126); // 126 = erreur lors de l’exécution
+			exit(126);
 		}
 		// Si pas d'erreur, le exit ne sera pas atteint
 		exit(0);

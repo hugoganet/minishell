@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 14:44:42 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:18:53 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 		}
 		new_ast->args = malloc((i + 1) * sizeof(char *));
 		if (!new_ast->args)
+		{
+			
 			return ;
+		}
 		ptr = node->next;
 		while (j < i)
 		{
@@ -71,14 +74,15 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	fill_args(node, new_ast);
-	// if (new_ast->args != NULL) Pour imprimer le **char des args que contient les noeuds cmd
-	// {
-	// 	while (new_ast->args[i])
-	// 	{
-	// 		printf("args[%d] = %s\n", i, new_ast->args[i]);
-	// 		i++;
-	// 	}
-	// }
+	// Pour imprimer le **char des args que contient les noeuds cmd 
+	if (new_ast->args != NULL)
+	{
+		while (new_ast->args[i])
+		{
+			printf("args[%d] = %s\n", i, new_ast->args[i]);
+			i++;
+		}
+	}
 	return (new_ast);
 }
 

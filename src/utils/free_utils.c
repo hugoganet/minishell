@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 13:21:09 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/11 16:12:18 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,21 @@ void free_split(char **split)
  */
 void free_ast(t_ast *node)
 {
+	int	i;
+	
 	if (!node)
 		return;
 	// Libération récursive des branches
 	free_ast(node->left);
 	free_ast(node->right);
+	// Ajout de la libération du char **
+	if (node->args)
+	{
+		i = 0;
+		while (node->args[i])
+			free(node->args[i++]);
+		free(node->args);
+	}
 	free(node);
 }
 

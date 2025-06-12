@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 14:50:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 14:22:42 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <stdbool.h>
 #include "libft.h"
 #include <sys/wait.h>
+#include <fcntl.h>
 
 // ! ----------------------- STRUCTURES --------------
 

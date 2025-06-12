@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 13:53:15 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:38:40 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_token_type get_token_type(char *str)
  */
 bool is_redirection(t_token_type type)
 {
-	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND);
+	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND || type == HEREDOC);
 }
 
 

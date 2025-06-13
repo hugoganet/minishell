@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/12 14:22:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/13 17:20:25 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void pretty_print_ast(t_ast *node, int depth);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);
-int exec_cmd(t_ast *cmd_node, t_env *env);
+int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root);
 void print_ast_cmd_node(char **argv);
 void free_split(char **split);
 char *get_env_value(t_env *env, const char *key);
@@ -161,5 +161,6 @@ int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell);
 void free_env_list(t_env *env);
 void cleanup_shell(t_shell *shell);
 void print_env_list(t_env *env);
+int setup_redirections(t_ast *node);
 
 #endif

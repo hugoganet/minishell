@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/12 18:21:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/13 16:30:09 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,16 @@ t_ast	*spliter(t_token *node, t_token *end)
 	return (node_ast);
 }
 
+/**
+ * @brief Fonction principale pour construire l'AST à partir d'une liste de tokens.
+ *
+ * Cette fonction est le point d'entrée pour la construction de l'AST.
+ * Elle utilise la fonction `spliter` pour diviser les tokens en nœuds AST
+ * en fonction de leur priorité.
+ *
+ * @param node La liste de tokens à partir de laquelle construire l'AST
+ * @return Un pointeur vers le nœud racine de l'AST, ou NULL en cas d'erreur
+ */
 t_ast	*build_ast(t_token *node)
 {
 	t_ast	*new_ast;

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:23 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 14:50:43 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/13 17:44:57 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,13 @@ int execute_ast(t_ast *node, t_env *env_list, t_shell *shell)
 		return (1);
 	if (node->type == PIPE)
 		return (execute_pipe_node(node, env_list, shell));
-	if (node->type == CMD)
-		return (exec_cmd(node, env_list));
-	// Les autres types (PIPE, REDIR, etc.) seront gérés plus tard
-	ft_putendl_fd("execute_ast: unsupported node type (WIP)\n", STDERR_FILENO);
+	else if (node->type == REDIR_INPUT || node->type == REDIR_OUTPUT || node->type == REDIR_APPEND)
+	{
+		// printf("execute_ast: redirection\n");
+		return (exec_cmd(node->right, env_list, node));
+	}
+	else if (node->type == CMD)
+		return (exec_cmd(node, env_list, node));
+	ft_putendl_fd("execute_ast: heredoc unsupported (WIP)\n", STDERR_FILENO);
 	return (1);
 }

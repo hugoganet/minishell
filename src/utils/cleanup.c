@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:25:16 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 15:01:57 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/13 15:21:53 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,22 @@ void cleanup_shell(t_shell *shell)
 {
 	if (shell->env_list)
 	{
-		// printf("Freeing environment list...\n");
 		free_env_list(shell->env_list);
+		shell->env_list = NULL;
 	}
 	if (shell->env)
 	{
-		// printf("Freeing environment array...\n");	
 		free_env(shell->env);
+		shell->env = NULL;
 	}
 	if (shell->tokens)
 	{
-		// printf("Freeing token list...\n");
 		free_token_list(shell->tokens);
+		shell->tokens = NULL;
 	}
 	if (shell->ast)
+	{
 		free_ast(shell->ast);
+		shell->ast = NULL;
+	}
 }

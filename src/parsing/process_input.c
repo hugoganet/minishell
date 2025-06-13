@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 18:31:30 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/13 15:13:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 	// Ajoute le pointer de l'AST à la structure du shell pour free proprement
 	shell->ast = ast_root;
 	execute_ast(ast_root, shell->env_list, shell);
+	// cleanup_shell(shell); // Nettoyage de la mémoire allouée
 	// printf("Avant expansion :\n");
 	// print_ast(ast_root, 3);
 	// expand_vars(ast_root, shell);

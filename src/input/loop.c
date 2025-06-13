@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 16:00:24 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/13 15:23:03 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void shell_loop(t_shell *shell)
 		// Sinon, on traite l'entrée.
 		if (!is_line_empty(input) && !is_syntax_valid(input))
 			process_input(input, shell);
-		// On libère la mémoire allouée pour l'entrée
 		free(input);
+		input = NULL;
+		// On nettoie les ressources allouées par le shell
+		free_ast(shell->ast);
+		free_token_list(shell->tokens);
 	}
 }

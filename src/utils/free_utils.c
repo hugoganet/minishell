@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 18:30:32 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 18:40:33 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ void free_ast(t_ast *ast)
 
 	if (!ast)
 		return;
+	// Libération récursive
 	free_ast(ast->left);
 	free_ast(ast->right);
+	// Libération des arguments (si c’est un CMD avec des args)
 	if (ast->args)
 	{
 		i = 0;
@@ -74,6 +76,7 @@ void free_ast(t_ast *ast)
 			free(ast->args[i++]);
 		free(ast->args);
 	}
+	// Libère le nœud lui-même
 	free(ast);
 }
 

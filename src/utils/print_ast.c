@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/12 18:30:57 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/16 15:11:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void pretty_print_ast(t_ast *node, int depth)
 	printf("└── %s%s%s", token_color(node->type),
 		   token_type_str(node->type), COLOR_RESET);
 	if (node->str)
-		printf(" \"%s\"", node->str);
+		printf(" %s", node->str);
 	printf("\n");
 	// Affichage des arguments si disponibles
 	if (node->args)
@@ -71,7 +71,7 @@ void pretty_print_ast(t_ast *node, int depth)
 			i = 0;
 			while (i++ <= depth)
 				printf("    ");
-			printf("arg[%d]: \"%s\"\n", j, node->args[j]);
+			printf("arg[%d]: %s\n", j, node->args[j]);
 			j++;
 		}
 	}

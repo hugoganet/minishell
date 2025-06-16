@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/16 15:11:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/16 15:28:20 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,6 @@ void pretty_print_ast(t_ast *node, int depth)
 			j++;
 		}
 	}
-	pretty_print_ast(node->left, depth + 1);
 	pretty_print_ast(node->right, depth + 1);
+	pretty_print_ast(node->left, depth + 1);
 }

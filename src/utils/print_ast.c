@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/16 15:28:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/16 16:03:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,8 @@ void print_ast_cmd_node(char **argv)
     printf("=============================\n\n");
 }
 
-/**
- * @brief Affiche joliment l'arbre de syntaxe avec indentation et couleurs.
- *
- * Si le nœud est de type CMD, affiche aussi le tableau `args`.
- *
- * @param node Pointeur vers le nœud courant
- * @param depth Niveau d'indentation
- */
-void pretty_print_ast(t_ast *node, int depth)
+
+void pretty_print_ast(t_ast *node, int depth, const char *label)
 {
 	int i;
 	int j;
@@ -55,26 +48,35 @@ void pretty_print_ast(t_ast *node, int depth)
 	if (!node)
 		return;
 	i = 0;
-	while (i++ < depth)
+	while( i < depth)
+	{
 		printf("    ");
-	printf("└── %s%s%s", token_color(node->type),
-		   token_type_str(node->type), COLOR_RESET);
+		i++;
+	}
+	printf("↳ [%s] %s%s%s", label,
+		   token_color(node->type),
+		   token_type_str(node->type),
+		   COLOR_RESET);
+
 	if (node->str)
 		printf(" %s", node->str);
 	printf("\n");
-	// Affichage des arguments si disponibles
+
 	if (node->args)
-	{
+	{	
 		j = 0;
 		while (node->args[j])
 		{
 			i = 0;
-			while (i++ <= depth)
+			while(i <= depth)
+			{
 				printf("    ");
+				i++;
+			}
 			printf("arg[%d]: %s\n", j, node->args[j]);
 			j++;
 		}
 	}
-	pretty_print_ast(node->right, depth + 1);
-	pretty_print_ast(node->left, depth + 1);
+	pretty_print_ast(node->left, depth + 1, "LEFT");
+	pretty_print_ast(node->right, depth + 1, "RIGHT");
 }

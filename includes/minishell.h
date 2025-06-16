@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/13 17:20:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/16 16:04:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_ast *build_ast(t_token *node);
 void expand_vars(t_ast *node, t_shell *data);
 char *ft_strcpy(char *dest, char *src);
 int which_quote(t_ast *node);
-void pretty_print_ast(t_ast *node, int depth);
+void pretty_print_ast(t_ast *node, int depth, const char *label);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);

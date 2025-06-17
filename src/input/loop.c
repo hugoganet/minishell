@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 11:53:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 12:12:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void shell_loop(t_shell *shell)
 		shell->ast = NULL;
 		free_token_list(shell->tokens);
 		shell->tokens = NULL;
+		// cleanup_shell(shell);
 	}
 }

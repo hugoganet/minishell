@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/13 17:51:32 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 13:41:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_ast *find_cmd_node(t_ast *node)
 	// Cherche dans la branche gauche
 	 found = find_cmd_node(node->left);
 	if (found)
-		return found;
+		return (found);
 	// Cherche dans la branche droite
-	return find_cmd_node(node->right);
+	return (find_cmd_node(node->right));
 }
 
 /**
@@ -46,7 +46,7 @@ t_ast *find_cmd_node(t_ast *node)
  * @param env Liste chaînée des variables d'environnement
  * @param ast_root Racine du sous-arbre (pour les redirections)
  */
-static void run_child_process(char **argv, t_env *env, t_ast *ast_root)
+static void run_child_process(char **argv, t_env *env, t_ast *ast_root, t_shell *shell)
 {
 	char *path;
 	char **envp;
@@ -58,15 +58,25 @@ static void run_child_process(char **argv, t_env *env, t_ast *ast_root)
 	// fflush(stdout);
 	if (!path)
 	{
+		// ! Attention ici parce que ça exit sans free les ressources
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(argv[0], 2);
 		ft_putendl_fd(": command not found", 2);
+		cleanup_shell(shell);
 		exit(127);
 	}
 	envp = env_to_char_array(env);
+	if (!envp)
+	{
+		perror("minishell: env malloc");
+		cleanup_on_child_exit(shell);
+		exit(1);
+	}
 	if (execve(path, argv, envp) == -1)
 	{
+		// ? il faut peut-être free tous les pointeurs avant de quitter vu qu'on est dans un fork
 		perror("minishell: execve");
+		cleanup_shell(shell);
 		exit(126);
 	}
 }
@@ -79,10 +89,10 @@ static void run_child_process(char **argv, t_env *env, t_ast *ast_root)
  *
  * @param cmd_node Le noeud CMD contenant les arguments
  * @param env Liste des variables d'environnement
- * @param ast_root Racine contenant potentiellement des redirections
+ * @param ast_root Racine de l'AST
  * @return Code de retour de la commande
  */
-int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root)
+int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 {
 	pid_t pid;
 	int status;
@@ -105,7 +115,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root)
 		return (1);
 	}
 	if (pid == 0)
-		run_child_process(argv, env, ast_root);
+		run_child_process(argv, env, ast_root, shell);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

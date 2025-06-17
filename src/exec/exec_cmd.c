@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 13:41:15 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 14:33:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void run_child_process(char **argv, t_env *env, t_ast *ast_root, t_shell 
 	if (!envp)
 	{
 		perror("minishell: env malloc");
-		cleanup_on_child_exit(shell);
+		cleanup_shell(shell);
 		exit(1);
 	}
 	if (execve(path, argv, envp) == -1)

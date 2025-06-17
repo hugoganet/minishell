@@ -23,7 +23,6 @@ SRC = 	main.c \
 		utils/cleanup.c \
 		input/loop.c \
 		input/prompt.c \
-		input/readline_hooks.c \
 		syntax/syntax_check.c \
 		syntax/syntax_utils.c \
 		syntax/tokenize.c \
@@ -43,6 +42,7 @@ SRC = 	main.c \
 		exec/resolve_command_path.c \
 		exec/pipe.c \
 		exec/redirection.c \
+		signals/signals.c \
 	
 
 # Rassembler les sources

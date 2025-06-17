@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/17 13:05:32 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 14:29:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
+
+// ! ----------------------- VAR GLOBALE --------------
+
+extern volatile sig_atomic_t g_signal;
 
 // ! ----------------------- STRUCTURES --------------
 
@@ -160,7 +164,6 @@ void free_ast(t_ast *node);
 int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell);
 void free_env_list(t_env *env);
 void cleanup_shell(t_shell *shell);
-void cleanup_on_child_exit(t_shell *shell);
 void print_env_list(t_env *env);
 int setup_redirections(t_ast *node);
 

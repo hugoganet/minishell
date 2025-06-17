@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/13 15:23:03 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 11:53:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,12 @@ void shell_loop(t_shell *shell)
 			process_input(input, shell);
 		free(input);
 		input = NULL;
-		// On nettoie les ressources allouées par le shell
+		// On nettoie les ressources allouées par le shell après chaque entrée.
+		// Mais on ne libère pas la liste d'environnement, car elle est
+		// utilisée tout au long de la session du shell.
 		free_ast(shell->ast);
+		shell->ast = NULL;
 		free_token_list(shell->tokens);
+		shell->tokens = NULL;
 	}
 }

@@ -6,65 +6,81 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 14:33:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 12:52:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Cherche récursivement le nœud CMD à partir d’un sous-arbre.
+ * @brief Cherche récursivement le premier noeud de type CMD.
  *
- * @param node Nœud racine potentiel (redirection, etc.)
- * @return Pointeur vers le nœud CMD, ou NULL s’il n’est pas trouvé
+ * @param node Nœud racine du sous-arbre AST.
+ * @return Pointeur vers le noeud de type CMD, ou NULL si non trouvé.
  */
 t_ast *find_cmd_node(t_ast *node)
 {
 	t_ast *found;
-	
-	found = NULL;
+
+	// Si le noeud est nul, on ne trouve rien
 	if (!node)
-		return NULL;
+		return (NULL);
+	// Si le noeud courant est un CMD, on le retourne
 	if (node->type == CMD)
-		return node;
-	// Cherche dans la branche gauche
-	 found = find_cmd_node(node->left);
+		return (node);
+	// Recherche récursive dans la branche gauche
+	found = find_cmd_node(node->left);
 	if (found)
 		return (found);
-	// Cherche dans la branche droite
+	// Sinon, recherche dans la branche droite
 	return (find_cmd_node(node->right));
 }
 
 /**
- * @brief Lance le processus enfant : redirections + execve
+ * @brief Initialise les signaux dans le processus enfant.
  *
- * Cette fonction est appelée dans le processus enfant après un fork.
- * Elle applique les redirections, résout le chemin de la commande,
- * puis exécute la commande via execve.
- *
- * @param argv Tableau d'arguments de la commande
- * @param env Liste chaînée des variables d'environnement
- * @param ast_root Racine du sous-arbre (pour les redirections)
+ * Permet à l'enfant de recevoir normalement les signaux SIGINT et SIGQUIT.
  */
-static void run_child_process(char **argv, t_env *env, t_ast *ast_root, t_shell *shell)
+static void reset_signals_in_child(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+/**
+ * @brief Exécute une commande dans un processus enfant.
+ *
+ * - Applique les redirections
+ * - Résout le path de la commande
+ * - Convertit l'env en tableau char **
+ * - Lance execve
+ *
+ * @param argv Tableau d'arguments
+ * @param env Liste chaînée de l'environnement
+ * @param ast Arbre AST courant (pour les redirections)
+ * @param shell Structure principale du shell (pour cleanup)
+ */
+static void run_child_process(char **argv, t_env *env,
+							  t_ast *ast, t_shell *shell)
 {
 	char *path;
 	char **envp;
 
-	if (setup_redirections(ast_root) != 0)
+	reset_signals_in_child();
+	// Applique les redirections si nécessaires
+	if (setup_redirections(ast) != 0)
 		exit(1);
+	// Résout le path absolu de la commande (ou NULL si invalide)
 	path = resolve_command_path(argv[0], env);
-	// printf("run_child_process - PATH: %s\n", path ? path : "NULL");
-	// fflush(stdout);
 	if (!path)
 	{
-		// ! Attention ici parce que ça exit sans free les ressources
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(argv[0], 2);
 		ft_putendl_fd(": command not found", 2);
 		cleanup_shell(shell);
 		exit(127);
 	}
+	// Convertit la liste chaînée env en tableau char **
 	envp = env_to_char_array(env);
 	if (!envp)
 	{
@@ -72,9 +88,9 @@ static void run_child_process(char **argv, t_env *env, t_ast *ast_root, t_shell 
 		cleanup_shell(shell);
 		exit(1);
 	}
+	// Lance la commande
 	if (execve(path, argv, envp) == -1)
 	{
-		// ? il faut peut-être free tous les pointeurs avant de quitter vu qu'on est dans un fork
 		perror("minishell: execve");
 		cleanup_shell(shell);
 		exit(126);
@@ -82,15 +98,41 @@ static void run_child_process(char **argv, t_env *env, t_ast *ast_root, t_shell 
 }
 
 /**
- * @brief Exécute une commande simple à partir d’un noeud AST CMD
+ * @brief Gère le code retour du processus enfant après un waitpid.
  *
- * Cette fonction fork un processus enfant, lui transmet les redirections
- * et les arguments, puis exécute la commande via execve.
+ * @param status Statut renvoyé par waitpid
+ * @return Code de sortie du shell pour cette commande
+ */
+static int handle_child_status(int status)
+{
+	// Si l'enfant a été tué par un signal
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		else if (WTERMSIG(status) == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
+		return (128 + WTERMSIG(status));
+	}
+	// Si l'enfant s'est terminé normalement
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	// Par défaut
+	return (1);
+}
+
+/**
+ * @brief Exécute une commande simple (non composée) en forkant un enfant.
  *
- * @param cmd_node Le noeud CMD contenant les arguments
+ * - Récupère le noeud CMD
+ * - Prépare argv
+ * - Fork, exécute, puis attend la fin du processus enfant
+ *
+ * @param cmd_node Le noeud CMD (ou un noeud supérieur contenant le CMD)
  * @param env Liste des variables d'environnement
- * @param ast_root Racine de l'AST
- * @return Code de retour de la commande
+ * @param ast_root Racine de l'AST courant
+ * @param shell Structure du shell principal
+ * @return Code de retour de la commande exécutée
  */
 int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 {
@@ -98,26 +140,28 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	int status;
 	char **argv;
 
+	// Recherche du vrai noeud CMD à exécuter
 	cmd_node = find_cmd_node(ast_root);
-	// printf("exec_cmd - AST Node Type: %d\n", cmd_node->type);
-	if (!cmd_node)
-	{
-		ft_putendl_fd("exec_cmd: CMD node introuvable !", 2);
+	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
 		return (1);
-	}
 	argv = cmd_node->args;
-	if (!argv || !argv[0])
-		return (1);
+	// Fork du processus
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("minishell: fork");
 		return (1);
 	}
+	// Enfant : exécute la commande
 	if (pid == 0)
 		run_child_process(argv, env, ast_root, shell);
+	// Parent : ignore temporairement SIGINT et SIGQUIT
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	// Attend la fin du processus enfant
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (1);
+	// Réactive les signaux du shell (readline)
+	init_signals();
+	// Gère le code de retour du processus
+	return (handle_child_status(status));
 }

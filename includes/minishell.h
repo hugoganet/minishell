@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/17 14:29:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 16:31:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@
 #include <fcntl.h>
 
 // ! ----------------------- VAR GLOBALE --------------
+
+// extern : la variable est déclarée ici, mais définie ailleurs (dans signals.c).
+//          Ça évite de la redéfinir dans chaque fichier, tout en permettant de l'utiliser.
+
+// volatile : indique au compilateur que cette variable peut changer à tout moment,
+//            par exemple via un signal. Il doit toujours la relire depuis la mémoire.
+
+// sig_atomic_t : type sûr pour signaux. Assure que la lecture/écriture est atomique
+//                (pas interrompue en plein milieu), donc sans comportement indéfini.
 
 extern volatile sig_atomic_t g_signal;
 

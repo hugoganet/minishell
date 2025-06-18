@@ -6,56 +6,73 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:18:46 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 16:01:08 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 13:12:34 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <termios.h>
 
-/**
- * @brief Variable globale utilisée pour signaler un signal reçu
- *
- * Cette variable est définie ici (dans signals.c) et déclarée
- * en externe dans minishell.h pour respecter les règles du projet.
- */
 volatile sig_atomic_t g_signal = 0;
 
 /**
- * @brief Handler de signal : stocke simplement le numéro du signal.
+ * @brief Désactive l'affichage des caractères de contrôle (comme ^C).
  *
- * Ce handler est ultra simple car appelé pendant des appels système
- * non réentrants (ex: readline). Il ne doit pas appeler de fonction
- * complexe, juste stocker un signal pour traitement différé.
- *
- * @param signo Le numéro du signal reçu (ex : SIGINT)
+ * Cette fonction utilise les appels POSIX `tcgetattr` et `tcsetattr` pour modifier
+ * les attributs du terminal. En retirant le flag `ECHOCTL`, on empêche l'affichage
+ * de symboles comme `^C` quand l'utilisateur tape `Ctrl-C` ou `Ctrl-\`.
  */
-void handle_signal(int signo)
+static void set_echoctl_off(void)
 {
-	g_signal = signo;
+	// Structure pour les attributs du terminal
+	struct termios term;
+
+	// Récupère les attributs actuels du terminal pour STDIN (entrée standard).
+	// Le résultat est stocké dans la structure `term`.
+	// Si tcgetattr échoue (renvoie -1), on quitte la fonction.
+	if (tcgetattr(STDIN_FILENO, &term) == -1)
+		return;
+	// Supprime le flag ECHOCTL (Echo Control Characters) dans les flags du terminal.
+	// ECHOCTL est responsable de l'affichage visuel des caractères de contrôle.
+	// Par exemple : Ctrl-C → ^C, Ctrl-\ → ^\.
+	// Ici, on fait un "bitwise AND NOT" ( &= ~ ) pour désactiver juste ce flag
+	// sans toucher aux autres (ECHO, ICANON, etc.).
+	term.c_lflag &= ~ECHOCTL;
+	// Applique les nouveaux paramètres immédiatement (sans attente de prochain flush).
+	// TCSANOW signifie : "Change la configuration du terminal dès maintenant".
+	// Cette ligne rend les modifications actives dans le terminal interactif du shell.
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
 /**
- * @brief Initialise les handlers de signaux pour SIGINT et SIGQUIT.
+ * @brief Efface la ligne courante et repositionne readline.
+ */
+static void clear_readline_line(void)
+{
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+/**
+ * @brief Handler pour SIGINT (Ctrl-C).
  *
- * Utilise sigaction() au lieu de signal() pour une gestion propre et POSIX-safe.
- * SA_RESTART permet à readline() de continuer après interruption.
+ * Ne fait que : nouvelle ligne + signal à readline + set de g_signal.
+ */
+static void handle_sigint(int sig)
+{
+	write(STDOUT_FILENO, "\n", 1);
+	g_signal = sig;
+	clear_readline_line();
+}
+/**
+ * @brief Active les handlers pour le shell interactif (readline).
  */
 void init_signals(void)
 {
-	struct sigaction sa;
-
-	// On définit la fonction à appeler quand un signal est reçu
-	sa.sa_handler = handle_signal;
-	// On initialise le masque de signaux bloqués pendant le handler
-	// (ici, on ne bloque rien en plus)
-	sigemptyset(&sa.sa_mask);
-	// Option SA_RESTART : certaines fonctions système (ex: readline) sont automatiquement reprises
-	// après qu'un signal ait été traité (au lieu de renvoyer une erreur)
-	sa.sa_flags = SA_RESTART;
-	// Appliquer ce handler à SIGINT (Ctrl-C)
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		write(2, "Failed to set SIGINT handler\n", 30);
-	// Appliquer ce handler à SIGQUIT (Ctrl-\) même s’il ne fait rien de visible
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		write(2, "Failed to set SIGQUIT handler\n", 31);
+	signal(SIGINT, handle_sigint);
+	// On ignore SIGQUIT dans le shell interactif
+	signal(SIGQUIT, SIG_IGN);
+	// Désactive l'affichage des caractères de contrôle (comme ^C)
+	set_echoctl_off();
 }

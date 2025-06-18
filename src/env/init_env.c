@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 13:32:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 19:09:42 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,23 +71,91 @@ static t_env *create_env_node(char *env_var)
 }
 
 /**
- * @brief Initialise une liste chaînée d’environnement à partir de envp.
+ * @brief Crée une paire clé/valeur sous forme de t_env.
  *
- * En cas d’erreur d’allocation, libère toute la mémoire déjà allouée.
+ * Alloue et initialise un nouveau nœud contenant une clé et une valeur.
  *
- * @param envp Tableau de chaînes d’environnement.
- * @return t_env* Pointeur vers la tête de la liste ou NULL en cas d’échec.
+ * @param key La clé de la variable (ex : "PWD")
+ * @param value La valeur associée (ex : "/home/user")
+ * @return t_env* Le nœud alloué ou NULL en cas d’échec
+ */
+t_env *create_env_pair(const char *key, const char *value)
+{
+	t_env *node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
+	node->key = ft_strdup(key);
+	node->value = value ? ft_strdup(value) : NULL;
+	node->next = NULL;
+	if (!node->key || (value && !node->value))
+	{
+		free(node->key);
+		free(node->value);
+		free(node);
+		return (NULL);
+	}
+	return (node);
+}
+
+/**
+ * @brief Initialise une env minimale avec SHLVL=1 et PWD=<répertoire courant>.
+ *
+ * Utilisée si l’environnement est vide (env -i).
+ *
+ * @return t_env* La liste minimale ou NULL en cas d’erreur d’allocation
+ */
+static t_env *init_minimal_env(void)
+{
+	t_env *head;
+	t_env *pwd;
+	// PATH_MAX est une constante définie par POSIX dans <limits.h> 
+	// qui donne la longueur maximale d’un chemin absolu valide (en général 4096).
+	char cwd[PATH_MAX];
+
+	// Crée SHLVL=1
+	head = create_env_pair("SHLVL", "1");
+	if (!head)
+		return (NULL);
+	// Récupère le répertoire courant pour initialiser PWD
+	if (getcwd(cwd, sizeof(cwd)))
+	{
+		pwd = create_env_pair("PWD", cwd);
+		if (!pwd)
+		{
+			free_env_list(head);
+			return (NULL);
+		}
+		head->next = pwd;
+	}
+	return (head);
+}
+
+/**
+ * @brief Initialise la liste chaînée d’environnement à partir de envp.
+ *
+ * Si envp est vide ou NULL (ex : env -i), on crée une env minimale contenant
+ * SHLVL=1 et PWD=<répertoire courant>.
+ *
+ * @param envp Le tableau de chaînes "KEY=VALUE" fourni au main
+ * @return t_env* La tête de la liste chaînée ou NULL en cas d’échec
  */
 t_env *init_env_list(char **envp)
 {
-	int i = 0;
-	t_env *head = NULL;
-	t_env *current = NULL;
+	t_env *head;
 	t_env *node;
+	t_env *last;
 
-	while (envp && envp[i])
+	// Si envp est vide, on initialise une env minimale
+	if (!envp || !envp[0])
+		return (init_minimal_env());
+	head = NULL;
+	last = NULL;
+	// Pour chaque variable "KEY=VALUE", on crée un nœud t_env
+	while (*envp)
 	{
-		node = create_env_node(envp[i]);
+		node = create_env_node(*envp++);
 		if (!node)
 		{
 			free_env_list(head);
@@ -96,9 +164,8 @@ t_env *init_env_list(char **envp)
 		if (!head)
 			head = node;
 		else
-			current->next = node;
-		current = node;
-		i++;
+			last->next = node;
+		last = node;
 	}
 	return (head);
 }

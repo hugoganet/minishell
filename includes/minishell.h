@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/18 16:31:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 19:10:10 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <limits.h>
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
@@ -175,5 +176,6 @@ void free_env_list(t_env *env);
 void cleanup_shell(t_shell *shell);
 void print_env_list(t_env *env);
 int setup_redirections(t_ast *node);
+t_env *create_env_pair(const char *key, const char *value);
 
 #endif

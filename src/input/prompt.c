@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:01:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/18 12:44:46 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 17:03:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ char *prompt_readline(void)
 {
 	char *input;
 
+	// Utiliser get_next_line si le terminal n'est pas interactif
+	// c'est-à-dire si l'entrée standard n'est pas un terminal. (pour le testeur)
+	if (!isatty(STDIN_FILENO))
+	{
+		// Mode non interactif : lecture depuis stdin avec get_next_line
+		input = get_next_line(STDIN_FILENO);
+		return (input);
+	}
 	// Affiche le prompt
 	input = readline("minishell> ");
 	// Si le signal est SIGINT (Ctrl+C)

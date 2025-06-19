@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/17 12:25:54 by bernard          ###   ########.fr       */
+/*   Created: 2025/06/18 14:24:18 by bernard           #+#    #+#             */
+/*   Updated: 2025/06/18 16:09:11 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Exporter des variables
-Definir une variable qui ne serait dispo que dans shell courant ex : VAR=25
-Export va l'integrer aux variables d'env qui se trouve dans **env
-
-*/
-
+void    ft_exit(t_shell *data)
+{
+    printf("exit\n");
+    exit(data->last_exit_status);
+}

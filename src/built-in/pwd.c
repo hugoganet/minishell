@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/17 12:25:54 by bernard          ###   ########.fr       */
+/*   Created: 2025/06/17 17:41:35 by bernard           #+#    #+#             */
+/*   Updated: 2025/06/18 14:09:35 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Exporter des variables
-Definir une variable qui ne serait dispo que dans shell courant ex : VAR=25
-Export va l'integrer aux variables d'env qui se trouve dans **env
+int ft_pwd(t_node *node, t_shell *data)
+{
+    char    *buff[PATH_MAX];
 
-*/
-
+    if (getcwd(buff, PATH_MAX))
+    {
+        printf("%s\n", buff);
+        return (0);
+    }
+    else
+        perror("getcwd");
+    return (1);
+}

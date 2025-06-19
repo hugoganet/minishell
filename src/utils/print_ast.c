@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 13:58:25 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:06:52 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,9 @@ void print_ast_cmd_node(char **argv)
 void pretty_print_ast(t_ast *node, int depth)
 {
     int i;
-    int j;
+    //int j;
 
-    j = 0;
-
+    //j = 0;
     // Cas de base : noeud vide
     if (!node)
         return;

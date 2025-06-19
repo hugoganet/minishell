@@ -3,43 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:59:32 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/09 09:47:22 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:23:45 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(t_ast *node, t_shell *data)
+void	update_env(t_env **env, char *key, char *value)
 {
-	t_ast	*arg_node;
-	char	*tmp;
 	int		i;
+	char	*new_var;
+	t_env	*tmp;
 
 	i = 0;
-	arg_node = node->right;
-	if ()
+	tmp = *env;
+	while (tmp)
 	{
-		getcwd(data->env[i], len de ) // copie chemin absolu du repertoire courant dans chaine pointe par buf, de longueur n_size
-		chdir(arg_node->str)
-		while (data->env[i])
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			if (ft_strncmp(data->env[i], "PWD=", 4) == 0)
-				break ;
-			i++;
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return ;
 		}
-		ft_strcpy(tmp, data->env[i]); //Concerver pwd pour le mettre dans oldpwd apres
-		
-		i = 0;
-		while (data->env[i])
-		{
-			if (ft_strncmp(data->env[i], "OLDPWD=", 7) == 0)
-				break ;
-			i++;
-		}
-		
+			
+		tmp = tmp->next;
 	}
-	
+	new_var = malloc(sizeof(t_env));
+	if (!new_var)
+		return ;
+	new_var->key = ft_strdup(key);
+	new_var->value = ft_strdup(value);
+	new_env->next = *env;
+	*env = new_env;	
+}
+
+int	ft_cd(t_ast *node, t_shell *data)
+{
+	char	*oldpwd;
+	char	*newpwd;
+ 
+	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+	{
+		free(oldpwd)
+		return (1);
+	}
+	if (chdir(node->args[1] == -1))
+	{
+		ft_error("bash: cd: no such file or directory ");
+		return (EXIT_FAILURE);
+	}
+	newpwd = getcwd(NULL, 0);
+	if (!newpwd)
+	{
+		free(newpwd);
+		return (1);
+	}
+	update_env(data->env_list, "OLDPWD", oldpwd);
+	update_env(data->env_list, "PWD", newpwd);
+	free(oldpwd);
+	free(newpwd);
+	return(0);
 }

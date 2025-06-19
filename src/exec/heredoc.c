@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:27:47 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 17:33:02 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:56:42 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,29 @@
 int	quote_flag()
 
 void	handle_heredoc(t_ast *ast_node)
-{	
-	int		flag;
-	int		i;
+{
 	char	*line;
-	char	*tmp;
 	char	*gnl;
-	int		fd;
-	
+	int		pipefd[2];
 
-	fd = open(STDIN_FILENO, O_RDONLY);
-	if (fd == -1)
-		exit_error;
-	gnl = get_next_line(fd); 
+	if (pipe(pipefd[2]) == -1)
+	{
+		perror("pipe");
+		return (EXIT_FAILURE);
+	}
+	gnl = get_next_line(0);
 	while (1)
 	{
-		tmp = ft_strjoin(line, gnl);
-		free(line);
-		free(gnl);
-		line = tmp;
-		gnl = get_next_line(fd);
+		if (!gnl)
+			break;
+		if (ft_strncmp(line, delim, ft_strlen(delim)) == 0 && line[ft_strlen(delim)] == '\n')
+		{
+			free(line);
+			break;
+		}
+		write(pipefd[1], line, ft_strlen(line));	
 	}
-	close(fd);
-	free(line);
-	
+	 close(pipefd[1]);
 }
 	
 	flag = 0;
@@ -51,18 +50,8 @@ void	handle_heredoc(t_ast *ast_node)
 	else if (ast_node->str[2] == 39 || ft_isalnum(ast_node->str[2]))
 		i = 3;
 	
-	Creation fichier tmp
-	input tmp terminal 
-	
 	si flag = 1, alors pas expansion
-
-	if << creation fichier tmp
-	
 	gnl 
-	while (1)
-	{
-		
-	}
 	str = gnl;
 	if strcmp()limiteur 
 	ou que \n strmcp();

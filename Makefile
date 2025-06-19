@@ -7,10 +7,12 @@ OBJ_DIR = executables
 INCL_DIR = includes
 LIBFT_DIR = libft
 
+BREW_READLINE := $(shell brew --prefix readline)
+
 # Commandes et options de compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR)
-LDFLAGS = -lreadline -pthread
+CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include
+LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 
 # Fichiers sources
 SRC = 	main.c \

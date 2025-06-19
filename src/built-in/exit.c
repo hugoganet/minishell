@@ -1,1 +1,20 @@
 // ! Penser à appeler cleanup_shell(shell) avant de quitter le shell
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/18 14:24:18 by bernard           #+#    #+#             */
+/*   Updated: 2025/06/18 16:09:11 by bernard          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void    ft_exit(t_shell *data)
+{
+    printf("exit\n");
+    exit(data->last_exit_status);
+}

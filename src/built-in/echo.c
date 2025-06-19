@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/08 16:51:37 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:52:09 by bernard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,28 @@
 
 int   ft_echo(t_ast *node)
 {
-    t_ast   *arg_node;
     int     print_nl;
+    int     i;
     
     print_nl = 0;
-    arg_node = node->right;
-    if (arg_node && ft_strncmp(arg_node->str, "-n", 2)) // Si il n'y a pas de node->right, alors arg_node == NULL et on ne rentre pas dans les boucles et on print direct un \n
+    if (node && ft_strncmp(node->args[1], "-n", 2))
     {
-        if (!node->right->right)
+        if (!node->args[2])
             return (NULL);
-        node = node->right->right;
-        printf("%s", node->str);
+        i = 2;
         print_nl = 1;
     }
-    while (arg_node)
+    else
     {
-        printf("%s", arg_node->str);
-        if (arg_node->right)
+        i = 1;
+        while (node->args[i])
         {
+            printf("%s", node->args[i]);
             printf(" ");
-            arg_node = arg_node->right;
+            i++;
         }
     }
-    if (print_nl)
+    if (!print_nl)
         printf("\n");
    return 0;
 }

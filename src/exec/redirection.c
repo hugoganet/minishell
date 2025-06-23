@@ -6,11 +6,65 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:30:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/13 16:46:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/23 11:46:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Gère un heredoc : lit l'entrée jusqu'à un délimiteur,
+ *        écrit chaque ligne dans un pipe, et redirige STDIN vers ce pipe.
+ *
+ * @param delimiter Le mot-clé de fin (ex: "EOF").
+ */
+void handle_heredoc(char *token_str)
+{
+	char *delimiter;
+	char *line;
+	int pipefd[2];
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("minishell: heredoc pipe");
+		return;
+	}
+	// Vérifie que le token_str est valide
+	if (ft_strlen(token_str) <= 2)
+	{
+		perror("minishell: heredoc: missing delimiter");
+		return;
+	}
+	// Supprime les deux chevrons initiaux "<<"
+	delimiter = token_str + 2;
+	// Boucle pour lire les lignes jusqu'à ce que le délimiteur soit trouvé
+	while (1)
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break;
+		// Vérifie si la ligne lue correspond au délimiteur
+		// et si elle se termine par un saut de ligne // ? Pourquoi on vérifie le saut de ligne ?
+		// Si oui, on libère la mémoire et on sort de la boucle
+		// Sinon, on écrit la ligne dans le pipe
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0 && line[ft_strlen(delimiter)] == '\n')
+		{
+			free(line);
+			break;
+		}
+		// Écrit la ligne dans le pipe
+		write(pipefd[1], line, ft_strlen(line));
+		// Libère la mémoire allouée pour la ligne
+		//
+		free(line);
+	}
+	// Ferme l'extrémité d'écriture du pipe
+	// et redirige STDIN vers l'extrémité de lecture du pipe
+	close(pipefd[1]);
+	dup2(pipefd[0], STDIN_FILENO);
+	// Ferme l'extrémité de lecture du pipe
+	close(pipefd[0]);
+}
 
 /**
  * @brief Extrait le nom du fichier à partir d'un token de redirection.

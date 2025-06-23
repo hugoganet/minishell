@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 12:41:10 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/23 10:51:53 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 	shell->tokens = tokens;
 	// print_token_list(tokens);
 	ast_root = build_ast(tokens);
-	// pretty_print_ast(ast_root, 0, "ROOT");
+	pretty_print_ast(ast_root, 0, "ROOT");
 	// print_ast_cmd_node(ast_root->args);
 	if (!ast_root)
 	{

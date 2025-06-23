@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/18 12:52:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/23 11:24:09 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,29 @@ static void run_child_process(char **argv, t_env *env,
 	char *path;
 	char **envp;
 
+	// Active les signaux par défaut dans le processus enfant
 	reset_signals_in_child();
-	// Applique les redirections si nécessaires
+
+	// Si le nœud actuel est un heredoc, on applique la redirection stdin
+	if (ast->type == HEREDOC)
+		handle_heredoc(ast->str);
+
+	// Applique toutes les autres redirections (> >> <)
 	if (setup_redirections(ast) != 0)
 		exit(1);
-	// Résout le path absolu de la commande (ou NULL si invalide)
+
+	// Résout le chemin absolu vers l'exécutable
 	path = resolve_command_path(argv[0], env);
 	if (!path)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(argv[0], 2);
-		ft_putendl_fd(": command not found", 2);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(argv[0], STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
 		cleanup_shell(shell);
 		exit(127);
 	}
-	// Convertit la liste chaînée env en tableau char **
+
+	// Construit le tableau d'environnement (char **)
 	envp = env_to_char_array(env);
 	if (!envp)
 	{
@@ -88,7 +96,8 @@ static void run_child_process(char **argv, t_env *env,
 		cleanup_shell(shell);
 		exit(1);
 	}
-	// Lance la commande
+
+	// Exécute la commande avec execve
 	if (execve(path, argv, envp) == -1)
 	{
 		perror("minishell: execve");

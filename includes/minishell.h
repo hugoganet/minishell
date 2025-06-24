@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/23 16:47:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/24 15:45:00 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <stdbool.h>
-#include <limits.h>
+#include <linux/limits.h>
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
@@ -179,5 +179,12 @@ int setup_redirections(t_ast *node);
 t_env *create_env_pair(const char *key, const char *value);
 void handle_heredoc(char *token_str);
 t_ast *inject_dummy_cmd(void);
+int	builtin_exec(t_ast *node, t_shell *data);
+int	is_builtin(t_ast *node);
+int	ft_cd(t_ast *node, t_shell *data);
+int   ft_echo(t_ast *node);
+int   ft_env(t_ast *node, t_shell *data);
+int ft_pwd();
+int ft_unset(t_ast *node, t_shell *data);
 
 #endif

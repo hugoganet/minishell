@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/24 16:07:20 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:59:48 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@ int   ft_echo(t_ast *node)
     int     i;
     
     print_nl = 0;
-    
     if (node && ft_strcmp(node->args[1], "-n") == 0)
     {
         if (!node->args[2])
-            return (1);
+            return (0);
         i = 2;
         print_nl = 1;
-       
     }
     else
     {

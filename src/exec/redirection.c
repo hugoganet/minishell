@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:30:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/23 11:46:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/24 10:26:35 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,9 @@ int setup_redirections(t_ast *node)
 			}
 			// Ouvre le fichier avec les bons flags
 			fd = open_redir_file(node->type, filename);
-			if (fd == -1)
-				return (1);
+			if (fd == -1)				
+			return (1);
+	
 			// Redirige STDIN ou STDOUT selon le type
 			if ((node->type == REDIR_INPUT && dup2(fd, STDIN_FILENO) == -1) || (node->type != REDIR_INPUT && dup2(fd, STDOUT_FILENO) == -1))
 			{

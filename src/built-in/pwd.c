@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 17:41:35 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/18 14:09:35 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:33:33 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_pwd(t_node *node, t_shell *data)
+int ft_pwd(t_ast *node, t_shell *data)
 {
     char    *buff[PATH_MAX];
 

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 10:32:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/24 12:29:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,6 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	// Réactive les signaux du shell (readline)
 	init_signals();
 	// Gère le code de retour du processus
-	return (handle_child_status(status));
+	shell->last_exit_status = handle_child_status(status);
+	return (shell->last_exit_status);
 }

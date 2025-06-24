@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 14:35:51 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/24 15:37:04 by hganet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
 	// Le parent ferme les deux extrémités du pipe
 	close_pipe_fds(fd);
 	// Attend les deux processus enfants et retourne le code de sortie
-	// du pid gauche ou 1 en cas d'erreur
+	// du pid droit ou 1 en cas d'erreur
+	// shell->last_exit_status = wait_for_children(left_pid, right_pid);
 	return (wait_for_children(left_pid, right_pid));
 }

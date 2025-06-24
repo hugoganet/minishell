@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:59:32 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/17 12:23:45 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:32:46 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_cd(t_ast *node, t_shell *data)
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{
-		free(oldpwd)
+		free(oldpwd);
 		return (1);
 	}
 	if (chdir(node->args[1] == -1))

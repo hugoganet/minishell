@@ -4,17 +4,41 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:24:18 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/18 16:09:11 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/24 11:26:57 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
 
-void    ft_exit(t_shell *data)
-{
-    printf("exit\n");
-    exit(data->last_exit_status);
-}
+// int ft_isnum(t_ast *node)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	if (node->args[1][i] == '-' || node->args[1][i] == '+')
+//         i++;
+//     while(ft_isdigit(node->args[1][i]))
+//     {
+//         i
+//     }
+// 	return()
+	
+// }
+
+// int    ft_exit(t_shell *data, t_ast *node)
+// {
+   
+// }
+
+// int ft_exit(t_shell *data, t_ast *node)
+// {
+//     unsigned int    status;
+
+// 	status = EXIT_FAILURE;
+	
+	
+// }
+

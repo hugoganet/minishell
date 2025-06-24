@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:21:39 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 12:06:52 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/19 16:43:19 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void print_ast_cmd_node(char **argv)
 
     if (!argv)
     {
-        printf("[print_ast_cmd_node] argv is NULL\n");
+        printf("\n[print_ast_cmd_node] argv is NULL\n");
         return;
     }
     printf("\n=== [AST → argv] Command arguments: ===\n");
@@ -39,39 +39,44 @@ void print_ast_cmd_node(char **argv)
     printf("=============================\n\n");
 }
 
-/**
- * @brief Affiche l’AST sous forme indentée avec couleurs.
- *
- * Chaque ligne de sortie suit le format :
- *   └── [TYPE] "valeur"   (avec couleur selon le type)
- *
- * @param node Le noeud courant de l’AST à afficher
- * @param depth La profondeur dans l’arbre (0 à la racine)
- */
-void pretty_print_ast(t_ast *node, int depth)
-{
-    int i;
-    //int j;
 
-    //j = 0;
-    // Cas de base : noeud vide
-    if (!node)
-        return;
-    // Indentation : 4 espaces par niveau
-    i = 0;
-    while (i < depth)
-    {
-        printf("    ");
-        i++;
-    }
-    // Affichage du noeud avec couleur selon le type
-    printf("└── %s%s%s", token_color(node->type),
-           token_type_str(node->type), COLOR_RESET);
-    // Affiche la chaîne associée si elle existe
-    if (node->str)
-        printf(" \"%s\"", node->str);
-    printf("\n");
-    // Appelle récursif pour les sous-arbres
-    pretty_print_ast(node->left, depth + 1);
-    pretty_print_ast(node->right, depth + 1);
+void pretty_print_ast(t_ast *node, int depth, const char *label)
+{
+	int i;
+	int j;
+
+	if (!node)
+		return;
+	i = 0;
+	while( i < depth)
+	{
+		printf("    ");
+		i++;
+	}
+	printf("↳ [%s] %s%s%s", label,
+		   token_color(node->type),
+		   token_type_str(node->type),
+		   COLOR_RESET);
+
+	if (node->str)
+		printf(" %s", node->str);
+	printf("\n");
+
+	if (node->args)
+	{	
+		j = 0;
+		while (node->args[j])
+		{
+			i = 0;
+			while(i <= depth)
+			{
+				printf("    ");
+				i++;
+			}
+			printf("arg[%d]: %s\n", j, node->args[j]);
+			j++;
+		}
+	}
+	pretty_print_ast(node->right, depth + 1, "RIGHT");
+	pretty_print_ast(node->left, depth + 1, "LEFT");
 }

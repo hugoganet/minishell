@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 14:42:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 14:26:54 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env_list = NULL;
+	// Initialise les signaux pour le shell
+	init_signals();
 	// Initialise le shell avec l'environnement
 	init_shell(&shell, envp, env_list);
 	if (!shell.env || !shell.env_list)

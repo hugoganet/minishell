@@ -6,7 +6,7 @@
 /*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 15:36:46 by hganet           ###   ########.fr       */
+/*   Updated: 2025/06/24 17:06:56 by hganet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,12 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	char **argv;
 
 	// Recherche du vrai noeud CMD à exécuter
-	cmd_node = find_cmd_node(ast_root);
-	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
-		return (1);
+	// cmd_node = find_cmd_node(ast_root);
+	// if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
+	// {
+	// 	printf("minishell: exec_cmd: no command to execute\n");
+	// 	return (1);
+	// }
 	argv = cmd_node->args;
 	// Fork du processus
 	pid = fork();

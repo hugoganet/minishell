@@ -6,7 +6,7 @@
 /*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:24:18 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/24 17:28:59 by hganet           ###   ########.fr       */
+/*   Updated: 2025/06/24 18:22:10 by hganet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int ft_is_valid_number(char *str)
  * @param node Noeud AST de la commande exit
  * @return `int` Code de sortie (ne retourne que si une erreur est rencontrée)
  */
-int ft_exit(t_shell *data, t_ast *node)
+int ft_exit(t_ast *node, t_shell *data)
 {
 	unsigned char status;
 

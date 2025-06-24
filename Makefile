@@ -47,6 +47,13 @@ SRC = 	main.c \
 		exec/redirection.c \
 		exec/heredoc.c \
 		signals/signals.c \
+		built-in/builtin_exec.c\
+		built-in/cd.c\
+		built-in/echo.c\
+		built-in/env.c\
+		built-in/pwd.c\
+		built-in/unset.c\
+		built-in/exit.c \
 	
 
 # Rassembler les sources

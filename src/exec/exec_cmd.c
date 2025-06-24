@@ -6,9 +6,10 @@
 /*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 17:06:56 by hganet           ###   ########.fr       */
+/*   Updated: 2025/06/24 18:16:01 by hganet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -152,29 +153,31 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	// Recherche du vrai noeud CMD à exécuter
 	// cmd_node = find_cmd_node(ast_root);
 	// if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
-	// {
-	// 	printf("minishell: exec_cmd: no command to execute\n");
 	// 	return (1);
-	// }
-	argv = cmd_node->args;
-	// Fork du processus
-	pid = fork();
-	if (pid < 0)
+	if (is_builtin(cmd_node))
+		return(builtin_exec(cmd_node, shell));	
+	else
 	{
-		perror("minishell: fork");
-		return (1);
+		argv = cmd_node->args;
+	
+		// Fork du processus
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("minishell: fork");
+			return (1);
+		}
+		// Enfant : exécute la commande
+		if (pid == 0)
+			run_child_process(argv, env, ast_root, shell);
+		// Parent : ignore temporairement SIGINT et SIGQUIT
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		// Attend la fin du processus enfant
+		waitpid(pid, &status, 0);
+		// Réactive les signaux du shell (readline)
+		init_signals();
+		// Gère le code de retour du processus
+		return(handle_child_status(status));
 	}
-	// Enfant : exécute la commande
-	if (pid == 0)
-		run_child_process(argv, env, ast_root, shell);
-	// Parent : ignore temporairement SIGINT et SIGQUIT
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	// Attend la fin du processus enfant
-	waitpid(pid, &status, 0);
-	// Réactive les signaux du shell (readline)
-	init_signals();
-	// Gère le code de retour du processus
-	// shell->last_exit_status = handle_child_status(status);
-	return (handle_child_status(status));
 }

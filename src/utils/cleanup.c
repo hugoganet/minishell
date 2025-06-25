@@ -22,6 +22,8 @@
  */
 void cleanup_shell(t_shell *shell)
 {
+	if (!shell)
+		return;
 	if (shell->env_list)
 	{
 		free_env_list(shell->env_list);

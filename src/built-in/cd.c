@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:59:32 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 10:33:49 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 11:19:53 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	update_env(t_env **env, char *key, char *value)
 
 	// i = 0;
 	tmp = *env;
+	
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)

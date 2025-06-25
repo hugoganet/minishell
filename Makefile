@@ -52,7 +52,10 @@ SRC = 	main.c \
 		built-in/env.c\
 		built-in/pwd.c\
 		built-in/unset.c\
+<<<<<<< HEAD
 		built-in/exit.c \
+=======
+>>>>>>> Elsa
 	
 
 # Rassembler les sources

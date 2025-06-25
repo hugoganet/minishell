@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 10:32:37 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 11:19:12 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,6 @@ void print_env_list(t_env *env);
 int setup_redirections(t_ast *node);
 t_env *create_env_pair(const char *key, const char *value);
 void handle_heredoc(char *token_str);
-t_ast *inject_dummy_cmd(void);
 int	builtin_exec(t_ast *node, t_shell *data);
 int	is_builtin(t_ast *node);
 int	ft_cd(t_ast *node, t_shell *data);

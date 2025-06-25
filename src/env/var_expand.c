@@ -6,42 +6,42 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/10 14:13:52 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:30:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Cas ${VAR}
-void	get_name_brace(t_ast *node, int *i, int *end, int *name_start)
+void	get_name_brace(char *str, int *i, int *end, int *name_start)
 {
 	(*i)++;
 		*name_start = *i; // Indiquer start pour mesurer la len
-	if (ft_isdigit(node->str[*i])) //Si le premier est un chiffre -> invalide
+	if (ft_isdigit(str[*i])) //Si le premier est un chiffre -> invalide
 		return ;
-	while (node->str[*i] && node->str[*i] != '}') //tant qu'on a pas la quote fermante
+	while (str[*i] && str[*i] != '}') //tant qu'on a pas la quote fermante
 	{
-		if (!ft_isalnum(node->str[*i]) && node->str[*i] != '_') //Si le reste n'est pas un chiffre ou une lettre ou underscore -> invalide
+		if (!ft_isalnum(str[*i]) && str[*i] != '_') //Si le reste n'est pas un chiffre ou une lettre ou underscore -> invalide
 			return ;
 		(*i)++;
 	}
-	if (node->str[*i] != '}') // Si pas de quote fermante, invalide
+	if (str[*i] != '}') // Si pas de quote fermante, invalide
 		return ;
 	*end = *i + 1; //Placer end juste apres le }
 }
 
-void	get_name(t_ast *node, int *i, int *end, int *name_start)
+void	get_name(char *str, int *i, int *end, int *name_start)
 {
 	*name_start = *i;
-		if (ft_isdigit(node->str[*i])) //Si commence par un chiffre -> invalide
+		if (ft_isdigit(str[*i])) //Si commence par un chiffre -> invalide
 			return ;
-		while (node->str[*i] && (ft_isalnum(node->str[*i]) || node->str[*i] == '_'))
+		while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 			(*i)++;
 		*end = *i;
 }
 
 /* Extraire le nom de la variable appelée dans l'input */
-char	*find_var(t_ast *node, int *start, int *end)
+char	*find_var(char *str, int *start, int *end)
 {
 	int	i;
 	int	len;
@@ -50,27 +50,27 @@ char	*find_var(t_ast *node, int *start, int *end)
 
 	i = 0;
 	
-	while(node->str[i] && node->str[i] != '$')
+	while(str[i] && str[i] != '$')
 		i++;
-	if (!node->str[i])
+	if (!str[i])
 		return (NULL);
 	*start = i;
 	i++;
 	// Cas ${VAR}
-	if (node->str[i] == '{')
-		get_name_brace(node, &i, end, &name_start);
+	if (str[i] == '{')
+		get_name_brace(str, &i, end, &name_start);
 	// Cas $VAR
 	else
-		get_name(node, &i, end, &name_start);
+		get_name(str, &i, end, &name_start);
 	len = i - name_start; //Definir la longueur de la substring qu'il faudra chercher dans env ex : 10 - 5 USER et pas ${USER}
 	name_var = malloc((len + 1) * sizeof(char));
 	if (!name_var)
 		return (NULL);
-	ft_strlcpy(name_var, &node->str[name_start], len + 1); //ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
+	ft_strlcpy(name_var, &str[name_start], len + 1); //ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
 	return (name_var);
 }
 
-char	*copy_var_content(t_ast *node, t_shell *data, int *start, int *end)
+char	*copy_var_content(char *str, t_shell *data, int *start, int *end)
 {
 	int		i;
 	char	*name_var;
@@ -78,7 +78,7 @@ char	*copy_var_content(t_ast *node, t_shell *data, int *start, int *end)
 	char	*var;
 	
 	i = 0;
-	name_var = find_var(node, start, end); // Recuperer variable appelée dans le terminal
+	name_var = find_var(str, start, end); // Recuperer variable appelée dans le terminal
 	if(!name_var)
 		return (NULL);
 	len = ft_strlen(name_var);
@@ -95,7 +95,7 @@ char	*copy_var_content(t_ast *node, t_shell *data, int *start, int *end)
 	return (var);
 }
 
-void	join_str(t_ast *node, t_shell *data)
+void	join_str(char *str, t_shell *data)
 {
 	char	*var;
 	char	*prefix; // Chaine avant la variable a traiter
@@ -109,30 +109,43 @@ void	join_str(t_ast *node, t_shell *data)
 	end = 0;
 	while (ft_strchr(node->str, '$'))
 	{
-		var = copy_var_content(node, data, &start, &end);
+		var = copy_var_content(str, data, &start, &end);
 		if (!var)
 			return ;
-		prefix = ft_substr(node->str, 0, start);
-		suffix = ft_substr(node->str, end, ft_strlen(node->str) - end); //copier le nb de charactere qui reste, donc len string - l'index end (qui se trouve a la fin) ex : 15 - 10.  	
+		prefix = ft_substr(str, 0, start);
+		suffix = ft_substr(str, end, ft_strlen(str) - end); //copier le nb de charactere qui reste, donc len string - l'index end (qui se trouve a la fin) ex : 15 - 10.  	
 		tmp = ft_strjoin(prefix, var);
 		final_str = ft_strjoin(tmp, suffix);
 		free(tmp);
 		free(prefix);
 		free(suffix);
-		node->str = final_str;
+		str = final_str;
 	}
 }
 
 void	expand_vars(t_ast *node, t_shell *data)
 {
+	int	i;
+
+	i = 1;
 	if(!node)
 		return ;
-	if (node->type == ARG)
+	if (node->type == CMD)
 	{
-		if (ft_strchr(node->str, '$'))
+		while (node->args[i])
 		{
-			if (which_quote(node) == 1)
-				join_str(node, data);	
+			while (node->args[i][j])
+			{
+				if (node->args[i][j] = '$' && ) // ici tu decide si oui ou non il faut expand
+				{
+					if (to_expand(node->args[i])) // 
+						join_str(node->args[i], data);
+					
+				}
+				
+				j++;
+			}
+			i++;
 		}
 	}
 	expand_vars(node->left, data);

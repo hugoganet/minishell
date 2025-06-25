@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/25 11:20:16 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 13:30:58 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,7 @@ int   ft_echo(t_ast *node)
    return (0);
 }
 
-//if_isquote ne pas print les quotes 
+//if_isquote ne pas print les quotes
+
+// si dblquote, imprime sgl quote dedans, si sgl quote pas 
+on imprime juste pas les quotes de dedans 

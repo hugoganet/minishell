@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/13 16:30:09 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 13:06:26 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 t_ast	*cmd_new_ast_node(t_token *node)
 {
 	t_ast	*new_ast;
-	int	i = 0;
+	// int	i = 0;
 	
 	if (!node)
 		return (NULL);
@@ -78,16 +78,16 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	if (!new_ast)
 		return (NULL);
 	new_ast->type = node->type;
-	new_ast->str = node->str;
+	// new_ast->str = node->str;
 	fill_args(node, new_ast);
-	if (new_ast->args != NULL) 
-	{
-		while (new_ast->args[i])
-		{
-			// printf("args[%d] = %s\n", i, new_ast->args[i]);
-			i++;
-		}
-	}
+	// if (new_ast->args != NULL) 
+	// {
+	// 	while (new_ast->args[i])
+	// 	{
+	// 		// printf("args[%d] = %s\n", i, new_ast->args[i]);
+	// 		i++;
+	// 	}
+	// }
 	return (new_ast);
 }
 
@@ -103,6 +103,7 @@ t_ast	*new_ast_node(t_token *node)
 		return (NULL);
 	new_ast->type = node->type;
 	new_ast->str = node->str;
+	printf("%s\n", new_ast->str);
 	return (new_ast);
 }
 

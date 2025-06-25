@@ -3,21 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   var_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 11:03:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 16:12:52 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	which_quote(t_ast *node)
+int	in_dbl(char *str, )
 {
-	if (node->str[0] == 39)
-		return (0);
-	return (1);
+	bool	in_dbl;
+
+	in_dbl = false;
+	if (str[i] == 34 && in_sgl == false && in_dbl == false) 
+		in_dbl = true;
+	else if (str[i] == 34 && in_sgl = false && in_dbl == true)
+		in_dbl = false;
 }
+
+int	to_exp(char *str)
+{
+	
+	bool	in_sgl;
+	int		i;
+	
+	
+	in_sgl = false;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			
+		else if (str[i] == 39 && in_dbl == false && in_sgl == false)
+			in_sgl = true;
+		else if (str[i] == 39 && in_dbl == false && in_sgl == true)
+			in_sgl = false;
+		
+		i++;
+	}
+}
+
+3 fonctions, in signle quote in double et dans rien, tant qu'on recroise pas une quote qu on a deja croise, on est dans ces quotes la. 
+
+
 
 char	*ft_strcpy(char *dest, char *src)
 {

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 11:00:19 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 12:05:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@
  */
 void init_shell(t_shell *shell, char **envp, t_env *env_list)
 {
+	// Initialisation à NULL des champs de la structure shell
+	shell->env = NULL;
+	shell->env_list = NULL;
+	shell->tokens = NULL;
+	shell->ast = NULL;
+	shell->last_exit_status = 0;
+
 	// Copie de l'environnement dans la structure shell
 	shell->env = copy_env(envp);
 	if (!shell->env)
@@ -52,9 +59,6 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 		free_env(shell->env);					  // Libère l'ancienne copie
 		shell->env = env_to_char_array(env_list); // Crée une nouvelle copie à jour
 	}
-
-	// Initialisation du statut de sortie
-	shell->last_exit_status = 0;
 }
 
 /**

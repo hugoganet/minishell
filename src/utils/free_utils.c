@@ -22,6 +22,9 @@ void free_token_list(t_token *head)
 {
 	t_token *tmp;
 
+	if (head == NULL)
+		return;
+
 	while (head)
 	{
 		tmp = head->next;

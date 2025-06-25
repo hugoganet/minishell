@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 16:30:27 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:43:40 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	join_str(char *str, t_shell *data)
 
 	start = 0;
 	end = 0;
-	while (ft_strchr(node->str, '$'))
+	while (ft_strchr(str, '$'))
 	{
 		var = copy_var_content(str, data, &start, &end);
 		if (!var)
@@ -126,8 +126,10 @@ void	join_str(char *str, t_shell *data)
 void	expand_vars(t_ast *node, t_shell *data)
 {
 	int	i;
+	int	*j;
 
 	i = 1;
+	j = 0;
 	if(!node)
 		return ;
 	if (node->type == CMD)
@@ -138,11 +140,9 @@ void	expand_vars(t_ast *node, t_shell *data)
 			{
 				if (node->args[i][j] = '$' && ) // ici tu decide si oui ou non il faut expand
 				{
-					if (to_expand(node->args[i])) // 
+					if (to_expand(node->args[i], *j)) // 
 						join_str(node->args[i], data);
-					
 				}
-				
 				j++;
 			}
 			i++;

@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 16:12:52 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:39:37 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	in_dbl(char *str, )
 		in_dbl = false;
 }
 
-int	to_exp(char *str)
+int	to_exp(char *str, int *j)
 {
 	
 	bool	in_sgl;
@@ -40,7 +40,6 @@ int	to_exp(char *str)
 			in_sgl = true;
 		else if (str[i] == 39 && in_dbl == false && in_sgl == true)
 			in_sgl = false;
-		
 		i++;
 	}
 }

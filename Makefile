@@ -35,7 +35,6 @@ SRC = 	main.c \
 		syntax/build_token_list.c \
 		ast/ast_builder.c \
 		ast/ast_executor.c \
-		ast/ast_utils.c \
 		env/init_env.c \
 		env/var_expand.c \
 		env/var_utils.c \

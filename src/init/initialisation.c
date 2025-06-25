@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/17 14:25:19 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 11:00:19 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,21 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 		exit(1);
 	}
 	shell->env_list = env_list;
+
+	// Incrémente SHLVL pour chaque instance de sous-shell
+	if (increment_shlvl(env_list) != 0)
+	{
+		ft_putendl_fd("minishell: warning: failed to increment SHLVL", 2);
+		// On continue malgré l'erreur - ce n'est pas critique
+	}
+
+	// Maintenant, nous devons synchroniser env avec env_list car SHLVL a été modifié
+	if (shell->env)
+	{
+		free_env(shell->env);					  // Libère l'ancienne copie
+		shell->env = env_to_char_array(env_list); // Crée une nouvelle copie à jour
+	}
+
 	// Initialisation du statut de sortie
 	shell->last_exit_status = 0;
 }

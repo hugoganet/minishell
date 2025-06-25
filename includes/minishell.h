@@ -189,5 +189,6 @@ int ft_pwd();
 int ft_unset(t_ast *node, t_shell *data);
 int ft_exit(t_ast *node, t_shell *data);
 int apply_parent_redirections(t_ast *node);
+int increment_shlvl(t_env *env_list);
 
 #endif

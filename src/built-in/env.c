@@ -3,26 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:35:27 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/08 17:51:38 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/25 10:34:08 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int   ft_env(t_shell *data, t_ast *node)
+int   ft_env(t_ast *node, t_shell *data)
 {
-    int i;
+    // int i;
+    t_env   *curr;
 
-    i = 0;
-    if (node->type == CMD && ft_strncmp(node->str,"env", 4) == 0)
+    // i = 0;
+    curr = data->env_list;
+    if (node->type == CMD && ft_strcmp(node->str,"env") == 0)
     {
-        while (data->env[i])
+        while (curr)
         {
-            printf("%s\n", data->env[i]);
-            i++;
+            printf("%s", curr->key);
+            printf("=");
+            printf("%s\n", curr->value);
+            curr = curr->next;
         }
     }
     return (0);

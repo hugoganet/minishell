@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/23 16:47:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 10:32:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <stdbool.h>
-#include <limits.h>
+#include <linux/limits.h> // ! raised an error on macOs, check .vscode/settings.json : "C_Cpp.errorSquiggles": "disabled"
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
@@ -46,12 +46,12 @@ typedef struct s_token t_token;
 
 typedef struct s_shell
 {
-	char	**env;
-	t_env	*env_list;
-	t_token	*tokens;
-	t_ast	*ast;
-	int		last_exit_status;
-}			t_shell;
+	char **env;
+	t_env *env_list;
+	t_token *tokens;
+	t_ast *ast;
+	int last_exit_status;
+} t_shell;
 
 /**
  * @enum e_token_type
@@ -68,63 +68,63 @@ typedef enum e_token_type
 	CMD,		  /**< Commande (premier mot d'une ligne) */
 	ARG,		  /**< Argument (mot après la commande) */
 	FILES,		  /**< Fichiers (après une redirection) */
-}	t_token_type;
+} t_token_type;
 
 typedef struct s_token
 {
-	char			*str;
-	t_token_type	type;
-	struct s_token	*next;
-}					t_token;
+	char *str;
+	t_token_type type;
+	struct s_token *next;
+} t_token;
 
 typedef struct s_redir t_redir;
 
 typedef struct s_redir
 {
-	t_token	*type;
-	char	*file;
-	t_redir	*next;
+	t_token *type;
+	char *file;
+	t_redir *next;
 } t_redir;
 
 typedef struct s_ast t_ast;
 
 typedef struct s_ast
 {
-	t_token_type	type;
-	char			*str;
-	t_redir			*redir;
-	t_ast			*left;
-	t_ast			*right;
-	char			**args; //fonction compte nb d'arg apres et malloc char **
-	int				fd_in;
-	int				fd_out;
-} 	t_ast;
+	t_token_type type;
+	char *str;
+	t_redir *redir;
+	t_ast *left;
+	t_ast *right;
+	char **args; // fonction compte nb d'arg apres et malloc char **
+	int fd_in;
+	int fd_out;
+} t_ast;
 
 /**
  * @struct s_env
  * @brief Représente une variable d'environnement sous forme de liste chaînée.
  *
  * - `key` : nom de la variable d'environnement.
- * 
+ *
  * - `value` : valeur de la variable d'environnement.
- * 
+ *
  * - `next` : pointeur vers l'élément suivant de la liste.
  */
 typedef struct s_env
 {
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-} 					t_env;
+	char *key;
+	char *value;
+	struct s_env *next;
+} t_env;
 
 // Définition des couleurs ANSI
-#define COLOR_CMD "\033[1;36m"	 // Cyan clair
-#define COLOR_ARG "\033[1;34m"	 // Bleu
-#define COLOR_PIPE "\033[1;32m"	 // Vert
-#define COLOR_REDIR "\033[1;35m" // Magenta
+#define COLOR_CMD "\033[1;36m"	   // Cyan clair
+#define COLOR_ARG "\033[1;34m"	   // Bleu
+#define COLOR_PIPE "\033[1;32m"	   // Vert
+#define COLOR_REDIR "\033[1;35m"   // Magenta
 #define COLOR_HEREDOC "\033[1;33m" // Jaune
-#define COLOR_FILES "\033[1;31m" // Rouge
-#define COLOR_RESET "\033[0m"	 // Reset
+#define COLOR_FILES "\033[1;31m"   // Rouge
+#define COLOR_RESET "\033[0m"	   // Reset
 
 // ! ----------------------- FUNCTIONS ---------------
 
@@ -164,6 +164,7 @@ const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);
 int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
+t_ast *find_cmd_node(t_ast *node);
 void print_ast_cmd_node(char **argv);
 void free_split(char **split);
 char *get_env_value(t_env *env, const char *key);
@@ -179,5 +180,14 @@ int setup_redirections(t_ast *node);
 t_env *create_env_pair(const char *key, const char *value);
 void handle_heredoc(char *token_str);
 t_ast *inject_dummy_cmd(void);
+int	builtin_exec(t_ast *node, t_shell *data);
+int	is_builtin(t_ast *node);
+int	ft_cd(t_ast *node, t_shell *data);
+int   ft_echo(t_ast *node);
+int   ft_env(t_ast *node, t_shell *data);
+int ft_pwd();
+int ft_unset(t_ast *node, t_shell *data);
+int ft_exit(t_ast *node, t_shell *data);
+int apply_parent_redirections(t_ast *node);
 
 #endif

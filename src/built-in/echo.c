@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/16 12:52:09 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/24 16:07:20 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ int   ft_echo(t_ast *node)
     int     i;
     
     print_nl = 0;
-    if (node && ft_strncmp(node->args[1], "-n", 2))
+    
+    if (node && ft_strcmp(node->args[1], "-n") == 0)
     {
         if (!node->args[2])
-            return (NULL);
+            return (1);
         i = 2;
         print_nl = 1;
+       
     }
     else
     {
@@ -35,8 +37,10 @@ int   ft_echo(t_ast *node)
             i++;
         }
     }
+    
     if (!print_nl)
         printf("\n");
-   return 0;
+   return (0);
 }
 
+//if_isquote ne pas print les quotes 

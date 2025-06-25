@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 12:27:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 10:16:03 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,6 @@ int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
 	close_pipe_fds(fd);
 	// Attend les deux processus enfants et retourne le code de sortie
 	// du pid droit ou 1 en cas d'erreur
-	shell->last_exit_status = wait_for_children(left_pid, right_pid);
-	return (shell->last_exit_status);
+	// shell->last_exit_status = wait_for_children(left_pid, right_pid);
+	return (wait_for_children(left_pid, right_pid));
 }

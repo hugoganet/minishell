@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/24 18:20:08 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:14:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_export(t_ast *node, t_shell *data)
 
 	i = 1;
 	j = 0;
-	new_node = calloc(sizeof(t_env));
+	new_node = ft_calloc(1, sizeof(t_env));
 	if (!new_node)
 		return (1);
 	while(node->args[i])

@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:23 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 18:10:12 by hganet           ###   ########.fr       */
-=======
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 15:57:23 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 14:18:26 by elaudrez         ###   ########.fr       */
->>>>>>> Elsa
+/*   Updated: 2025/06/25 11:32:41 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

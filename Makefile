@@ -53,6 +53,7 @@ SRC = 	main.c \
 		built-in/pwd.c\
 		built-in/unset.c\
 		built-in/exit.c \
+		built-in/export.c \
 	
 
 # Rassembler les sources

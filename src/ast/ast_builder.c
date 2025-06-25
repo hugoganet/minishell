@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/11 17:30:03 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:30:09 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,37 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 	i = 0;
 	j = 0;
 	ptr = node;
-	if (ptr->next != NULL) //etre sur que pas une commande seule ex : ls
+	ptr = ptr->next;
+	// On compte le nombre d'arguments (ARG) après le noeud CMD
+	while (ptr && ptr->type == ARG)
 	{
+		i++;
 		ptr = ptr->next;
-		while (ptr && ptr->type == ARG)
-		{
-			i++;
-			ptr = ptr->next;
-		}
-		new_ast->args = malloc((i + 2) * sizeof(char *));
-		if (!new_ast->args)
-			return ;
-		ptr = node;
-		while (j < (i + 1))
-		{
-			new_ast->args[j] = ft_strdup(ptr->str);
-			if (!new_ast->args[j])
-				return ;
-			j++;
-			ptr = ptr->next;
-		}
-		new_ast->args[j] = NULL;
 	}
+	// On alloue un tableau de chaînes de caractères pour les arguments
+	// On ajoute 1 pour le CMD lui-même
+	new_ast->args = malloc((i + 2) * sizeof(char *));
+	if (!new_ast->args)
+		return ;
+	// On réinitialise le pointeur sur le token de départ (CMD)
+	ptr = node;
+	// On remplit le tableau avec les arguments
+	while (j < (i + 1))
+	{
+		// 
+		new_ast->args[j] = ft_strdup(ptr->str);
+		if (!new_ast->args[j])
+		{
+			while (--j >= 0)
+				free(new_ast->args[j]);
+			free(new_ast->args);
+			new_ast->args = NULL;
+			return ;
+		}
+		j++;
+		ptr = ptr->next;
+	}
+	new_ast->args[j] = NULL;
 }
 
 t_ast	*cmd_new_ast_node(t_token *node)
@@ -75,7 +84,7 @@ t_ast	*cmd_new_ast_node(t_token *node)
 	{
 		while (new_ast->args[i])
 		{
-			printf("args[%d] = %s\n", i, new_ast->args[i]);
+			// printf("args[%d] = %s\n", i, new_ast->args[i]);
 			i++;
 		}
 	}
@@ -150,6 +159,16 @@ t_ast	*spliter(t_token *node, t_token *end)
 	return (node_ast);
 }
 
+/**
+ * @brief Fonction principale pour construire l'AST à partir d'une liste de tokens.
+ *
+ * Cette fonction est le point d'entrée pour la construction de l'AST.
+ * Elle utilise la fonction `spliter` pour diviser les tokens en nœuds AST
+ * en fonction de leur priorité.
+ *
+ * @param node La liste de tokens à partir de laquelle construire l'AST
+ * @return Un pointeur vers le nœud racine de l'AST, ou NULL en cas d'erreur
+ */
 t_ast	*build_ast(t_token *node)
 {
 	t_ast	*new_ast;

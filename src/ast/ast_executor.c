@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:23 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 14:12:26 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/24 14:18:26 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,20 @@
  */
 int execute_ast(t_ast *node, t_env *env_list, t_shell *shell)
 {
-	// Cas de base : arbre vide
 	if (!node)
 		return (1);
 	if (node->type == PIPE)
 		return (execute_pipe_node(node, env_list, shell));
-	if (node->type == CMD)
-		return (exec_cmd(node, env_list));
-	// Les autres types (PIPE, REDIR, etc.) seront gérés plus tard
-	ft_putendl_fd("execute_ast: unsupported node type (WIP)", STDERR_FILENO);
+	else if (node->type == REDIR_INPUT || node->type == REDIR_OUTPUT || node->type == REDIR_APPEND || node->type == HEREDOC)
+	{
+		// Si pas de CMD à droite, on injecte un nœud `cat`
+		if (!node->right)
+			node->right = inject_dummy_cmd();
+		// if is_builtin->return 1 si ca trouve un
+			// return find_builtin -> redirige et exec
+		return (exec_cmd(node->right, env_list, node, shell));
+	}
+	else if (node->type == CMD)
+		return (exec_cmd(node, env_list, node, shell));
 	return (1);
 }

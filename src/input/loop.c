@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/09 17:11:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/18 13:01:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,17 @@ void shell_loop(t_shell *shell)
 		// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
 		// l'entrée et on continue à la boucle.
 		// Sinon, on traite l'entrée.
-		if (!is_line_empty(input) && !is_syntax_valid(input)) // Vérifie si la ligne n'est pas vide et si la syntaxe est valide
-			process_input(input, shell);
-		// On libère la mémoire allouée pour l'entrée
+		if (!is_line_empty(input))
+		{
+			if (!is_syntax_valid(input))
+				process_input(input, shell);
+		}
 		free(input);
+		// On nettoie les ressources allouées par le shell après chaque entrée.
+		free_ast(shell->ast);
+		shell->ast = NULL;
+		free_token_list(shell->tokens);
+		shell->tokens = NULL;
+		// Pas de cleanup_shell() ici car on garde l'env entre les commandes
 	}
 }

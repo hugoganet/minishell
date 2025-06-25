@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/12 14:22:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/24 15:45:00 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,23 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <linux/limits.h>
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
+
+// ! ----------------------- VAR GLOBALE --------------
+
+// extern : la variable est déclarée ici, mais définie ailleurs (dans signals.c).
+//          Ça évite de la redéfinir dans chaque fichier, tout en permettant de l'utiliser.
+
+// volatile : indique au compilateur que cette variable peut changer à tout moment,
+//            par exemple via un signal. Il doit toujours la relire depuis la mémoire.
+
+// sig_atomic_t : type sûr pour signaux. Assure que la lecture/écriture est atomique
+//                (pas interrompue en plein milieu), donc sans comportement indéfini.
+
+extern volatile sig_atomic_t g_signal;
 
 // ! ----------------------- STRUCTURES --------------
 
@@ -145,11 +159,11 @@ t_ast *build_ast(t_token *node);
 void expand_vars(t_ast *node, t_shell *data);
 char *ft_strcpy(char *dest, char *src);
 int which_quote(t_ast *node);
-void pretty_print_ast(t_ast *node, int depth);
+void pretty_print_ast(t_ast *node, int depth, const char *label);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);
-int exec_cmd(t_ast *cmd_node, t_env *env);
+int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
 void print_ast_cmd_node(char **argv);
 void free_split(char **split);
 char *get_env_value(t_env *env, const char *key);
@@ -161,5 +175,16 @@ int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell);
 void free_env_list(t_env *env);
 void cleanup_shell(t_shell *shell);
 void print_env_list(t_env *env);
+int setup_redirections(t_ast *node);
+t_env *create_env_pair(const char *key, const char *value);
+void handle_heredoc(char *token_str);
+t_ast *inject_dummy_cmd(void);
+int	builtin_exec(t_ast *node, t_shell *data);
+int	is_builtin(t_ast *node);
+int	ft_cd(t_ast *node, t_shell *data);
+int   ft_echo(t_ast *node);
+int   ft_env(t_ast *node, t_shell *data);
+int ft_pwd();
+int ft_unset(t_ast *node, t_shell *data);
 
 #endif

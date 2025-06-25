@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/10 13:07:14 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 14:25:19 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 	shell->env_list = env_list;
 	// Initialisation du statut de sortie
 	shell->last_exit_status = 0;
-	// Initialisation des signaux
-	init_signals();
 }
 
 /**

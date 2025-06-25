@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/10 13:21:09 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/17 12:01:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,12 @@ void free_token_list(t_token *head)
 {
 	t_token *tmp;
 
-	// Tant qu'il y a des tokens dans la liste
 	while (head)
 	{
-		// Sauvegarde le pointeur vers le prochain token
 		tmp = head->next;
-		// Libère la valeur du token
-		free(head->str);
-		// Libère le token lui-même
+		if (head->str)
+			free(head->str);
 		free(head);
-		// Avance au prochain token
 		head = tmp;
 	}
 }
@@ -54,18 +50,38 @@ void free_split(char **split)
 /**
  * @brief Libère récursivement un arbre de syntaxe abstraite (AST).
  *
- * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit.
+ * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit,
+ * ainsi que le tableau `args` si présent (dans les nœuds CMD).
  *
- * @param node Pointeur vers la racine de l'AST à libérer.
+ * @param ast Pointeur vers la racine de l'AST à libérer.
  */
-void free_ast(t_ast *node)
+void free_ast(t_ast *ast)
 {
-	if (!node)
+	int i;
+
+	if (!ast)
 		return;
-	// Libération récursive des branches
-	free_ast(node->left);
-	free_ast(node->right);
-	free(node);
+	// Libération récursive
+	if (ast->left)
+	{
+		free_ast(ast->left);
+		ast->left = NULL;
+	}
+	if (ast->right)
+	{
+		free_ast(ast->right);
+		ast->right = NULL;
+	}
+	// Libération du tableau d’arguments
+	if (ast->args)
+	{
+		i = 0;
+		while (ast->args[i])
+			free(ast->args[i++]);
+		free(ast->args);
+		ast->args = NULL;
+	}
+	free(ast);
 }
 
 /**
@@ -93,15 +109,14 @@ void free_env_list(t_env *env_list)
 {
 	t_env *temp;
 
-	if (!env_list)
-		return;
-	// Libère chaque nœud de la liste chaînée
 	while (env_list)
 	{
-		temp = env_list;
-		env_list = env_list->next;
-		free(temp->key);
-		free(temp->value);
-		free(temp);
+		temp = env_list->next;
+		if (env_list->key)
+			free(env_list->key);
+		if (env_list->value)
+			free(env_list->value);
+		free(env_list);
+		env_list = temp;
 	}
 }

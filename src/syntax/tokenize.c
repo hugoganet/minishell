@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/11 14:26:23 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/12 15:10:51 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,6 @@ static t_token *get_next_token(char *input, int *i)
 		return (NULL);
 	// On détermine le type du token
 	type = get_token_type(content);
-	// printf("\n%s->type = %i\n", content, type);
-	// fflush(stdout);
 	// On retourne un nouveau token avec le contenu et son type
 	return (token_new(content, type));
 }

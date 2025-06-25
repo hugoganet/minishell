@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:42:15 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/23 17:35:32 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:51:50 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int ft_is_valid(char *args)
 {
     int i;
 
-    i = 0;
-    if (!args || (ft_is_alpha(args[0] && args[0] != '_')))
+	i = 0;
+    if (!args || (ft_isalpha(args[0] && args[0] != '_')))
         return (0);
     while (args[i])
     {
-        if (!ft_is_alnum(args[i]) && args[i] != '_')
+        if (!ft_isalnum(args[i]) && args[i] != '_')
             return (0);
         i++;
     }
@@ -53,7 +53,7 @@ void    remove_env_node(t_env **env, char *key)
 	}
 }
 
-int ft_unset(t_env **env, t_ast *node)
+int ft_unset(t_ast *node, t_shell *data)
 {
     int i;
 
@@ -61,7 +61,7 @@ int ft_unset(t_env **env, t_ast *node)
     while(node->args[i])
     {
         if (ft_is_valid(node->args[i]))
-            remove_env_node(*env, node->args[i]);
+            remove_env_node(&data->env_list, node->args[i]);
         else
             printf("unset : %s : not a valid identifier\n", node->args[i]);
         i++;

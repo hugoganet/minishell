@@ -6,156 +6,179 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/11 13:52:29 by elaudrez         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/11 14:47:50 by elaudrez         ###   ########.fr       */
->>>>>>> 08984933a5d95f031bf582ac236c9f37194855ae
+/*   Updated: 2025/06/24 15:58:12 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Compte le nombre d'arguments à partir d'un noeud CMD
- * 
- * Cette fonction parcourt l'AST à partir du noeud CMD et compte le nombre
- * d'arguments (`CMD` et `ARG`) jusqu'à ce qu'elle atteigne un noeud de type différent.
- * 
- * @param cmd_node Pointer vers le noeud CMD de l'AST
- * @return `int` Le nombre d'arguments trouvés
+ * @brief Cherche récursivement le premier noeud de type CMD.
+ *
+ * @param node Nœud racine du sous-arbre AST.
+ * @return Pointeur vers le noeud de type CMD, ou NULL si non trouvé.
  */
-static int count_args(t_ast *cmd_node)
+t_ast *find_cmd_node(t_ast *node)
 {
-	t_ast	*curr;
-	int		count;
+	t_ast *found;
 
-	// Set le pointer courant sur le pointer reçu en argument
-	curr = cmd_node;
-	// Initialise le compteur d'arguments à 0
-	count = 0;
-	// Parcourt l'AST tant que le type est CMD ou ARG
-	while (curr && (curr->type == CMD || curr->type == ARG))
-	{
-		// Incrémente le nombre d'argument à chaque itération
-		count++;
-		// Set le pointer courant sur le noeud de droite pour accéder au prochain argument
-		curr = curr->right;
-	}
-	return (count);
+	// Si le noeud est nul, on ne trouve rien
+	if (!node)
+		return (NULL);
+	// Si le noeud courant est un CMD, on le retourne
+	if (node->type == CMD)
+		return (node);
+	// Recherche récursive dans la branche gauche
+	found = find_cmd_node(node->left);
+	if (found)
+		return (found);
+	// Sinon, recherche dans la branche droite
+	return (find_cmd_node(node->right));
 }
 
 /**
- * @brief Construit le tableau `char **argv` à partir d’un noeud CMD
- * 
- * Cette fonction parcourt l'AST à partir du noeud CMD et extrait les
- * arguments (`CMD` et `ARG`) pour les stocker dans un tableau de chaînes de caractères.
- * C'est essentiel pour pouvoir exécuter la commande avec `execve`.
- * 
- * @param cmd_node Pointer vers le noeud CMD de l'AST
- * @return `char **` Un tableau de chaînes de caractères contenant les arguments
+ * @brief Initialise les signaux dans le processus enfant.
+ *
+ * Permet à l'enfant de recevoir normalement les signaux SIGINT et SIGQUIT.
  */
-static char **build_argv(t_ast *cmd_node)
+static void reset_signals_in_child(void)
 {
-	int		i;
-	int		count;
-	t_ast	*curr;
-	char	**argv;
-
-	// Compte le nombre d'arguments à partir du noeud CMD
-	count = count_args(cmd_node);
-	if (count == 0)
-		return (NULL);
-	// Alloue de la mémoire pour le tableau argv
-	argv = ft_calloc(sizeof(char *), (count + 1));
-	if (!argv)
-		return (NULL);
-	// Set le pointer courant sur le noeud CMD
-	curr = cmd_node;
-	i = 0;
-	// Parcourt l'AST et remplit le tableau argv avec les chaînes de caractères
-	while (curr && (curr->type == CMD || curr->type == ARG))
-	{
-		// Assigne la chaîne de caractères du noeud courant à argv
-		argv[i++] = curr->str;
-		// Avance au noeud de droite pour accéder au prochain argument
-		curr = curr->right;
-	}
-	return (argv);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 /**
- * @brief Exécute une commande simple à partir d’un noeud AST CMD
- * 
- * Cette fonction crée un processus enfant pour exécuter la commande
- * représentée par le noeud CMD de l'AST. Elle construit d'abord un tableau
- * `argv` à partir du noeud CMD, puis utilise `fork()` pour créer un processus enfant.
- * 
- * Si le processus enfant réussit, il exécutera la commande avec `execve`.
- * Le processus parent attend la fin de l'exécution et récupère le statut de sortie.
- * 
- * @param cmd_node Le noeud CMD de l'AST
- * @param env La structure de l'environnement
- * @return ìnt`
+ * @brief Exécute une commande dans un processus enfant.
+ *
+ * - Applique les redirections
+ * - Résout le path de la commande
+ * - Convertit l'env en tableau char **
+ * - Lance execve
+ *
+ * @param argv Tableau d'arguments
+ * @param env Liste chaînée de l'environnement
+ * @param ast Arbre AST courant (pour les redirections)
+ * @param shell Structure principale du shell (pour cleanup)
  */
-int exec_cmd(t_ast *cmd_node, t_env *env)
+static void run_child_process(char **argv, t_env *env,
+							  t_ast *ast, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	char	**argv;
-	char	*path;
-	char	**envp;
+	char *path;
+	char **envp;
 
-	// printf("\nadresse de t_env dans le parent : %p\n", (void *)env);
-	// Vérifie que le noeud est bien de type CMD
-	if (!cmd_node || cmd_node->type != CMD) return (1);
-	// Construit le tableau argv à partir du noeud CMD
-	// pour le passer à execve()
-	argv = build_argv(cmd_node);
-	if (!argv || !argv[0])
-		return (1);
-	// Affiche la commande pour le debug
-	// print_ast_cmd_node(argv);
-	// Création du processus enfant pour exécuter la commande
-	pid = fork();
-	if (pid < 0)
+	// Active les signaux par défaut dans le processus enfant
+	reset_signals_in_child();
+	// Si le nœud actuel est un heredoc, on applique la redirection stdin
+	if (ast->type == HEREDOC)
+		handle_heredoc(ast->str);
+	// Applique toutes les autres redirections (> >> <)
+	if (setup_redirections(ast) != 0)
 	{
-		// En cas d'erreur de fork, affiche un message d'erreur
-		perror("minishell: fork");
-		// Libère la mémoire allouée pour argv
-		free(argv);
-		// Retourne 1 pour indiquer une erreur
-		return (1);
+		cleanup_shell(shell);
+		exit(1);
 	}
-	if (pid == 0)
+	// Résout le chemin absolu vers l'exécutable
+	path = resolve_command_path(argv[0], env);
+	if (!path)
 	{
-		// Processus enfant : prépare l'environnement et exécute la commande
-		path = resolve_command_path(argv[0], env);
-		if (!path)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(argv[0], 2);
-			ft_putendl_fd(": command not found", 2);
-			exit(127);
-		}
-		// Si le chemin est trouvé, on prépare l'environnement pour execve
-		envp = env_to_char_array(env);
-		if (execve(path, argv, envp) == -1)
-		{
-			perror("minishell: execve");
-			exit(126); // 126 = erreur lors de l’exécution
-		}
-		// Si pas d'erreur, le exit ne sera pas atteint
-		exit(0);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(argv[0], STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+		cleanup_shell(shell);
+		exit(127);
 	}
-	// Processus parent : attend la fin du processus enfant et on récupère le statut
-	waitpid(pid, &status, 0);
-	// Libère la mémoire allouée pour argv
-	free(argv);
-	// Vérifie si le processus enfant s'est terminé normalement
-	// Si oui, retourne le code de sortie
+
+	// Construit le tableau d'environnement (char **)
+	envp = env_to_char_array(env);
+	if (!envp)
+	{
+		perror("minishell: env malloc");
+		cleanup_shell(shell);
+		exit(1);
+	}
+
+	// Exécute la commande avec execve
+	if (execve(path, argv, envp) == -1)
+	{
+		perror("minishell: execve");
+		cleanup_shell(shell);
+		exit(126);
+	}
+}
+
+/**
+ * @brief Gère le code retour du processus enfant après un waitpid.
+ *
+ * @param status Statut renvoyé par waitpid
+ * @return Code de sortie du shell pour cette commande
+ */
+static int handle_child_status(int status)
+{
+	// Si l'enfant a été tué par un signal
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		else if (WTERMSIG(status) == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
+		return (128 + WTERMSIG(status));
+	}
+	// Si l'enfant s'est terminé normalement
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	// Si le processus enfant s'est terminé de manière anormale, on retourne 1
+	// Par défaut
 	return (1);
+}
+
+/**
+ * @brief Exécute une commande simple (non composée) en forkant un enfant.
+ *
+ * - Récupère le noeud CMD
+ * - Prépare argv
+ * - Fork, exécute, puis attend la fin du processus enfant
+ *
+ * @param cmd_node Le noeud CMD (ou un noeud supérieur contenant le CMD)
+ * @param env Liste des variables d'environnement
+ * @param ast_root Racine de l'AST courant
+ * @param shell Structure du shell principal
+ * @return Code de retour de la commande exécutée
+ */
+int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
+{
+	pid_t pid;
+	int status;
+	char **argv;
+
+	// Recherche du vrai noeud CMD à exécuter
+	cmd_node = find_cmd_node(ast_root);
+	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
+		return (1);
+	if (is_builtin(cmd_node))
+		shell->last_exit_status = builtin_exec(cmd_node, shell);	
+	else
+	{
+		argv = cmd_node->args;
+	
+		// Fork du processus
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("minishell: fork");
+			return (1);
+		}
+		// Enfant : exécute la commande
+		if (pid == 0)
+			run_child_process(argv, env, ast_root, shell);
+		// Parent : ignore temporairement SIGINT et SIGQUIT
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		// Attend la fin du processus enfant
+		waitpid(pid, &status, 0);
+		// Réactive les signaux du shell (readline)
+		init_signals();
+		// Gère le code de retour du processus
+		shell->last_exit_status = handle_child_status(status);
+	}
+	
+	return (shell->last_exit_status);
 }

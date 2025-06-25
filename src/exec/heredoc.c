@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bernard <bernard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:27:47 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/18 15:56:42 by bernard          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:46:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	quote_flag()
+// ----- CODE ELSA -----
+/* 
+int	quote_flag(void);
 
 void	handle_heredoc(t_ast *ast_node)
 {
@@ -56,4 +58,4 @@ void	handle_heredoc(t_ast *ast_node)
 	if strcmp()limiteur 
 	ou que \n strmcp();
 	break;
-}
+} */

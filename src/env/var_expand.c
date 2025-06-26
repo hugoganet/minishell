@@ -6,11 +6,11 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 15:55:04 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:59:47 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
+#include "minishell.h"
 
 /**
  * @brief Détecte et valide un nom de variable entre accolades : ${VAR}
@@ -135,9 +135,9 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 	if (data->env[i] == NULL) // Si on a parcouru tout le tableau -> pas de concordance trouvée, nom invalide
 		return (NULL);
 
-// 	var = ft_strdup(&data->env[i][len + 1]); // Recuperer le contenu sans le nom ex : USER=elaudrez, prendre que elaudrez donc len = taille du nom de la variable +1 pour le '='
-// 	return (var);
-// }
+	var = ft_strdup(&data->env[i][len + 1]); // Recuperer le contenu sans le nom ex : USER=elaudrez, prendre que elaudrez donc len = taille du nom de la variable +1 pour le '='
+	return (var);
+}
 
 /**
  * @brief Libère les anciennes chaînes utilisées dans join_str.

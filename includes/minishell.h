@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 11:32:18 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 17:54:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,16 +179,25 @@ void print_env_list(t_env *env);
 int setup_redirections(t_ast *node);
 t_env *create_env_pair(const char *key, const char *value);
 void handle_heredoc(char *token_str);
-int	builtin_exec(t_ast *node, t_shell *data);
-int	is_builtin(t_ast *node);
-int	ft_cd(t_ast *node, t_shell *data);
-int   ft_echo(t_ast *node);
-int   ft_env(t_ast *node, t_shell *data);
+int builtin_exec(t_ast *node, t_shell *data);
+int is_builtin(t_ast *node);
+int ft_cd(t_ast *node, t_shell *data);
+int ft_echo(t_ast *node);
+int ft_env(t_ast *node, t_shell *data);
 int ft_pwd();
 int ft_unset(t_ast *node, t_shell *data);
 int ft_exit(t_ast *node, t_shell *data);
 int ft_export(t_ast *node, t_shell *data);
 int apply_parent_redirections(t_ast *node);
 int increment_shlvl(t_env *env_list);
+
+/* Functions for environment variables expansion */
+void in_dbl(char c, bool *in_sgl, bool *in_dbl);
+void in_sgl(char c, bool *in_sgl, bool *in_dbl);
+int to_exp(char *str);
+char *find_var(char *str, int *start, int *end);
+char *copy_var_content(char *str, t_shell *data, int *start, int *end);
+char *join_str(char *str, t_shell *data);
+char *remove_quotes(char *str);
 
 #endif

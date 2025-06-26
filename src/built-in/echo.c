@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/25 13:30:58 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:58:45 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int   ft_echo(t_ast *node)
     
     print_nl = 0;
     
-    if (node && ft_strcmp(node->args[1], "-n") == 0)
+    if (node && node->args[1] && ft_strcmp(node->args[1], "-n") == 0)
     {
         if (!node->args[2])
             return (1);
@@ -46,4 +46,4 @@ int   ft_echo(t_ast *node)
 //if_isquote ne pas print les quotes
 
 // si dblquote, imprime sgl quote dedans, si sgl quote pas 
-on imprime juste pas les quotes de dedans 
+// on imprime juste pas les quotes de dedans 

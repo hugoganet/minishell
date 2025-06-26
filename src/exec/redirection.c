@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:30:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/24 17:11:17 by hganet           ###   ########.fr       */
+/*   Updated: 2025/06/26 18:13:25 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,12 @@ void handle_heredoc(char *token_str)
 	// Boucle pour lire les lignes jusqu'à ce que le délimiteur soit trouvé
 	while (1)
 	{
+		
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break;
 		// Vérifie si la ligne lue correspond au délimiteur
-		// et si elle se termine par un saut de ligne // ? Pourquoi on vérifie le saut de ligne ?
+		// et si elle se termine par un saut de ligne
 		// Si oui, on libère la mémoire et on sort de la boucle
 		// Sinon, on écrit la ligne dans le pipe
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0 && line[ft_strlen(delimiter)] == '\n')
@@ -84,10 +85,16 @@ void handle_heredoc(char *token_str)
 			free(line);
 			break;
 		}
+		// Vérifie si SIGINT (Ctrl+C) a été reçu
+		if (g_signal == SIGINT)
+		{
+			free(line);
+			g_signal = 0;
+			break;
+		}
 		// Écrit la ligne dans le pipe
 		write(pipefd[1], line, ft_strlen(line));
 		// Libère la mémoire allouée pour la ligne
-		//
 		free(line);
 	}
 	// Ferme l'extrémité d'écriture du pipe
@@ -159,8 +166,8 @@ static int open_redir_file(t_token_type type, char *filename)
  */
 int setup_redirections(t_ast *node)
 {
-	int		fd;
-	char	*filename;
+	int fd;
+	char *filename;
 
 	// Vérifie que le nœud et sa chaîne sont valides
 	if (!node || !node->str)
@@ -182,9 +189,9 @@ int setup_redirections(t_ast *node)
 			}
 			// Ouvre le fichier avec les bons flags
 			fd = open_redir_file(node->type, filename);
-			if (fd == -1)				
-			return (1);
-	
+			if (fd == -1)
+				return (1);
+
 			// Redirige STDIN ou STDOUT selon le type
 			if ((node->type == REDIR_INPUT && dup2(fd, STDIN_FILENO) == -1) || (node->type != REDIR_INPUT && dup2(fd, STDOUT_FILENO) == -1))
 			{

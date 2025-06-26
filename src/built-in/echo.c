@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/26 13:33:43 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:55:31 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int   ft_echo(t_ast *node)
     
     print_nl = 0;
     
-    if (node && ft_strcmp(node->args[1], "-n") == 0)
+    if (node && node->args[1] && ft_strcmp(node->args[1], "-n") == 0)
     {
         if (!node->args[2])
             return (1);
@@ -42,3 +42,8 @@ int   ft_echo(t_ast *node)
         printf("\n");
    return (0);
 }
+
+//if_isquote ne pas print les quotes
+
+// si dblquote, imprime sgl quote dedans, si sgl quote pas 
+// on imprime juste pas les quotes de dedans 

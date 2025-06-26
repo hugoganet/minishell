@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:08:23 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 13:48:31 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:53:50 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_builtin(t_ast *node)
 {
+	if (!node->args[0])
+		return (0);
 	if (ft_strcmp(node->args[0], "echo") == 0
 			|| ft_strcmp(node->args[0], "env") == 0
 			|| ft_strcmp(node->args[0], "cd") == 0
@@ -27,6 +29,8 @@ int	is_builtin(t_ast *node)
 
 int	builtin_exec(t_ast *node, t_shell *data)
 {
+	if (!node->args[0])
+		return (0);
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		return (ft_echo(node));
 	else if (ft_strcmp(node->args[0], "env") == 0)

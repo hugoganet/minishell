@@ -1,66 +1,90 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   var_utils.c                                        :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-// /*   Updated: 2025/06/25 16:39:37 by elaudrez         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   var_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/06/26 15:54:04 by elaudrez         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	in_dbl(char *str, )
-// {
-// 	bool	in_dbl;
+/**
+ * @brief Met à jour l'état si on est dans une double quote ou non
+ * @param c Caractère courant
+ * @param in_sgl Pointeur vers l'état des single quotes
+ * @param in_dbl Pointeur vers l'état des double quotes
+ */
+void in_dbl(char c, bool *in_sgl, bool *in_dbl)
+{
+	// Si on n'est pas dans une sgl
+	if (c == '"' && *in_sgl == false)
+		*in_dbl = !(*in_dbl); // On inverse l'état
+}
 
-// 	in_dbl = false;
-// 	if (str[i] == 34 && in_sgl == false && in_dbl == false) 
-// 		in_dbl = true;
-// 	else if (str[i] == 34 && in_sgl = false && in_dbl == true)
-// 		in_dbl = false;
-// }
+/**
+ * @brief Met à jour l'état si on est dans une single quote ou non
+ * @param c Caractère courant
+ * @param in_sgl Pointeur vers l'état des single quotes
+ * @param in_dbl Pointeur vers l'état des double quotes
+ */
+void in_sgl(char c, bool *in_sgl, bool *in_dbl)
+{
+	// Si on n'est pas dans une dbl
+	if (c == '\'' && *in_dbl == false)
+		*in_sgl = !(*in_sgl); // On inverse l'état
+}
 
-// int	to_exp(char *str, int *j)
-// {
-	
-// 	bool	in_sgl;
-// 	int		i;
-	
-	
-// 	in_sgl = false;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-			
-// 		else if (str[i] == 39 && in_dbl == false && in_sgl == false)
-// 			in_sgl = true;
-// 		else if (str[i] == 39 && in_dbl == false && in_sgl == true)
-// 			in_sgl = false;
-// 		i++;
-// 	}
-// }
+/**
+ * @brief Vérifie si une variable dans la chaîne doit être expansée par rapport à sa position dans les quotes.
+ * 
+ * - Entre simple quote, on expanse pas.
+ * 
+ * - Entre double quote, on expanse.
+ * 
+ * @param str Chaîne à vérifier
+ * @return `int` 1 si expansable, 0 sinon
+*/
+int to_exp(char *str)
+{
+	bool is_in_single_quote;
+	bool is_in_double_quote;
+	int i;
 
-// 3 fonctions, in signle quote in double et dans rien, tant qu'on recroise pas une quote qu on a deja croise, on est dans ces quotes la. 
+	is_in_single_quote = false;
+	is_in_double_quote = false;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			in_sgl(str[i], &is_in_single_quote, &is_in_double_quote);
+		else if (str[i] == '"')
+			in_dbl(str[i], &is_in_single_quote, &is_in_double_quote);
+		else if (str[i] == '$' && !is_in_single_quote)
+			return (1); // Variable à expanser trouvée
 
+		i++;
+	}
+	return (0); // Aucune variable à expanser
+}
 
+char *
+ft_strcpy(char *dest, char *src)
+{
+	int i;
 
-// char	*ft_strcpy(char *dest, char *src)
-// {
-// 	int	i;
-	
-// 	i = 0;
-// 	while (src[i])
-// 	{
-// 		dest[i] = src[i];
-// 		i++;
-// 	}
-// 	dest[i] = '\0';
-// 	return (dest);
-// }
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
 
 /**
  * @brief Incrémente la variable SHLVL dans l'environnement.
@@ -79,7 +103,7 @@ int increment_shlvl(t_env *env_list)
 	t_env *shlvl_node;
 	int level;
 	char *new_value;
-	
+
 	// Rechercher le nœud SHLVL dans la liste d'environnement
 	shlvl_node = env_list;
 	while (shlvl_node)

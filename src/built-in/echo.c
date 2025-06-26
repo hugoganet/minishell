@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/25 13:30:58 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:33:43 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,3 @@ int   ft_echo(t_ast *node)
         printf("\n");
    return (0);
 }
-
-//if_isquote ne pas print les quotes
-
-// si dblquote, imprime sgl quote dedans, si sgl quote pas 
-on imprime juste pas les quotes de dedans 

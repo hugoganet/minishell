@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/25 13:28:22 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:02:34 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 	}
 	// Ajoute le pointer des tokens à la structure du shell pour free proprement
 	shell->tokens = tokens;
-	print_token_list(tokens);
+	// print_token_list(tokens);
 	ast_root = build_ast(tokens);
 	// pretty_print_ast(ast_root, 0, "ROOT");
 	// print_ast_cmd_node(ast_root->args);

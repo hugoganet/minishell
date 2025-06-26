@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:35:27 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 11:20:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/26 15:32:07 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int   ft_env(t_ast *node, t_shell *data)
     t_env   *curr;
 
     // i = 0;
+    if (!data->env_list)
+        return (1);
     curr = data->env_list;
-    if (node->type == CMD && ft_strcmp(node->str,"env") == 0)
+    if (node->type == CMD && ft_strcmp(node->args[0],"env") == 0)
     {
         while (curr)
         {

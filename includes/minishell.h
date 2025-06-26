@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 11:32:18 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/26 13:34:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,5 +190,6 @@ int ft_exit(t_ast *node, t_shell *data);
 int ft_export(t_ast *node, t_shell *data);
 int apply_parent_redirections(t_ast *node);
 int increment_shlvl(t_env *env_list);
+int ft_is_valid(char *args);
 
 #endif

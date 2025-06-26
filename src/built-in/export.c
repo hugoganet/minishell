@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 18:10:49 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:51:45 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,58 @@ void	add_new_node(t_env *new_node, t_env **env)
 			curr = curr->next;
 		curr->next = new_node;
 	}
+}
+
+void	create_add_new_node(char *key, char *value, t_env **env)
+{
+	t_env	*new_node;
 	
+	new_node = ft_calloc(1, sizeof(t_env));
+	if (!new_node)
+		return ;
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value);
+	new_node->next = NULL;
+	add_new_node(new_node, env);
+}
+
+int	update_env_value(t_env *env, char *key, char *value)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+		{
+			free(env->value);
+			env->value = ft_strdup(value);
+			return (1);
+		}
+		env = env->next;
+	}
+	return (0);
 }
 
 int	ft_export(t_ast *node, t_shell *data)
 {
 	int	i;
 	int	j;
-	t_env	*new_node;
-	t_env	*curr;
 	char	*key;
-
-	i = 1;
-	j = 0;
-	new_node = ft_calloc(1, sizeof(t_env));
-	if (!new_node)
-		return (1);
-	if (data->env_list)
-		curr = data->env_list;
-	else 
+	char	*value;
 	
+	i = 1;
 	while(node->args[i])
 	{
-		while (node->args[i][j] != '=')
+		j = 0;
+		if(!ft_strchr(node->args[i], '='))
+			return (0);
+		while (node->args[i][j] && node->args[i][j] != '=')
 			j++;
-		key = ft_substr(node->args[i], 0, j - 1)
-		while (curr)
-		{
-			if (ft_strcmp(curr, key) == 0)
-			{
-				//remplacer la value par le reste dond de j a \0.
-			}
-			curr = curr->next;
-		}
-		else
-		{
-			if (ft_is_valid(key))
-			{
-				new_node->key = ft_substr(node->args[i], node->args[i][0], j - 1);
-				new_node->value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
-				new_node->next = NULL;
-				add_new_node(new_node, &data->env_list)
-			}
-		}
-		
+		key = ft_substr(node->args[i], 0, j);
+		value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
+		if (!update_env_value(data->env_list, key, value) && ft_is_valid(key))
+			create_add_new_node(key, value, &data->env_list);
+		free(key);
+		free(value);
+		i++;
 	}
+	return (0);
 }

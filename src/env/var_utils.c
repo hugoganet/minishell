@@ -1,66 +1,66 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   var_utils.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 16:39:37 by elaudrez         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   var_utils.c                                        :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
+// /*   Updated: 2025/06/25 16:39:37 by elaudrez         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	in_dbl(char *str, )
-{
-	bool	in_dbl;
+// int	in_dbl(char *str, )
+// {
+// 	bool	in_dbl;
 
-	in_dbl = false;
-	if (str[i] == 34 && in_sgl == false && in_dbl == false) 
-		in_dbl = true;
-	else if (str[i] == 34 && in_sgl = false && in_dbl == true)
-		in_dbl = false;
-}
+// 	in_dbl = false;
+// 	if (str[i] == 34 && in_sgl == false && in_dbl == false) 
+// 		in_dbl = true;
+// 	else if (str[i] == 34 && in_sgl = false && in_dbl == true)
+// 		in_dbl = false;
+// }
 
-int	to_exp(char *str, int *j)
-{
+// int	to_exp(char *str, int *j)
+// {
 	
-	bool	in_sgl;
-	int		i;
+// 	bool	in_sgl;
+// 	int		i;
 	
 	
-	in_sgl = false;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
+// 	in_sgl = false;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '$')
 			
-		else if (str[i] == 39 && in_dbl == false && in_sgl == false)
-			in_sgl = true;
-		else if (str[i] == 39 && in_dbl == false && in_sgl == true)
-			in_sgl = false;
-		i++;
-	}
-}
+// 		else if (str[i] == 39 && in_dbl == false && in_sgl == false)
+// 			in_sgl = true;
+// 		else if (str[i] == 39 && in_dbl == false && in_sgl == true)
+// 			in_sgl = false;
+// 		i++;
+// 	}
+// }
 
-3 fonctions, in signle quote in double et dans rien, tant qu'on recroise pas une quote qu on a deja croise, on est dans ces quotes la. 
+// 3 fonctions, in signle quote in double et dans rien, tant qu'on recroise pas une quote qu on a deja croise, on est dans ces quotes la. 
 
 
 
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
+// char	*ft_strcpy(char *dest, char *src)
+// {
+// 	int	i;
 	
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+// 	i = 0;
+// 	while (src[i])
+// 	{
+// 		dest[i] = src[i];
+// 		i++;
+// 	}
+// 	dest[i] = '\0';
+// 	return (dest);
+// }
 
 /**
  * @brief Incrémente la variable SHLVL dans l'environnement.

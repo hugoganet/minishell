@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 14:01:46 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:07:07 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ t_ast	*new_ast_node(t_token *node)
 		return (NULL);
 	new_ast->type = node->type;
 	new_ast->str = node->str;
-	printf("%s\n", new_ast->str);
 	return (new_ast);
 }
 

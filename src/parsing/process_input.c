@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/26 15:54:07 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:13:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@
 	shell->tokens = tokens;
 	// print_token_list(tokens);
 	ast_root = build_ast(tokens);
-	// pretty_print_ast(ast_root, 0, "ROOT");
 	if (!ast_root)
 	{
 		ft_putendl_fd("minishell: error: failed to build AST", 2);
@@ -43,6 +42,7 @@
 		return;
 	}
 	expand_vars(ast_root, shell);
+	// pretty_print_ast(ast_root, 0, "ROOT");
 	// print_ast_cmd_node(ast_root->args);
 	// Ajoute le pointer de l'AST à la structure du shell pour free proprement
 	shell->ast = ast_root;

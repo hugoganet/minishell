@@ -6,13 +6,23 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 17:54:03 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/26 13:36:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Cas ${VAR}
+/**
+ * @brief Détecte et valide un nom de variable entre accolades : ${VAR}
+ *
+ * Cette fonction extrait les bornes de la variable `${VAR}` dans la chaîne donnée,
+ * en vérifiant que le nom est valide (lettres, chiffres, underscores uniquement).
+ *
+ * @param str         La chaîne d’entrée.
+ * @param i           Index courant (début du parsing, sera modifié).
+ * @param end         Index de fin à renseigner (après la }).
+ * @param name_start  Index de début du nom de variable (après le {).
+ */
 void get_name_brace(char *str, int *i, int *end, int *name_start)
 {
 	(*i)++;
@@ -29,6 +39,17 @@ void get_name_brace(char *str, int *i, int *end, int *name_start)
 		return;
 	*end = *i + 1; // Placer end juste apres le }
 }
+/**
+ * @brief Détecte un nom de variable classique (sans accolades) : $VAR
+ *
+ * Cette fonction extrait les bornes du nom de la variable à partir de l’index donné,
+ * en s'arrêtant sur le premier caractère invalide (non alphanumérique/underscore).
+ *
+ * @param str         La chaîne d’entrée.
+ * @param i           Index courant (sera modifié jusqu’à la fin du nom).
+ * @param end         Index de fin du nom.
+ * @param name_start  Index de début du nom.
+ */
 
 void get_name(char *str, int *i, int *end, int *name_start)
 {
@@ -40,7 +61,17 @@ void get_name(char *str, int *i, int *end, int *name_start)
 	*end = *i;
 }
 
-/* Extraire le nom de la variable appelée dans l'input */
+/**
+ * @brief Extrait le nom d’une variable présente dans une chaîne `$VAR` ou `${VAR}`
+ *
+ * Recherche le prochain `$`, et récupère le nom de la variable (sans le `$` ni `{}`),
+ * en renvoyant une copie allouée du nom.
+ *
+ * @param str   Chaîne à analyser.
+ * @param start Index de début du token `$`.
+ * @param end   Index de fin après la variable.
+ * @return Nom de la variable (ex: "USER"), à libérer après usage. NULL si erreur.
+ */
 char *find_var(char *str, int *start, int *end)
 {
 	int i;
@@ -70,6 +101,18 @@ char *find_var(char *str, int *start, int *end)
 	return (name_var);
 }
 
+/**
+ * @brief Récupère la valeur d’une variable d’environnement à partir de son appel dans une chaîne.
+ *
+ * Recherche un appel de variable via `$VAR` ou `${VAR}` dans `str`, puis renvoie la valeur
+ * correspondante dans `data->env`, ou NULL si non trouvée.
+ *
+ * @param str   Chaîne contenant l’appel de variable.
+ * @param data  Données du shell contenant `env`.
+ * @param start Adresse où stocker l’index de début du `$`.
+ * @param end   Adresse où stocker l’index de fin après la variable.
+ * @return Valeur de la variable (allouée dynamiquement), ou NULL si non trouvée.
+ */
 char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 {
 	int i;
@@ -96,41 +139,25 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 	return (var);
 }
 
-char *join_str(char *str, t_shell *data)
+/**
+ * @brief Libère les anciennes chaînes utilisées dans join_str.
+ */
+static void free_temp(char *prefix, char *var, char *suffix, char *tmp)
 {
-	char *var;
-	char *prefix;	 // Chaine avant la variable a traiter
-	char *suffix;	 // Chaine apres
-	char *final_str; // Chaine qui sera composée des 3 chaines concaténées
-	char *tmp;
-	int start; // Savoir a partir d'ou le traitement de la variable commence donc ($).
-	int end;   // Et ou elle s'arrete donc soit a la fin, soit }
-
-	start = 0;
-	end = 0;
-	while (ft_strchr(str, '$'))
-	{
-		var = copy_var_content(str, data, &start, &end);
-		if (!var)
-			break; // Si pas de variable trouvée, on sort de la boucle
-		prefix = ft_substr(str, 0, start);
-		suffix = ft_substr(str, end, ft_strlen(str) - end); // copier le nb de charactere qui reste, donc len string - l'index end (qui se trouve a la fin) ex : 15 - 10.
-		tmp = ft_strjoin(prefix, var);
-		final_str = ft_strjoin(tmp, suffix);
-		free(tmp);
-		free(var);
-		free(prefix);
-		free(suffix);
-		free(str);		 // Libérer l'ancienne chaîne
-		str = final_str; // Mettre à jour la chaîne
-	}
-	return (str);
+	free(prefix);
+	free(var);
+	free(suffix);
+	free(tmp);
 }
 
 /**
- * @brief Retire les guillemets d'une chaîne
- * @param str Chaîne à traiter
- * @return Nouvelle chaîne sans guillemets (allouée dynamiquement)
+ * @brief Supprime les quotes simples et doubles d’une chaîne tout en respectant les règles du shell.
+ *
+ * Cette fonction conserve le contenu entre les quotes, mais supprime les caractères
+ * de quote eux-mêmes (pas d’expansion entre quotes simples, expansion autorisée dans les doubles).
+ *
+ * @param str Chaîne originale (non modifiée).
+ * @return Une nouvelle chaîne sans les quotes (à libérer après usage).
  */
 char *remove_quotes(char *str)
 {
@@ -142,80 +169,116 @@ char *remove_quotes(char *str)
 
 	if (!str)
 		return (NULL);
-
 	result = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!result)
 		return (NULL);
-
 	i = 0;
 	j = 0;
 	in_single_quote = false;
 	in_double_quote = false;
-
 	while (str[i])
 	{
+		// Toggle quote simple si hors quote double
 		if (str[i] == '\'' && !in_double_quote)
-		{
 			in_single_quote = !in_single_quote;
-			i++;
-		}
+		// Toggle quote double si hors quote simple
 		else if (str[i] == '"' && !in_single_quote)
-		{
 			in_double_quote = !in_double_quote;
-			i++;
-		}
 		else
-			result[j++] = str[i++];
+			result[j++] = str[i];
+		i++;
 	}
 	result[j] = '\0';
-
 	return (result);
 }
 
+/**
+ * @brief Effectue l'expansion d'une variable d'environnement dans une chaîne.
+ *
+ * Cette fonction cherche la première occurrence de `$VAR` dans la chaîne `str`,
+ * en extrait la valeur correspondante depuis la liste d’environnement `data`,
+ * puis reconstruit la chaîne en concaténant :
+ *   - le préfixe (avant `$`)
+ *   - la valeur de la variable
+ *   - le suffixe (après la variable)
+ * Cela est répété tant que d'autres `$` sont trouvés.
+ *
+ * @param str Chaîne à traiter (libérée automatiquement).
+ * @param data Structure contenant les variables d’environnement.
+ * @param str Pointeur vers un pointeur vers la chaîne à modifier.
+ * @return Nouvelle chaîne avec toutes les variables expansées.
+ */
+char *join_str(char *str, t_shell *data)
+{
+	char *prefix;
+	char *var;
+	char *suffix;
+	char *tmp;
+	char *final;
+	int start;
+	int end;
+
+	start = 0;
+	end = 0;
+	while (ft_strchr(str, '$'))
+	{
+		var = copy_var_content(str, data, &start, &end);
+		if (!var)
+			break;
+		prefix = ft_substr(str, 0, start);
+		suffix = ft_substr(str, end, ft_strlen(str) - end);
+		tmp = ft_strjoin(prefix, var);
+		final = ft_strjoin(tmp, suffix);
+		free_temp(prefix, var, suffix, tmp);
+		free(str);
+		str = final;
+	}
+	return (str);
+}
+
+static void expand_one_arg(char **arg, t_shell *data)
+{
+	char *expanded;
+	char *unquoted;
+	int j;
+
+	j = 0;
+	while ((*arg)[j])
+	{
+		if ((*arg)[j] == '$' && to_exp(*arg))
+		{
+			expanded = join_str(ft_strdup(*arg), data);
+			if (expanded)
+			{
+				free(*arg);
+				*arg = expanded;
+			}
+			break;
+		}
+		j++;
+	}
+	unquoted = remove_quotes(*arg);
+	if (unquoted)
+	{
+		free(*arg);
+		*arg = unquoted;
+	}
+}
+
+/**
+ * @brief Applique l’expansion sur tous les arguments d’un nœud AST (CMD uniquement).
+ */
 void expand_vars(t_ast *node, t_shell *data)
 {
 	int i;
-	int j;
-	char *expanded;
-	char *unquoted;
 
-	i = 1;
 	if (!node)
 		return;
 	if (node->type == CMD)
 	{
+		i = 1;
 		while (node->args[i])
-		{
-			// Étape 1: Expansion des variables
-			j = 0;
-			while (node->args[i][j])
-			{
-				if (node->args[i][j] == '$') // Vérifier si on a une variable à expanser
-				{
-					if (to_exp(node->args[i])) // Vérifier si on doit expanser
-					{
-						expanded = join_str(ft_strdup(node->args[i]), data);
-						if (expanded)
-						{
-							free(node->args[i]);
-							node->args[i] = expanded;
-						}
-						break; // Après expansion, on sort de la boucle car la chaîne a été modifiée
-					}
-				}
-				j++;
-			}
-
-			// Étape 2: Retirer les guillemets
-			unquoted = remove_quotes(node->args[i]);
-			if (unquoted)
-			{
-				free(node->args[i]);
-				node->args[i] = unquoted;
-			}
-
-			i++;
-		}
+			expand_one_arg(&node->args[i++], data);
 	}
 	expand_vars(node->left, data);
 	expand_vars(node->right, data);

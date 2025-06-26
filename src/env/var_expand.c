@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 13:36:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/26 14:55:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,10 +193,38 @@ char *remove_quotes(char *str)
 }
 
 /**
+ * @brief Gère l'expansion de la variable $? qui renvoie le statut de sortie de la dernière commande
+ *
+ * @param str   Chaîne contenant $?
+ * @param data  Données du shell contenant last_exit_status
+ * @param start Adresse où stocker l'index de début du $?
+ * @param end   Adresse où stocker l'index de fin après $?
+ * @return Valeur du dernier code de sortie sous forme de chaîne allouée dynamiquement
+ */
+char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
+{
+	int i;
+	char *exit_status;
+
+	i = 0;
+	// Trouver la première occurrence de $?
+	while (str[i] && (str[i] != '$' || str[i + 1] != '?'))
+		i++;
+	if (!str[i])
+		return (NULL);
+	*start = i;
+	*end = i + 2; // $?
+
+	// Convertir l'entier en chaîne
+	exit_status = ft_itoa(data->last_exit_status);
+	return (exit_status);
+}
+
+/**
  * @brief Effectue l'expansion d'une variable d'environnement dans une chaîne.
  *
  * Cette fonction cherche la première occurrence de `$VAR` dans la chaîne `str`,
- * en extrait la valeur correspondante depuis la liste d’environnement `data`,
+ * en extrait la valeur correspondante depuis la liste d'environnement `data`,
  * puis reconstruit la chaîne en concaténant :
  *   - le préfixe (avant `$`)
  *   - la valeur de la variable
@@ -222,7 +250,10 @@ char *join_str(char *str, t_shell *data)
 	end = 0;
 	while (ft_strchr(str, '$'))
 	{
-		var = copy_var_content(str, data, &start, &end);
+		// Vérifier d'abord si $? est présent
+		var = expand_exit_status(str, data, &start, &end);
+		if (!var)
+			var = copy_var_content(str, data, &start, &end);
 		if (!var)
 			break;
 		prefix = ft_substr(str, 0, start);

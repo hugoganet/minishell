@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 17:54:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/26 14:55:06 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ void in_sgl(char c, bool *in_sgl, bool *in_dbl);
 int to_exp(char *str);
 char *find_var(char *str, int *start, int *end);
 char *copy_var_content(char *str, t_shell *data, int *start, int *end);
+char *expand_exit_status(char *str, t_shell *data, int *start, int *end);
 char *join_str(char *str, t_shell *data);
 char *remove_quotes(char *str);
 

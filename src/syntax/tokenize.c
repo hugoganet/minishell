@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/26 17:36:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/27 15:24:49 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static char *read_simple_token(char *input, int *i)
 	char *token_new;
 
 	// Si on est sur une quote, on appelle la fonction dédiée
-	// if (input[*i] == '\'' || input[*i] == '"')
-	// 	return (parse_quoted_token(input, i));
+	if (input[*i] == '\'' || input[*i] == '"')
+		return (parse_quoted_token(input, i));
 	// Sinon, on lit jusqu'à la prochaine quote ou un séparateur
 	start = *i;
 	while (input[*i] && !is_token_delim(input[*i]))

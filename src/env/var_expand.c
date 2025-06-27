@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 15:59:47 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:16:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,13 +179,32 @@ char *remove_quotes(char *str)
 	while (str[i])
 	{
 		// Toggle quote simple si hors quote double
-		if (str[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
+		if (str[i] == '\'' && in_double_quote == false && in_single_quote ==  false)
+		{
+			printf("On rentre dans des single\n");
+			in_single_quote = true;
+		}
+		else if (str[i] == '\'' && in_double_quote == false && in_single_quote == true)
+		{
+			printf("On sort des single\n");
+			in_single_quote = false;
+		}
 		// Toggle quote double si hors quote simple
-		else if (str[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
+		else if (str[i] == '"' && in_single_quote == false && in_double_quote == false)
+		{
+			printf("On rentre dans des double\n");
+			in_double_quote = true;	
+		}
+		else if (str[i] == '"' && in_single_quote == false && in_double_quote == true)
+		{
+			printf("On sort des double\n");
+			in_double_quote = false;
+		}
 		else
-			result[j++] = str[i];
+		{
+			result[j] = str[i];
+			j++;
+		}	
 		i++;
 	}
 	result[j] = '\0';

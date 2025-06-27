@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 18:18:25 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/27 12:02:09 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	ft_export(t_ast *node, t_shell *data)
 	while(node->args[i])
 	{
 		j = 0;
-		if(!ft_strchr(node->args[i], '='))
+		if(!ft_strchr(node->args[i], '=') || !ft_is_valid(node->args[i]))
 		{
 			ft_putstr_fd("Minishell: export: ", 2);
 			ft_putstr_fd(node->args[i], 2);

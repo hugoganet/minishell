@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 14:26:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/27 16:14:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	t_shell shell; // Structure du shell
-	t_env *env_list; // Liste chaînée d'environnement
+	t_shell	shell; // Structure du shell
+	t_env	*env_list; // Liste chaînée d'environnement
+	char	*input;
 
 	(void)argc;
 	(void)argv;
 	env_list = NULL;
+	input = NULL;
 	// Initialise les signaux pour le shell
 	init_signals();
 	// Initialise le shell avec l'environnement
@@ -39,9 +41,23 @@ int main(int argc, char **argv, char **envp)
 		cleanup_shell(&shell);
 		exit(1);
 	}
-	// print_env_list(shell.env_list);
-	shell_loop(&shell); // Boucle principale du shell
-	// Nettoyage de la mémoire
+	if (argc > 1)
+	{
+		input = ft_strdup(argv[1]);
+		if (input && !is_line_empty(input))
+		{
+			if (!is_syntax_valid(input))
+				process_input(input, &shell);
+		}
+		free(input);
+		free_ast(shell.ast);
+		shell.ast = NULL;
+		free_token_list(shell.tokens);
+		shell.tokens = NULL;
+	}
+	else
+		shell_loop(&shell);
+
 	cleanup_shell(&shell);
 	return (0);
 }

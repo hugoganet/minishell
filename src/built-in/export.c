@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 16:00:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:18:25 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,12 @@ int	ft_export(t_ast *node, t_shell *data)
 	{
 		j = 0;
 		if(!ft_strchr(node->args[i], '='))
-			return (0);
+		{
+			ft_putstr_fd("Minishell: export: ", 2);
+			ft_putstr_fd(node->args[i], 2);
+			ft_putstr_fd(" not a valid identifier\n", 2);
+			return (1);
+		}
 		while (node->args[i][j] && node->args[i][j] != '=')
 			j++;
 		key = ft_substr(node->args[i], 0, j);

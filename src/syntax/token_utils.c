@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/26 17:43:28 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/27 15:53:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,40 @@ bool is_redirection(t_token_type type)
 }
 
 
-// /**
-//  * @brief Extrait une sous-chaîne entre quotes simples ou doubles.
-//  *
-//  * @param input Chaîne d'entrée
-//  * @param i Pointeur vers l'index courant (pointant sur la quote ouvrante)
-//  * @return char* Sous-chaîne allouée (sans les quotes), ou NULL en cas d'erreur
-//  */
-// char *parse_quoted_token(char *input, int *i)
-// {
-// 	char quote;
-// 	int start;
-// 	int end;
-// 	char *token_new;
+/**
+ * @brief Extrait une sous-chaîne entre quotes simples ou doubles.
+ *
+ * @param input Chaîne d'entrée
+ * @param i Pointeur vers l'index courant (pointant sur la quote ouvrante)
+ * @return char* Sous-chaîne allouée (sans les quotes), ou NULL en cas d'erreur
+ */
+char *parse_quoted_token(char *input, int *i)
+{
+	char quote;
+	int start;
+	int end;
+	char *token_new;
 
-// 	quote = input[*i];
-// 	start = *i;
-// 	// On commence à parcourir input juste après la quote ouvrante
-// 	end = start + 1;
-// 	// Avance l'index jusqu'à la quote fermante correspondante
-// 	while (input[end] && input[end] != quote)
-// 		end++;
-// 	// On set l'index à la fin de la quote fermante
-// 	*i = end + 1;
-// 	// On extrait la sous-chaîne avec les quotes
-// 	token_new = ft_substr(input, start, (size_t)end - start + 1);
-// 	if (!token_new)
-// 		return (NULL);
-// 	return (token_new);
-// }
+	quote = input[*i];
+	start = *i;
+	// On commence à parcourir input juste après la quote ouvrante
+	end = start + 1;
+	// Avance l'index jusqu'à la quote fermante correspondante
+	// Quand on atteint la quote fermante, soit input[end + 1] = null, soit is_token_delim(input[end + 1])
+	while (input[end])
+	{
+		if (input[end] == quote && is_token_delim(input[end + 1]))
+			break;
+		end++;
+	}
+	// On set l'index à la fin de la quote fermante
+	*i = end + 1;
+	// On extrait la sous-chaîne avec les quotes
+	token_new = ft_substr(input, start, (size_t)end - start + 1);
+	if (!token_new)
+		return (NULL);
+	return (token_new);
+}
 
 /**
  * @brief Vérifie si le type est un opérateur logique (PIPE).

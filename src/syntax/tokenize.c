@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/26 17:36:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/27 15:53:01 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void skip_spaces(char *input, int *i)
  * @param c Le caractère à tester	if (!ft_strncmp(str, "<", 1))
  * @return `true` si c'est un séparateur (espace, tab, symbole shell)
  */
-static bool is_token_delim(char c)
+bool is_token_delim(char c)
 {
-	return (c == ' ' || c == '\t' || c == '<' || c == '>' || c == '|');
+	return (c == ' ' || c == '\t' || c == '<' || c == '>' || c == '|' || c == '\0');
 }
 
 /**

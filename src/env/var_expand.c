@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 15:59:47 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:56:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ char *remove_quotes(char *str)
 
 	if (!str)
 		return (NULL);
-	result = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	result = ft_calloc(sizeof(char), (ft_strlen(str) + 1));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -188,7 +188,6 @@ char *remove_quotes(char *str)
 			result[j++] = str[i];
 		i++;
 	}
-	result[j] = '\0';
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/27 15:25:26 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:06:09 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,13 @@ char *parse_quoted_token(char *input, int *i)
 	// On commence à parcourir input juste après la quote ouvrante
 	end = start + 1;
 	// Avance l'index jusqu'à la quote fermante correspondante
-	while (input[end] && input[end] != quote)
+	// Quand on atteint la quote fermante, soit input[end + 1] = null, soit is_token_delim(input[end + 1])
+	while (input[end])
+	{
+		if (input[end] == quote && is_token_delim(input[end + 1]))
+			break;
 		end++;
+	}
 	// On set l'index à la fin de la quote fermante
 	*i = end + 1;
 	// On extrait la sous-chaîne avec les quotes

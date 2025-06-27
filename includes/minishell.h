@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 18:01:53 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/27 15:42:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,10 @@ int ft_export(t_ast *node, t_shell *data);
 int apply_parent_redirections(t_ast *node);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
+bool is_token_delim(char c);
 
-/* Functions for environment variables expansion */
-void in_dbl(char c, bool *in_sgl, bool *in_dbl);
+	/* Functions for environment variables expansion */
+	void in_dbl(char c, bool *in_sgl, bool *in_dbl);
 void in_sgl(char c, bool *in_sgl, bool *in_dbl);
 int to_exp(char *str);
 char *find_var(char *str, int *start, int *end);

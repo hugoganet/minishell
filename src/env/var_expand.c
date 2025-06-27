@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/27 15:16:27 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:06:17 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ char *remove_quotes(char *str)
 
 	if (!str)
 		return (NULL);
-	result = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	result = ft_calloc(sizeof(char), (ft_strlen(str) + 1));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -207,7 +207,6 @@ char *remove_quotes(char *str)
 		}	
 		i++;
 	}
-	result[j] = '\0';
 	return (result);
 }
 

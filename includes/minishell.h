@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/27 16:08:45 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:05:07 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int has_unclosed_quotes(char *input);
 int has_invalid_pipes(char *input);
 int has_invalid_redirections(char *input);
 int has_unmatched_parentheses(char *input);
-int is_syntax_valid(char *input);
+int is_syntax_valid(char *input, t_shell *shell);
 int is_parenthesis_empty(char *input, int i);
 void update_quote_state(char *quote_state, char c);
 void shell_loop(t_shell *shell);

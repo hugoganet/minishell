@@ -647,7 +647,7 @@ launch_test()
 		MINISHELL="${VALGRIND} ${MEMCHECK} ${LOG_VALGRIND}${LOG_FILE}${ID}.vlgrnd ./Minishell"
 
 		# EXÉCUTION DU TEST AVEC BASH (RÉFÉRENCE)
-		bash -c			"${TEST[i]}"				> ${OUTFILE_BASH} 2>&1
+		bash --posix -c	"${TEST[i]}"				> ${OUTFILE_BASH} 2>&1
 		BASH_EXIT_STATUS=$?    # Capture le code de retour de bash
 
 		# EXÉCUTION DU TEST AVEC MINISHELL

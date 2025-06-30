@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/25 12:02:24 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/30 15:04:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void shell_loop(t_shell *shell)
 		// Sinon, on traite l'entrée.
 		if (!is_line_empty(input))
 		{
-			if (!is_syntax_valid(input))
+			if (!is_syntax_valid(input, shell))
 				process_input(input, shell);
 		}
 		free(input);

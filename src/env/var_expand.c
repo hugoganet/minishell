@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/30 12:19:16 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:25:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
 
 	i = 0;
 	// Trouver la première occurrence de $?
-	while (str[i] && (str[i] != '$' || str[i + 1] != '?'))
+	while (str[i] && (str[i] != '$' && str[i + 1] != '?'))
 		i++;
 	if (!str[i])
 		return (NULL);
@@ -251,6 +251,7 @@ char *join_str(char *str, t_shell *data)
 	{
 		// Vérifier d'abord si $? est présent
 		var = expand_exit_status(str, data, &start, &end);
+		// Si pas de $? trouvé, chercher une variable normale
 		if (!var)
 			var = copy_var_content(str, data, &start, &end);
 		if (!var)

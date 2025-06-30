@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/27 16:14:36 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/30 15:08:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int main(int argc, char **argv, char **envp)
 		cleanup_shell(&shell);
 		exit(1);
 	}
-	if (argc > 1)
+	if (argc > 1) // Utilisé le tester uniquement
 	{
 		input = ft_strdup(argv[1]);
 		if (input && !is_line_empty(input))
 		{
-			if (!is_syntax_valid(input))
+			if (!is_syntax_valid(input, &shell))
 				process_input(input, &shell);
 		}
 		free(input);

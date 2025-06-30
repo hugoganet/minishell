@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/27 16:11:46 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 12:19:16 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ char *join_str(char *str, t_shell *data)
 		if (!var)
 			var = copy_var_content(str, data, &start, &end);
 		if (!var)
-			break;
+			var = ft_strdup("");
 		prefix = ft_substr(str, 0, start);
 		suffix = ft_substr(str, end, ft_strlen(str) - end);
 		tmp = ft_strjoin(prefix, var);

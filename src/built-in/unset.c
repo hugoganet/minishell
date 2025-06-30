@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:42:15 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/26 19:27:39 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 11:20:19 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ int ft_is_valid(char *args)
     int i;
 
 	i = 0; 
-    if (!args || (!ft_isalpha(args[0] && args[0] != '_')))
+    if (!args || (!ft_isalpha(args[0]) && args[0] != '_'))
         return (0);
+    i = 1;
     while (args[i])
     {
         if (!ft_isalnum(args[i]) && args[i] != '_')

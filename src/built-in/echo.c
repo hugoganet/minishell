@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 20:14:00 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/27 12:37:07 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:56:45 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int valid_option(char *str)
     int i;
 
     i = 0;
-    if (str[i] && str[i] == '-')
+    if (str[i] && str[i + 1] && str[i] == '-')
     {
         i++;
         while(str[i] && str[i] == 'n')
@@ -27,6 +27,21 @@ int valid_option(char *str)
     }
     return (0);
 }
+
+void print_echo(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i])
+    {
+        if (str[i] == '\\')
+            i++;
+        printf("%c", str[i]);
+        i++;
+    }
+}
+
 
 int   ft_echo(t_ast *node)
 {
@@ -44,7 +59,7 @@ int   ft_echo(t_ast *node)
     }
     while (node->args[i])
     {
-        printf("%s", node->args[i]);
+        print_echo(node->args[i]);
        if (node->args[i] && node->args[i + 1])
             printf(" ");
         i++;

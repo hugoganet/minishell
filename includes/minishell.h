@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/30 16:07:05 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 01:51:02 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,8 +194,8 @@ int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
 
-	/* Functions for environment variables expansion */
-	void in_dbl(char c, bool *in_sgl, bool *in_dbl);
+// ! ----------------------- ENV VARS EXPANSION ---------------
+void in_dbl(char c, bool *in_sgl, bool *in_dbl);
 void in_sgl(char c, bool *in_sgl, bool *in_dbl);
 int to_exp(char *str);
 char *find_var(char *str, int *start, int *end);
@@ -203,5 +203,14 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end);
 char *expand_exit_status(char *str, t_shell *data, int *start, int *end);
 char *join_str(char *str, t_shell *data);
 char *remove_quotes(char *str);
+bool is_positional_param(const char *name);
+bool is_valid_var_start(char c);
+char *get_env_var_value(char *name, char **env);
+char *get_raw_token_if_invalid(char *str, int start, int end);
+char *handle_var_expansion(char *str, char *var, int start, int end, int *offset);
+char *process_next_dollar(char *str, int *offset, t_shell *data);
+void expand_vars(t_ast *node, t_shell *data);
+void get_name_brace(char *str, int *i, int *end, int *name_start);
+void get_name(char *str, int *i, int *end, int *name_start);
 
 #endif

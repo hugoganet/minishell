@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/30 14:25:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/30 20:28:27 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void get_name_brace(char *str, int *i, int *end, int *name_start)
 		return;
 	*end = *i + 1; // Placer end juste apres le }
 }
+
 /**
  * @brief Détecte un nom de variable classique (sans accolades) : $VAR
  *
@@ -80,24 +81,34 @@ char *find_var(char *str, int *start, int *end)
 	char *name_var;
 
 	i = 0;
-
-	while (str[i] && str[i] != '$')
-		i++;
 	if (!str[i])
 		return (NULL);
+	while (str[i] && str[i] != '$')
+		i++;
+	// if (!str[i + 1])
+	// 	return (name_var = ft_strdup("$"));
 	*start = i;
 	i++;
-	// Cas ${VAR}
+	if (ft_isdigit(str[i]))
+	{
+		i++;
+		*end = i;
+	// ntf("%c\n", str[i]);
+		return (name_var = ft_strdup(""));
+	}
+		// Cas ${VAR}
 	if (str[i] == '{')
 		get_name_brace(str, &i, end, &name_start);
 	// Cas $VAR
 	else
 		get_name(str, &i, end, &name_start);
 	len = i - name_start; // Definir la longueur de la substring qu'il faudra chercher dans env ex : 10 - 5 USER et pas ${USER}
-	name_var = malloc((len + 1) * sizeof(char));
+	//printf("len = %i\n", len);
+	name_var = ft_calloc((len + 1), sizeof(char));
 	if (!name_var)
 		return (NULL);
 	ft_strlcpy(name_var, &str[name_start], len + 1); // ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
+	
 	return (name_var);
 }
 
@@ -124,6 +135,7 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 	name_var = find_var(str, start, end); // Recuperer variable appelée dans le terminal
 	if (!name_var)
 		return (NULL);
+	printf("name_var = %s\n", name_var);
 	len = ft_strlen(name_var);
 	while (data->env[i]) // Parcourir tableau des variables d'env pour trouver concordance avec name_var
 	{
@@ -260,6 +272,7 @@ char *join_str(char *str, t_shell *data)
 		suffix = ft_substr(str, end, ft_strlen(str) - end);
 		tmp = ft_strjoin(prefix, var);
 		final = ft_strjoin(tmp, suffix);
+		
 		free_temp(prefix, var, suffix, tmp);
 		free(str);
 		str = final;
@@ -314,3 +327,6 @@ void expand_vars(t_ast *node, t_shell *data)
 	expand_vars(node->left, data);
 	expand_vars(node->right, data);
 }
+
+//si apres $ il y a un nb, alors il faut ignorer et garder que la suite 
+//si y'a chiffres apres le $, les ignorer. 

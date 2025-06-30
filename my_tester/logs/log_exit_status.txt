@@ -422,3 +422,323 @@ Minishell : 0
 
 
 
+Command :
+[ echo > < ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ echo | | ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >echo> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ <echo< ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >>echo>> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ |echo| ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ |echo -n hola ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ "    echo" a ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ cd not_exist_file ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ cd not_exist_file && pwd ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export 1=1 && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export TEST=*.c && cd src/ && echo *.c ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export "" && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export "" && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export $? && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export ?=2 && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export ABC@=a && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export HOLA-=Bonjour && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export HOL}A=Bonjour && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export HOL.A=Bonjour && export ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ export PATH=yolateam && ls ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ exit 10 ]
+Exit Status :
+Bash : 10
+Minishell : 2
+
+
+
+Command :
+[ exit 500 ]
+Exit Status :
+Bash : 244
+Minishell : 2
+
+
+
+Command :
+[ unset PATH && ls ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ * ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ cat *.c ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ mkdir test/ && cd test/ && * ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ ls | sjdkof ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ ls -kjasdf ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ls | pwd | jkdfs ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ sleep 0.3 | jkdfs ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ a ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ hola ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ hola que tal ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ dsf && echo No ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ Makefile ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ make ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ((echo "salut"&& jksla )&& (klsdf || jksldff)) ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ ((echo "salut" && jksla ) && (klsdf || jksldff)) ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ false && (echo "A" || echo "B") ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+

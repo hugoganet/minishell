@@ -1,0 +1,563 @@
+===== TEST : [:] =====
+
+-----
+$
+-----
+
+
+===== TEST : [!] =====
+
+-----
+$
+-----
+
+
+===== TEST : [#] =====
+
+-----
+$
+-----
+
+
+===== TEST : [     :] =====
+
+-----
+$
+-----
+
+
+===== TEST : [       :        ] =====
+
+-----
+$
+-----
+
+
+===== TEST : [     !] =====
+
+-----
+$
+-----
+
+
+===== TEST : [       !        ] =====
+
+-----
+$
+-----
+
+
+===== TEST : [     #] =====
+
+-----
+$
+-----
+
+
+===== TEST : [       #        ] =====
+
+-----
+$
+-----
+
+
+===== TEST : [>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [<] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [>>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [<<] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [<>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [&&] =====
+
+-----
+syntax error near unexpected token `&&'$
+-----
+
+
+===== TEST : [||] =====
+
+-----
+syntax error near unexpected token `||'$
+-----
+
+
+===== TEST : [|&] =====
+
+-----
+syntax error near unexpected token `|&'$
+-----
+
+
+===== TEST : [&|] =====
+
+-----
+syntax error near unexpected token `&'$
+-----
+
+
+===== TEST : [&&&&&&] =====
+
+-----
+syntax error near unexpected token `&&'$
+-----
+
+
+===== TEST : [||||||||] =====
+
+-----
+syntax error near unexpected token `||'$
+-----
+
+
+===== TEST : [>>>>>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [>>>>>>>>>>>>>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [<<<<<] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [> > > >] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [>> >> >> >>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [>>>> >> >> >>] =====
+
+-----
+syntax error near unexpected token `newline'$
+-----
+
+
+===== TEST : [/] =====
+
+-----
+/: Is a directory$
+-----
+
+
+===== TEST : [//] =====
+
+-----
+//: Is a directory$
+-----
+
+
+===== TEST : [/.] =====
+
+-----
+/.: Is a directory$
+-----
+
+
+===== TEST : [/./../../../../..] =====
+
+-----
+/./../../../../..: Is a directory$
+-----
+
+
+===== TEST : [///////] =====
+
+-----
+///////: Is a directory$
+-----
+
+
+===== TEST : [-] =====
+
+-----
+-: command not found$
+-----
+
+
+===== TEST : [||] =====
+
+-----
+syntax error near unexpected token `||'$
+-----
+
+
+===== TEST : [|||||] =====
+
+-----
+syntax error near unexpected token `||'$
+-----
+
+
+===== TEST : [|||||||||||||] =====
+
+-----
+syntax error near unexpected token `||'$
+-----
+
+
+===== TEST : [&&] =====
+
+-----
+syntax error near unexpected token `&&'$
+-----
+
+
+===== TEST : [&&&&&] =====
+
+-----
+syntax error near unexpected token `&&'$
+-----
+
+
+===== TEST : [&&&&&&&&&&&&&&] =====
+
+-----
+syntax error near unexpected token `&&'$
+-----
+
+
+===== TEST : [;;] =====
+
+-----
+syntax error near unexpected token `;;'$
+-----
+
+
+===== TEST : [;;;;;] =====
+
+-----
+syntax error near unexpected token `;;'$
+-----
+
+
+===== TEST : [;;;;;;;;;;;;;;;] =====
+
+-----
+syntax error near unexpected token `;;'$
+-----
+
+
+===== TEST : [()] =====
+
+-----
+syntax error near unexpected token `)'$
+-----
+
+
+===== TEST : [)] =====
+
+-----
+syntax error near unexpected token `)'$
+-----
+
+
+===== TEST : [( ( ) )] =====
+
+-----
+syntax error near unexpected token `)'$
+-----
+
+
+===== TEST : [$?] =====
+
+-----
+0: command not found$
+-----
+
+
+===== TEST : [$?$?] =====
+
+-----
+00: command not found$
+-----
+
+
+===== TEST : [$] =====
+
+-----
+$: command not found$
+-----
+
+
+===== TEST : [$HOME] =====
+
+-----
+/home/elaudrez: Is a directory$
+-----
+
+
+===== TEST : [$HOMEdskjhfkdshfsd] =====
+
+-----
+$
+-----
+
+
+===== TEST : ["$HOMEdskjhfkdshfsd"] =====
+
+-----
+: command not found$
+-----
+
+
+===== TEST : ['$HOMEdskjhfkdshfsd'] =====
+
+-----
+$HOMEdskjhfkdshfsd: command not found$
+-----
+
+
+===== TEST : [$DONTEXIST] =====
+
+-----
+$
+-----
+
+
+===== TEST : [$LESS$VAR] =====
+
+-----
+-R: command not found$
+-----
+
+
+===== TEST : [pwd] =====
+
+-----
+/home/elaudrez/42/Cercle_3/Minishell/my_tester/.test2$
+-----
+
+
+===== TEST : [               pwd] =====
+
+-----
+/home/elaudrez/42/Cercle_3/Minishell/my_tester/.test2$
+-----
+
+
+===== TEST : [env] =====
+
+-----
+COLORTERM=truecolor$
+DESKTOP_SESSION=ubuntu$
+DISPLAY=:0$
+DOCKER_HOST=unix:///run/user/110929/docker.sock$
+GDM_LANG=en_US$
+GDMSESSION=ubuntu$
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/02cbe86b_ace5_43cf_802a_cf09f046f61a$
+GNOME_TERMINAL_SERVICE=:1.86$
+GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
+GTK_IM_MODULE=ibus$
+GTK_MODULES=gail:atk-bridge$
+HOME=/home/elaudrez$
+KRB5CCNAME=FILE:/tmp/krb5cc_110929_swZwfS$
+LANG=en_US.UTF-8$
+LANGUAGE=en_US$
+LESS=-R$
+LIBVIRT_DEFAULT_URI=qemu:///system$
+LOGNAME=elaudrez$
+LSCOLORS=Gxfxcxdxbxegedabagacad$
+PAGER=less$
+PATH=/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin$
+QT_ACCESSIBILITY=1$
+QT_IM_MODULE=ibus$
+SESSION_MANAGER=local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232$
+SSH_AGENT_LAUNCHER=gnome-keyring$
+SSH_AUTH_SOCK=/run/user/110929/keyring/ssh$
+SYSTEMD_EXEC_PID=83708$
+TERM=xterm-256color$
+USER=elaudrez$
+VTE_VERSION=6800$
+XAUTHORITY=/home/elaudrez/.Xauthority$
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg$
+XDG_CURRENT_DESKTOP=ubuntu:GNOME$
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/elaudrez/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop$
+XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/elaudrez$
+XDG_MENU_PREFIX=gnome-$
+XDG_RUNTIME_DIR=/run/user/110929$
+XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0$
+XDG_SESSION_CLASS=user$
+XDG_SESSION_DESKTOP=ubuntu$
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0$
+XDG_SESSION_TYPE=x11$
+ZSH=/home/elaudrez/.oh-my-zsh$
+-----
+
+
+===== TEST : [export TEST=Salut && env] =====
+
+-----
+COLORTERM=truecolor$
+DESKTOP_SESSION=ubuntu$
+DISPLAY=:0$
+DOCKER_HOST=unix:///run/user/110929/docker.sock$
+GDM_LANG=en_US$
+GDMSESSION=ubuntu$
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/02cbe86b_ace5_43cf_802a_cf09f046f61a$
+GNOME_TERMINAL_SERVICE=:1.86$
+GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
+GTK_IM_MODULE=ibus$
+GTK_MODULES=gail:atk-bridge$
+HOME=/home/elaudrez$
+KRB5CCNAME=FILE:/tmp/krb5cc_110929_swZwfS$
+LANG=en_US.UTF-8$
+LANGUAGE=en_US$
+LESS=-R$
+LIBVIRT_DEFAULT_URI=qemu:///system$
+LOGNAME=elaudrez$
+LSCOLORS=Gxfxcxdxbxegedabagacad$
+PAGER=less$
+PATH=/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin$
+QT_ACCESSIBILITY=1$
+QT_IM_MODULE=ibus$
+SESSION_MANAGER=local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232$
+SSH_AGENT_LAUNCHER=gnome-keyring$
+SSH_AUTH_SOCK=/run/user/110929/keyring/ssh$
+SYSTEMD_EXEC_PID=83708$
+TERM=xterm-256color$
+TEST=Salut$
+USER=elaudrez$
+VTE_VERSION=6800$
+XAUTHORITY=/home/elaudrez/.Xauthority$
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg$
+XDG_CURRENT_DESKTOP=ubuntu:GNOME$
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/elaudrez/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop$
+XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/elaudrez$
+XDG_MENU_PREFIX=gnome-$
+XDG_RUNTIME_DIR=/run/user/110929$
+XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0$
+XDG_SESSION_CLASS=user$
+XDG_SESSION_DESKTOP=ubuntu$
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0$
+XDG_SESSION_TYPE=x11$
+ZSH=/home/elaudrez/.oh-my-zsh$
+-----
+
+
+===== TEST : [envvvvv] =====
+
+-----
+envvvvv: command not found$
+-----
+
+
+===== TEST : [""''echo hola""'''' que""'' tal""''] =====
+
+-----
+hola que tal$
+-----
+
+
+===== TEST : [echo-nHola] =====
+
+-----
+echo-nHola: command not found$
+-----
+
+
+===== TEST : [echo] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo -n] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echoHola] =====
+
+-----
+echoHola: command not found$
+-----
+
+
+===== TEST : [echo $?$] =====
+
+-----
+0$$
+-----
+
+
+===== TEST : [echo $:$= ] =====
+
+-----
+$:$=$
+-----
+
+
+===== TEST : [echo a > /dev/null] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo $? | echo $? | echo $?] =====
+
+-----
+0$
+-----
+
+
+===== TEST : [echo " $ "] =====
+
+-----
+ $ $
+-----
+
+

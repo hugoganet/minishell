@@ -1,0 +1,516 @@
+===== TEST : [:] =====
+
+-----
+:$
+: command not found$
+-----
+
+
+===== TEST : [!] =====
+
+-----
+!$
+: command not found$
+-----
+
+
+===== TEST : [#] =====
+
+-----
+#$
+: command not found$
+-----
+
+
+===== TEST : [     :] =====
+
+-----
+:$
+: command not found$
+-----
+
+
+===== TEST : [       :        ] =====
+
+-----
+:: command not found$
+-----
+
+
+===== TEST : [     !] =====
+
+-----
+!$
+: command not found$
+-----
+
+
+===== TEST : [       !        ] =====
+
+-----
+!: command not found$
+-----
+
+
+===== TEST : [     #] =====
+
+-----
+#$
+: command not found$
+-----
+
+
+===== TEST : [       #        ] =====
+
+-----
+#: command not found$
+-----
+
+
+===== TEST : [>] =====
+
+-----
+$
+-----
+
+
+===== TEST : [<] =====
+
+-----
+$
+-----
+
+
+===== TEST : [>>] =====
+
+-----
+$
+-----
+
+
+===== TEST : [<<] =====
+
+-----
+$
+-----
+
+
+===== TEST : [<>] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [&&] =====
+
+-----
+&&$
+: command not found$
+-----
+
+
+===== TEST : [||] =====
+
+-----
+syntax error near unexpected token `|'$
+-----
+
+
+===== TEST : [|&] =====
+
+-----
+syntax error near unexpected token `|'$
+-----
+
+
+===== TEST : [&|] =====
+
+-----
+&: command not found$
+$
+: command not found$
+-----
+
+
+===== TEST : [&&&&&&] =====
+
+-----
+&&&&&&$
+: command not found$
+-----
+
+
+===== TEST : [||||||||] =====
+
+-----
+syntax error near unexpected token `|'$
+-----
+
+
+===== TEST : [>>>>>] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [>>>>>>>>>>>>>] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [<<<<<] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [> > > >] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [>> >> >> >>] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [>>>> >> >> >>] =====
+
+-----
+syntax error near redirection$
+-----
+
+
+===== TEST : [/] =====
+
+-----
+/$
+: command not found$
+-----
+
+
+===== TEST : [//] =====
+
+-----
+//$
+: command not found$
+-----
+
+
+===== TEST : [/.] =====
+
+-----
+/.$
+: command not found$
+-----
+
+
+===== TEST : [/./../../../../..] =====
+
+-----
+/./../../../../..$
+: command not found$
+-----
+
+
+===== TEST : [///////] =====
+
+-----
+///////$
+: command not found$
+-----
+
+
+===== TEST : [-] =====
+
+-----
+-$
+: command not found$
+-----
+
+
+===== TEST : [||] =====
+
+-----
+syntax error near unexpected token `|'$
+-----
+
+
+===== TEST : [|||||] =====
+
+-----
+syntax error near unexpected token `|'$
+-----
+
+
+===== TEST : [|||||||||||||] =====
+
+-----
+syntax error near unexpected token `|'$
+-----
+
+
+===== TEST : [&&] =====
+
+-----
+&&$
+: command not found$
+-----
+
+
+===== TEST : [&&&&&] =====
+
+-----
+&&&&&$
+: command not found$
+-----
+
+
+===== TEST : [&&&&&&&&&&&&&&] =====
+
+-----
+&&&&&&&&&&&&&&$
+: command not found$
+-----
+
+
+===== TEST : [;;] =====
+
+-----
+;;$
+: command not found$
+-----
+
+
+===== TEST : [;;;;;] =====
+
+-----
+;;;;;$
+: command not found$
+-----
+
+
+===== TEST : [;;;;;;;;;;;;;;;] =====
+
+-----
+;;;;;;;;;;;;;;;$
+: command not found$
+-----
+
+
+===== TEST : [()] =====
+
+-----
+()$
+: command not found$
+-----
+
+
+===== TEST : [)] =====
+
+-----
+)$
+: command not found$
+-----
+
+
+===== TEST : [( ( ) )] =====
+
+-----
+(: command not found$
+-----
+
+
+===== TEST : [$?] =====
+
+-----
+$?$
+: command not found$
+-----
+
+
+===== TEST : [$?$?] =====
+
+-----
+$?$?$
+: command not found$
+-----
+
+
+===== TEST : [$] =====
+
+-----
+$$
+: command not found$
+-----
+
+
+===== TEST : [$HOME] =====
+
+-----
+$HOME$
+: command not found$
+-----
+
+
+===== TEST : [$HOMEdskjhfkdshfsd] =====
+
+-----
+$HOMEdskjhfkdshfsd$
+: command not found$
+-----
+
+
+===== TEST : ["$HOMEdskjhfkdshfsd"] =====
+
+-----
+"$HOMEdskjhfkdshfsd"$
+: command not found$
+-----
+
+
+===== TEST : ['$HOMEdskjhfkdshfsd'] =====
+
+-----
+'$HOMEdskjhfkdshfsd'$
+: command not found$
+-----
+
+
+===== TEST : [$DONTEXIST] =====
+
+-----
+$DONTEXIST$
+: command not found$
+-----
+
+
+===== TEST : [$LESS$VAR] =====
+
+-----
+$LESS$VAR$
+: command not found$
+-----
+
+
+===== TEST : [pwd] =====
+
+-----
+pwd$
+: command not found$
+-----
+
+
+===== TEST : [               pwd] =====
+
+-----
+pwd$
+: command not found$
+-----
+
+
+===== TEST : [env] =====
+
+-----
+: command not found$
+env$
+-----
+
+
+===== TEST : [export TEST=Salut && env] =====
+
+-----
+$
+-----
+
+
+===== TEST : [envvvvv] =====
+
+-----
+: command not found$
+envvvvv$
+-----
+
+
+===== TEST : [""''echo hola""'''' que""'' tal""''] =====
+
+-----
+""''echo hola""'''' que""'' tal""''$
+: command not found$
+-----
+
+
+===== TEST : [echo-nHola] =====
+
+-----
+echo-nHola$
+: command not found$
+-----
+
+
+===== TEST : [echo] =====
+
+-----
+echo$
+: command not found$
+-----
+
+
+===== TEST : [echo -n] =====
+
+-----
+-----
+
+
+===== TEST : [echoHola] =====
+
+-----
+echoHola$
+: command not found$
+-----
+
+
+===== TEST : [echo $?$] =====
+
+-----
+0$
+-----
+
+
+===== TEST : [echo $:$= ] =====
+
+-----
+:= $
+-----
+
+
+===== TEST : [echo a > /dev/null] =====
+
+-----
+a$
+-----
+
+
+===== TEST : [echo $? | echo $? | echo $?] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo " $ "] =====
+
+-----
+  $
+-----
+
+

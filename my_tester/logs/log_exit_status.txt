@@ -1,0 +1,424 @@
+Command :
+[ ! ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[      ! ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[        !         ]
+Exit Status :
+Bash : 1
+Minishell : 0
+
+
+
+Command :
+[ > ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ < ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ << ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ <> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ && ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ || ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ | ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ |& ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ &| ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ &&&&&& ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ |||||||| ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >>>>> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >>>>>>>>>>>>> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ <<<<< ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ > > > > ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >> >> >> >> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ >>>> >> >> >> ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ / ]
+Exit Status :
+Bash : 126
+Minishell : 0
+
+
+
+Command :
+[ // ]
+Exit Status :
+Bash : 126
+Minishell : 0
+
+
+
+Command :
+[ /. ]
+Exit Status :
+Bash : 126
+Minishell : 0
+
+
+
+Command :
+[ /./../../../../.. ]
+Exit Status :
+Bash : 126
+Minishell : 0
+
+
+
+Command :
+[ /////// ]
+Exit Status :
+Bash : 126
+Minishell : 0
+
+
+
+Command :
+[ - ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ | ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ | hola ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ | | | ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ || ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ||||| ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ||||||||||||| ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ && ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ &&&&& ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ &&&&&&&&&&&&&& ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ;; ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ;;;;; ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ;;;;;;;;;;;;;;; ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ () ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ) ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ ( ( ) ) ]
+Exit Status :
+Bash : 2
+Minishell : 0
+
+
+
+Command :
+[ $? ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ $?$? ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ $ ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ $HOME ]
+Exit Status :
+Bash : 126
+Minishell : 0
+
+
+
+Command :
+[ "$HOMEdskjhfkdshfsd" ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ '$HOMEdskjhfkdshfsd' ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ $LESS$VAR ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ envvvvv ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ echo-nHola ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ echoHola ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+
+Command :
+[ EechoO aaa ]
+Exit Status :
+Bash : 127
+Minishell : 0
+
+
+

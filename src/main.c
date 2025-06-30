@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/30 16:06:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/30 16:10:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char *prompt_readline_tester(void)
 		// Sinon, on traite l'entrée.
 		if (!is_line_empty(input))
 		{
-			if (!is_syntax_valid(input))
+			if (!is_syntax_valid(input, shell))
 				process_input(input, shell);
 		}
 		free(input);

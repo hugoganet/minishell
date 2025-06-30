@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/27 16:08:45 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:56:22 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_shell
 {
 	char **env;
 	t_env *env_list;
+	t_env *export_list;
 	t_token *tokens;
 	t_ast *ast;
 	int last_exit_status;

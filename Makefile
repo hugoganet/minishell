@@ -1,5 +1,5 @@
 # Nom de l'exécutable
-NAME = Minishell
+NAME = minishell
 
 # Dossiers personnalisés
 SRC_DIR = src

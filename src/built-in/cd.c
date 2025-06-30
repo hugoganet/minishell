@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:59:32 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 17:16:19 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 12:04:52 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,28 @@ int	ft_cd(t_ast *node, t_shell *data)
 {
 	char	*oldpwd;
 	char	*newpwd;
- 
+
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{
 		free(oldpwd);
 		return (1);
 	}
+	if (!node->args[1])
+	{
+		ft_putstr_fd("Subject : cd with only a relative or absolute path\n", STDERR_FILENO);
+		return (1);
+	}
+	if (node->args[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	if (chdir(node->args[1])  == -1)
 	{
-		perror("bash: cd: no such file or directory ");
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		// ft_putstr_fd(node->args[1]);
+		perror(node->args[1]);
 		return (EXIT_FAILURE);
 	}
 	newpwd = getcwd(NULL, 0);

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_token_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/28 12:31:03 by hugoganet        ###   ########.fr       */
-=======
-/*   Updated: 2025/06/04 13:49:03 by hugoganet        ###   ########.fr       */
->>>>>>> 0d1abe97ac7ef2f7c758effeb70145845d38e387
+/*   Updated: 2025/07/01 14:48:39 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

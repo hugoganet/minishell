@@ -40,6 +40,12 @@ SRC = 	main.c \
 		env/var_utils.c \
 		env/env.c \
 		env/env_utils.c \
+		env/copy_var_content.c \
+		env/find_var.c \
+		env/join_str.c \
+		env/quotes.c \
+		env/quote_utils.c \
+		env/var_special.c \
 		exec/exec_cmd.c \
 		exec/resolve_command_path.c \
 		exec/pipe.c \

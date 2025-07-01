@@ -376,6 +376,13 @@ $
 -----
 
 
+===== TEST : [pwd asd] =====
+
+-----
+/home/elaudrez/42/Cercle_3/Minishell/my_tester/.test2$
+-----
+
+
 ===== TEST : [               pwd] =====
 
 -----
@@ -392,7 +399,11 @@ DISPLAY=:0$
 DOCKER_HOST=unix:///run/user/110929/docker.sock$
 GDMSESSION=ubuntu$
 GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
+<<<<<<< HEAD
 GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43$
+=======
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822$
+>>>>>>> hugo
 GNOME_TERMINAL_SERVICE=:1.88$
 GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
 GTK_IM_MODULE=ibus$
@@ -487,6 +498,83 @@ envvvvv: command not found$
 -----
 
 
+===== TEST : [echo "Salut"] =====
+
+-----
+Salut$
+-----
+
+
+===== TEST : [echo $USER] =====
+
+-----
+elaudrez$
+-----
+
+
+===== TEST : [echo "'aaa'"] =====
+
+-----
+'aaa'$
+-----
+
+
+===== TEST : [echo '"aaa"'] =====
+
+-----
+"aaa"$
+-----
+
+
+===== TEST : [echo '$USER'] =====
+
+-----
+$USER$
+-----
+
+
+===== TEST : [echo "'$USER'"] =====
+
+-----
+'elaudrez'$
+-----
+
+
+===== TEST : [echo '"$USER"'] =====
+
+-----
+"$USER"$
+-----
+
+
+===== TEST : [echo -n -nnnnnn $USER] =====
+
+-----
+elaudrez$
+-----
+
+
+===== TEST : [echo "-n" Hola] =====
+
+-----
+Hola$
+-----
+
+
+===== TEST : [echo           Hola] =====
+
+-----
+Hola$
+-----
+
+
+===== TEST : [echo "         "] =====
+
+-----
+         $
+-----
+
+
 ===== TEST : [""''echo hola""'''' que""'' tal""''] =====
 
 -----
@@ -498,6 +586,20 @@ hola que tal$
 
 -----
 echo-nHola: command not found$
+-----
+
+
+===== TEST : [echo -n -nnnnnnn -n-] =====
+
+-----
+-n-$
+-----
+
+
+===== TEST : [echo -n -nnnnnn hola -n] =====
+
+-----
+hola -n$
 -----
 
 
@@ -522,6 +624,34 @@ echoHola: command not found$
 -----
 
 
+===== TEST : [EechoO aaa] =====
+
+-----
+EechoO: command not found$
+-----
+
+
+===== TEST : [echo        Hola -n] =====
+
+-----
+Hola -n$
+-----
+
+
+===== TEST : [echo        ] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo $?] =====
+
+-----
+0$
+-----
+
+
 ===== TEST : [echo $?$] =====
 
 -----
@@ -543,10 +673,38 @@ $
 -----
 
 
+===== TEST : [echo The terminal is $TERM] =====
+
+-----
+The terminal is xterm-256color$
+-----
+
+
+===== TEST : [echo The terminal is [$TERM]] =====
+
+-----
+The terminal is [xterm-256color]$
+-----
+
+
+===== TEST : [echo The terminal is [$TERM4] =====
+
+-----
+The terminal is [$
+-----
+
+
 ===== TEST : [echo $? | echo $? | echo $?] =====
 
 -----
 0$
+-----
+
+
+===== TEST : [echo ' $ '] =====
+
+-----
+ $ $
 -----
 
 
@@ -557,10 +715,66 @@ $
 -----
 
 
+===== TEST : [echo $HOME] =====
+
+-----
+/home/elaudrez$
+-----
+
+
+===== TEST : [echo $HOME9] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo $9HOME] =====
+
+-----
+HOME$
+-----
+
+
+===== TEST : [echo $HOME%] =====
+
+-----
+/home/elaudrez%$
+-----
+
+
+===== TEST : [echo $USER$HOME] =====
+
+-----
+elaudrez/home/elaudrez$
+-----
+
+
+===== TEST : [echo HOME=$HOME] =====
+
+-----
+HOME=/home/elaudrez$
+-----
+
+
+===== TEST : [echo $USER$var$USER$USER$USERtest$USER] =====
+
+-----
+elaudrezelaudrezelaudrezelaudrez$
+-----
+
+
 ===== TEST : [echo $hola*] =====
 
 -----
 abc minishell$
+-----
+
+
+===== TEST : [echo -nnnnn $hola] =====
+
+-----
+$
 -----
 
 
@@ -613,6 +827,13 @@ a$
 -----
 
 
+===== TEST : [echo '$'''] =====
+
+-----
+$$
+-----
+
+
 ===== TEST : [echo "$"""] =====
 
 -----
@@ -620,10 +841,87 @@ $$
 -----
 
 
+===== TEST : [echo "$HO"me] =====
+
+-----
+me$
+-----
+
+
+===== TEST : [echo "'$HO''ME'"] =====
+
+-----
+'''ME'$
+-----
+
+
+===== TEST : [echo $"HO""ME"] =====
+
+-----
+HOME$
+-----
+
+
+===== TEST : [echo '' $HOME] =====
+
+-----
+ /home/elaudrez$
+-----
+
+
 ===== TEST : [echo $DONTEXIST hola] =====
 
 -----
 hola$
+-----
+
+
+===== TEST : [echo "hola"] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo ''hola''] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo hola""""""""""""] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo hola"''''''''''"] =====
+
+-----
+hola''''''''''$
+-----
+
+
+===== TEST : [echo ""          hola] =====
+
+-----
+ hola$
+-----
+
+
+===== TEST : [echo ""hola] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo "" hola] =====
+
+-----
+ hola$
 -----
 
 
@@ -1249,6 +1547,13 @@ ls: No such file or directory$
 -----
 
 
+===== TEST : [unset DOES_NOT_EXIST] =====
+
+-----
+$
+-----
+
+
 ===== TEST : [*] =====
 
 -----
@@ -1267,6 +1572,13 @@ cat: '*.c': No such file or directory$
 
 -----
 abc minishell$
+-----
+
+
+===== TEST : [echo '*'] =====
+
+-----
+*$
 -----
 
 
@@ -1352,6 +1664,14 @@ minishell$
 -----
 
 
+===== TEST : [ls -kjasdf] =====
+
+-----
+ls: invalid option -- 'j'$
+Try 'ls --help' for more information.$
+-----
+
+
 ===== TEST : [ls|grep a] =====
 
 -----
@@ -1405,6 +1725,20 @@ a: command not found$
 
 -----
 hola: command not found$
+-----
+
+
+===== TEST : [hola que tal] =====
+
+-----
+hola: command not found$
+-----
+
+
+===== TEST : [dsf && echo No] =====
+
+-----
+dsf: command not found$
 -----
 
 
@@ -1476,6 +1810,20 @@ B$
 -----
 
 
+===== TEST : [echo abc > test.txt && cat test.txt] =====
+
+-----
+abc$
+-----
+
+
+===== TEST : [echo abc > test.txt && cat < test.txt] =====
+
+-----
+abc$
+-----
+
+
 ===== TEST : [echo aaa > test.txt && echo abcdef >> test.txt && cat test.txt] =====
 
 -----
@@ -1489,6 +1837,13 @@ abcdef$
 -----
 aaa$
 abcdef$
+-----
+
+
+===== TEST : [echo a > test.txt && < test.txt cat] =====
+
+-----
+a$
 -----
 
 

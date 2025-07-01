@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/26 13:47:41 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:40:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ static void reset_signals_in_child(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+static void free_child_exec(char *path, char **envp, t_shell *shell)
+{
+	free(path);
+	free_env(envp);
+	cleanup_shell(shell);
 }
 
 /**
@@ -102,7 +109,7 @@ static void run_child_process(char **argv, t_env *env,
 	if (execve(path, argv, envp) == -1)
 	{
 		perror("minishell: execve");
-		cleanup_shell(shell);
+		free_child_exec(path, envp, shell);
 		exit(126);
 	}
 }

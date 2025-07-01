@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/27 16:06:09 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:45:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ bool is_redirection(t_token_type type)
 	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND || type == HEREDOC);
 }
 
-
 /**
  * @brief Extrait une sous-chaîne entre quotes simples ou doubles.
  *
@@ -66,12 +65,14 @@ char *parse_quoted_token(char *input, int *i)
 	// On commence à parcourir input juste après la quote ouvrante
 	end = start + 1;
 	// Avance l'index jusqu'à la quote fermante correspondante
-	// Quand on atteint la quote fermante, soit input[end + 1] = null, soit is_token_delim(input[end + 1])
-	while (input[end])
-	{
-		if (input[end] == quote && is_token_delim(input[end + 1]))
-			break;
+	while (input[end] && input[end] != quote)
 		end++;
+	// Si on n'a pas trouvé de quote fermante, erreur
+	if (input[end] != quote)
+	{
+		// Quote non fermée - on pourrait retourner une erreur
+		*i = end;
+		return (ft_substr(input, start, end - start));
 	}
 	// On set l'index à la fin de la quote fermante
 	*i = end + 1;
@@ -94,41 +95,49 @@ static bool is_logical_operator(t_token_type type)
 }
 
 /**
+ * @brief Affiche une erreur de syntaxe avec un token donné.
+ *
+ * @param token Le token fautif
+ * @return int Toujours 1 (pour être utilisé directement dans un return)
+ */
+int print_syntax_error(char *token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+	ft_putstr_fd(token, 2);
+	ft_putendl_fd("'", 2);
+	return (1);
+}
+
+/**
  * @brief Vérifie la validité syntaxique de la séquence de tokens.
  *
- * Cette fonction s'assure qu'il n'y a pas d'opérateurs consécutifs,
- * ni d'opérateur en début ou fin de ligne.
- * Affiche un message d'erreur approprié en cas d'erreur.
+ * Cette fonction détecte les erreurs suivantes :
+ *
+ * - opérateur logique au début ou à la fin de la ligne
+ *
+ * - opérateurs logiques consécutifs (ex: `| |`)
+ *
+ * Si une erreur est détectée, elle est affichée sur stderr,
+ * et la fonction retourne 1.
  *
  * @param head Pointeur vers le premier token de la liste
- * @return int 0 si la séquence est valide, 1 sinon
+ * @return `int` 0 si la séquence est valide, 1 sinon
  */
 int validate_token_sequence(t_token *head)
 {
 	t_token *prev;
 	t_token *curr;
-	
+
 	prev = NULL;
 	curr = head;
 	while (curr)
 	{
-		if ((!prev && is_logical_operator(curr->type)) ||
-			(prev && is_logical_operator(prev->type) && is_logical_operator(curr->type)))
-		{
-			ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-			ft_putstr_fd(curr->str, 2);
-			ft_putendl_fd("'", 2);
-			return (1);
-		}
+		if ((is_logical_operator(curr->type) && !prev) || (prev && is_logical_operator(prev->type) && is_logical_operator(curr->type)))
+			return (print_syntax_error(curr->str));
 		prev = curr;
 		curr = curr->next;
 	}
 	if (prev && is_logical_operator(prev->type))
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-		ft_putstr_fd(prev->str, 2);
-		ft_putendl_fd("'", 2);
-		return (1);
-	}
+		return (print_syntax_error(prev->str));
 	return (0);
 }

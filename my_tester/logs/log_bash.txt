@@ -376,6 +376,13 @@ $
 -----
 
 
+===== TEST : [pwd asd] =====
+
+-----
+/home/elaudrez/42/Cercle_3/Minishell/my_tester/.test2$
+-----
+
+
 ===== TEST : [               pwd] =====
 
 -----
@@ -390,18 +397,16 @@ COLORTERM=truecolor$
 DESKTOP_SESSION=ubuntu$
 DISPLAY=:0$
 DOCKER_HOST=unix:///run/user/110929/docker.sock$
-GDM_LANG=en_US$
 GDMSESSION=ubuntu$
 GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644$
-GNOME_TERMINAL_SERVICE=:1.86$
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822$
+GNOME_TERMINAL_SERVICE=:1.88$
 GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
 GTK_IM_MODULE=ibus$
 GTK_MODULES=gail:atk-bridge$
 HOME=/home/elaudrez$
-KRB5CCNAME=FILE:/tmp/krb5cc_110929_swZwfS$
+KRB5CCNAME=FILE:/tmp/krb5cc_110929_ETXfz2$
 LANG=en_US.UTF-8$
-LANGUAGE=en_US$
 LESS=-R$
 LIBVIRT_DEFAULT_URI=qemu:///system$
 LOGNAME=elaudrez$
@@ -410,10 +415,10 @@ PAGER=less$
 PATH=/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin$
 QT_ACCESSIBILITY=1$
 QT_IM_MODULE=ibus$
-SESSION_MANAGER=local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232$
+SESSION_MANAGER=local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515$
 SSH_AGENT_LAUNCHER=gnome-keyring$
 SSH_AUTH_SOCK=/run/user/110929/keyring/ssh$
-SYSTEMD_EXEC_PID=83708$
+SYSTEMD_EXEC_PID=209058$
 TERM=xterm-256color$
 USER=elaudrez$
 VTE_VERSION=6800$
@@ -427,7 +432,7 @@ XDG_RUNTIME_DIR=/run/user/110929$
 XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0$
 XDG_SESSION_CLASS=user$
 XDG_SESSION_DESKTOP=ubuntu$
-XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0$
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session4$
 XDG_SESSION_TYPE=x11$
 ZSH=/home/elaudrez/.oh-my-zsh$
 -----
@@ -440,18 +445,16 @@ COLORTERM=truecolor$
 DESKTOP_SESSION=ubuntu$
 DISPLAY=:0$
 DOCKER_HOST=unix:///run/user/110929/docker.sock$
-GDM_LANG=en_US$
 GDMSESSION=ubuntu$
 GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644$
-GNOME_TERMINAL_SERVICE=:1.86$
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822$
+GNOME_TERMINAL_SERVICE=:1.88$
 GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
 GTK_IM_MODULE=ibus$
 GTK_MODULES=gail:atk-bridge$
 HOME=/home/elaudrez$
-KRB5CCNAME=FILE:/tmp/krb5cc_110929_swZwfS$
+KRB5CCNAME=FILE:/tmp/krb5cc_110929_ETXfz2$
 LANG=en_US.UTF-8$
-LANGUAGE=en_US$
 LESS=-R$
 LIBVIRT_DEFAULT_URI=qemu:///system$
 LOGNAME=elaudrez$
@@ -460,10 +463,10 @@ PAGER=less$
 PATH=/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin$
 QT_ACCESSIBILITY=1$
 QT_IM_MODULE=ibus$
-SESSION_MANAGER=local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232$
+SESSION_MANAGER=local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515$
 SSH_AGENT_LAUNCHER=gnome-keyring$
 SSH_AUTH_SOCK=/run/user/110929/keyring/ssh$
-SYSTEMD_EXEC_PID=83708$
+SYSTEMD_EXEC_PID=209058$
 TERM=xterm-256color$
 TEST=Salut$
 USER=elaudrez$
@@ -478,7 +481,7 @@ XDG_RUNTIME_DIR=/run/user/110929$
 XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0$
 XDG_SESSION_CLASS=user$
 XDG_SESSION_DESKTOP=ubuntu$
-XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0$
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session4$
 XDG_SESSION_TYPE=x11$
 ZSH=/home/elaudrez/.oh-my-zsh$
 -----
@@ -488,6 +491,83 @@ ZSH=/home/elaudrez/.oh-my-zsh$
 
 -----
 envvvvv: command not found$
+-----
+
+
+===== TEST : [echo "Salut"] =====
+
+-----
+Salut$
+-----
+
+
+===== TEST : [echo $USER] =====
+
+-----
+elaudrez$
+-----
+
+
+===== TEST : [echo "'aaa'"] =====
+
+-----
+'aaa'$
+-----
+
+
+===== TEST : [echo '"aaa"'] =====
+
+-----
+"aaa"$
+-----
+
+
+===== TEST : [echo '$USER'] =====
+
+-----
+$USER$
+-----
+
+
+===== TEST : [echo "'$USER'"] =====
+
+-----
+'elaudrez'$
+-----
+
+
+===== TEST : [echo '"$USER"'] =====
+
+-----
+"$USER"$
+-----
+
+
+===== TEST : [echo -n -nnnnnn $USER] =====
+
+-----
+elaudrez$
+-----
+
+
+===== TEST : [echo "-n" Hola] =====
+
+-----
+Hola$
+-----
+
+
+===== TEST : [echo           Hola] =====
+
+-----
+Hola$
+-----
+
+
+===== TEST : [echo "         "] =====
+
+-----
+         $
 -----
 
 
@@ -502,6 +582,20 @@ hola que tal$
 
 -----
 echo-nHola: command not found$
+-----
+
+
+===== TEST : [echo -n -nnnnnnn -n-] =====
+
+-----
+-n-$
+-----
+
+
+===== TEST : [echo -n -nnnnnn hola -n] =====
+
+-----
+hola -n$
 -----
 
 
@@ -526,6 +620,34 @@ echoHola: command not found$
 -----
 
 
+===== TEST : [EechoO aaa] =====
+
+-----
+EechoO: command not found$
+-----
+
+
+===== TEST : [echo        Hola -n] =====
+
+-----
+Hola -n$
+-----
+
+
+===== TEST : [echo        ] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo $?] =====
+
+-----
+0$
+-----
+
+
 ===== TEST : [echo $?$] =====
 
 -----
@@ -547,10 +669,38 @@ $
 -----
 
 
+===== TEST : [echo The terminal is $TERM] =====
+
+-----
+The terminal is xterm-256color$
+-----
+
+
+===== TEST : [echo The terminal is [$TERM]] =====
+
+-----
+The terminal is [xterm-256color]$
+-----
+
+
+===== TEST : [echo The terminal is [$TERM4] =====
+
+-----
+The terminal is [$
+-----
+
+
 ===== TEST : [echo $? | echo $? | echo $?] =====
 
 -----
 0$
+-----
+
+
+===== TEST : [echo ' $ '] =====
+
+-----
+ $ $
 -----
 
 
@@ -561,10 +711,66 @@ $
 -----
 
 
+===== TEST : [echo $HOME] =====
+
+-----
+/home/elaudrez$
+-----
+
+
+===== TEST : [echo $HOME9] =====
+
+-----
+$
+-----
+
+
+===== TEST : [echo $9HOME] =====
+
+-----
+HOME$
+-----
+
+
+===== TEST : [echo $HOME%] =====
+
+-----
+/home/elaudrez%$
+-----
+
+
+===== TEST : [echo $USER$HOME] =====
+
+-----
+elaudrez/home/elaudrez$
+-----
+
+
+===== TEST : [echo HOME=$HOME] =====
+
+-----
+HOME=/home/elaudrez$
+-----
+
+
+===== TEST : [echo $USER$var$USER$USER$USERtest$USER] =====
+
+-----
+elaudrezelaudrezelaudrezelaudrez$
+-----
+
+
 ===== TEST : [echo $hola*] =====
 
 -----
 abc minishell$
+-----
+
+
+===== TEST : [echo -nnnnn $hola] =====
+
+-----
+$
 -----
 
 
@@ -617,6 +823,13 @@ a$
 -----
 
 
+===== TEST : [echo '$'''] =====
+
+-----
+$$
+-----
+
+
 ===== TEST : [echo "$"""] =====
 
 -----
@@ -624,10 +837,87 @@ $$
 -----
 
 
+===== TEST : [echo "$HO"me] =====
+
+-----
+me$
+-----
+
+
+===== TEST : [echo "'$HO''ME'"] =====
+
+-----
+'''ME'$
+-----
+
+
+===== TEST : [echo $"HO""ME"] =====
+
+-----
+HOME$
+-----
+
+
+===== TEST : [echo '' $HOME] =====
+
+-----
+ /home/elaudrez$
+-----
+
+
 ===== TEST : [echo $DONTEXIST hola] =====
 
 -----
 hola$
+-----
+
+
+===== TEST : [echo "hola"] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo ''hola''] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo hola""""""""""""] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo hola"''''''''''"] =====
+
+-----
+hola''''''''''$
+-----
+
+
+===== TEST : [echo ""          hola] =====
+
+-----
+ hola$
+-----
+
+
+===== TEST : [echo ""hola] =====
+
+-----
+hola$
+-----
+
+
+===== TEST : [echo "" hola] =====
+
+-----
+ hola$
 -----
 
 
@@ -685,9 +975,9 @@ $
 
 -----
 total 12$
-drwxr-xr-x 2 elaudrez 2024_paris    78 Jun 30 19:10 logs$
-drwxr-xr-x 2 elaudrez 2024_paris    34 Jun 30 19:10 save$
--rwxrwxrwx 1 elaudrez 2024_paris 11747 Jun 30 16:04 tester.sh$
+drwxr-xr-x 2 elaudrez 2024_paris    78 Jul  1 14:52 logs$
+drwxr-xr-x 2 elaudrez 2024_paris    34 Jul  1 14:52 save$
+-rwxr-xr-x 1 elaudrez 2024_paris 11747 Jul  1 14:36 tester.sh$
 -----
 
 
@@ -698,18 +988,16 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -718,10 +1006,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export TEST="a"$
 export USER="elaudrez"$
@@ -736,7 +1024,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -749,18 +1037,16 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -769,10 +1055,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export TEST="a"$
 export USER="elaudrez"$
@@ -787,7 +1073,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -800,18 +1086,16 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -820,10 +1104,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export TEST2="Yooooooo"$
 export TEST="a"$
@@ -839,7 +1123,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -852,18 +1136,16 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -872,10 +1154,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export USER="elaudrez"$
 export VTE_VERSION="6800"$
@@ -889,7 +1171,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -903,18 +1185,16 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -923,10 +1203,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export USER="elaudrez"$
 export VTE_VERSION="6800"$
@@ -940,7 +1220,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -960,18 +1240,16 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -980,10 +1258,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export TEST=""$
 export USER="elaudrez"$
@@ -998,7 +1276,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -1025,19 +1303,17 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export Hola$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -1046,10 +1322,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export USER="elaudrez"$
 export VTE_VERSION="6800"$
@@ -1063,7 +1339,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -1097,19 +1373,17 @@ export COLORTERM="truecolor"$
 export DESKTOP_SESSION="ubuntu"$
 export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
-export GDM_LANG="en_US"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed6ed43a_f482_4040_a22a_36fee712e644"$
-export GNOME_TERMINAL_SERVICE=":1.86"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822"$
+export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
 export GTK_MODULES="gail:atk-bridge"$
 export ___HOLA="Bonjour"$
 export HOME="/home/elaudrez"$
-export KRB5CCNAME="FILE:/tmp/krb5cc_110929_swZwfS"$
+export KRB5CCNAME="FILE:/tmp/krb5cc_110929_ETXfz2"$
 export LANG="en_US.UTF-8"$
-export LANGUAGE="en_US"$
 export LESS="-R"$
 export LIBVIRT_DEFAULT_URI="qemu:///system"$
 export LOGNAME="elaudrez"$
@@ -1118,10 +1392,10 @@ export PAGER="less"$
 export PATH="/home/elaudrez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"$
 export QT_ACCESSIBILITY="1"$
 export QT_IM_MODULE="ibus"$
-export SESSION_MANAGER="local/f6r6s16.clusters.42paris.fr:@/tmp/.ICE-unix/78232,unix/f6r6s16.clusters.42paris.fr:/tmp/.ICE-unix/78232"$
+export SESSION_MANAGER="local/f6r6s7.clusters.42paris.fr:@/tmp/.ICE-unix/207515,unix/f6r6s7.clusters.42paris.fr:/tmp/.ICE-unix/207515"$
 export SSH_AGENT_LAUNCHER="gnome-keyring"$
 export SSH_AUTH_SOCK="/run/user/110929/keyring/ssh"$
-export SYSTEMD_EXEC_PID="83708"$
+export SYSTEMD_EXEC_PID="209058"$
 export TERM="xterm-256color"$
 export USER="elaudrez"$
 export VTE_VERSION="6800"$
@@ -1135,7 +1409,7 @@ export XDG_RUNTIME_DIR="/run/user/110929"$
 export XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0"$
 export XDG_SESSION_CLASS="user"$
 export XDG_SESSION_DESKTOP="ubuntu"$
-export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0"$
+export XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session4"$
 export XDG_SESSION_TYPE="x11"$
 export ZSH="/home/elaudrez/.oh-my-zsh"$
 -----
@@ -1269,6 +1543,13 @@ ls: No such file or directory$
 -----
 
 
+===== TEST : [unset DOES_NOT_EXIST] =====
+
+-----
+$
+-----
+
+
 ===== TEST : [*] =====
 
 -----
@@ -1287,6 +1568,13 @@ cat: '*.c': No such file or directory$
 
 -----
 abc minishell$
+-----
+
+
+===== TEST : [echo '*'] =====
+
+-----
+*$
 -----
 
 
@@ -1372,6 +1660,14 @@ minishell$
 -----
 
 
+===== TEST : [ls -kjasdf] =====
+
+-----
+ls: invalid option -- 'j'$
+Try 'ls --help' for more information.$
+-----
+
+
 ===== TEST : [ls|grep a] =====
 
 -----
@@ -1425,6 +1721,20 @@ a: command not found$
 
 -----
 hola: command not found$
+-----
+
+
+===== TEST : [hola que tal] =====
+
+-----
+hola: command not found$
+-----
+
+
+===== TEST : [dsf && echo No] =====
+
+-----
+dsf: command not found$
 -----
 
 
@@ -1496,6 +1806,20 @@ B$
 -----
 
 
+===== TEST : [echo abc > test.txt && cat test.txt] =====
+
+-----
+abc$
+-----
+
+
+===== TEST : [echo abc > test.txt && cat < test.txt] =====
+
+-----
+abc$
+-----
+
+
 ===== TEST : [echo aaa > test.txt && echo abcdef >> test.txt && cat test.txt] =====
 
 -----
@@ -1509,6 +1833,13 @@ abcdef$
 -----
 aaa$
 abcdef$
+-----
+
+
+===== TEST : [echo a > test.txt && < test.txt cat] =====
+
+-----
+a$
 -----
 
 

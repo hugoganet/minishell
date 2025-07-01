@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 14:38:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:50:58 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ t_token *token_new(char *str, t_token_type type);
 t_token_type get_token_type(char *str);
 void process_input(char *input, t_shell *shell);
 void free_token_list(t_token *head);
-void print_token_list(t_token *tokens);
+void print_token_list(t_token *tokens, char *title);
 bool is_redirection(t_token_type type);
 void refine_token_types(t_token *head);
 char *parse_quoted_token(char *input, int *i);

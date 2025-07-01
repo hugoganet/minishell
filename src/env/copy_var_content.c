@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:34:50 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 09:47:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 11:22:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,23 @@ char *get_raw_token_if_invalid(char *str, int start, int end)
 }
 
 /**
+ * @brief Gère les cas spéciaux de variables (paramètres positionnels, $ isolé, etc.).
+ *
+ * @param name_var Nom de la variable à vérifier.
+ * @return Chaîne allouée pour les cas spéciaux, NULL sinon.
+ */
+static char *handle_special_cases(char *name_var)
+{
+	if (is_positional_param(name_var))
+		return (ft_strdup(""));
+	if (ft_strlen(name_var) == 0)
+		return (ft_strdup(""));
+	if (ft_strlen(name_var) == 1 && name_var[0] == '$')
+		return (ft_strdup("$"));
+	return (NULL);
+}
+
+/**
  * @brief Retourne la valeur d'une variable environnement si elle existe,
  * sinon retourne une chaîne vide pour imiter Bash.
  */
@@ -77,30 +94,22 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 {
 	char *name_var;
 	char *value;
+	char *special_case;
 
+	// Extraire le nom de la variable depuis la chaîne
 	name_var = find_var(str, start, end);
+	// Si le nom est invalide, retourner le token brut
 	if (!name_var)
 		return (NULL);
-	if (is_positional_param(name_var))
+	special_case = handle_special_cases(name_var);
+	if (special_case)
 	{
 		free(name_var);
-		return (ft_strdup(""));
-	}
-	if (ft_strlen(name_var) == 0)
-	{
-		free(name_var);
-		return (ft_strdup(""));
-	}
-	// Si c'est juste un $ isolé, on le garde tel quel
-	if (ft_strlen(name_var) == 1 && name_var[0] == '$')
-	{
-		free(name_var);
-		return (ft_strdup("$"));
+		return (special_case);
 	}
 	value = get_env_var_value(name_var, data->env);
 	if (!value)
 	{
-		// Variable inexistante : retourner une chaîne vide comme dans Bash
 		free(name_var);
 		return (ft_strdup(""));
 	}

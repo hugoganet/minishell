@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 09:51:17 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 11:15:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,18 @@ char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
 	char *exit_status;
 
 	i = 0;
-	// Trouver la première occurrence de "$?"
 	while (str[i])
 	{
+		// Si on trouve un `$`, vérifier si c'est suivi de `?`
 		if (str[i] == '$' && str[i + 1] == '?')
 			break;
 		i++;
 	}
+	// Si on n'a pas trouvé de `$?`, retourner NULL
 	if (!str[i] || str[i] != '$' || str[i + 1] != '?')
 		return (NULL);
+	// On a trouvé `$?`, on met à jour les indices
+	// `start` pointe sur le `$`, `end` pointe après le `?`
 	*start = i;
 	*end = i + 2; // $?
 	// Convertir l'entier en chaîne
@@ -57,7 +60,7 @@ static void expand_one_arg(char **arg, t_shell *data)
 	j = 0;
 	while ((*arg)[j])
 	{
-		if ((*arg)[j] == '$' && is_expandable(*arg))
+		if ((*arg)[j] == '$')
 		{
 			expanded = join_str(ft_strdup(*arg), data);
 			if (expanded)

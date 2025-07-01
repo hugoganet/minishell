@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 10:09:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 10:56:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,5 +228,6 @@ void expand_vars(t_ast *node, t_shell *data);
 void get_name_brace(char *str, int *i, int *end, int *name_start);
 void get_name(char *str, int *i, int *end, int *name_start);
 char *remove_quotes(char *str);
+
 
 #endif

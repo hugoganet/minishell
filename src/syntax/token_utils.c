@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/30 12:58:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 12:45:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ bool is_redirection(t_token_type type)
 	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND || type == HEREDOC);
 }
 
-
 /**
  * @brief Extrait une sous-chaîne entre quotes simples ou doubles.
  *
@@ -66,12 +65,14 @@ char *parse_quoted_token(char *input, int *i)
 	// On commence à parcourir input juste après la quote ouvrante
 	end = start + 1;
 	// Avance l'index jusqu'à la quote fermante correspondante
-	// Quand on atteint la quote fermante, soit input[end + 1] = null, soit is_token_delim(input[end + 1])
-	while (input[end])
-	{
-		if (input[end] == quote && is_token_delim(input[end + 1]))
-			break;
+	while (input[end] && input[end] != quote)
 		end++;
+	// Si on n'a pas trouvé de quote fermante, erreur
+	if (input[end] != quote)
+	{
+		// Quote non fermée - on pourrait retourner une erreur
+		*i = end;
+		return (ft_substr(input, start, end - start));
 	}
 	// On set l'index à la fin de la quote fermante
 	*i = end + 1;
@@ -111,9 +112,9 @@ int print_syntax_error(char *token)
  * @brief Vérifie la validité syntaxique de la séquence de tokens.
  *
  * Cette fonction détecte les erreurs suivantes :
- * 
+ *
  * - opérateur logique au début ou à la fin de la ligne
- * 
+ *
  * - opérateurs logiques consécutifs (ex: `| |`)
  *
  * Si une erreur est détectée, elle est affichée sur stderr,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:22:42 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/27 16:06:06 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:53:56 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
  */
 void skip_spaces(char *input, int *i)
 {
-	while (input[*i] == ' ' || input[*i] == '\t')
+	if (!input || !i)
+		return;
+	while (input[*i] && (input[*i] == ' ' || input[*i] == '\t'))
 		(*i)++;
 }
 
@@ -49,23 +51,55 @@ bool is_token_delim(char c)
  * @param i Pointeur vers l’index courant (sera avancé)
  * @return char* Le fragment alloué, avec quotes si présentes
  */
-static char *read_simple_token(char *input, int *i)
+/**
+ * @brief Lit un token complet qui peut être composé de plusieurs segments
+ *
+ * Concatène tous les segments adjacents (quotes et mots) en un seul token.
+ * Par exemple: ""''echo devient "echo", "hello"world devient "helloworld"
+ *
+ * @param input Ligne d'entrée
+ * @param i Pointeur vers l'index courant (sera avancé)
+ * @return char* Le token complet alloué, ou NULL en cas d'erreur
+ */
+static char *read_complete_token(char *input, int *i)
 {
+	char *result = NULL;
+	char *segment;
+	char *temp;
 	int start;
-	char *token_new;
 
-	// Si on est sur une quote, on appelle la fonction dédiée
-	if (input[*i] == '\'' || input[*i] == '"')
-		return (parse_quoted_token(input, i));
-	// Sinon, on lit jusqu'à la prochaine quote ou un séparateur
-	start = *i;
+	// Concatène tous les segments adjacents (quotes et mots)
 	while (input[*i] && !is_token_delim(input[*i]))
-		(*i)++;
-	// On extrait le token
-	token_new = ft_substr(input, start, *i - start);
-	if (!token_new)
-		return (NULL);
-	return (token_new);
+	{
+		if (input[*i] == '\'' || input[*i] == '"')
+			segment = parse_quoted_token(input, i);
+		else
+		{
+			// Lit un mot jusqu'à la prochaine quote ou délimiteur
+			start = *i;
+			while (input[*i] && input[*i] != '\'' && input[*i] != '"' && !is_token_delim(input[*i]))
+				(*i)++;
+			segment = ft_substr(input, start, *i - start);
+		}
+		if (!segment)
+		{
+			free(result);
+			return (NULL);
+		}
+		// Concatène le segment au résultat
+		if (!result)
+			result = segment;
+		else
+		{
+			temp = ft_strjoin(result, segment);
+			free(result);
+			free(segment);
+			if (!temp)
+				return (NULL);
+			result = temp;
+		}
+	}
+	return (result);
 }
 
 /**
@@ -114,12 +148,12 @@ static char *read_redir_and_file(char *input, int *i)
 	char *op;
 	char *file;
 	char *combined;
-	
+
 	op = read_operator(input, i);
 	if (!op)
 		return (NULL);
 	skip_spaces(input, i);
-	file = read_simple_token(input, i);
+	file = read_complete_token(input, i);
 	if (!file)
 	{
 		free(op);
@@ -150,7 +184,7 @@ static t_token *get_next_token(char *input, int *i)
 	// Si on tombe sur une quote ou que un caractère non délimité (charactère alphanumérique, etc.),
 	// on lit un mot ou une séquence entre quotes.
 	else if (!is_token_delim(input[*i]) && input[*i])
-		content = read_simple_token(input, i);
+		content = read_complete_token(input, i);
 	// Sinon, on lit un opérateur spécial (|, >>, &&, etc.)
 	else
 		content = read_operator(input, i);
@@ -174,7 +208,7 @@ t_token *tokenize(char *input)
 	t_token *head;
 	t_token *last;
 	t_token *new;
-	int		i;
+	int i;
 
 	head = NULL;
 	last = NULL;

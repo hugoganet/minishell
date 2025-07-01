@@ -1,5 +1,5 @@
 # Nom de l'exécutable
-NAME = Minishell
+NAME = minishell
 
 # Dossiers personnalisés
 SRC_DIR = src
@@ -7,36 +7,60 @@ OBJ_DIR = executables
 INCL_DIR = includes
 LIBFT_DIR = libft
 
+BREW_READLINE := $(shell brew --prefix readline)
+
 # Commandes et options de compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
-LDFLAGS = -lreadline -pthread
-
-# macOS Homebrew Readline paths
-BREW_READLINE = /opt/homebrew/opt/readline
-
-# macOS build rule (avoids recursive variable reference)
-macos: clean
-	$(MAKE) CFLAGS="-Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include" LDFLAGS="-lreadline -pthread -L$(BREW_READLINE)/lib" all
-	@echo "Compilation macOS réussie de $(NAME) avec Homebrew Readline."
+CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include
+LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 
 # Fichiers sources
 SRC = 	main.c \
 		init/initialisation.c \
 		utils/init_error.c \
 		utils/print_token_list.c \
-		utils/free_token_list.c \
+		utils/free_utils.c \
+		utils/print_env_list.c \
+		utils/print_ast.c \
+		utils/cleanup.c \
 		input/loop.c \
 		input/prompt.c \
-		input/readline_hooks.c \
 		syntax/syntax_check.c \
 		syntax/syntax_utils.c \
 		syntax/tokenize.c \
 		syntax/token_utils.c \
 		syntax/validation.c \
+		syntax/refine_token_type.c \
 		parsing/process_input.c \
+		syntax/build_token_list.c \
 		ast/ast_builder.c \
-		ast/ast_debug.c \
+		ast/ast_executor.c \
+		env/init_env.c \
+		env/var_expand.c \
+		env/var_utils.c \
+		env/env.c \
+		env/env_utils.c \
+		env/copy_var_content.c \
+		env/find_var.c \
+		env/join_str.c \
+		env/quotes.c \
+		env/quote_utils.c \
+		env/var_special.c \
+		exec/exec_cmd.c \
+		exec/resolve_command_path.c \
+		exec/pipe.c \
+		exec/redirection.c \
+		exec/heredoc.c \
+		signals/signals.c \
+		built-in/builtin_exec.c\
+		built-in/cd.c\
+		built-in/echo.c\
+		built-in/env.c\
+		built-in/pwd.c\
+		built-in/unset.c\
+		built-in/exit.c \
+		built-in/export.c \
+	
 
 # Rassembler les sources
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -56,11 +80,11 @@ all: $(LIBFT) $(NAME)
 
 # Compilation de l'exécutable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft $(LDFLAGS)
 	@echo "Compilation réussie de $(NAME)"
 
 # Règle pour compiler les objets dans SRC (autres fichiers)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@) 
 	@echo "Compilation de $< en $@"
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
@@ -68,6 +92,14 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # Création du dossier des fichiers objets, y compris les sous-dossiers
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/input
+	mkdir -p $(OBJ_DIR)/syntax
+	mkdir -p $(OBJ_DIR)/ast
+	mkdir -p $(OBJ_DIR)/env
+	mkdir -p $(OBJ_DIR)/input
+	mkdir -p $(OBJ_DIR)/init
+	mkdir -p $(OBJ_DIR)/parsing
+	mkdir -p $(OBJ_DIR)/utils
 
 # Générer les librairies des sous-projets
 $(LIBFT):
@@ -86,4 +118,4 @@ fclean: clean
 re: fclean all
 
 # Pas de fichiers de sortie ici
-.PHONY: all clean fclean re macos
+.PHONY: all clean fclean re

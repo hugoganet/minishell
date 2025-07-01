@@ -3,197 +3,183 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 10:25:38 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 12:57:37 by hugoganet        ###   ########.fr       */
+/*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/07/01 14:37:10 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ast.h"
 
-/**
- * @brief Crée un nœud AST de type commande.
- *
- * @param tokens Liste de tokens représentant une commande
- * @return t_ast* Nœud AST_CMD
- */
-static t_ast *create_command_node(t_token *tokens)
+
+int	token_priority(t_token_type type)
 {
-	t_ast	*node;
-	t_token	*tmp;
-	int		count;
+	if (type == PIPE)
+		return (1);
+	else if (is_redirection(type))
+		return (2);
+	else if (type == CMD)
+		return (3);
+	return (4);
+}
+
+void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le tab du noeud AST
+{
 	int		i;
-
-	tmp = tokens;
-	count = 0;
-	while (tmp) // Parcourir la liste de tokens pour compter les mots
-	{
-		if (tmp->type != TOK_WORD)
-			break;
-		count++;
-		tmp = tmp->next;
-	}
-	// Si aucun mot n'est trouvé, retourner NULL
-	if (count == 0) 
-		return (NULL);
-	// Allouer de la mémoire pour le nœud AST_CMD et son tableau de commandes
-	node = malloc(sizeof(t_ast));
-	if (!node)
-		return (NULL);
-	// Set le type du nœud a AST_CMD
-	node->type = AST_CMD;
-	// Allouer de la mémoire pour le tableau de commandes
-	node->cmd = ft_calloc(sizeof(char *), (count + 1));
-	if (!node->cmd)
-		return (free(node), NULL);
-	i = 0;
-	// Remplir le tableau de commandes avec les valeurs des tokens	
-	while (i < count)
-	{
-		// Récupérer la valeur du token courant et l'ajouter au tableau de commandes de l'AST
-		node->cmd[i] = ft_strdup(tokens->value);
-		// Vérifier si la duplication a échoué
-		if (!node->cmd[i])
-		{
-			// Si échec, libérer la mémoire allouée précédemment
-			while (i > 0)
-				free(node->cmd[--i]);
-			// Libérer le tableau de commandes et le nœud lui-même
-			free(node->cmd);
-			free(node);
-			return (NULL);
-		}
-		// Passer au token suivant
-		tokens = tokens->next;
-		// Incrémenter l'index pour le tableau de commandes
-		i++;
-	}
-	// Terminer le tableau de commandes par NULL
-	node->left = NULL;
-	node->right = NULL;
-	return (node);
-}
-
-/**
- * @brief Trouve le token opérateur de plus basse priorité hors parenthèses.
- *
- * @param tokens Liste de tokens
- * @return t_token* Le token opérateur principal, ou NULL si commande simple
- */
-static t_token *find_main_operator(t_token *tokens)
-{
-	int paren_depth;
-	t_token *op;
-
-	paren_depth = 0;
-	op = NULL;
-	// Parcour la liste de tokens
-	while (tokens)
-	{
-		// Gérer la profondeur des parenthèses
-		// Si on trouve une parenthèse ouvrante, on incrémente la profondeur
-		// Si on trouve une parenthèse fermante, on décrémente la profondeur
-		if (tokens->type == TOK_PAREN_LEFT)
-			paren_depth++;
-		else if (tokens->type == TOK_PAREN_RIGHT)
-			paren_depth--;
-		// Si on est en dehors des parenthèses
-		else if (paren_depth == 0)
-		{
-			// Si on trouve un opérateur logique '||', on le retourne immédiatement
-			// car c'est l'opérateur de plus basse priorité
-			if (tokens->type == TOK_OR)
-				return (tokens);
-			// Si on trouve un opérateur logique '&&', on le garde en mémoire
-			// sinon si on trouve un opérateur pipe '|', et qu'il n'y a pas déjà un opérateur logique
-			// on le garde en mémoire 
-			else
-			if (tokens->type == TOK_AND)
-				op = tokens;
-			else if (tokens->type == TOK_PIPE && !op)
-				op = tokens;
-		}
-		// Passer au token suivant
-		tokens = tokens->next;
-	}
-	return (op);
-}
-
-/**
- * @brief Coupe une liste de tokens en deux à partir d’un opérateur.
- *
- * @param tokens Début de la liste
- * @param split_token Le token à partir duquel on coupe
- * @return t_token* Pointeur vers le début de la partie droite
- */
-static t_token *split_token_list(t_token *tokens, t_token *split_token)
-{
-	t_token *tmp;
-
-	// ? Est-ce que c'est nécessaire de vérifier si les pointeurs sont valides ?
-	if (!tokens || !split_token)
-		return (NULL);
-	// On copie le pointeur de tokens pour ne pas le modifier
-	tmp = tokens;
-	// Si le token à couper est le premier de la liste, on retourne le suivant
-	// Cela permet de couper la liste à partir du token trouvé
-	// et de retourner le reste de la liste
-	if (tokens == split_token)
-		return (split_token->next);
-	// On avance dans la liste jusqu'à trouver le token juste avant split_token.
-	while (tmp && tmp->next != split_token)
-	tmp = tmp->next;
-	// Une fois qu'on a trouvé ce token précédent, on coupe physiquement la liste, en mettant tmp->next à NULL.
-	if (tmp)
-		tmp->next = NULL;
-	// On retourne le début de la partie droite, c’est-à-dire après l’opérateur.
-	return (split_token->next);
-}
-
-/**
- * @brief Construit récursivement l’arbre logique d’exécution.
- *
- * @param tokens Liste de tokens
- * @return t_ast* Racine de l’AST
- */
-t_ast *build_ast(t_token *tokens)
-{
-	t_token *op;
-	t_ast *node;
-	// t_token *left_tokens;
-	t_token *right_tokens;
-
-	// Si la liste de tokens est vide, on retourne NULL
-	if (!tokens)
-		return (NULL);
-	// Trouve le token opérateur principal
-	op = find_main_operator(tokens);
-	// Si aucun opérateur n'est trouvé, on crée un nœud de commande : AST_CMD
-	if (!op)
-		return (create_command_node(tokens));
-	// On alloue de la mémoire pour un nouveau nœud AST
-	node = malloc(sizeof(t_ast));
-	if (!node)
-		return (NULL);
-	// On initialise le nœud en fonction du type de l'opérateur trouvé
-	if (op->type == TOK_OR)
-		node->type = AST_OR;
-	else if (op->type == TOK_AND)
-		node->type = AST_AND;
-	else if (op->type == TOK_PIPE)
-		node->type = AST_PIPE;
-	// On initialise le nœud pour les commandes
-	node->cmd = NULL;
+	int		j;
+	t_token *ptr;
 	
-	// On divise la liste de tokens en deux parties : gauche et droite
-	// La partie gauche contient tous les tokens avant l'opérateur trouvé
-	right_tokens = split_token_list(tokens, op);
+	i = 0;
+	j = 0;
+	ptr = node;
+	ptr = ptr->next;
+	// On compte le nombre d'arguments (ARG) après le noeud CMD
+	while (ptr && ptr->type == ARG)
+	{
+		i++;
+		ptr = ptr->next;
+	}
+	// On alloue un tableau de chaînes de caractères pour les arguments
+	// On ajoute 1 pour le CMD lui-même
+	new_ast->args = malloc((i + 2) * sizeof(char *));
+	if (!new_ast->args)
+		return ;
+	// On réinitialise le pointeur sur le token de départ (CMD)
+	ptr = node;
+	// On remplit le tableau avec les arguments
+	while (j < (i + 1))
+	{
+		// 
+		new_ast->args[j] = ft_strdup(ptr->str);
+		if (!new_ast->args[j])
+		{
+			while (--j >= 0)
+				free(new_ast->args[j]);
+			free(new_ast->args);
+			new_ast->args = NULL;
+			return ;
+		}
+		j++;
+		ptr = ptr->next;
+	}
+	new_ast->args[j] = NULL;
+}
 
-	// Appel récursif pour construire la branche gauche
-	node->left = build_ast(tokens);
-	// Appel récursif pour construire la branche droite et on coupe la liste de tokens à partir de l'opérateur trouvé
-	node->right = build_ast(right_tokens);
-	return (node);
+t_ast	*cmd_new_ast_node(t_token *node)
+{
+	t_ast	*new_ast;
+	// int	i = 0;
+	
+	if (!node)
+		return (NULL);
+	// Utiliser ft_calloc pour initialiser le contenu du bloc à NULL
+	new_ast = ft_calloc(sizeof(t_ast), 1);
+	if (!new_ast)
+		return (NULL);
+	new_ast->type = node->type;
+	new_ast->str = node->str;
+	fill_args(node, new_ast);
+	// if (new_ast->args != NULL) 
+	// {
+	// 	while (new_ast->args[i])
+	// 	{
+	// 		// printf("args[%d] = %s\n", i, new_ast->args[i]);
+	// 		i++;
+	// 	}
+	// }
+	return (new_ast);
+}
+
+t_ast	*new_ast_node(t_token *node)
+{
+	t_ast	*new_ast;
+
+	if (!node)
+		return (NULL);
+	// Utiliser ft_calloc pour initialiser le contenu du bloc à NULL
+	new_ast = ft_calloc(sizeof(t_ast), 1);
+	if (!new_ast)
+		return (NULL);
+	new_ast->type = node->type;
+	new_ast->str = node->str;
+	return (new_ast);
+}
+
+/*Fonction pour trouver sur quel token il faut creer un noeud d'ast en calculant leur priorite */
+t_token	*token_to_split(t_token *node, t_token *end)
+{
+	int		current_priority;
+	int		lowest_priority;
+	t_token	*ptr;
+	t_token	*to_split;
+
+	// On initialise `to_split` à NULL pour éviter les comportements indéfinis.
+	// Si aucun token de priorité inférieure à 4 n'est trouvé, on retourne NULL.
+	to_split = NULL;
+	current_priority = 4;
+	lowest_priority = 4;
+	ptr = node;
+	while (ptr && ptr != end)
+	{
+		current_priority = token_priority(ptr->type);
+		// On check si la priorité courante est strictement inférieur à la plus basse
+		if ((current_priority < lowest_priority) && current_priority < 4)
+		{
+			to_split = ptr;
+			lowest_priority = current_priority;
+		}
+		ptr = ptr->next;
+	}
+	return (to_split);
+}
+
+/*Fonction recursive qui creer les noeuds de l'ast*/
+t_ast	*spliter(t_token *node, t_token *end)
+{
+	t_ast	*node_ast;
+	t_token	*to_split;
+
+	to_split = NULL;
+	node_ast = NULL;
+	// Si le nœud est NULL ou si c'est le dernier nœud, on retourne NULL
+	if (!node || node == end)
+		return (NULL);
+	to_split = token_to_split(node, end); //Recuperer le token a partir duquel il faut creer un nouveau noeuds (d'abord les | puis les cmds)
+	if (!to_split)
+		return (NULL);
+	if (to_split->type == CMD) //Si cmd, fonction qui va creer un noeud et ranger les arguments a la suite
+		node_ast = cmd_new_ast_node(to_split);
+	else if (to_split->type == PIPE || is_redirection(to_split->type))
+		node_ast = new_ast_node(to_split);
+	node_ast->left = spliter(node, to_split); //Appel recursif pour continuer a creer les noeuds dans les branches qui viennent d'etre creees. Du debut de la chaine au token qui vient d'etre splite
+	node_ast->right = spliter(to_split->next, end); // Du token qui vient d'etre split a la fin de la chaine.
+	if (!node_ast)
+		return (NULL);
+	return (node_ast);
+}
+
+/**
+ * @brief Fonction principale pour construire l'AST à partir d'une liste de tokens.
+ *
+ * Cette fonction est le point d'entrée pour la construction de l'AST.
+ * Elle utilise la fonction `spliter` pour diviser les tokens en nœuds AST
+ * en fonction de leur priorité.
+ *
+ * @param node La liste de tokens à partir de laquelle construire l'AST
+ * @return Un pointeur vers le nœud racine de l'AST, ou NULL en cas d'erreur
+ */
+t_ast	*build_ast(t_token *node)
+{
+	t_ast	*new_ast;
+
+	// Point d’entrée unique pour construire l’AST à partir de la liste de tokens
+	new_ast = spliter(node, NULL);
+	if (!new_ast)
+	{
+		// Si il y'a un problème, on free tout l'AST récursivement en partant du head
+		free_ast(new_ast);
+		return (NULL);
+	}
+	return (new_ast);
 }

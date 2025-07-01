@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/05/23 13:14:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/06/25 12:05:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,47 @@
  *
  * @param shell Pointeur vers la structure à initialiser.
  * @param envp Environnement système (non modifiable directement).
+ * @param env_list Liste chaînée d'environnement (initialisée dans init_env_list).
  */
-void init_shell(t_shell *shell, char **envp)
+void init_shell(t_shell *shell, char **envp, t_env *env_list)
 {
-	shell->env = copy_env(envp); // Copie de l'environnement
-	shell->last_exit_status = 0; // Initialisation du statut de sortie
-	init_signals(); // Initialisation des signaux
+	// Initialisation à NULL des champs de la structure shell
+	shell->env = NULL;
+	shell->env_list = NULL;
+	shell->tokens = NULL;
+	shell->ast = NULL;
+	shell->last_exit_status = 0;
+
+	// Copie de l'environnement dans la structure shell
+	shell->env = copy_env(envp);
+	if (!shell->env)
+	{
+		ft_putendl_fd("minishell: error: failed to copy environment", 2);
+		exit(1);
+	}
+	// Initialisation de la liste chaînée d'environnement
+	env_list = init_env_list(envp);
+	if (!env_list)
+	{
+		ft_putendl_fd("minishell: error: failed to initialize environment list", 2);
+		free_env(shell->env);
+		exit(1);
+	}
+	shell->env_list = env_list;
+
+	// Incrémente SHLVL pour chaque instance de sous-shell
+	if (increment_shlvl(env_list) != 0)
+	{
+		ft_putendl_fd("minishell: warning: failed to increment SHLVL", 2);
+		// On continue malgré l'erreur - ce n'est pas critique
+	}
+
+	// Maintenant, nous devons synchroniser env avec env_list car SHLVL a été modifié
+	if (shell->env)
+	{
+		free_env(shell->env);					  // Libère l'ancienne copie
+		shell->env = env_to_char_array(env_list); // Crée une nouvelle copie à jour
+	}
 }
 
 /**
@@ -38,30 +73,24 @@ char **copy_env(char **envp)
 	char **env;
 
 	i = 0;
-	while (envp[i])	// Compte le nombre d'éléments dans envp
+	// Compte le nombre d'éléments dans envp
+	while (envp[i])
 		i++;
-	env = ft_calloc((i + 1),  sizeof(char *)); // Alloue de la mémoire pour le tableau et set à NULL
+	// Alloue de la mémoire pour le tableau et set à NULL
+	env = ft_calloc((i + 1), sizeof(char *));
 	if (!env)
 		return (NULL);
 	i = 0;
 	while (envp[i])
 	{
-		env[i] = strdup(envp[i]); // Copie chaque élément de envp dans le nouveau tableau
+		// Copie chaque élément de envp dans le nouveau tableau
+		env[i] = strdup(envp[i]);
+		if (!env[i])
+		{
+			free_env(env); // Libère la mémoire en cas d'erreur
+			return (NULL);
+		}
 		i++;
 	}
 	return (env);
-}
-
-/**
- * @brief Libère la mémoire allouée pour l'environnement.
- *
- * @param env Le tableau de chaînes alloué à libérer.
- */
-void free_env(char **env)
-{
-	int i = 0;
-
-	while (env && env[i])
-		free(env[i++]); // Libère chaque chaîne
-	free(env); // Libère le tableau
 }

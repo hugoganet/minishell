@@ -1,6 +1,13 @@
 {
 	"files.associations": {
 		"minishell.h": "c",
+<<<<<<< HEAD
 		"stdio.h": "c"
 	}
+=======
+		"fcntl.h": "c",
+		"wait.h": "c"
+	},
+	"C_Cpp.errorSquiggles": "disabled"
+>>>>>>> 0d1abe97ac7ef2f7c758effeb70145845d38e387
 }

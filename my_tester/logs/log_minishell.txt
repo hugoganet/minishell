@@ -3,13 +3,6 @@
 -----
 :$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
-$
-    arg[0]: :$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
-$
-    arg[0]: :$
 -----
 
 
@@ -18,13 +11,6 @@ $
 -----
 !$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
-$
-    arg[0]: !$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
-$
-    arg[0]: !$
 -----
 
 
@@ -33,13 +19,6 @@ $
 -----
 #$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m #$
-$
-    arg[0]: #$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m #$
-$
-    arg[0]: #$
 -----
 
 
@@ -48,13 +27,6 @@ $
 -----
 :$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
-$
-    arg[0]: :$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
-$
-    arg[0]: :$
 -----
 
 
@@ -62,13 +34,6 @@ $
 
 -----
 :: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
-    arg[0]: :$
-    arg[1]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
-    arg[0]: :$
-    arg[1]: $
 -----
 
 
@@ -77,13 +42,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m :$
 -----
 !$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
-$
-    arg[0]: !$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
-$
-    arg[0]: !$
 -----
 
 
@@ -91,13 +49,6 @@ $
 
 -----
 !: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
-    arg[0]: !$
-    arg[1]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
-    arg[0]: !$
-    arg[1]: $
 -----
 
 
@@ -106,13 +57,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m !$
 -----
 #$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m #$
-$
-    arg[0]: #$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m #$
-$
-    arg[0]: #$
 -----
 
 
@@ -120,41 +64,34 @@ $
 
 -----
 #: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m #$
-    arg[0]: #$
-    arg[1]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m #$
-    arg[0]: #$
-    arg[1]: $
 -----
 
 
 ===== TEST : [>] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newline$
+$
 -----
 
 
 ===== TEST : [<] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_INPUT^[[0m newline$
+$
 -----
 
 
 ===== TEST : [>>] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_APPEND^[[0m newline$
+$
 -----
 
 
 ===== TEST : [<<] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;33mHEREDOC^[[0m newline$
+$
 -----
 
 
@@ -170,13 +107,6 @@ syntax error near unexpected token 'redirection'$
 -----
 &&$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&$
-$
-    arg[0]: &&$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&$
-$
-    arg[0]: &&$
 -----
 
 
@@ -197,23 +127,9 @@ syntax error near unexpected token `|'$
 ===== TEST : [&|] =====
 
 -----
+&: command not found$
 $
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m $
-$
-        arg[0]: $
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m &$
-        arg[0]: &$
-&: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m $
-$
-        arg[0]: $
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m &$
-        arg[0]: &$
 -----
 
 
@@ -222,13 +138,6 @@ $
 -----
 &&&&&&$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&&&&&$
-$
-    arg[0]: &&&&&&$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&&&&&$
-$
-    arg[0]: &&&&&&$
 -----
 
 
@@ -286,13 +195,6 @@ syntax error near unexpected token 'redirection'$
 -----
 /$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m /$
-$
-    arg[0]: /$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m /$
-$
-    arg[0]: /$
 -----
 
 
@@ -301,13 +203,6 @@ $
 -----
 //$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m //$
-$
-    arg[0]: //$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m //$
-$
-    arg[0]: //$
 -----
 
 
@@ -316,13 +211,6 @@ $
 -----
 /.$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m /.$
-$
-    arg[0]: /.$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m /.$
-$
-    arg[0]: /.$
 -----
 
 
@@ -331,13 +219,6 @@ $
 -----
 /./../../../../..$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m /./../../../../..$
-$
-    arg[0]: /./../../../../..$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m /./../../../../..$
-$
-    arg[0]: /./../../../../..$
 -----
 
 
@@ -346,13 +227,6 @@ $
 -----
 ///////$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ///////$
-$
-    arg[0]: ///////$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ///////$
-$
-    arg[0]: ///////$
 -----
 
 
@@ -361,13 +235,6 @@ $
 -----
 -$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m -$
-$
-    arg[0]: -$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m -$
-$
-    arg[0]: -$
 -----
 
 
@@ -397,13 +264,6 @@ syntax error near unexpected token `|'$
 -----
 &&$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&$
-$
-    arg[0]: &&$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&$
-$
-    arg[0]: &&$
 -----
 
 
@@ -412,13 +272,6 @@ $
 -----
 &&&&&$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&&&&$
-$
-    arg[0]: &&&&&$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&&&&$
-$
-    arg[0]: &&&&&$
 -----
 
 
@@ -427,13 +280,6 @@ $
 -----
 &&&&&&&&&&&&&&$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&&&&&&&&&&&&&$
-$
-    arg[0]: &&&&&&&&&&&&&&$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m &&&&&&&&&&&&&&$
-$
-    arg[0]: &&&&&&&&&&&&&&$
 -----
 
 
@@ -442,13 +288,6 @@ $
 -----
 ;;$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ;;$
-$
-    arg[0]: ;;$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ;;$
-$
-    arg[0]: ;;$
 -----
 
 
@@ -457,13 +296,6 @@ $
 -----
 ;;;;;$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ;;;;;$
-$
-    arg[0]: ;;;;;$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ;;;;;$
-$
-    arg[0]: ;;;;;$
 -----
 
 
@@ -472,13 +304,6 @@ $
 -----
 ;;;;;;;;;;;;;;;$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ;;;;;;;;;;;;;;;$
-$
-    arg[0]: ;;;;;;;;;;;;;;;$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ;;;;;;;;;;;;;;;$
-$
-    arg[0]: ;;;;;;;;;;;;;;;$
 -----
 
 
@@ -487,13 +312,6 @@ $
 -----
 ()$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ()$
-$
-    arg[0]: ()$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ()$
-$
-    arg[0]: ()$
 -----
 
 
@@ -502,13 +320,6 @@ $
 -----
 )$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m )$
-$
-    arg[0]: )$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m )$
-$
-    arg[0]: )$
 -----
 
 
@@ -516,17 +327,6 @@ $
 
 -----
 (: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ($
-    arg[0]: ($
-    arg[1]: ($
-    arg[2]: )$
-    arg[3]: )$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ($
-    arg[0]: ($
-    arg[1]: ($
-    arg[2]: )$
-    arg[3]: )$
 -----
 
 
@@ -535,13 +335,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ($
 -----
 0$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $?$
-$
-    arg[0]: 0$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $?$
-$
-    arg[0]: 0$
 -----
 
 
@@ -550,13 +343,6 @@ $
 -----
 00$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $?$?$
-$
-    arg[0]: 00$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $?$?$
-$
-    arg[0]: 00$
 -----
 
 
@@ -565,13 +351,6 @@ $
 -----
 $$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $$
-$
-    arg[0]: $$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $$
-$
-    arg[0]: $$
 -----
 
 
@@ -580,13 +359,6 @@ $
 -----
 /home/elaudrez$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $HOME$
-$
-    arg[0]: /home/elaudrez$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $HOME$
-$
-    arg[0]: /home/elaudrez$
 -----
 
 
@@ -595,13 +367,6 @@ $
 -----
 $
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $HOMEdskjhfkdshfsd$
-$
-    arg[0]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $HOMEdskjhfkdshfsd$
-$
-    arg[0]: $
 -----
 
 
@@ -610,13 +375,6 @@ $
 -----
 $
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m "$HOMEdskjhfkdshfsd"$
-$
-    arg[0]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m "$HOMEdskjhfkdshfsd"$
-$
-    arg[0]: $
 -----
 
 
@@ -625,13 +383,6 @@ $
 -----
 $HOMEdskjhfkdshfsd$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m '$HOMEdskjhfkdshfsd'$
-$
-    arg[0]: $HOMEdskjhfkdshfsd$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m '$HOMEdskjhfkdshfsd'$
-$
-    arg[0]: $HOMEdskjhfkdshfsd$
 -----
 
 
@@ -640,13 +391,6 @@ $
 -----
 $
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $DONTEXIST$
-$
-    arg[0]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $DONTEXIST$
-$
-    arg[0]: $
 -----
 
 
@@ -655,13 +399,6 @@ $
 -----
 -R$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $LESS$VAR$
-$
-    arg[0]: -R$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $LESS$VAR$
-$
-    arg[0]: -R$
 -----
 
 
@@ -670,24 +407,6 @@ $
 -----
 pwd$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m pwd$
-$
-    arg[0]: pwd$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m pwd$
-$
-    arg[0]: pwd$
------
-
-
-===== TEST : [pwd asd] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m pwd$
-    arg[0]: pwd$
-    arg[1]: asd$
-$
-/home/elaudrez/42/Cercle_3/Minishell/my_tester/.test2$
 -----
 
 
@@ -696,194 +415,29 @@ $
 -----
 pwd$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m pwd$
-$
-    arg[0]: pwd$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m pwd$
-$
-    arg[0]: pwd$
 -----
 
 
 ===== TEST : [env] =====
 
 -----
-$
-$
-$
-$
-    arg[0]: env$
-    arg[0]: env$
 : command not found$
 env$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m env$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m env$
 -----
 
 
 ===== TEST : [export TEST=Salut && env] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: TEST=Salut$
-    arg[2]: &&$
-    arg[3]: env$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [envvvvv] =====
 
 -----
-$
-$
-$
-$
-    arg[0]: envvvvv$
-    arg[0]: envvvvv$
 : command not found$
 envvvvv$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m envvvvv$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m envvvvv$
------
-
-
-===== TEST : [echo "Salut"] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: Salut$
-$
-Salut$
------
-
-
-===== TEST : [echo $USER] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: elaudrez$
-$
-elaudrez$
------
-
-
-===== TEST : [echo "'aaa'"] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: 'aaa'$
-$
-'aaa'$
------
-
-
-===== TEST : [echo '"aaa"'] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: "aaa"$
-$
-"aaa"$
------
-
-
-===== TEST : [echo '$USER'] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $USER$
-$
-$USER$
------
-
-
-===== TEST : [echo "'$USER'"] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: 'elaudrez'$
-$
-'elaudrez'$
------
-
-
-===== TEST : [echo '"$USER"'] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: "$USER"$
-$
-"$USER"$
------
-
-
-===== TEST : [echo -n -nnnnnn $USER] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: -n$
-    arg[2]: -nnnnnn$
-    arg[3]: elaudrez$
-$
-elaudrez$
------
-
-
-===== TEST : [echo "-n" Hola] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: -n$
-    arg[2]: Hola$
-$
-Hola$
------
-
-
-===== TEST : [echo           Hola] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: Hola$
-$
-Hola$
------
-
-
-===== TEST : [echo "         "] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]:          $
-$
-         $
------
-
-
-===== TEST : [""''echo hola""'''' que""'' tal""''] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ""''echo$
-    arg[0]: echo$
-    arg[1]: hola$
-    arg[2]: que$
-    arg[3]: tal$
-$
-hola que tal$
 -----
 
 
@@ -892,40 +446,6 @@ hola que tal$
 -----
 echo-nHola$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo-nHola$
-$
-    arg[0]: echo-nHola$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo-nHola$
-$
-    arg[0]: echo-nHola$
------
-
-
-===== TEST : [echo -n -nnnnnnn -n-] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: -n$
-    arg[2]: -nnnnnnn$
-    arg[3]: -n-$
-$
--n-$
------
-
-
-===== TEST : [echo -n -nnnnnn hola -n] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: -n$
-    arg[2]: -nnnnnn$
-    arg[3]: hola$
-    arg[4]: -n$
-$
-hola -n$
 -----
 
 
@@ -934,24 +454,12 @@ hola -n$
 -----
 echo$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-$
-    arg[0]: echo$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-$
-    arg[0]: echo$
 -----
 
 
 ===== TEST : [echo -n] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: -n$
-$
--n$
 -----
 
 
@@ -960,81 +468,12 @@ $
 -----
 echoHola$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echoHola$
-$
-    arg[0]: echoHola$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echoHola$
-$
-    arg[0]: echoHola$
------
-
-
-===== TEST : [EechoO aaa] =====
-
------
-EechoO: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m EechoO$
-    arg[0]: EechoO$
-    arg[1]: aaa$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m EechoO$
-    arg[0]: EechoO$
-    arg[1]: aaa$
------
-
-
-===== TEST : [echo        Hola -n] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: Hola$
-    arg[2]: -n$
-$
-Hola -n$
------
-
-
-===== TEST : [echo        ] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $
------
-
-
-===== TEST : [echo $?] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: 0$
-$
-0$
------
-
-
-===== TEST : [echo $?$] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: 0$$
-$
-0$$
 -----
 
 
 ===== TEST : [echo $:$= ] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $:$=$
-    arg[2]: $
-$
 $:$= $
 -----
 
@@ -1042,190 +481,21 @@ $:$= $
 ===== TEST : [echo a > /dev/null] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newline/dev/null$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: a$
 a$
------
-
-
-===== TEST : [echo The terminal is $TERM] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: The$
-    arg[2]: terminal$
-    arg[3]: is$
-    arg[4]: xterm-256color$
-$
-The terminal is xterm-256color$
------
-
-
-===== TEST : [echo The terminal is [$TERM]] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: The$
-    arg[2]: terminal$
-    arg[3]: is$
-    arg[4]: [xterm-256color]$
-$
-The terminal is [xterm-256color]$
------
-
-
-===== TEST : [echo The terminal is [$TERM4] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: The$
-    arg[2]: terminal$
-    arg[3]: is$
-    arg[4]: [$
-$
-The terminal is [$
 -----
 
 
 ===== TEST : [echo $? | echo $? | echo $?] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-        M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m echo$
-            arg[0]: echo$
-            arg[1]: 0$
 $
-        M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-            arg[0]: echo$
-            arg[1]: 0$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: 0$
------
-
-
-===== TEST : [echo ' $ '] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]:  $ $
-$
- $ $
------
-
-
-===== TEST : [echo " $ "] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]:  $ $
-$
- $ $
------
-
-
-===== TEST : [echo $HOME] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: /home/elaudrez$
-$
-/home/elaudrez$
------
-
-
-===== TEST : [echo $HOME9] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $
------
-
-
-===== TEST : [echo $9HOME] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: HOME$
-$
-HOME$
------
-
-
-===== TEST : [echo $HOME%] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: /home/elaudrez%$
-$
-/home/elaudrez%$
------
-
-
-===== TEST : [echo $USER$HOME] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: elaudrez/home/elaudrez$
-$
-elaudrez/home/elaudrez$
------
-
-
-===== TEST : [echo HOME=$HOME] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: HOME=/home/elaudrez$
-$
-HOME=/home/elaudrez$
------
-
-
-===== TEST : [echo $USER$var$USER$USER$USERtest$USER] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: elaudrezelaudrezelaudrezelaudrez$
-$
-elaudrezelaudrezelaudrezelaudrez$
 -----
 
 
 ===== TEST : [echo $hola*] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: *$
-$
 *$
------
-
-
-===== TEST : [echo -nnnnn $hola] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: -nnnnn$
-    arg[2]: $
 -----
 
 
@@ -1247,218 +517,35 @@ error: failed to tokenize input$
 ===== TEST : [>echo>] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlineecho$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_OUTPUT^[[0m newline$
+$
 -----
 
 
 ===== TEST : [<echo<] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_INPUT^[[0m newlineecho$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_INPUT^[[0m newline$
+$
 -----
 
 
 ===== TEST : [>>echo>>] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_APPEND^[[0m newlineecho$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_APPEND^[[0m newline$
------
-
-
-===== TEST : ["echo" a] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m "echo"$
-    arg[0]: echo$
-    arg[1]: a$
 $
-a$
------
-
-
-===== TEST : ["    echo" a] =====
-
------
-    echo: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m "    echo"$
-    arg[0]:     echo$
-    arg[1]: a$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m "    echo"$
-    arg[0]:     echo$
-    arg[1]: a$
------
-
-
-===== TEST : [echo '$'''] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $$
-$
-$$
------
-
-
-===== TEST : [echo "$"""] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $$
-$
-$$
------
-
-
-===== TEST : [echo "$HO"me] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: me$
-$
-me$
------
-
-
-===== TEST : [echo "'$HO''ME'"] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: '''ME'$
-$
-'''ME'$
 -----
 
 
 ===== TEST : [echo $"HO""ME"] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $HOME$
-$
 $HOME$
------
-
-
-===== TEST : [echo '' $HOME] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $
-    arg[2]: /home/elaudrez$
-$
- /home/elaudrez$
 -----
 
 
 ===== TEST : [echo $DONTEXIST hola] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $
-    arg[2]: hola$
-$
  hola$
------
-
-
-===== TEST : [echo "hola"] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: hola$
-$
-hola$
------
-
-
-===== TEST : [echo ''hola''] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: hola$
-$
-hola$
------
-
-
-===== TEST : [echo hola""""""""""""] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: hola$
-$
-hola$
------
-
-
-===== TEST : [echo hola"''''''''''"] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: hola''''''''''$
-$
-hola''''''''''$
------
-
-
-===== TEST : [echo ""          hola] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $
-    arg[2]: hola$
-$
- hola$
------
-
-
-===== TEST : [echo ""hola] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: hola$
-$
-hola$
------
-
-
-===== TEST : [echo "" hola] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: $
-    arg[2]: hola$
-$
- hola$
------
-
-
-===== TEST : ["e"'c'ho 'b'"o"nj"o"'u'r] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m "e"'c'ho$
-    arg[0]: echo$
-    arg[1]: bonjour$
-$
-bonjour$
 -----
 
 
@@ -1466,10 +553,6 @@ bonjour$
 
 -----
 cd: too many arguments$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
-    arg[0]: cd$
-    arg[1]: &&$
-    arg[2]: pwd$
 -----
 
 
@@ -1477,11 +560,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
 
 -----
 cd: too many arguments$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
-    arg[0]: cd$
-    arg[1]: /home/elaudrez/42/Cercle_3/Minishell/my_tester$
-    arg[2]: &&$
-    arg[3]: pwd$
 -----
 
 
@@ -1490,9 +568,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
 -----
 cd: not_exist_file$
 : No such file or directory$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
-    arg[0]: cd$
-    arg[1]: not_exist_file$
 -----
 
 
@@ -1500,11 +575,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
 
 -----
 cd: too many arguments$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
-    arg[0]: cd$
-    arg[1]: not_exist_file$
-    arg[2]: &&$
-    arg[3]: pwd$
 -----
 
 
@@ -1521,9 +591,6 @@ error: failed to tokenize input$
 -----
 cd: $
 : No such file or directory$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
-    arg[0]: cd$
-    arg[1]: $
 -----
 
 
@@ -1531,12 +598,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
 
 -----
 cd: too many arguments$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cd$
-    arg[0]: cd$
-    arg[1]: ..$
-    arg[2]: &&$
-    arg[3]: ls$
-    arg[4]: -l$
 -----
 
 
@@ -1564,16 +625,8 @@ export: && not a valid identifier$
 ===== TEST : [export] =====
 
 -----
-$
-$
-$
-$
-    arg[0]: export$
-    arg[0]: export$
 : command not found$
 export$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
@@ -1587,13 +640,7 @@ export: && not a valid identifier$
 ===== TEST : [export 1=1 && export] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: 1=1$
-    arg[2]: &&$
-    arg[3]: export$
 export: 1=1 not a valid identifier$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
@@ -1642,13 +689,7 @@ export: 0 not a valid identifier$
 ===== TEST : [export ?=2 && export] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: ?=2$
-    arg[2]: &&$
-    arg[3]: export$
 export: ?=2 not a valid identifier$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
@@ -1662,52 +703,28 @@ export: && not a valid identifier$
 ===== TEST : [export ABC@=a && export] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: ABC@=a$
-    arg[2]: &&$
-    arg[3]: export$
 export: ABC@=a not a valid identifier$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
 ===== TEST : [export HOLA-=Bonjour && export] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: HOLA-=Bonjour$
-    arg[2]: &&$
-    arg[3]: export$
 export: HOLA-=Bonjour not a valid identifier$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
 ===== TEST : [export HOL}A=Bonjour && export] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: HOL}A=Bonjour$
-    arg[2]: &&$
-    arg[3]: export$
 export: HOL}A=Bonjour not a valid identifier$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
 ===== TEST : [export HOL.A=Bonjour && export] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: HOL.A=Bonjour$
-    arg[2]: &&$
-    arg[3]: export$
 export: HOL.A=Bonjour not a valid identifier$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 -----
 
 
@@ -1715,20 +732,16 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
 
 -----
 $
-        arg[0]: export$
-        arg[0]: grep$
-        arg[1]: HOME$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m export$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m grep$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
 -----
 
 
 ===== TEST : [export HOLA="bonjour      " && echo $HOLA | cat -e] =====
 
 -----
-export:  && echo  | cat -e$
- not a valid identifier$
+'$
+cat: invalid option -- '$
+export: && not a valid identifier$
+Try 'cat --help' for more information.$
 -----
 
 
@@ -1742,13 +755,7 @@ export: && not a valid identifier$
 ===== TEST : [export HOLA="cat Makefile | grep NAME" && echo $HOLA] =====
 
 -----
-$
-    arg[0]: export$
-    arg[1]: HOLA=cat Makefile | grep NAME$
-    arg[2]: &&$
-    arg[3]: echo$
-    arg[4]: $
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m export$
+export: && not a valid identifier$
 -----
 
 
@@ -1772,20 +779,6 @@ export: && not a valid identifier$
 exit$
 ls$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m ls$
-$
-        arg[0]: ls$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m exit$
-        arg[0]: exit$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m ls$
-$
-        arg[0]: ls$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m exit$
-        arg[0]: exit$
 -----
 
 
@@ -1794,20 +787,6 @@ $
 -----
 exit$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m exit$
-$
-        arg[0]: exit$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m exit$
-$
-        arg[0]: exit$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
 -----
 
 
@@ -1817,9 +796,6 @@ $
 exit$
 exit: 10$
 : numeric argument required$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m exit$
-    arg[0]: exit$
-    arg[1]: 10$
 -----
 
 
@@ -1829,9 +805,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m exit$
 exit$
 exit: 500$
 : numeric argument required$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m exit$
-    arg[0]: exit$
-    arg[1]: 500$
 -----
 
 
@@ -1841,9 +814,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m exit$
 exit$
 exit: abc$
 : numeric argument required$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m exit$
-    arg[0]: exit$
-    arg[1]: abc$
 -----
 
 
@@ -1852,44 +822,20 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m exit$
 -----
 unset$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m unset$
-$
-    arg[0]: unset$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m unset$
-$
-    arg[0]: unset$
 -----
 
 
 ===== TEST : [unset PATH && ls] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m unset$
-    arg[0]: unset$
-    arg[1]: PATH$
-    arg[2]: &&$
-    arg[3]: ls$
+$
 -----
 
 
 ===== TEST : [unset HOME && pwd] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m unset$
-    arg[0]: unset$
-    arg[1]: HOME$
-    arg[2]: &&$
-    arg[3]: pwd$
------
-
-
-===== TEST : [unset DOES_NOT_EXIST] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m unset$
-    arg[0]: unset$
-    arg[1]: DOES_NOT_EXIST$
+$
 -----
 
 
@@ -1898,13 +844,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m unset$
 -----
 *$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m *$
-$
-    arg[0]: *$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m *$
-$
-    arg[0]: *$
 -----
 
 
@@ -1912,30 +851,12 @@ $
 
 -----
 cat: '*.c'$'\n': No such file or directory$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m cat$
-    arg[0]: cat$
-    arg[1]: *.c$
 -----
 
 
 ===== TEST : [echo *] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: *$
-$
-*$
------
-
-
-===== TEST : [echo '*'] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: *$
-$
 *$
 -----
 
@@ -1951,9 +872,6 @@ export: && not a valid identifier$
 
 -----
 ls: cannot access '*'$'\n': No such file or directory$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
-    arg[0]: ls$
-    arg[1]: *$
 -----
 
 
@@ -1961,33 +879,19 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
 
 -----
 ls: cannot access '*'$'\n': No such file or directory$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
-    arg[0]: ls$
-    arg[1]: -U$
-    arg[2]: *$
 -----
 
 
 ===== TEST : [touch New_file_that_didnt_exist && echo New_fi*dn*st] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m touch$
-    arg[0]: touch$
-    arg[1]: New_file_that_didnt_exist$
-    arg[2]: &&$
-    arg[3]: echo$
-    arg[4]: New_fi*dn*st$
+$
 -----
 
 
 ===== TEST : [echo hola*hola *] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m echo$
-    arg[0]: echo$
-    arg[1]: hola*hola$
-    arg[2]: *$
-$
 hola*hola *$
 -----
 
@@ -1997,15 +901,6 @@ hola*hola *$
 -----
 mkdir: cannot create directory M-bM-^@M-^Xtest/M-bM-^@M-^Y: File exists$
 mkdir: cannot create directory M-bM-^@M-^X&&M-bM-^@M-^Y: File exists$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m mkdir$
-    arg[0]: mkdir$
-    arg[1]: test/$
-    arg[2]: &&$
-    arg[3]: cd$
-    arg[4]: test/$
-    arg[5]: &&$
-    arg[6]: echo$
-    arg[7]: *$
 -----
 
 
@@ -2018,14 +913,6 @@ mkdir: cannot create directory M-bM-^@M-^XcdM-bM-^@M-^Y: File exists$
 mkdir: cannot create directory M-bM-^@M-^Xtest/M-bM-^@M-^Y: File exists$
 mkdir: cannot create directory M-bM-^@M-^X&&M-bM-^@M-^Y: File exists$
 mkdir: cannot create directory M-bM-^@M-^X*\nM-bM-^@M-^Y: File exists$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m mkdir$
-    arg[0]: mkdir$
-    arg[1]: test/$
-    arg[2]: &&$
-    arg[3]: cd$
-    arg[4]: test/$
-    arg[5]: &&$
-    arg[6]: *$
 -----
 
 
@@ -2034,13 +921,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m mkdir$
 -----
 ls$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
-$
-    arg[0]: ls$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
-$
-    arg[0]: ls$
 -----
 
 
@@ -2049,20 +929,6 @@ $
 -----
 sjdkof$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m sjdkof$
-$
-        arg[0]: sjdkof$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m sjdkof$
-$
-        arg[0]: sjdkof$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
 -----
 
 
@@ -2079,31 +945,6 @@ error: failed to tokenize input$
 -----
 pwd$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m pwd$
-$
-        arg[0]: pwd$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m pwd$
-$
-        arg[0]: pwd$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
------
-
-
-===== TEST : [ls -kjasdf] =====
-
------
-ls: invalid option -- 'j'$
-Try 'ls --help' for more information.$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
-    arg[0]: ls$
-    arg[1]: -kjasdf$
 -----
 
 
@@ -2112,13 +953,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m ls$
 -----
 abc$
 minishell$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m grep$
-        arg[0]: grep$
-        arg[1]: a$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
 -----
 
 
@@ -2127,26 +961,6 @@ $
 -----
 jkdfs$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-        M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m jkdfs$
-$
-            arg[0]: jkdfs$
-$
-        M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m pwd$
-            arg[0]: pwd$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-        M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m jkdfs$
-$
-            arg[0]: jkdfs$
-$
-        M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m pwd$
-            arg[0]: pwd$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ls$
-        arg[0]: ls$
 -----
 
 
@@ -2156,13 +970,6 @@ $
 jkdfs: command not found$
 sleep: invalid time interval M-bM-^@M-^X0.3\nM-bM-^@M-^Y$
 Try 'sleep --help' for more information.$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m sleep$
-        arg[0]: sleep$
-        arg[1]: 0.3$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m jkdfs$
-        arg[0]: jkdfs$
 -----
 
 
@@ -2171,22 +978,6 @@ $
 -----
 jkdfs$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m jkdfs$
-$
-        arg[0]: jkdfs$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m sleep$
-        arg[0]: sleep$
-        arg[1]: 0.3$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m jkdfs$
-$
-        arg[0]: jkdfs$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m sleep$
-        arg[0]: sleep$
-        arg[1]: 0.3$
 -----
 
 
@@ -2195,13 +986,6 @@ $
 -----
 $
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $
-$
-    arg[0]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $
-$
-    arg[0]: $
 -----
 
 
@@ -2210,13 +994,6 @@ $
 -----
 $
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $
-$
-    arg[0]: $
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m $
-$
-    arg[0]: $
 -----
 
 
@@ -2225,13 +1002,6 @@ $
 -----
 a$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m a$
-$
-    arg[0]: a$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m a$
-$
-    arg[0]: a$
 -----
 
 
@@ -2240,58 +1010,13 @@ $
 -----
 hola$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m hola$
-$
-    arg[0]: hola$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m hola$
-$
-    arg[0]: hola$
------
-
-
-===== TEST : [hola que tal] =====
-
------
-hola: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m hola$
-    arg[0]: hola$
-    arg[1]: que$
-    arg[2]: tal$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m hola$
-    arg[0]: hola$
-    arg[1]: que$
-    arg[2]: tal$
------
-
-
-===== TEST : [dsf && echo No] =====
-
------
-dsf: command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m dsf$
-    arg[0]: dsf$
-    arg[1]: &&$
-    arg[2]: echo$
-    arg[3]: No$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m dsf$
-    arg[0]: dsf$
-    arg[1]: &&$
-    arg[2]: echo$
-    arg[3]: No$
 -----
 
 
 ===== TEST : [true && echo Yes] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m true$
-    arg[0]: true$
-    arg[1]: &&$
-    arg[2]: echo$
-    arg[3]: Yes$
+$
 -----
 
 
@@ -2300,13 +1025,6 @@ M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m true$
 -----
 Makefile$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m Makefile$
-$
-    arg[0]: Makefile$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m Makefile$
-$
-    arg[0]: Makefile$
 -----
 
 
@@ -2315,13 +1033,6 @@ $
 -----
 make$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m make$
-$
-    arg[0]: make$
-$
-M-bM-^FM-3 [ROOT] ^[[1;36mCMD^[[0m make$
-$
-    arg[0]: make$
 -----
 
 
@@ -2332,44 +1043,6 @@ $
 (grep: command not found$
 ls$
 : command not found$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-        M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-            M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-                M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m ls$
-$
-                    arg[0]: ls$
-$
-                M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m grep$
-                    arg[0]: grep$
-                    arg[1]: j))$
-            M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m (grep$
-                arg[0]: (grep$
-                arg[1]: h$
-        M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m grep$
-            arg[0]: grep$
-            arg[1]: a)$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ((ls$
-        arg[0]: ((ls$
-M-bM-^FM-3 [ROOT] ^[[1;32mPIPE^[[0m |$
-    M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-        M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-            M-bM-^FM-3 [RIGHT] ^[[1;32mPIPE^[[0m |$
-                M-bM-^FM-3 [RIGHT] ^[[1;36mCMD^[[0m ls$
-$
-                    arg[0]: ls$
-$
-                M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m grep$
-                    arg[0]: grep$
-                    arg[1]: j))$
-            M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m (grep$
-                arg[0]: (grep$
-                arg[1]: h$
-        M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m grep$
-            arg[0]: grep$
-            arg[1]: a)$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m ((ls$
-        arg[0]: ((ls$
 -----
 
 
@@ -2413,38 +1086,9 @@ error: failed to tokenize input$
 -----
 
 
-===== TEST : [echo abc > test.txt && cat test.txt] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest.txt$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: abc$
-abc$
------
-
-
-===== TEST : [echo abc > test.txt && cat < test.txt] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest.txt$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_INPUT^[[0m newlinetest.txt$
-$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: abc$
-abc$
------
-
-
 ===== TEST : [echo aaa > test.txt && echo abcdef >> test.txt && cat test.txt] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest.txt$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_APPEND^[[0m newlinetest.txt$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: aaa$
 aaa$
 -----
 
@@ -2452,36 +1096,13 @@ aaa$
 ===== TEST : [> test.txt echo aaa && >> test.txt echo abcdef && cat test.txt] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest.txt$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_APPEND^[[0m newlinetest.txt$
-        M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-            arg[0]: echo$
-            arg[1]: aaa$
-            arg[2]: &&$
 aaa &&$
------
-
-
-===== TEST : [echo a > test.txt && < test.txt cat] =====
-
------
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest.txt$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_INPUT^[[0m newlinetest.txt$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: a$
-a$
 -----
 
 
 ===== TEST : [echo a > test1.txt > test2.txt && echo ab && cat test1.txt && echo bc && cat test2.txt] =====
 
 -----
-M-bM-^FM-3 [ROOT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest2.txt$
-    M-bM-^FM-3 [RIGHT] ^[[1;35mREDIR_OUTPUT^[[0m newlinetest2.txt$
-    M-bM-^FM-3 [LEFT] ^[[1;36mCMD^[[0m echo$
-        arg[0]: echo$
-        arg[1]: a$
 a$
 -----
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/30 16:40:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 21:01:16 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,9 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	char **argv;
 
 	// Recherche du vrai noeud CMD à exécuter
-	// cmd_node = find_cmd_node(ast_root);
-	// if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
-	// 	return (1);
+	cmd_node = find_cmd_node(ast_root);
+	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
+		return (1);	
 	if (is_builtin(cmd_node))
 		return(builtin_exec(cmd_node, shell));	
 	else

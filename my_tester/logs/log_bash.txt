@@ -376,13 +376,6 @@ $
 -----
 
 
-===== TEST : [pwd asd] =====
-
------
-/home/elaudrez/42/Cercle_3/Minishell/my_tester/.test2$
------
-
-
 ===== TEST : [               pwd] =====
 
 -----
@@ -399,11 +392,7 @@ DISPLAY=:0$
 DOCKER_HOST=unix:///run/user/110929/docker.sock$
 GDMSESSION=ubuntu$
 GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
-<<<<<<< HEAD
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43$
-=======
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/ed876cbb_de2c_44b9_92e5_46491bcfe822$
->>>>>>> hugo
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2$
 GNOME_TERMINAL_SERVICE=:1.88$
 GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
 GTK_IM_MODULE=ibus$
@@ -451,7 +440,7 @@ DISPLAY=:0$
 DOCKER_HOST=unix:///run/user/110929/docker.sock$
 GDMSESSION=ubuntu$
 GNOME_DESKTOP_SESSION_ID=this-is-deprecated$
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43$
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2$
 GNOME_TERMINAL_SERVICE=:1.88$
 GPG_AGENT_INFO=/run/user/110929/gnupg/S.gpg-agent:0:1$
 GTK_IM_MODULE=ibus$
@@ -498,108 +487,10 @@ envvvvv: command not found$
 -----
 
 
-===== TEST : [echo "Salut"] =====
-
------
-Salut$
------
-
-
-===== TEST : [echo $USER] =====
-
------
-elaudrez$
------
-
-
-===== TEST : [echo "'aaa'"] =====
-
------
-'aaa'$
------
-
-
-===== TEST : [echo '"aaa"'] =====
-
------
-"aaa"$
------
-
-
-===== TEST : [echo '$USER'] =====
-
------
-$USER$
------
-
-
-===== TEST : [echo "'$USER'"] =====
-
------
-'elaudrez'$
------
-
-
-===== TEST : [echo '"$USER"'] =====
-
------
-"$USER"$
------
-
-
-===== TEST : [echo -n -nnnnnn $USER] =====
-
------
-elaudrez$
------
-
-
-===== TEST : [echo "-n" Hola] =====
-
------
-Hola$
------
-
-
-===== TEST : [echo           Hola] =====
-
------
-Hola$
------
-
-
-===== TEST : [echo "         "] =====
-
------
-         $
------
-
-
-===== TEST : [""''echo hola""'''' que""'' tal""''] =====
-
------
-hola que tal$
------
-
-
 ===== TEST : [echo-nHola] =====
 
 -----
 echo-nHola: command not found$
------
-
-
-===== TEST : [echo -n -nnnnnnn -n-] =====
-
------
--n-$
------
-
-
-===== TEST : [echo -n -nnnnnn hola -n] =====
-
------
-hola -n$
 -----
 
 
@@ -624,41 +515,6 @@ echoHola: command not found$
 -----
 
 
-===== TEST : [EechoO aaa] =====
-
------
-EechoO: command not found$
------
-
-
-===== TEST : [echo        Hola -n] =====
-
------
-Hola -n$
------
-
-
-===== TEST : [echo        ] =====
-
------
-$
------
-
-
-===== TEST : [echo $?] =====
-
------
-0$
------
-
-
-===== TEST : [echo $?$] =====
-
------
-0$$
------
-
-
 ===== TEST : [echo $:$= ] =====
 
 -----
@@ -673,27 +529,6 @@ $
 -----
 
 
-===== TEST : [echo The terminal is $TERM] =====
-
------
-The terminal is xterm-256color$
------
-
-
-===== TEST : [echo The terminal is [$TERM]] =====
-
------
-The terminal is [xterm-256color]$
------
-
-
-===== TEST : [echo The terminal is [$TERM4] =====
-
------
-The terminal is [$
------
-
-
 ===== TEST : [echo $? | echo $? | echo $?] =====
 
 -----
@@ -701,80 +536,10 @@ The terminal is [$
 -----
 
 
-===== TEST : [echo ' $ '] =====
-
------
- $ $
------
-
-
-===== TEST : [echo " $ "] =====
-
------
- $ $
------
-
-
-===== TEST : [echo $HOME] =====
-
------
-/home/elaudrez$
------
-
-
-===== TEST : [echo $HOME9] =====
-
------
-$
------
-
-
-===== TEST : [echo $9HOME] =====
-
------
-HOME$
------
-
-
-===== TEST : [echo $HOME%] =====
-
------
-/home/elaudrez%$
------
-
-
-===== TEST : [echo $USER$HOME] =====
-
------
-elaudrez/home/elaudrez$
------
-
-
-===== TEST : [echo HOME=$HOME] =====
-
------
-HOME=/home/elaudrez$
------
-
-
-===== TEST : [echo $USER$var$USER$USER$USERtest$USER] =====
-
------
-elaudrezelaudrezelaudrezelaudrez$
------
-
-
 ===== TEST : [echo $hola*] =====
 
 -----
 abc minishell$
------
-
-
-===== TEST : [echo -nnnnn $hola] =====
-
------
-$
 -----
 
 
@@ -813,48 +578,6 @@ syntax error near unexpected token `newline'$
 -----
 
 
-===== TEST : ["echo" a] =====
-
------
-a$
------
-
-
-===== TEST : ["    echo" a] =====
-
------
-    echo: command not found$
------
-
-
-===== TEST : [echo '$'''] =====
-
------
-$$
------
-
-
-===== TEST : [echo "$"""] =====
-
------
-$$
------
-
-
-===== TEST : [echo "$HO"me] =====
-
------
-me$
------
-
-
-===== TEST : [echo "'$HO''ME'"] =====
-
------
-'''ME'$
------
-
-
 ===== TEST : [echo $"HO""ME"] =====
 
 -----
@@ -862,73 +585,10 @@ HOME$
 -----
 
 
-===== TEST : [echo '' $HOME] =====
-
------
- /home/elaudrez$
------
-
-
 ===== TEST : [echo $DONTEXIST hola] =====
 
 -----
 hola$
------
-
-
-===== TEST : [echo "hola"] =====
-
------
-hola$
------
-
-
-===== TEST : [echo ''hola''] =====
-
------
-hola$
------
-
-
-===== TEST : [echo hola""""""""""""] =====
-
------
-hola$
------
-
-
-===== TEST : [echo hola"''''''''''"] =====
-
------
-hola''''''''''$
------
-
-
-===== TEST : [echo ""          hola] =====
-
------
- hola$
------
-
-
-===== TEST : [echo ""hola] =====
-
------
-hola$
------
-
-
-===== TEST : [echo "" hola] =====
-
------
- hola$
------
-
-
-===== TEST : ["e"'c'ho 'b'"o"nj"o"'u'r] =====
-
------
-bonjour$
 -----
 
 
@@ -979,8 +639,8 @@ $
 
 -----
 total 12$
-drwxr-xr-x 2 elaudrez 2024_paris    78 Jul  1 18:31 logs$
-drwxr-xr-x 2 elaudrez 2024_paris    34 Jul  1 18:31 save$
+drwxr-xr-x 2 elaudrez 2024_paris    78 Jul  1 20:59 logs$
+drwxr-xr-x 2 elaudrez 2024_paris    34 Jul  1 20:59 save$
 -rwxr-xr-x 1 elaudrez 2024_paris 11747 Jul  1 14:36 tester.sh$
 -----
 
@@ -994,7 +654,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1043,7 +703,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1092,7 +752,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1142,7 +802,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1191,7 +851,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1246,7 +906,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1309,7 +969,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1379,7 +1039,7 @@ export DISPLAY=":0"$
 export DOCKER_HOST="unix:///run/user/110929/docker.sock"$
 export GDMSESSION="ubuntu"$
 export GNOME_DESKTOP_SESSION_ID="this-is-deprecated"$
-export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/6d63c0e9_ce55_4979_9724_3cddad307d43"$
+export GNOME_TERMINAL_SCREEN="/org/gnome/Terminal/screen/d530b3c7_ca08_4e29_91bc_d0c9afefd3d2"$
 export GNOME_TERMINAL_SERVICE=":1.88"$
 export GPG_AGENT_INFO="/run/user/110929/gnupg/S.gpg-agent:0:1"$
 export GTK_IM_MODULE="ibus"$
@@ -1547,13 +1207,6 @@ ls: No such file or directory$
 -----
 
 
-===== TEST : [unset DOES_NOT_EXIST] =====
-
------
-$
------
-
-
 ===== TEST : [*] =====
 
 -----
@@ -1572,13 +1225,6 @@ cat: '*.c': No such file or directory$
 
 -----
 abc minishell$
------
-
-
-===== TEST : [echo '*'] =====
-
------
-*$
 -----
 
 
@@ -1664,14 +1310,6 @@ minishell$
 -----
 
 
-===== TEST : [ls -kjasdf] =====
-
------
-ls: invalid option -- 'j'$
-Try 'ls --help' for more information.$
------
-
-
 ===== TEST : [ls|grep a] =====
 
 -----
@@ -1725,20 +1363,6 @@ a: command not found$
 
 -----
 hola: command not found$
------
-
-
-===== TEST : [hola que tal] =====
-
------
-hola: command not found$
------
-
-
-===== TEST : [dsf && echo No] =====
-
------
-dsf: command not found$
 -----
 
 
@@ -1810,20 +1434,6 @@ B$
 -----
 
 
-===== TEST : [echo abc > test.txt && cat test.txt] =====
-
------
-abc$
------
-
-
-===== TEST : [echo abc > test.txt && cat < test.txt] =====
-
------
-abc$
------
-
-
 ===== TEST : [echo aaa > test.txt && echo abcdef >> test.txt && cat test.txt] =====
 
 -----
@@ -1837,13 +1447,6 @@ abcdef$
 -----
 aaa$
 abcdef$
------
-
-
-===== TEST : [echo a > test.txt && < test.txt cat] =====
-
------
-a$
 -----
 
 

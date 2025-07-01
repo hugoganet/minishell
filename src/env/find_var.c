@@ -2,11 +2,28 @@
 #include "minishell.h"
 
 /**
- * @brief Vérifie si le caractère après un `$` est valide pour une expansion.
+ * @brief Extrait le nom de variable depuis une position donnée.
+ *
+ * Cette fonction gère les différents cas de noms de variables :
+ * - Paramètres positionnels ($1, $2, etc.) → retourne chaîne vide
+ * - Nom vide (juste $) → retourne chaîne vide
+ * - Nom normal → extrait et retourne le nom
+ *
+ * @param str La chaîne d'origine
+ * @param name_start L'index de début du nom
+ * @param len La longueur du nom à copier
+ * @return Une copie allouée du nom ou chaîne vide selon les cas
  */
-bool is_valid_var_start(char c)
+char *extract_var_name(char *str, int name_start, int len)
 {
-	return (ft_isalpha(c) || c == '_' || c == '{' || c == '?' || ft_isdigit(c));
+	// Si le nom est un paramètre positionnel, on retourne une chaîne vide
+	if (len == 1 && ft_isdigit(str[name_start]))
+		return (ft_strdup(""));
+	// Si le nom est vide (par exemple juste un `$`), on retourne une chaîne vide
+	if (len == 0)
+		return (ft_strdup(""));
+	// Sinon, on extrait le nom de variable
+	return (ft_substr(str, name_start, len));
 }
 
 /**
@@ -43,7 +60,6 @@ void get_name_brace(char *str, int *i, int *end, int *name_start)
 		return;
 	*end = *i + 1;
 }
-
 /**
  * @brief Détecte un nom de variable classique (sans accolades) : $VAR
  *
@@ -55,11 +71,9 @@ void get_name_brace(char *str, int *i, int *end, int *name_start)
  * @param end         Index de fin du nom.
  * @param name_start  Index de début du nom.
  */
-
 void get_name(char *str, int *i, int *end, int *name_start)
 {
 	*name_start = *i;
-
 	// Si on commence par un chiffre, c'est un paramètre positionnel
 	if (ft_isdigit(str[*i]))
 	{
@@ -68,28 +82,10 @@ void get_name(char *str, int *i, int *end, int *name_start)
 		*end = *i;
 		return;
 	}
-
 	// Parser le nom de variable classique
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;
 	*end = *i;
-}
-
-/**
- * @brief Extrait le nom de variable depuis une position donnée.
- *
- * @param str        Chaîne d’origine.
- * @param name_start Index de début du nom.
- * @param len        Longueur du nom à copier.
- * @return Copie allouée du nom ou chaîne vide selon les cas.
- */
-char *extract_var_name(char *str, int name_start, int len)
-{
-	if (len == 1 && ft_isdigit(str[name_start]))
-		return (ft_strdup(""));
-	if (len == 0)
-		return (ft_strdup(""));
-	return (ft_substr(str, name_start, len));
 }
 
 /**
@@ -105,26 +101,31 @@ char *find_var(char *str, int *start, int *end)
 	int i;
 	int len;
 	int name_start;
-
 	i = 0;
+	// Chercher le premier `$` dans la chaîne
 	while (str[i] && str[i] != '$')
 		i++;
 	*start = i;
 	i++;
+	// Si on n'a pas trouvé de `$`, retourner "$"
 	if (!str[i])
 	{
 		*end = i;
 		return (ft_strdup("$"));
 	}
+	// Si le caractère après `$` n'est pas valide, retourner "$"
 	if (!is_valid_var_start(str[i]))
 	{
 		*end = i;
 		return (ft_strdup("$"));
 	}
+	// Si on a un `{`, on traite le nom entre accolades `${VAR}`
 	if (str[i] == '{')
 		get_name_brace(str, &i, end, &name_start);
+	// Sinon, on traite le nom classique `$VAR`
 	else
 		get_name(str, &i, end, &name_start);
+	// Calculer la longueur du nom extrait
 	len = i - name_start;
 	return (extract_var_name(str, name_start, len));
 }

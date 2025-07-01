@@ -6,73 +6,23 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 09:51:17 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 11:44:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Met à jour l'état si on est dans une double quote ou non
- * @param c Caractère courant
- * @param in_sgl Pointeur vers l'état des single quotes
- * @param in_dbl Pointeur vers l'état des double quotes
- */
-void in_dbl(char c, bool *in_sgl, bool *in_dbl)
-{
-	// Si on n'est pas dans une sgl
-	if (c == '"' && *in_sgl == false)
-		*in_dbl = !(*in_dbl); // On inverse l'état
-}
-
-/**
- * @brief Met à jour l'état si on est dans une single quote ou non
- * @param c Caractère courant
- * @param in_sgl Pointeur vers l'état des single quotes
- * @param in_dbl Pointeur vers l'état des double quotes
- */
-void in_sgl(char c, bool *in_sgl, bool *in_dbl)
-{
-	// Si on n'est pas dans une dbl
-	if (c == '\'' && *in_dbl == false)
-		*in_sgl = !(*in_sgl); // On inverse l'état
-}
-
-/**
- * @brief Vérifie si une variable dans la chaîne doit être expansée par rapport à sa position dans les quotes.
+ * @brief Copie une chaîne source vers une destination.
  *
- * - Entre simple quote, on expanse pas.
+ * Cette fonction copie caractère par caractère la chaîne source vers
+ * la destination et termine par un caractère nul.
  *
- * - Entre double quote, on expanse.
- *
- * @param str Chaîne à vérifier
- * @return `int` 1 si expansable, 0 sinon
+ * @param dest La chaîne de destination (doit être allouée)
+ * @param src La chaîne source à copier
+ * @return La chaîne de destination
  */
-int is_expandable(char *str)
-{
-	bool is_in_single_quote;
-	bool is_in_double_quote;
-	int i;
-
-	is_in_single_quote = false;
-	is_in_double_quote = false;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			in_sgl(str[i], &is_in_single_quote, &is_in_double_quote);
-		else if (str[i] == '"')
-			in_dbl(str[i], &is_in_single_quote, &is_in_double_quote);
-		else if (str[i] == '$' && !is_in_single_quote)
-			return (1); // Variable à expanser trouvée
-
-		i++;
-	}
-	return (0); // Aucune variable à expanser
-}
-
-char *
-ft_strcpy(char *dest, char *src)
+char *ft_strcpy(char *dest, char *src)
 {
 	int i;
 

@@ -6,32 +6,22 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:34:50 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 11:22:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 12:25:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Vérifie si le nom correspond à un paramètre positionnel : $1, $9...
+ * @brief Récupère la valeur d'une variable d'environnement.
  *
- * Cette fonction vérifie si le nom de la variable est un chiffre unique,
- * ce qui indique qu'il s'agit d'un paramètre positionnel (par exemple, $1, $2, etc.).
+ * Cette fonction recherche une variable dans le tableau d'environnement
+ * et retourne une copie de sa valeur si elle existe.
+ * Format attendu dans env : "NOM=valeur"
  *
- * @param name Nom de la variable à vérifier.
- * @return `true` si c'est un paramètre positionnel, `false` sinon.
- */
-bool is_positional_param(const char *name)
-{
-	return (ft_strlen(name) == 1 && ft_isdigit(name[0]));
-}
-
-/**
- * @brief Récupère la valeur d'une variable d'environnement (ex: USER -> elaudrez).
- *
- * @param name Nom de la variable (sans $).
- * @param env  Tableau des env (ex: USER=elaudrez).
- * @return Copie de la valeur ou NULL si absente.
+ * @param name Le nom de la variable (sans $)
+ * @param env Le tableau des variables d'environnement
+ * @return Une copie allouée de la valeur, ou NULL si la variable n'existe pas
  */
 char *get_env_var_value(char *name, char **env)
 {
@@ -44,6 +34,7 @@ char *get_env_var_value(char *name, char **env)
 	i = 0;
 	while (env[i])
 	{
+		// Vérifie si le nom correspond ET qu'il y a un '=' après
 		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
 			return (ft_strdup(env[i] + len + 1));
 		i++;
@@ -70,49 +61,42 @@ char *get_raw_token_if_invalid(char *str, int start, int end)
 }
 
 /**
- * @brief Gère les cas spéciaux de variables (paramètres positionnels, $ isolé, etc.).
+ * @brief Retourne la valeur d'une variable d'environnement ou une chaîne vide.
  *
- * @param name_var Nom de la variable à vérifier.
- * @return Chaîne allouée pour les cas spéciaux, NULL sinon.
- */
-static char *handle_special_cases(char *name_var)
-{
-	if (is_positional_param(name_var))
-		return (ft_strdup(""));
-	if (ft_strlen(name_var) == 0)
-		return (ft_strdup(""));
-	if (ft_strlen(name_var) == 1 && name_var[0] == '$')
-		return (ft_strdup("$"));
-	return (NULL);
-}
-
-/**
- * @brief Retourne la valeur d'une variable environnement si elle existe,
- * sinon retourne une chaîne vide pour imiter Bash.
+ * Cette fonction centralise la logique d'expansion des variables :
+ * 1. Extrait le nom de la variable depuis la chaîne
+ * 2. Gère les cas spéciaux (paramètres positionnels, $ isolé, etc.)
+ * 3. Recherche la variable dans l'environnement
+ * 4. Retourne une chaîne vide si la variable n'existe pas (comportement bash)
+ *
+ * @param str La chaîne contenant la variable à expanser
+ * @param data Les données du shell (environnement, etc.)
+ * @param start Pointeur vers l'index de début (sera mis à jour)
+ * @param end Pointeur vers l'index de fin (sera mis à jour)
+ * @return La valeur expansée allouée, ou NULL si erreur de parsing
  */
 char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 {
 	char *name_var;
 	char *value;
-	char *special_case;
+	char *special_result;
 
-	// Extraire le nom de la variable depuis la chaîne
+	// Extraction du nom de la variable depuis la chaîne
 	name_var = find_var(str, start, end);
-	// Si le nom est invalide, retourner le token brut
 	if (!name_var)
 		return (NULL);
-	special_case = handle_special_cases(name_var);
-	if (special_case)
+	// Vérification et traitement des cas spéciaux
+	special_result = handle_special_cases(name_var);
+	if (special_result)
 	{
 		free(name_var);
-		return (special_case);
+		return (special_result);
 	}
+	// Sinon recherche de la variable dans l'environnement
 	value = get_env_var_value(name_var, data->env);
-	if (!value)
-	{
-		free(name_var);
-		return (ft_strdup(""));
-	}
 	free(name_var);
+	// Si la variable n'existe pas, retourner une chaîne vide (comportement bash)
+	if (!value)
+		return (ft_strdup(""));
 	return (value);
 }

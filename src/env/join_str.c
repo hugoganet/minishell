@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:37:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 11:12:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 12:37:10 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 /**
  * @brief Libère les anciennes chaînes utilisées dans join_str.
+ *
+ * Cette fonction libère la mémoire allouée pour les chaînes temporaires
+ * utilisées lors de l'expansion de variables. Elle évite les fuites mémoire
+ * en centralisant la libération de toutes les chaînes intermédiaires.
+ *
+ * @param prefix La partie avant la variable expansée
+ * @param var La valeur de la variable (sera libérée)
+ * @param suffix La partie après la variable expansée
+ * @param tmp La chaîne temporaire résultant de prefix + var
  */
 static void free_temp(char *prefix, char *var, char *suffix, char *tmp)
 {
@@ -26,13 +35,14 @@ static void free_temp(char *prefix, char *var, char *suffix, char *tmp)
 /**
  * @brief Remplace une variable d'environnement par sa valeur.
  *
- * Cette fonction découpe la chaîne originale autour de `$`,
+ * Cette fonction découpe la chaîne originale autour de la variable `$VAR`,
  * puis recompose une nouvelle chaîne avec la valeur substituée.
+ * Elle met à jour l'offset pour pointer après la valeur insérée.
  *
- * @param str Chaîne originale (sera libérée).
- * @param var Valeur de la variable à insérer.
- * @param ctx Structure contenant les positions et offset.
- * @return Chaîne reconstruite avec la variable remplacée.
+ * @param str La chaîne originale (sera libérée)
+ * @param var La valeur de la variable à insérer
+ * @param ctx La structure contenant les positions et l'offset
+ * @return La chaîne reconstruite avec la variable remplacée
  */
 char *handle_var_expansion(char *str, char *var, t_expand_ctx ctx)
 {
@@ -52,65 +62,25 @@ char *handle_var_expansion(char *str, char *var, t_expand_ctx ctx)
 }
 
 /**
- * @brief Détermine si le `$` à la position donnée doit être expansé.
+ * @brief Traite une seule occurrence de `$...` à partir d'un offset donné.
  *
- * L'expansion est interdite à l'intérieur de quotes simples.
+ * Cette fonction gère le processus complet d'expansion d'une variable :
+ * 1. Teste si c'est $? (statut de sortie)
+ * 2. Teste si c'est une variable classique ($VAR, ${VAR}, $1...)
+ * 3. Gère les cas spéciaux ($ isolé, etc.)
+ * 4. Appelle l'expansion si une variable valide est trouvée
  *
- * @param str La chaîne d'origine.
- * @param pos L’index du `$` dans la chaîne.
- * @return 1 si l’expansion est autorisée, 0 sinon.
- */
-static int should_expand_at_position(char *str, int pos)
-{
-	bool in_single;
-	bool in_double;
-	int i;
-
-	in_single = false;
-	in_double = false;
-	i = 0;
-	// On parcourt la chaîne jusqu'à la position donnée du `$`
-	while (i < pos && str[i])
-	{
-		// On bascule l'état des quotes simples et doubles
-		if (str[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (str[i] == '"' && !in_single)
-			in_double = !in_double;
-		i++;
-	}
-	// Dans les quotes simples, pas d'expansion
-	return (!in_single);
-}
-
-/**
- * @brief Prépare le contexte d’expansion et appelle handle_var_expansion.
- *
- * @param str La chaîne originale.
- * @param var La valeur expansée.
- * @param start Index du début de la variable.
- * @param end Index de fin de la variable.
- * @param offset Offset actuel, sera mis à jour.
- * @return Chaîne mise à jour.
- */
-static char *fill_ctx_and_expand(char *str, char *var, int start, int end, int *offset)
-{
-	t_expand_ctx ctx;
-
-	ctx.start = start + *offset;
-	ctx.end = end + *offset;
-	ctx.offset = offset;
-	return (handle_var_expansion(str, var, ctx));
-}
-
-/**
- * @brief Traite une seule occurrence de `$...` à partir d’un offset donné.
+ * @param str La chaîne à traiter
+ * @param offset Pointeur vers l'offset actuel (sera mis à jour)
+ * @param data Les données du shell (environnement, statut de sortie)
+ * @return La chaîne mise à jour avec la variable expansée
  */
 char *process_next_dollar(char *str, int *offset, t_shell *data)
 {
 	int start;
 	int end;
 	char *var;
+	t_expand_ctx ctx;
 
 	start = 0;
 	end = 0;
@@ -119,31 +89,24 @@ char *process_next_dollar(char *str, int *offset, t_shell *data)
 	// Priorité 2 : variable classique ($VAR, ${VAR}, $9...)
 	if (!var)
 		var = copy_var_content(&str[*offset], data, &start, &end);
-	// Aucun remplacement → avancer d’un caractère et continuer
-	if (!var)
-	{
-		(*offset)++;
-		return (str);
-	}
-	// Cas spécial : on a juste un `$` non suivi de nom valide → ne pas remplacer
-	if (ft_strlen(var) == 1 && var[0] == '$')
-	{
-		free(var);
-		*offset += end;
-		return (str);
-	}
-	return (fill_ctx_and_expand(str, var, start, end, offset));
+	// Prépare le contexte d'expansion
+	ctx.start = start + *offset;
+	ctx.end = end + *offset;
+	ctx.offset = offset;
+	return (handle_var_expansion(str, var, ctx));
 }
 
 /**
- * @brief Expansion complète de la chaîne en remplaçant toutes les variables d'environnement.
+ * @brief Expansion complète d'une chaîne en remplaçant toutes les variables.
+ *
  * Cette fonction parcourt la chaîne `str` et remplace chaque occurrence de `$VAR`
  * ou `${VAR}` par la valeur correspondante dans l'environnement.
  * Elle gère également les paramètres positionnels et l'expansion du statut de sortie `$?`.
+ * L'expansion respecte les règles des quotes : pas d'expansion dans les quotes simples.
  *
- * @param str La chaîne d'entrée contenant des variables à expanser.
- * @param data Les données du shell contenant l'environnement et le statut de sortie.
- * @return La chaîne modifiée avec les variables expansées, ou la chaîne originale si aucune variable n'est trouvée.
+ * @param str La chaîne d'entrée contenant des variables à expanser
+ * @param data Les données du shell contenant l'environnement et le statut de sortie
+ * @return La chaîne modifiée avec les variables expansées
  */
 char *join_str(char *str, t_shell *data)
 {

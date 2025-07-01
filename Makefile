@@ -44,6 +44,8 @@ SRC = 	main.c \
 		env/find_var.c \
 		env/join_str.c \
 		env/quotes.c \
+		env/quote_utils.c \
+		env/var_special.c \
 		exec/exec_cmd.c \
 		exec/resolve_command_path.c \
 		exec/pipe.c \

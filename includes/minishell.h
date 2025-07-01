@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 10:56:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 11:44:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,16 +210,23 @@ int ft_is_valid(char *args);
 bool is_token_delim(char c);
 
 // ! ----------------------- ENV VARS EXPANSION ---------------
-void in_dbl(char c, bool *in_sgl, bool *in_dbl);
-void in_sgl(char c, bool *in_sgl, bool *in_dbl);
-int is_expandable(char *str);
+// Quote management functions (centralized)
+bool should_expand_at_position(const char *str, int pos);
+bool is_expandable(const char *str);
+bool is_in_quotes(const char *str, int pos, char *quote_type);
+
+// Variable special cases (centralized)
+bool is_positional_param(const char *name);
+bool is_special_var(const char *name);
+char *handle_special_cases(const char *name);
+bool is_valid_var_start(char c);
+
+// Core expansion functions
 char *find_var(char *str, int *start, int *end);
 char *copy_var_content(char *str, t_shell *data, int *start, int *end);
 char *expand_exit_status(char *str, t_shell *data, int *start, int *end);
 char *join_str(char *str, t_shell *data);
 char *remove_quotes(char *str);
-bool is_positional_param(const char *name);
-bool is_valid_var_start(char c);
 char *get_env_var_value(char *name, char **env);
 char *get_raw_token_if_invalid(char *str, int start, int end);
 char *handle_var_expansion(char *str, char *var, t_expand_ctx ctx);
@@ -227,7 +234,8 @@ char *process_next_dollar(char *str, int *offset, t_shell *data);
 void expand_vars(t_ast *node, t_shell *data);
 void get_name_brace(char *str, int *i, int *end, int *name_start);
 void get_name(char *str, int *i, int *end, int *name_start);
-char *remove_quotes(char *str);
 
+// Utility functions
+char *ft_strcpy(char *dest, char *src);
 
 #endif

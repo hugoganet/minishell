@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 12:05:15 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 17:54:28 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 	// Initialisation à NULL des champs de la structure shell
 	shell->env = NULL;
 	shell->env_list = NULL;
+	shell->export_list = NULL;
 	shell->tokens = NULL;
 	shell->ast = NULL;
 	shell->last_exit_status = 0;
@@ -36,6 +37,10 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 		ft_putendl_fd("minishell: error: failed to copy environment", 2);
 		exit(1);
 	}
+	//Initialisation de la liste chainee de l'environnement de export
+	shell->export_list = init_env_list(envp);
+	sort_list(&shell->export_list);
+	
 	// Initialisation de la liste chaînée d'environnement
 	env_list = init_env_list(envp);
 	if (!env_list)
@@ -45,7 +50,7 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 		exit(1);
 	}
 	shell->env_list = env_list;
-
+	
 	// Incrémente SHLVL pour chaque instance de sous-shell
 	if (increment_shlvl(env_list) != 0)
 	{

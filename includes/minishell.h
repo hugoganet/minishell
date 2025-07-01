@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/30 15:56:22 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:53:48 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,7 @@ int apply_parent_redirections(t_ast *node);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
+void	sort_list(t_env **export_list);
 
 	/* Functions for environment variables expansion */
 	void in_dbl(char c, bool *in_sgl, bool *in_dbl);

@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 14:28:51 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:31:00 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	create_add_new_node(char *key, char *value, t_env **env)
 	if (!new_node)
 		return ;
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value);
+	new_node->value = value ? ft_strdup(value) : NULL;
 	new_node->next = NULL;
 	add_new_node(new_node, env);
 }
@@ -67,7 +67,53 @@ void	print_export_list(t_env *export_list)
 	curr = export_list;
 	while(curr)
 	{
-		
+		printf("export ");
+		if (curr->value == NULL)
+			printf("%s\n", curr->key);
+		else
+		{
+			printf("%s", curr->key);
+			printf("=");
+        	printf("\"%s\"\n", curr->value);
+		}
+        curr = curr->next;
+	}
+}
+
+void	ft_swap(t_env *i, t_env *j)
+{
+	char	*tmp_key;
+	char	*tmp_value;
+
+	tmp_key = i->key;
+	i->key = j->key;
+	j->key = tmp_key;
+	tmp_value = i->value;
+	i->value = j->value;
+	j->value = tmp_value;
+}
+
+void	sort_list(t_env **export_list)
+{
+	t_env	*i;
+	t_env	*j;
+	
+	i = *export_list;
+	if(!export_list)
+		return;
+	while (i)
+	{
+		j= i->next;
+		while (j)
+		{
+			if (ft_strcmp(i->key, j->key) > 0)
+			{
+				ft_swap(i, j);
+				continue;
+			}
+			j = j->next;
+		}
+		i = i->next;
 	}
 }
 
@@ -80,28 +126,75 @@ int	ft_export(t_ast *node, t_shell *data)
 	
 	i = 1;
 	if (!node->args[1])
-		print_export_list(export_list);
+		print_export_list(data->export_list);
 	while(node->args[i])
 	{
 		j = 0;
-		if (!ft_strchr(node->args[i], '='))
-			return (1);
-		while (node->args[i][j] && node->args[i][j] != '=')
-			j++;
-		key = ft_substr(node->args[i], 0, j);
-		if(!ft_is_valid(key))
-		{
-			ft_putstr_fd("Minishell: export: ", 2);
-			ft_putstr_fd(node->args[i], 2);
-			ft_putstr_fd(" not a valid identifier\n", 2);
-			return (1);
+		if (!ft_strchr(node->args[i], '=') && ft_is_valid(node->args[i]))
+		{	
+			create_add_new_node(node->args[i], NULL, &data->export_list);
+			sort_list(&data->export_list);
 		}
-		value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
-		if (!update_env_value(data->env_list, key, value) && ft_is_valid(key))
-			create_add_new_node(key, value, &data->env_list);
-		free(key);
-		free(value);
+		else
+		{
+			while (node->args[i][j] && node->args[i][j] != '=')
+				j++;
+			key = ft_substr(node->args[i], 0, j);
+			if(!ft_is_valid(key))
+			{
+				ft_putstr_fd("Minishell: export: ", 2);
+				ft_putstr_fd(node->args[i], 2);
+				ft_putstr_fd(" not a valid identifier\n", 2);
+				return (1);
+			}
+			value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
+			if (!update_env_value(data->env_list, key, value) && !update_env_value(data->export_list, key, value)
+				&& ft_is_valid(key))
+			{
+				create_add_new_node(key, value, &data->env_list);
+				create_add_new_node(key, value, &data->export_list);
+				sort_list(&data->export_list);
+			}
+			free(key);
+			free(value);
+		}
 		i++;
 	}
 	return (0);
 }
+
+//ANCIENNE FONCTION
+// int	ft_export(t_ast *node, t_shell *data)
+// {
+// 	int	i;
+// 	int	j;
+// 	char	*key;
+// 	char	*value;
+	
+// 	i = 1;
+// 	if (!node->args[1])
+// 		print_export_list(export_list);
+// 	while(node->args[i])
+// 	{
+// 		j = 0;
+// 		if (!ft_strchr(node->args[i], '='))
+// 			return (1);
+// 		while (node->args[i][j] && node->args[i][j] != '=')
+// 			j++;
+// 		key = ft_substr(node->args[i], 0, j);
+// 		if(!ft_is_valid(key))
+// 		{
+// 			ft_putstr_fd("Minishell: export: ", 2);
+// 			ft_putstr_fd(node->args[i], 2);
+// 			ft_putstr_fd(" not a valid identifier\n", 2);
+// 			return (1);
+// 		}
+// 		value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
+// 		if (!update_env_value(data->env_list, key, value) && ft_is_valid(key))
+// 			create_add_new_node(key, value, &data->env_list);
+// 		free(key);
+// 		free(value);
+// 		i++;
+// 	}
+// 	return (0);
+// }

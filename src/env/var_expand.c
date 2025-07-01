@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 11:26:59 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:23:30 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ char *find_var(char *str, int *start, int *end)
 	if (!name_var)
 		return (NULL);
 	ft_strlcpy(name_var, &str[name_start], len + 1); // ajouter le char \0 a la fin . Est ce que ca serait pas mieux d'utiliser substr ?
-	
 	return (name_var);
 }
 

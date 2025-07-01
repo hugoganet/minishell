@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 01:51:02 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 10:09:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,23 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
+/**
+ * @struct s_expand_ctx
+ * @brief Contexte pour l'expansion des variables d'environnement.
+ *
+ * - `start` : position de début de l'expansion dans la chaîne.
+ *
+ * - `end` : position de fin de l'expansion dans la chaîne.
+ *
+ * - `offset` : pointeur vers un entier pour ajuster la position après expansion.
+ */
+typedef struct s_expand_ctx
+{
+	int start;
+	int end;
+	int *offset;
+} t_expand_ctx;
+
 // Définition des couleurs ANSI
 #define COLOR_CMD "\033[1;36m"	   // Cyan clair
 #define COLOR_ARG "\033[1;34m"	   // Bleu
@@ -133,7 +150,6 @@ void init_signals(void);
 void init_shell(t_shell *shell, char **envp, t_env *env_list);
 char **copy_env(char **envp);
 void free_env(char **env);
-void handle_signal(int signo);
 char *prompt_readline(void);
 int is_line_empty(char *input);
 int has_unclosed_quotes(char *input);
@@ -159,7 +175,6 @@ t_env *init_env_list(char **envp);
 t_ast *build_ast(t_token *node);
 void expand_vars(t_ast *node, t_shell *data);
 char *ft_strcpy(char *dest, char *src);
-int which_quote(t_ast *node);
 void pretty_print_ast(t_ast *node, int depth, const char *label);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
@@ -197,7 +212,7 @@ bool is_token_delim(char c);
 // ! ----------------------- ENV VARS EXPANSION ---------------
 void in_dbl(char c, bool *in_sgl, bool *in_dbl);
 void in_sgl(char c, bool *in_sgl, bool *in_dbl);
-int to_exp(char *str);
+int is_expandable(char *str);
 char *find_var(char *str, int *start, int *end);
 char *copy_var_content(char *str, t_shell *data, int *start, int *end);
 char *expand_exit_status(char *str, t_shell *data, int *start, int *end);
@@ -207,10 +222,11 @@ bool is_positional_param(const char *name);
 bool is_valid_var_start(char c);
 char *get_env_var_value(char *name, char **env);
 char *get_raw_token_if_invalid(char *str, int start, int end);
-char *handle_var_expansion(char *str, char *var, int start, int end, int *offset);
+char *handle_var_expansion(char *str, char *var, t_expand_ctx ctx);
 char *process_next_dollar(char *str, int *offset, t_shell *data);
 void expand_vars(t_ast *node, t_shell *data);
 void get_name_brace(char *str, int *i, int *end, int *name_start);
 void get_name(char *str, int *i, int *end, int *name_start);
+char *remove_quotes(char *str);
 
 #endif

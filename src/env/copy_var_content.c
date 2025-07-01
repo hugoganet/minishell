@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:34:50 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 08:18:51 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 09:47:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,16 @@
 
 /**
  * @brief Vérifie si le nom correspond à un paramètre positionnel : $1, $9...
- * 
+ *
  * Cette fonction vérifie si le nom de la variable est un chiffre unique,
  * ce qui indique qu'il s'agit d'un paramètre positionnel (par exemple, $1, $2, etc.).
- * 
+ *
  * @param name Nom de la variable à vérifier.
  * @return `true` si c'est un paramètre positionnel, `false` sinon.
  */
 bool is_positional_param(const char *name)
 {
 	return (ft_strlen(name) == 1 && ft_isdigit(name[0]));
-}
-
-/**
- * @brief Gère l'expansion de la variable $? qui renvoie le statut de sortie de la dernière commande
- *
- * Cette fonction cherche la première occurrence de `$?` dans la chaîne `str`,
- * puis renvoie la valeur du dernier code de sortie sous forme de chaîne allouée dynamiquement.
- * Elle met à jour les indices `start` et `end` pour indiquer la position de `$?` dans la chaîne.
- * Si `$?` n'est pas trouvé, elle retourne NULL.
- *
- * @param str   Chaîne contenant $?
- * @param data  Données du shell contenant last_exit_status
- * @param start Adresse où stocker l'index de début du $?
- * @param end   Adresse où stocker l'index de fin après $?
- * @return Valeur du dernier code de sortie sous forme de chaîne allouée dynamiquement
- */
-char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
-{
-	int i;
-	char *exit_status;
-
-	i = 0;
-	// Trouver la première occurrence de "$?"
-	while (str[i] && (str[i] != '$' && str[i + 1] != '?'))
-		i++;
-	if (!str[i])
-		return (NULL);
-	if (str[i] != '$' || str[i + 1] != '?')
-		return (NULL);
-	*start = i;
-	*end = i + 2; // $?
-	// Convertir l'entier en chaîne
-	exit_status = ft_itoa(data->last_exit_status);
-	return (exit_status);
 }
 
 /**
@@ -105,7 +71,7 @@ char *get_raw_token_if_invalid(char *str, int start, int end)
 
 /**
  * @brief Retourne la valeur d'une variable environnement si elle existe,
- * sinon retourne la forme brute "$VAR".
+ * sinon retourne une chaîne vide pour imiter Bash.
  */
 char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 {
@@ -125,9 +91,19 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 		free(name_var);
 		return (ft_strdup(""));
 	}
+	// Si c'est juste un $ isolé, on le garde tel quel
+	if (ft_strlen(name_var) == 1 && name_var[0] == '$')
+	{
+		free(name_var);
+		return (ft_strdup("$"));
+	}
 	value = get_env_var_value(name_var, data->env);
 	if (!value)
-		value = get_raw_token_if_invalid(str, *start, *end);
+	{
+		// Variable inexistante : retourner une chaîne vide comme dans Bash
+		free(name_var);
+		return (ft_strdup(""));
+	}
 	free(name_var);
 	return (value);
 }

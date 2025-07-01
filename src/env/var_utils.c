@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 15:54:04 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:51:17 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ void in_sgl(char c, bool *in_sgl, bool *in_dbl)
 
 /**
  * @brief Vérifie si une variable dans la chaîne doit être expansée par rapport à sa position dans les quotes.
- * 
+ *
  * - Entre simple quote, on expanse pas.
- * 
+ *
  * - Entre double quote, on expanse.
- * 
+ *
  * @param str Chaîne à vérifier
  * @return `int` 1 si expansable, 0 sinon
-*/
-int to_exp(char *str)
+ */
+int is_expandable(char *str)
 {
 	bool is_in_single_quote;
 	bool is_in_double_quote;

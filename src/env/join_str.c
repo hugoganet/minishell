@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:37:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 08:17:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 09:59:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,50 @@ static void free_temp(char *prefix, char *var, char *suffix, char *tmp)
 }
 
 /**
- * @brief Gère une seule expansion de `$VAR`, en reconstruisant la chaîne.
+ * @brief Remplace une variable par sa valeur dans la chaîne source.
+ *
+ * Cette fonction découpe la chaîne `str` en trois parties :
+ *   - le préfixe avant `$`
+ *   - la valeur `var` à insérer
+ *   - le suffixe après la variable
+ *
+ * Elle reconstruit la chaîne finale en concaténant les trois morceaux,
+ * libère l’ancienne chaîne, et met à jour `*offset`.
+ *
+ * @param str Chaîne d’entrée (sera libérée).
+ * @param var Valeur à insérer à la place de la variable.
+ * @param ctx Contexte contenant `start`, `end`, et `offset`.
+ * @return Chaîne finale reconstruite (à libérer plus tard).
  */
-char *handle_var_expansion(char *str, char *var, int start, int end, int *offset)
+char *handle_var_expansion(char *str, char *var, t_expand_ctx ctx)
 {
 	char *prefix;
 	char *suffix;
 	char *tmp;
 	char *final;
 
-	prefix = ft_substr(str, 0, start);
-	suffix = ft_substr(str, end, ft_strlen(str) - end);
+	prefix = ft_substr(str, 0, ctx.start);
+	suffix = ft_substr(str, ctx.end, ft_strlen(str) - ctx.end);
 	tmp = ft_strjoin(prefix, var);
 	final = ft_strjoin(tmp, suffix);
-	*offset = start + ft_strlen(var);
+	*(ctx.offset) = ctx.start + ft_strlen(var);
 	free_temp(prefix, var, suffix, tmp);
 	free(str);
 	return (final);
 }
 
+static char *fill_ctx_and_expand(char *str, char *var, int start, int end, int *offset)
+{
+	t_expand_ctx ctx;
+
+	ctx.start = start + *offset;
+	ctx.end = end + *offset;
+	ctx.offset = offset;
+	return (handle_var_expansion(str, var, ctx));
+}
+
 /**
- * @brief Traite un seul `$...` dans la chaîne à partir de offset, et reconstruit `str`.
- * Cette fonction gère l'expansion de variables d'environnement,
- * les paramètres positionnels, et l'expansion du statut de sortie `$?`.
- * Elle met à jour `offset` pour pointer après la variable traitée.
- * 
- * @param str    La chaîne d'entrée contenant des variables à expanser.
- * @param offset Pointeur vers l'offset actuel dans la chaîne.
- * @param data   Les données du shell contenant l'environnement et le statut de sortie.
- * @return La chaîne modifiée avec la variable expansée, ou la chaîne originale si aucune variable n'est trouvée.
+ * @brief Traite une seule occurrence de `$...` à partir d’un offset donné.
  */
 char *process_next_dollar(char *str, int *offset, t_shell *data)
 {
@@ -62,23 +77,25 @@ char *process_next_dollar(char *str, int *offset, t_shell *data)
 
 	start = 0;
 	end = 0;
+	// Priorité 1 : tester si on est sur `$?`
 	var = expand_exit_status(&str[*offset], data, &start, &end);
+	// Priorité 2 : variable classique ($VAR, ${VAR}, $9...)
 	if (!var)
 		var = copy_var_content(&str[*offset], data, &start, &end);
+	// Aucun remplacement → avancer d’un caractère et continuer
 	if (!var)
 	{
 		(*offset)++;
 		return (str);
 	}
-	start += *offset;
-	end += *offset;
+	// Cas spécial : on a juste un `$` non suivi de nom valide → ne pas remplacer
 	if (ft_strlen(var) == 1 && var[0] == '$')
 	{
 		free(var);
-		*offset = end;
+		*offset += end;
 		return (str);
 	}
-	return (handle_var_expansion(str, var, start, end, offset));
+	return (fill_ctx_and_expand(str, var, start, end, offset));
 }
 
 /**
@@ -86,7 +103,7 @@ char *process_next_dollar(char *str, int *offset, t_shell *data)
  * Cette fonction parcourt la chaîne `str` et remplace chaque occurrence de `$VAR`
  * ou `${VAR}` par la valeur correspondante dans l'environnement.
  * Elle gère également les paramètres positionnels et l'expansion du statut de sortie `$?`.
- * 
+ *
  * @param str La chaîne d'entrée contenant des variables à expanser.
  * @param data Les données du shell contenant l'environnement et le statut de sortie.
  * @return La chaîne modifiée avec les variables expansées, ou la chaîne originale si aucune variable n'est trouvée.
@@ -94,9 +111,13 @@ char *process_next_dollar(char *str, int *offset, t_shell *data)
 char *join_str(char *str, t_shell *data)
 {
 	int offset;
+	char *dollar_pos;
 
 	offset = 0;
-	while (ft_strchr(&str[offset], '$'))
+	while ((dollar_pos = ft_strchr(&str[offset], '$')) != NULL)
+	{
+		offset = dollar_pos - str;
 		str = process_next_dollar(str, &offset, data);
+	}
 	return (str);
 }

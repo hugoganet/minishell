@@ -6,52 +6,11 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 08:16:28 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 09:51:17 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Supprime les quotes simples et doubles d’une chaîne tout en respectant les règles du shell.
- *
- * Cette fonction conserve le contenu entre les quotes, mais supprime les caractères
- * de quote eux-mêmes (pas d’expansion entre quotes simples, expansion autorisée dans les doubles).
- *
- * @param str Chaîne originale (non modifiée).
- * @return Une nouvelle chaîne sans les quotes (à libérer après usage).
- */
-char *remove_quotes(char *str)
-{
-	int i;
-	int j;
-	char *result;
-	bool in_single_quote;
-	bool in_double_quote;
-
-	if (!str)
-		return (NULL);
-	result = ft_calloc(sizeof(char), (ft_strlen(str) + 1));
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	in_single_quote = false;
-	in_double_quote = false;
-	while (str[i])
-	{
-		// Toggle quote simple si hors quote double
-		if (str[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
-		// Toggle quote double si hors quote simple
-		else if (str[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
-		else
-			result[j++] = str[i];
-		i++;
-	}
-	return (result);
-}
 
 /**
  * @brief Gère l'expansion de la variable $? qui renvoie le statut de sortie de la dernière commande
@@ -74,11 +33,13 @@ char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
 
 	i = 0;
 	// Trouver la première occurrence de "$?"
-	while (str[i] && (str[i] != '$' && str[i + 1] != '?'))
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1] == '?')
+			break;
 		i++;
-	if (!str[i])
-		return (NULL);
-	if (str[i] != '$' || str[i + 1] != '?')
+	}
+	if (!str[i] || str[i] != '$' || str[i + 1] != '?')
 		return (NULL);
 	*start = i;
 	*end = i + 2; // $?
@@ -96,7 +57,7 @@ static void expand_one_arg(char **arg, t_shell *data)
 	j = 0;
 	while ((*arg)[j])
 	{
-		if ((*arg)[j] == '$' && to_exp(*arg))
+		if ((*arg)[j] == '$' && is_expandable(*arg))
 		{
 			expanded = join_str(ft_strdup(*arg), data);
 			if (expanded)

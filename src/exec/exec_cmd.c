@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/30 16:40:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 13:16:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ static int handle_child_status(int status)
 }
 
 /**
+ * 
  * @brief Exécute une commande simple (non composée) en forkant un enfant.
  *
  * - Récupère le noeud CMD

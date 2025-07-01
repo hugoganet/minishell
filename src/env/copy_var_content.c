@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:34:50 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 12:25:37 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 13:28:30 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 
 	// Extraction du nom de la variable depuis la chaîne
 	name_var = find_var(str, start, end);
+	// ! name_var n'est jamais NULL car si nous sommes dans copy_var_content, 
+	// ! c'est qu'il y'a un '$' et qu'il n'est pas entre single quotes
+	// ? il peut y avoir un problème avec strdup
+	// ? -> non, en tout cas je ne les protège pas
+	// ? par contre peut-être qu'il peut y avoir un problème avec extract_var_name
 	if (!name_var)
 		return (NULL);
 	// Vérification et traitement des cas spéciaux

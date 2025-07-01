@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/30 19:40:39 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 11:26:59 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 	name_var = find_var(str, start, end); // Recuperer variable appelée dans le terminal
 	if (!name_var)
 		return (NULL);
-	printf("name_var = %s\n", name_var);
 	len = ft_strlen(name_var);
 	while (data->env[i]) // Parcourir tableau des variables d'env pour trouver concordance avec name_var
 	{

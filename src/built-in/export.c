@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/30 11:18:45 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:28:51 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,17 @@ int	update_env_value(t_env *env, char *key, char *value)
 	return (0);
 }
 
+void	print_export_list(t_env *export_list)
+{
+	t_env	*curr;
+
+	curr = export_list;
+	while(curr)
+	{
+		
+	}
+}
+
 int	ft_export(t_ast *node, t_shell *data)
 {
 	int	i;
@@ -68,7 +79,8 @@ int	ft_export(t_ast *node, t_shell *data)
 	char	*value;
 	
 	i = 1;
-	
+	if (!node->args[1])
+		print_export_list(export_list);
 	while(node->args[i])
 	{
 		j = 0;

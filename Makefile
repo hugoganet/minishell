@@ -50,7 +50,6 @@ SRC = 	main.c \
 		exec/resolve_command_path.c \
 		exec/pipe.c \
 		exec/redirection.c \
-		exec/heredoc.c \
 		exec/heredoc_expansion.c \
 		signals/signals.c \
 		built-in/builtin_exec.c\

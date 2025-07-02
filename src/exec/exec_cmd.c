@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 16:46:58 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 16:58:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void run_child_process(char **argv, t_env *env,
 	reset_signals_in_child();
 	// Si le nœud actuel est un heredoc, on applique la redirection stdin
 	if (ast->type == HEREDOC)
-		handle_heredoc_with_expansion(ast->str, shell);
+		handle_heredoc(ast->str, shell);
 	// Applique toutes les autres redirections (> >> <)
 	if (setup_redirections(ast) != 0)
 	{

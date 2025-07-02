@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:01:02 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 16:00:08 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 16:11:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ int is_line_empty(char *input)
 	if (!input)
 		return (1);
 	i = 0;
-	// Parcourt la ligne jusqu'à la fin
 	while (input[i])
 	{
-		// Vérifie si le caractère n'est pas un espace ou une tabulation
-		// Si un caractère différent est trouvé, la ligne n'est pas vide, return 0
 		if (input[i] != ' ' && input[i] != '\t')
 			return (0);
 		i++;
@@ -49,17 +46,12 @@ int has_unclosed_quotes(char *input)
 	char quote_state;
 
 	i = 0;
-	// Initialise le caractère de quote actuel à 0 (aucune quote ouverte)
 	quote_state = 0;
 	while (input[i])
 	{
-		// Met à jour l'état de la quote
 		update_quote_state(&quote_state, input[i]);
 		i++;
 	}
-	// Forme simplifié de booléen.
-	// Return 1 si current_quote n'est pas 0 (donc une quote est ouverte)
-	// sinon return 0
 	return (quote_state != 0);
 }
 
@@ -78,13 +70,9 @@ int has_invalid_pipes(char *input)
 	quote_state = 0;
 	while (input[i])
 	{
-		// Met à jour l'état de la quote
 		update_quote_state(&quote_state, input[i]);
-		// Si pas dans une quote et que le caractère est un pipe
 		if (!quote_state && input[i] == '|')
 		{
-			// Si le pipe est au début ou à la fin de la ligne
-			// Erreur de syntaxe, return 1
 			if (i == 0 || input[i + 1] == '\0')
 				return (1);
 		}
@@ -99,6 +87,25 @@ int has_invalid_pipes(char *input)
  * @param input La ligne utilisateur
  * @return int 1 si erreur, 0 si syntaxe correcte
  */
+static int get_redirection_length(char *input, int i)
+{
+	if (input[i + 1] == input[i])
+		return (2);
+	return (1);
+}
+
+static int skip_whitespace(char *input, int i)
+{
+	while (input[i] == ' ' || input[i] == '\t')
+		i++;
+	return (i);
+}
+
+static int is_invalid_after_redir(char *input, int i)
+{
+	return (input[i] == '\0' || input[i] == '|' || input[i] == '<' || input[i] == '>');
+}
+
 int has_invalid_redirections(char *input)
 {
 	int i;
@@ -109,27 +116,14 @@ int has_invalid_redirections(char *input)
 	quote_state = 0;
 	while (input[i])
 	{
-		// Met à jour l'état de la quote_state
 		update_quote_state(&quote_state, input[i]);
-		// Si pas dans une quote et que le caractère est une redirection
 		if (!quote_state && (input[i] == '<' || input[i] == '>'))
 		{
-			// Par défaut : redirection simple
-			redir_len = 1;
-			// Si redirection double (ex: >> ou <<)
-			// On augmente la longueur de la redirection
-			if (input[i + 1] == input[i])
-				redir_len = 2;
-			// On saute les caractères de redirection
+			redir_len = get_redirection_length(input, i);
 			i += redir_len;
-			// Ignore les espaces et tabulations
-			while (input[i] == ' ' || input[i] == '\t')
-				i++;
-			// Si fin de ligne ou opérateur juste après
-			// Erreur de syntaxe, return 1
-			if (input[i] == '\0' || input[i] == '|' || input[i] == '<' || input[i] == '>')
+			i = skip_whitespace(input, i);
+			if (is_invalid_after_redir(input, i))
 				return (1);
-			// On évite le i++ final pour ne pas sauter un caractère utile
 			continue;
 		}
 		i++;
@@ -143,6 +137,22 @@ int has_invalid_redirections(char *input)
  * @param input Ligne de commande
  * @return int 1 si erreur, 0 si OK
  */
+static int handle_opening_parenthesis(char *input, int i, int *count)
+{
+	(*count)++;
+	if (is_parenthesis_empty(input, i))
+		return (1);
+	return (0);
+}
+
+static int handle_closing_parenthesis(int *count)
+{
+	if (*count == 0)
+		return (1);
+	(*count)--;
+	return (0);
+}
+
 int has_unmatched_parentheses(char *input)
 {
 	int i;
@@ -154,27 +164,16 @@ int has_unmatched_parentheses(char *input)
 	quote = 0;
 	while (input[i])
 	{
-		// Met à jour l'état de la quote
 		update_quote_state(&quote, input[i]);
-		// Si pas dans une quote et que le caractère est une parenthèse ouvrante
 		if (!quote && input[i] == '(')
 		{
-			// On incrémente le compteur de parenthèses
-			count++;
-			// Vérifie si la parenthèse est vide
-			// Erreur : parenthèse vide
-			if (is_parenthesis_empty(input, i))
+			if (handle_opening_parenthesis(input, i, &count))
 				return (1);
 		}
-		// Si pas dans une quote et que le caractère est une parenthèse fermante
 		else if (!quote && input[i] == ')')
 		{
-			// Si le compteur est à 0, il y a une parenthèse fermante sans ouvrante
-			// Erreur : parenthèse fermante sans ouvrante, return 1
-			if (count == 0)
+			if (handle_closing_parenthesis(&count))
 				return (1);
-			// On décrémente le compteur de parenthèses
-			count--;
 		}
 		i++;
 	}
@@ -187,6 +186,14 @@ int has_unmatched_parentheses(char *input)
  * @param input Ligne de commande
  * @return `int` 1 si erreur (accolades non fermées), 0 si OK
  */
+static int handle_closing_brace(int *count)
+{
+	if (*count == 0)
+		return (1);
+	(*count)--;
+	return (0);
+}
+
 int has_unclosed_braces(char *input)
 {
 	int i;
@@ -198,23 +205,15 @@ int has_unclosed_braces(char *input)
 	quote_state = 0;
 	while (input[i])
 	{
-		// Met à jour l'état de la quote
 		update_quote_state(&quote_state, input[i]);
-		// Si pas dans une quote et que le caractère est une accolade ouvrante
 		if (!quote_state && input[i] == '{')
 			count++;
-		// Si pas dans une quote et que le caractère est une accolade fermante
 		else if (!quote_state && input[i] == '}')
 		{
-			// Si le compteur est à 0, il y a une accolade fermante sans ouvrante
-			// Erreur : accolade fermante sans ouvrante, return 1
-			if (count == 0)
+			if (handle_closing_brace(&count))
 				return (1);
-			// On décrémente le compteur d'accolades
-			count--;
 		}
 		i++;
 	}
-	// Return 1 si count != 0 (accolades non fermées), 0 sinon
 	return (count != 0);
 }

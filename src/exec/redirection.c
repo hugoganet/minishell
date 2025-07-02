@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:30:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/26 18:13:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 16:46:56 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param node Le nœud de redirection à traiter
  * @return Code de retour (0 pour succès, autre pour erreur)
  */
-int apply_parent_redirections(t_ast *node)
+int apply_parent_redirections(t_ast *node, t_shell *shell)
 {
 	// Sauvegarde les descripteurs de fichiers originaux
 	int saved_stdin = dup(STDIN_FILENO);
@@ -30,7 +30,7 @@ int apply_parent_redirections(t_ast *node)
 
 	// Applique les redirections
 	if (node->type == HEREDOC)
-		handle_heredoc(node->str);
+		handle_heredoc_with_expansion(node->str, shell);
 
 	if (setup_redirections(node) != 0)
 		result = 1;
@@ -72,7 +72,7 @@ void handle_heredoc(char *token_str)
 	// Boucle pour lire les lignes jusqu'à ce que le délimiteur soit trouvé
 	while (1)
 	{
-		
+
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break;

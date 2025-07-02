@@ -6,10 +6,9 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 14:13:46 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 16:46:58 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -78,7 +77,7 @@ static void run_child_process(char **argv, t_env *env,
 	reset_signals_in_child();
 	// Si le nœud actuel est un heredoc, on applique la redirection stdin
 	if (ast->type == HEREDOC)
-		handle_heredoc(ast->str);
+		handle_heredoc_with_expansion(ast->str, shell);
 	// Applique toutes les autres redirections (> >> <)
 	if (setup_redirections(ast) != 0)
 	{
@@ -139,7 +138,7 @@ static int handle_child_status(int status)
 }
 
 /**
- * 
+ *
  * @brief Exécute une commande simple (non composée) en forkant un enfant.
  *
  * - Récupère le noeud CMD
@@ -161,13 +160,13 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	// Recherche du vrai noeud CMD à exécuter
 	cmd_node = find_cmd_node(ast_root);
 	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
-		return (1);	
+		return (1);
 	if (is_builtin(cmd_node))
-		return(builtin_exec(cmd_node, shell));	
+		return (builtin_exec(cmd_node, shell));
 	else
 	{
 		argv = cmd_node->args;
-	
+
 		// Fork du processus
 		pid = fork();
 		if (pid < 0)
@@ -186,6 +185,6 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 		// Réactive les signaux du shell (readline)
 		init_signals();
 		// Gère le code de retour du processus
-		return(handle_child_status(status));
+		return (handle_child_status(status));
 	}
 }

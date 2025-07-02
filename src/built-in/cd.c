@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:59:32 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 12:13:16 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/02 11:30:40 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	ft_cd(t_ast *node, t_shell *data)
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		perror(node->args[1]);
+		free(oldpwd);
 		return (EXIT_FAILURE);
 	}
 	newpwd = getcwd(NULL, 0);

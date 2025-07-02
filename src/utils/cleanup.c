@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:25:16 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 13:41:01 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 11:01:36 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,10 @@ void cleanup_shell(t_shell *shell)
 	{
 		free_ast(shell->ast);
 		shell->ast = NULL;
+	}
+	if (shell->export_list)
+	{
+		free_env_list(shell->export_list);
+		shell->export_list = NULL;
 	}
 }

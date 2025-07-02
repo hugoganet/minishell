@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:01:02 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 17:53:51 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 16:00:08 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int has_unclosed_quotes(char *input)
 		update_quote_state(&quote_state, input[i]);
 		i++;
 	}
-	// Forme simplifié de booléen. 
+	// Forme simplifié de booléen.
 	// Return 1 si current_quote n'est pas 0 (donc une quote est ouverte)
 	// sinon return 0
 	return (quote_state != 0);
@@ -157,7 +157,7 @@ int has_unmatched_parentheses(char *input)
 		// Met à jour l'état de la quote
 		update_quote_state(&quote, input[i]);
 		// Si pas dans une quote et que le caractère est une parenthèse ouvrante
-		if (!quote && input[i] == '(')			
+		if (!quote && input[i] == '(')
 		{
 			// On incrémente le compteur de parenthèses
 			count++;
@@ -178,5 +178,43 @@ int has_unmatched_parentheses(char *input)
 		}
 		i++;
 	}
+	return (count != 0);
+}
+
+/**
+ * @brief Vérifie que les accolades sont équilibrées.
+ *
+ * @param input Ligne de commande
+ * @return `int` 1 si erreur (accolades non fermées), 0 si OK
+ */
+int has_unclosed_braces(char *input)
+{
+	int i;
+	int count;
+	char quote_state;
+
+	i = 0;
+	count = 0;
+	quote_state = 0;
+	while (input[i])
+	{
+		// Met à jour l'état de la quote
+		update_quote_state(&quote_state, input[i]);
+		// Si pas dans une quote et que le caractère est une accolade ouvrante
+		if (!quote_state && input[i] == '{')
+			count++;
+		// Si pas dans une quote et que le caractère est une accolade fermante
+		else if (!quote_state && input[i] == '}')
+		{
+			// Si le compteur est à 0, il y a une accolade fermante sans ouvrante
+			// Erreur : accolade fermante sans ouvrante, return 1
+			if (count == 0)
+				return (1);
+			// On décrémente le compteur d'accolades
+			count--;
+		}
+		i++;
+	}
+	// Return 1 si count != 0 (accolades non fermées), 0 sinon
 	return (count != 0);
 }

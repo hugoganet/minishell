@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:34:50 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 14:13:27 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 14:42:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,25 @@ char *copy_var_content(char *str, t_shell *data, int *start, int *end)
 {
 	char *name_var;
 	char *value;
-	char *special_result;
 
 	// Extraction du nom de la variable depuis la chaîne
 	name_var = find_var(str, start, end);
-	// ! name_var n'est jamais NULL car si nous sommes dans copy_var_content, 
-	// ! c'est qu'il y'a un '$' et qu'il n'est pas entre single quotes
-	// ? il peut y avoir un problème avec strdup
-	// ? -> non, en tout cas je ne les protège pas
-	// ? par contre peut-être qu'il peut y avoir un problème avec extract_var_name
-	if (!name_var)
-		return (NULL);
 	// Vérification et traitement des cas spéciaux
-	special_result = handle_special_cases(name_var);
-	if (special_result)
+	// ! redondance sur le traitement des cas spéciaux
+	value = handle_special_cases(name_var);
+	if (value)
 	{
 		free(name_var);
-		return (special_result);
+		return (value);
 	}
-	// Sinon recherche de la variable dans l'environnement
-	value = get_env_var_value(name_var, data->env);
-	free(name_var);
-	// Si la variable n'existe pas, retourner une chaîne vide (comportement bash)
-	if (!value)
-		return (ft_strdup(""));
-	return (value);
+	else {
+		// Sinon recherche de la variable dans l'environnement
+		value = get_env_var_value(name_var, data->env);
+		printf("copy_var_content: value='%s'\n", value ? value : "NULL");
+		free(name_var);	
+		// Si la variable n'existe pas, retourner une chaîne vide (comportement bash)
+		if (!value)
+			return (ft_strdup(""));
+		return (value);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/02 11:21:49 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:59:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
 {
 	int i;
-	char *exit_status;
 
 	i = 0;
 	while (str[i])
@@ -47,38 +46,46 @@ char *expand_exit_status(char *str, t_shell *data, int *start, int *end)
 	*start = i;
 	*end = i + 2; // $?
 	// Convertir l'entier en chaîne
-	exit_status = ft_itoa(data->last_exit_status);
-	return (exit_status);
+	return (ft_itoa(data->last_exit_status));
 }
 
 static void expand_one_arg(char **arg, t_shell *data)
 {
-	char *expanded;
-	char *unquoted;
+	char *tmp;
 	int j;
 
 	j = 0;
 	while ((*arg)[j])
 	{
+		if ((*arg)[j] == '$' && (*arg)[j + 1] == '\"')
+		{
+			tmp = ft_substr(*arg, 2, ft_strlen(*arg) - 3);
+			if (tmp)
+			{
+				free(*arg);
+				*arg = tmp;
+			}
+			return;
+		}
 		if ((*arg)[j] == '$')
 		{
 			if (j > 1 && (*arg)[j - 1] != '\\')
 				break;
-			expanded = join_str(ft_strdup(*arg), data);
-			if (expanded)
+			tmp = join_str(ft_strdup(*arg), data);
+			if (tmp)
 			{
 				free(*arg);
-				*arg = expanded;
+				*arg = tmp;
 			}
 			break;
 		}
 		j++;
 	}
-	unquoted = remove_quotes(*arg);
-	if (unquoted)
+	tmp = remove_quotes(*arg);
+	if (tmp)
 	{
 		free(*arg);
-		*arg = unquoted;
+		*arg = tmp;
 	}
 }
 

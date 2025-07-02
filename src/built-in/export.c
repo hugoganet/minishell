@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 18:31:00 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:14:46 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,10 @@ int	ft_export(t_ast *node, t_shell *data)
 				return (1);
 			}
 			value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
-			if (!update_env_value(data->env_list, key, value) && !update_env_value(data->export_list, key, value)
-				&& ft_is_valid(key))
-			{
+			if (!update_env_value(data->env_list, key, value) && ft_is_valid(key))
 				create_add_new_node(key, value, &data->env_list);
+			if (!update_env_value(data->export_list, key, value) && ft_is_valid(key))
+			{
 				create_add_new_node(key, value, &data->export_list);
 				sort_list(&data->export_list);
 			}

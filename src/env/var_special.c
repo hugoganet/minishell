@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 12:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 11:44:48 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 13:58:40 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,27 @@ bool is_special_var(const char *name)
  * - Chaîne vide → chaîne vide
  * - Dollar isolé → garde le $ littéralement
  *
- * @param name Le nom de la variable spéciale
+ * @param name_var Le nom de la variable spéciale
  * @return La chaîne allouée correspondant au cas spécial, ou NULL si pas spécial
  */
-char *handle_special_cases(const char *name)
+char *handle_special_cases(const char *name_var)
 {
-	if (!name)
+	if (!name_var)
 		return (NULL);
 	// Paramètres positionnels → chaîne vide
-	if (is_positional_param(name))
+	if (is_positional_param(name_var))
 		return (ft_strdup(""));
 	// Nom vide → chaîne vide
-	if (ft_strlen(name) == 0)
+	if (ft_strlen(name_var) == 0)
 		return (ft_strdup(""));
 	// Dollar isolé → garde le $ tel quel
-	if (ft_strlen(name) == 1 && name[0] == '$')
+	if (ft_strlen(name_var) == 1 && name_var[0] == '$')
 		return (ft_strdup("$"));
 	// Pas un cas spécial
 	return (NULL);
 }
 
-/**
+/**	 
  * @brief Vérifie si le caractère peut commencer un nom de variable valide.
  *
  * Un nom de variable peut commencer par :

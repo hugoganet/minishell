@@ -101,18 +101,13 @@ char *find_var(char *str, int *start, int *end)
 	int i;
 	int len;
 	int name_start;
+	
 	i = 0;
 	// Chercher le premier `$` dans la chaîne
 	while (str[i] && str[i] != '$')
 		i++;
 	*start = i;
 	i++;
-	// Si on n'a pas trouvé de `$`, retourner "$"
-	if (!str[i])
-	{
-		*end = i;
-		return (ft_strdup("$"));
-	}
 	// Si le caractère après `$` n'est pas valide, retourner "$"
 	if (!is_valid_var_start(str[i]))
 	{
@@ -127,5 +122,6 @@ char *find_var(char *str, int *start, int *end)
 		get_name(str, &i, end, &name_start);
 	// Calculer la longueur du nom extrait
 	len = i - name_start;
+	// ! Si len = 0, on retourne un token vide ""
 	return (extract_var_name(str, name_start, len));
 }

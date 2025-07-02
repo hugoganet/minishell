@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 01:37:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 12:37:10 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 14:42:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ char *process_next_dollar(char *str, int *offset, t_shell *data)
 	end = 0;
 	// Priorité 1 : tester si on est sur `$?`
 	var = expand_exit_status(&str[*offset], data, &start, &end);
-	// Priorité 2 : variable classique ($VAR, ${VAR}, $9...)
+	// Gestion des variables classiques ($VAR, ${VAR}, $9...) et autres cas spéciaux.
 	if (!var)
 		var = copy_var_content(&str[*offset], data, &start, &end);
+	// printf("process_next_dollar: var='%s'\n",var ? var : "NULL");
 	// Prépare le contexte d'expansion
 	ctx.start = start + *offset;
 	ctx.end = end + *offset;

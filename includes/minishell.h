@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 11:44:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 19:59:34 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ t_token *token_new(char *str, t_token_type type);
 t_token_type get_token_type(char *str);
 void process_input(char *input, t_shell *shell);
 void free_token_list(t_token *head);
-void print_token_list(t_token *tokens);
+void print_token_list(t_token *tokens, char *title);
 bool is_redirection(t_token_type type);
 void refine_token_types(t_token *head);
 char *parse_quoted_token(char *input, int *i);
@@ -208,6 +208,7 @@ int apply_parent_redirections(t_ast *node);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
+void	sort_list(t_env **export_list);
 
 // ! ----------------------- ENV VARS EXPANSION ---------------
 // Quote management functions (centralized)

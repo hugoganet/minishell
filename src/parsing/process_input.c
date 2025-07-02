@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 12:57:08 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 14:13:51 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 		return;
 	}
 	expand_vars(ast_root, shell);
-	pretty_print_ast(ast_root, 0, "ROOT");
+	// pretty_print_ast(ast_root, 0, "ROOT");
 	// print_ast_cmd_node(ast_root->args);
 	// Ajoute le pointer de l'AST à la structure du shell pour free proprement
 	shell->ast = ast_root;

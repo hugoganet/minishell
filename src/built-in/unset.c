@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:42:15 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/30 11:20:19 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:16:08 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,17 @@ int ft_unset(t_ast *node, t_shell *data)
     int i;
 
     i = 1;
-    while(node->args[i])
+    if(node->args[i])
     {
-        if (ft_is_valid(node->args[i]))
-            remove_env_node(&data->env_list, node->args[i]);
-        i++;
+        while(node->args[i])
+        {
+            if (ft_is_valid(node->args[i]))
+            {
+                remove_env_node(&data->env_list, node->args[i]);
+                remove_env_node(&data->export_list, node->args[i]);
+            }   
+            i++;
+        }
     }
     return (0);
 }

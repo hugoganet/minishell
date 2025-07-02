@@ -98,7 +98,7 @@ $
 ===== TEST : [<>] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
@@ -151,42 +151,42 @@ syntax error near unexpected token `|'$
 ===== TEST : [>>>>>] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
 ===== TEST : [>>>>>>>>>>>>>] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
 ===== TEST : [<<<<<] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
 ===== TEST : [> > > >] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
 ===== TEST : [>> >> >> >>] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
 ===== TEST : [>>>> >> >> >>] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
@@ -333,7 +333,7 @@ syntax error near unexpected token `|'$
 ===== TEST : [$?] =====
 
 -----
-$?$
+0$
 : command not found$
 -----
 
@@ -341,7 +341,7 @@ $?$
 ===== TEST : [$?$?] =====
 
 -----
-$?$?$
+00$
 : command not found$
 -----
 
@@ -357,7 +357,7 @@ $$
 ===== TEST : [$HOME] =====
 
 -----
-$HOME$
+/home/elaudrez$
 : command not found$
 -----
 
@@ -365,7 +365,7 @@ $HOME$
 ===== TEST : [$HOMEdskjhfkdshfsd] =====
 
 -----
-$HOMEdskjhfkdshfsd$
+$
 : command not found$
 -----
 
@@ -373,7 +373,7 @@ $HOMEdskjhfkdshfsd$
 ===== TEST : ["$HOMEdskjhfkdshfsd"] =====
 
 -----
-"$HOMEdskjhfkdshfsd"$
+$
 : command not found$
 -----
 
@@ -381,7 +381,7 @@ $HOMEdskjhfkdshfsd$
 ===== TEST : ['$HOMEdskjhfkdshfsd'] =====
 
 -----
-'$HOMEdskjhfkdshfsd'$
+$HOMEdskjhfkdshfsd$
 : command not found$
 -----
 
@@ -389,7 +389,7 @@ $HOMEdskjhfkdshfsd$
 ===== TEST : [$DONTEXIST] =====
 
 -----
-$DONTEXIST$
+$
 : command not found$
 -----
 
@@ -397,7 +397,7 @@ $DONTEXIST$
 ===== TEST : [$LESS$VAR] =====
 
 -----
-$LESS$VAR$
+-R$
 : command not found$
 -----
 
@@ -429,7 +429,7 @@ env$
 ===== TEST : [export TEST=Salut && env] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
@@ -438,14 +438,6 @@ $
 -----
 : command not found$
 envvvvv$
------
-
-
-===== TEST : [""''echo hola""'''' que""'' tal""''] =====
-
------
-""''echo hola""'''' que""'' tal""''$
-: command not found$
 -----
 
 
@@ -479,17 +471,10 @@ echoHola$
 -----
 
 
-===== TEST : [echo $?$] =====
-
------
-0$
------
-
-
 ===== TEST : [echo $:$= ] =====
 
 -----
-:= $
+$:$= $
 -----
 
 
@@ -507,13 +492,6 @@ $
 -----
 
 
-===== TEST : [echo " $ "] =====
-
------
-  $
------
-
-
 ===== TEST : [echo $hola*] =====
 
 -----
@@ -524,7 +502,7 @@ $
 ===== TEST : [echo > <] =====
 
 -----
-syntax error near redirection$
+syntax error near unexpected token 'redirection'$
 -----
 
 
@@ -557,24 +535,10 @@ $
 -----
 
 
-===== TEST : ["echo" a] =====
+===== TEST : [echo $"HO""ME"] =====
 
 -----
-"echo": command not found$
------
-
-
-===== TEST : ["    echo" a] =====
-
------
-"    echo": command not found$
------
-
-
-===== TEST : [echo "$"""] =====
-
------
-$
+$HOME$
 -----
 
 
@@ -582,14 +546,6 @@ $
 
 -----
  hola$
------
-
-
-===== TEST : ["e"'c'ho 'b'"o"nj"o"'u'r] =====
-
------
-"e"'c'ho 'b'"o"nj"o"'u'r$
-: command not found$
 -----
 
 
@@ -648,21 +604,21 @@ cd: too many arguments$
 ===== TEST : [export TEST=a && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export            TEST=a && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export          TEST=a         TEST2=Yooooooo && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
@@ -677,7 +633,7 @@ export$
 ===== TEST : [export abc && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
@@ -691,42 +647,42 @@ export: 1=1 not a valid identifier$
 ===== TEST : [export TEST= && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export TEST=*.c && cd src/ && echo *.c] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export "" && export] =====
 
 -----
-$
+export:  not a valid identifier$
 -----
 
 
 ===== TEST : [export Hola && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export "" && export] =====
 
 -----
-$
+export:  not a valid identifier$
 -----
 
 
 ===== TEST : [export $? && export] =====
 
 -----
-$
+export: 0 not a valid identifier$
 -----
 
 
@@ -740,7 +696,7 @@ export: ?=2 not a valid identifier$
 ===== TEST : [export ___HOLA=Bonjour && export] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
@@ -782,38 +738,38 @@ $
 ===== TEST : [export HOLA="bonjour      " && echo $HOLA | cat -e] =====
 
 -----
-$
+'$
+cat: invalid option -- '$
+export: && not a valid identifier$
+Try 'cat --help' for more information.$
 -----
 
 
 ===== TEST : [export HOLA="   hehehe bonjour" && echo $HOLA] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export HOLA="cat Makefile | grep NAME" && echo $HOLA] =====
 
 -----
-grep: $
-grep: echo: No such file or directory$
-grep: &&: No such file or directory$
-: No such file or directory$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export TEST="       echo" && $TEST a] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
 ===== TEST : [export PATH=yolateam && ls] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
@@ -908,7 +864,7 @@ cat: '*.c'$'\n': No such file or directory$
 ===== TEST : [export TEST=* && echo $TEST] =====
 
 -----
-$
+export: && not a valid identifier$
 -----
 
 
@@ -1093,7 +1049,8 @@ ls$
 ===== TEST : [((echo "salut"&& jksla )&& (klsdf || jksldff))] =====
 
 -----
-((echo: command not found$
+syntax error near unexpected token '|'$
+error: failed to tokenize input$
 -----
 
 
@@ -1124,7 +1081,8 @@ error: failed to tokenize input$
 ===== TEST : [(false && echo "A") || echo "B"] =====
 
 -----
-(false: command not found$
+syntax error near unexpected token '|'$
+error: failed to tokenize input$
 -----
 
 

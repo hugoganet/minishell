@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_token_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:19:01 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 13:49:03 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/01 14:48:39 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ const char *token_type_str(t_token_type type)
  * @brief Affiche chaque token de la liste avec son type
  *
  * @param tokens Liste chaînée de tokens
+ * @param title Titre pour la section d'affichage
  */
-void print_token_list(t_token *tokens)
+void print_token_list(t_token *tokens, char *title)
 {
-	printf("\n=== Token List ===\n");
+	printf("\n=== %s ===\n", title);
 	while (tokens)
 	{
 		printf(" - %-10s → %s%s%s\n", 
@@ -78,5 +79,5 @@ void print_token_list(t_token *tokens)
 			token_color(tokens->type) , token_type_str(tokens->type), COLOR_RESET);
 		tokens = tokens->next;
 	}
-	printf("==================\n\n");
+	printf("=========================\n\n");
 }

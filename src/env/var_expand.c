@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:54:08 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 11:15:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 11:21:49 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static void expand_one_arg(char **arg, t_shell *data)
 	{
 		if ((*arg)[j] == '$')
 		{
+			if (j > 1 && (*arg)[j - 1] != '\\')
+				break;
 			expanded = join_str(ft_strdup(*arg), data);
 			if (expanded)
 			{

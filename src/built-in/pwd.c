@@ -6,19 +6,19 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 17:41:35 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/24 16:39:20 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/01 11:58:35 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_pwd()
+int ft_pwd(void)
 {
     char    buff[PATH_MAX];
 
     if (getcwd(buff, PATH_MAX))
     {
-        printf("%s\n", buff);
+        ft_putendl_fd(buff, 1);
         return (0);
     }
     else

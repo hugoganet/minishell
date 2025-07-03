@@ -6,31 +6,32 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 22:18:24 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 22:50:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/stat.h>
 
-/*
-** @brief Filtre les arguments vides d'un tableau de chaînes.
-**
-** Cette fonction modifie le tableau sur place pour enlever les chaînes
-** vides (résultant de l'expansion de variables inexistantes).
-** Elle libère la mémoire des chaînes vides pour éviter les fuites.
-**
-** @param args Le tableau d'arguments à filtrer.
-*/
+/**
+ * @brief Filtre les arguments vides d'un tableau de chaînes, en préservant argv[0].
+ *
+ * Cette fonction modifie le tableau sur place pour enlever les chaînes
+ * vides dans les arguments (pas la commande elle-même).
+ * Elle libère la mémoire des chaînes vides pour éviter les fuites.
+ *
+ * @param args Le tableau d'arguments à filtrer.
+ */
 static void filter_empty_args(char **args)
 {
 	int i;
 	int j;
 
-	i = 0;
-	j = 0;
-	if (!args)
+	if (!args || !args[0])
 		return;
+	// On commence à 1 pour préserver argv[0] (le nom de la commande)
+	i = 1;
+	j = 1;
 	while (args[i])
 	{
 		if (args[i][0] == '\0')
@@ -98,7 +99,6 @@ static void run_child_process(char **argv, t_env *env,
 	struct stat path_stat;
 
 	reset_signals_in_child();
-
 	// Si un heredoc a été traité, on redirige l'entrée standard
 	if (shell->heredoc_fd != -1)
 	{
@@ -107,7 +107,6 @@ static void run_child_process(char **argv, t_env *env,
 		close(shell->heredoc_fd);
 		shell->heredoc_fd = -1;
 	}
-
 	if (setup_redirections(ast) != 0)
 	{
 		cleanup_shell(shell);
@@ -224,6 +223,12 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	filter_empty_args(cmd_node->args);
 	if (!cmd_node->args[0])
 		return (0);
+	// Si le nom de la commande est une chaîne vide
+	if (cmd_node->args[0][0] == '\0')
+	{
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+		return (127);
+	}
 	if (is_builtin(cmd_node))
 		return (builtin_exec(cmd_node, shell));
 	pid = fork();
@@ -248,11 +253,12 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 
 void free_string_array(char **arr)
 {
+	int i;
+
 	if (!arr)
 		return;
-	for (int i = 0; arr[i]; i++)
-	{
-		free(arr[i]);
-	}
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
 	free(arr);
 }

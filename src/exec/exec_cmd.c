@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 08:23:47 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 09:33:10 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,38 +146,54 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 
 	// Recherche du vrai noeud CMD à exécuter
 	cmd_node = find_cmd_node(ast_root);
+
+	// --- Traiter tous les heredocs AVANT toute exécution ---
+	t_ast *tmp = ast_root;
+	int heredoc_status = 0;
+	while (tmp)
+	{
+		if (tmp->type == HEREDOC)
+		{
+			heredoc_status = handle_heredoc(tmp->str, shell);
+			if (heredoc_status == 130) // SIGINT reçu pendant heredoc
+			{
+				if (shell->heredoc_fd != -1)
+				{
+					close(shell->heredoc_fd);
+					shell->heredoc_fd = -1;
+				}
+				return (130);
+			}
+		}
+		tmp = tmp->right;
+	}
+	// ------------------------------------------------------
+
+	// Cas heredoc seul : pas de commande à exécuter
 	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
-		return (1);
+		return (0);
 	if (is_builtin(cmd_node))
 		return (builtin_exec(cmd_node, shell));
 	else
 	{
 		argv = cmd_node->args;
-
-		// Fork du processus
 		pid = fork();
 		if (pid < 0)
 		{
 			perror("minishell: fork");
 			return (1);
 		}
-		// Enfant : exécute la commande
 		if (pid == 0)
 			run_child_process(argv, env, ast_root, shell);
-		// Parent : ignore temporairement SIGINT et SIGQUIT
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		// Attend la fin du processus enfant
 		waitpid(pid, &status, 0);
-		// Réactive les signaux du shell (readline)
 		init_signals();
-
 		if (shell->heredoc_fd != -1)
 		{
 			close(shell->heredoc_fd);
 			shell->heredoc_fd = -1;
 		}
-		// Gère le code de retour du processus
 		return (handle_child_status(status));
 	}
 }

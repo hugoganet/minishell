@@ -6,11 +6,18 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 08:27:36 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 09:43:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
+
+void heredoc_sigint_handler(int signo)
+{
+	(void)signo;
+	g_signal = SIGINT;
+}
 
 /**
  * @brief Détermine si le délimiteur heredoc est quoté.
@@ -256,34 +263,54 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
  *
  * @param token_str Le token complet du heredoc (ex: "<<EOF", "<<'END'")
  * @param shell Structure principale du shell contenant les variables d’environnement
+ * @return 0 si succès, 130 si interruption SIGINT, 1 si erreur
  */
-void handle_heredoc(char *token_str, t_shell *shell)
+int handle_heredoc(char *token_str, t_shell *shell)
 {
 	int pipefd[2];
 	char *delimiter_raw;
 	char *delimiter_clean;
 	int expand_enabled;
 	int read_result;
+	struct sigaction sa_old, sa_new;
+
+	// Handler temporaire pour SIGINT pendant le heredoc
+	sa_new.sa_handler = heredoc_sigint_handler;
+	sigemptyset(&sa_new.sa_mask);
+	sa_new.sa_flags = 0;
+	sigaction(SIGINT, &sa_new, &sa_old);
 
 	if (init_heredoc_pipe(pipefd) != 0)
-		exit(1);
+	{
+		sigaction(SIGINT, &sa_old, NULL);
+		return (1);
+	}
 	if (validate_heredoc_token(token_str, pipefd) != 0)
-		exit(1);
+	{
+		sigaction(SIGINT, &sa_old, NULL);
+		return (1);
+	}
 	delimiter_raw = token_str + 2;
 	expand_enabled = !is_heredoc_delimiter_quoted(delimiter_raw);
 	delimiter_clean = clean_heredoc_delimiter(delimiter_raw);
 	if (!delimiter_clean)
 	{
 		close_pipe_fds(pipefd);
-		exit(1);
+		sigaction(SIGINT, &sa_old, NULL);
+		return (1);
 	}
 	read_result = read_heredoc_lines(delimiter_clean, expand_enabled, shell, pipefd[1]);
 	free(delimiter_clean);
 	close(pipefd[1]);
+
+	sigaction(SIGINT, &sa_old, NULL); // Restaure le handler SIGINT du shell principal
+
 	if (read_result == 0)
 	{
 		close(pipefd[0]);
-		exit(130);
+		g_signal = 0; // Réinitialiser le signal
+		return (130); // SIGINT
 	}
 	shell->heredoc_fd = pipefd[0];
+	return (0);
 }

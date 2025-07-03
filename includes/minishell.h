@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/02 17:01:58 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 08:27:56 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_shell
 	t_token *tokens;
 	t_ast *ast;
 	int last_exit_status;
+	int heredoc_fd;
 } t_shell;
 
 /**
@@ -210,6 +211,7 @@ int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
 void sort_list(t_env **export_list);
+void close_pipe_fds(int fds[2]);
 
 // ! ----------------------- ENV VARS EXPANSION ---------------
 // Quote management functions (centralized)

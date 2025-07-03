@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 17:15:14 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 08:27:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static int is_delimiter_line(char *line, char *delimiter_clean)
  * @param expand_enabled 1 si l'expansion est activée, 0 sinon
  * @param shell Les données du shell
  * @param pipefd Descripteur de pipe en écriture
- * @return 1 pour continuer, 0 pour arrêter
+ * @return 1 pour continuer, 0 pour arrêter, -1 pour signal
  */
 static int process_heredoc_input_line(char *line, char *delimiter_clean,
 									  int expand_enabled, t_shell *shell, int pipefd)
@@ -163,8 +163,7 @@ static int process_heredoc_input_line(char *line, char *delimiter_clean,
 	if (g_signal == SIGINT)
 	{
 		free(line);
-		g_signal = 0;
-		return (0);
+		return (-1); // Retourner -1 pour indiquer une interruption par signal
 	}
 	line = expand_heredoc_line(line, expand_enabled, shell);
 	if (line)
@@ -182,66 +181,109 @@ static int process_heredoc_input_line(char *line, char *delimiter_clean,
  * @param expand_enabled 1 si l'expansion est activée, 0 sinon
  * @param shell Les données du shell
  * @param pipefd Descripteur de pipe en écriture
+ * @return 1 si lecture normale, 0 si interrompue par signal
  */
-static void read_heredoc_lines(char *delimiter_clean, int expand_enabled,
-							   t_shell *shell, int pipefd)
+static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
+							  t_shell *shell, int pipefd)
 {
 	char *line;
+	int result;
 
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
-		if (!process_heredoc_input_line(line, delimiter_clean,
-										expand_enabled, shell, pipefd))
-			break;
+		if (g_signal == SIGINT)
+		{
+			if (line)
+				free(line);
+			return (0); // Interruption par signal
+		}
+		result = process_heredoc_input_line(line, delimiter_clean,
+											expand_enabled, shell, pipefd);
+		if (result <= 0)
+		{
+			// result == 0 -> Fin normale (délimiteur ou EOF)
+			// result == -1 -> Interruption par signal
+			return (result == 0);
+		}
+		// result == 1 : continuer
 	}
 }
 
 /**
- * @brief Finalise la redirection du heredoc.
+ * @brief Gère un heredoc dans un processus enfant.
  *
- * @param pipefd Tableau des descripteurs de pipe
+ * Cette fonction est exécutée après un fork. Elle gère la lecture du heredoc
+ * et quitte le processus enfant avec un statut approprié.
+ *
+ * @param token_str Le token complet du heredoc (ex: "<<EOF")
+ * @param shell Les données du shell
+ * @param pipefd Le pipe pour la communication
  */
-static void finalize_heredoc_redirection(int pipefd[2])
-{
-	close(pipefd[1]);
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-}
+// static void handle_heredoc_child(char *token_str, t_shell *shell, int pipefd[2])
+// {
+// 	char *delimiter_raw;
+// 	char *delimiter_clean;
+// 	int expand_enabled;
+// 	int read_result;
+
+// 	close(pipefd[0]); // L'enfant n'a pas besoin de lire depuis le pipe
+// 	if (validate_heredoc_token(token_str, pipefd) != 0)
+// 		exit(1);
+// 	delimiter_raw = token_str + 2;
+// 	expand_enabled = !is_heredoc_delimiter_quoted(delimiter_raw);
+// 	delimiter_clean = clean_heredoc_delimiter(delimiter_raw);
+// 	if (!delimiter_clean)
+// 	{
+// 		close(pipefd[1]);
+// 		exit(1);
+// 	}
+// 	read_result = read_heredoc_lines(delimiter_clean, expand_enabled, shell,
+// 									 pipefd[1]);
+// 	free(delimiter_clean);
+// 	close(pipefd[1]);
+// 	if (read_result == 0) // Si interrompu par un signal
+// 		exit(130);		  // Statut de sortie pour SIGINT
+// 	exit(0);			  // Succès
+// }
 
 /**
- * @brief Gère un heredoc avec expansion conditionnelle des variables.
+ * @brief Gère un heredoc et enregistre le descripteur dans shell->heredoc_fd.
  *
- * Cette fonction implémente le comportement complet des heredocs de Bash :
- * 1. Analyse le délimiteur pour détecter les quotes
- * 2. Détermine si l'expansion doit être activée ou non
- * 3. Lit les lignes et applique l'expansion conditionnellement
- * 4. Écrit le résultat dans un pipe et redirige STDIN
+ * Cette fonction lit l'entrée utilisateur jusqu'au délimiteur du heredoc,
+ * écrit les lignes dans un pipe, puis conserve l'extrémité lecture du pipe
+ * dans shell->heredoc_fd pour une redirection future.
  *
  * @param token_str Le token complet du heredoc (ex: "<<EOF", "<<'END'")
- * @param shell Les données du shell pour l'expansion de variables
+ * @param shell Structure principale du shell contenant les variables d’environnement
  */
 void handle_heredoc(char *token_str, t_shell *shell)
 {
+	int pipefd[2];
 	char *delimiter_raw;
 	char *delimiter_clean;
-	int pipefd[2];
 	int expand_enabled;
+	int read_result;
 
 	if (init_heredoc_pipe(pipefd) != 0)
-		return;
+		exit(1);
 	if (validate_heredoc_token(token_str, pipefd) != 0)
-		return;
+		exit(1);
 	delimiter_raw = token_str + 2;
 	expand_enabled = !is_heredoc_delimiter_quoted(delimiter_raw);
 	delimiter_clean = clean_heredoc_delimiter(delimiter_raw);
 	if (!delimiter_clean)
 	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		return;
+		close_pipe_fds(pipefd);
+		exit(1);
 	}
-	read_heredoc_lines(delimiter_clean, expand_enabled, shell, pipefd[1]);
+	read_result = read_heredoc_lines(delimiter_clean, expand_enabled, shell, pipefd[1]);
 	free(delimiter_clean);
-	finalize_heredoc_redirection(pipefd);
+	close(pipefd[1]);
+	if (read_result == 0)
+	{
+		close(pipefd[0]);
+		exit(130);
+	}
+	shell->heredoc_fd = pipefd[0];
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 17:54:28 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/03 08:24:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 	shell->tokens = NULL;
 	shell->ast = NULL;
 	shell->last_exit_status = 0;
-
+	shell->heredoc_fd = -1; // Valeur par défaut pour le descripteur de fichier heredoc
 	// Copie de l'environnement dans la structure shell
 	shell->env = copy_env(envp);
 	if (!shell->env)

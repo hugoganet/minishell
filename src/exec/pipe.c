@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/25 11:21:09 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 08:27:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,16 @@ static int wait_for_children(pid_t left_pid, pid_t right_pid)
 }
 
 /**
- * @brief Ferme les deux extrémités d’un pipe.
+ * @brief Ferme proprement les deux extrémités d’un pipe.
  *
- * @param fds Tableau contenant les descripteurs [lecture, écriture]
+ * Utilisé pour éviter les fuites de descripteurs de fichier
+ * lorsqu'une erreur survient ou à la fin d’un heredoc.
+ *
+ * @param pipefd Tableau contenant les deux descripteurs du pipe :
+ *               - pipefd[0] : extrémité lecture
+ *               - pipefd[1] : extrémité écriture
  */
-static void close_pipe_fds(int fds[2])
+void close_pipe_fds(int fds[2])
 {
 	close(fds[0]);
 	close(fds[1]);

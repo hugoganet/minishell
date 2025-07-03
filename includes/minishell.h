@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/03 09:33:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 10:24:27 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,21 @@ int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
 void sort_list(t_env **export_list);
-void close_pipe_fds(int fds[2]);
+
+// ! ----------------------- HEREDOC --------------------------
+// Heredoc utilities
+int init_heredoc_pipe(int pipefd[2]);
+int validate_heredoc_token(char *token_str, int pipefd[2]);
+char *clean_heredoc_delimiter(const char *delimiter);
+int is_heredoc_delimiter_quoted(const char *delimiter);
+int is_delimiter_line(char *line, char *delimiter_clean);
+// Set signal handler for heredoc
+void set_heredoc_sigint(struct sigaction *sa_old);
+// Restore original signal handler after heredoc
+void restore_sigint(const struct sigaction *sa_old);
+// Close pipe file descriptors
+void close_pipe_fds(int pipefd[2]);
+char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell);
 
 // ! ----------------------- ENV VARS EXPANSION ---------------
 // Quote management functions (centralized)

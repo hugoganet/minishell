@@ -32,20 +32,18 @@ SRC = 	main.c \
 		syntax/validation.c \
 		syntax/refine_token_type.c \
 		parsing/process_input.c \
+		parsing/expansion/expansion.c \
+		parsing/expansion/expansion_ast.c \
+		parsing/expansion/expansion_quotes.c \
+		parsing/expansion/expansion_specials.c \
+		parsing/expansion/expansion_utils.c \
 		syntax/build_token_list.c \
 		ast/ast_builder.c \
 		ast/ast_executor.c \
 		env/init_env.c \
-		env/var_expand.c \
-		env/var_utils.c \
 		env/env.c \
 		env/env_utils.c \
-		env/copy_var_content.c \
-		env/find_var.c \
-		env/join_str.c \
-		env/quotes.c \
-		env/quote_utils.c \
-		env/var_special.c \
+		env/var_utils.c \
 		exec/exec_cmd.c \
 		exec/resolve_command_path.c \
 		exec/pipe.c \
@@ -99,10 +97,14 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/syntax
 	mkdir -p $(OBJ_DIR)/ast
 	mkdir -p $(OBJ_DIR)/env
-	mkdir -p $(OBJ_DIR)/input
+	mkdir -p $(OBJ_DIR)/expansion
 	mkdir -p $(OBJ_DIR)/init
 	mkdir -p $(OBJ_DIR)/parsing
 	mkdir -p $(OBJ_DIR)/utils
+	mkdir -p $(OBJ_DIR)/exec
+	mkdir -p $(OBJ_DIR)/exec/heredoc
+	mkdir -p $(OBJ_DIR)/built-in
+	mkdir -p $(OBJ_DIR)/signals
 
 # Générer les librairies des sous-projets
 $(LIBFT):

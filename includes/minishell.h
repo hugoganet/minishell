@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/03 10:24:27 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 11:50:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,23 +119,6 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
-/**
- * @struct s_expand_ctx
- * @brief Contexte pour l'expansion des variables d'environnement.
- *
- * - `start` : position de début de l'expansion dans la chaîne.
- *
- * - `end` : position de fin de l'expansion dans la chaîne.
- *
- * - `offset` : pointeur vers un entier pour ajuster la position après expansion.
- */
-typedef struct s_expand_ctx
-{
-	int start;
-	int end;
-	int *offset;
-} t_expand_ctx;
-
 // Définition des couleurs ANSI
 #define COLOR_CMD "\033[1;36m"	   // Cyan clair
 #define COLOR_ARG "\033[1;34m"	   // Bleu
@@ -175,8 +158,6 @@ void append_token(t_token **head, t_token **last, t_token *new);
 int validate_token_sequence(t_token *head);
 t_env *init_env_list(char **envp);
 t_ast *build_ast(t_token *node);
-void expand_vars(t_ast *node, t_shell *data);
-char *ft_strcpy(char *dest, char *src);
 void pretty_print_ast(t_ast *node, int depth, const char *label);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
@@ -211,6 +192,7 @@ int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
 void sort_list(t_env **export_list);
+char *remove_quotes(char *str);
 
 // ! ----------------------- HEREDOC --------------------------
 // Heredoc utilities
@@ -227,33 +209,6 @@ void restore_sigint(const struct sigaction *sa_old);
 void close_pipe_fds(int pipefd[2]);
 char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell);
 
-// ! ----------------------- ENV VARS EXPANSION ---------------
-// Quote management functions (centralized)
-bool should_expand_at_position(const char *str, int pos);
-bool is_expandable(const char *str);
-bool is_in_quotes(const char *str, int pos, char *quote_type);
-
-// Variable special cases (centralized)
-bool is_positional_param(const char *name);
-bool is_special_var(const char *name);
-char *handle_special_cases(const char *name);
-bool is_valid_var_start(char c);
-
-// Core expansion functions
-char *find_var(char *str, int *start, int *end);
-char *copy_var_content(char *str, t_shell *data, int *start, int *end);
-char *expand_exit_status(char *str, t_shell *data, int *start, int *end);
-char *join_str(char *str, t_shell *data);
-char *remove_quotes(char *str);
-char *get_env_var_value(char *name, char **env);
-char *get_raw_token_if_invalid(char *str, int start, int end);
-char *handle_var_expansion(char *str, char *var, t_expand_ctx ctx);
-char *process_next_dollar(char *str, int *offset, t_shell *data);
-void expand_vars(t_ast *node, t_shell *data);
-void get_name_brace(char *str, int *i, int *end, int *name_start);
-void get_name(char *str, int *i, int *end, int *name_start);
-
-// Utility functions
-char *ft_strcpy(char *dest, char *src);
+#include "expansion.h"
 
 #endif

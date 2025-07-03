@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:57:18 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 10:17:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 11:14:54 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell)
 		return (NULL);
 	if (!expand_enabled)
 		return (line);
-	expanded_line = join_str(ft_strdup(line), shell);
+	expanded_line = expand_variables(line, shell->env_list, shell->last_exit_status);
 	free(line);
 	return (expanded_line);
 }

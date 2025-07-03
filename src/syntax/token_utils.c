@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:26:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 12:45:36 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 19:15:33 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ static bool is_logical_operator(t_token_type type)
  */
 int print_syntax_error(char *token)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-	ft_putstr_fd(token, 2);
-	ft_putendl_fd("'", 2);
+	ft_putstr_fd("minishell: syntax error near unexpected token '", STDERR_FILENO);
+	ft_putstr_fd(token, STDERR_FILENO);
+	ft_putendl_fd("'", STDERR_FILENO);
 	return (1);
 }
 

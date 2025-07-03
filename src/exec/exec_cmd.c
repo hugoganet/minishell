@@ -6,11 +6,47 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 09:33:10 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 22:18:24 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
+
+/*
+** @brief Filtre les arguments vides d'un tableau de chaînes.
+**
+** Cette fonction modifie le tableau sur place pour enlever les chaînes
+** vides (résultant de l'expansion de variables inexistantes).
+** Elle libère la mémoire des chaînes vides pour éviter les fuites.
+**
+** @param args Le tableau d'arguments à filtrer.
+*/
+static void filter_empty_args(char **args)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	if (!args)
+		return;
+	while (args[i])
+	{
+		if (args[i][0] == '\0')
+		{
+			free(args[i]);
+		}
+		else
+		{
+			if (i != j)
+				args[j] = args[i];
+			j++;
+		}
+		i++;
+	}
+	args[j] = NULL;
+}
 
 /**
  * @brief Cherche récursivement le premier noeud de type CMD.
@@ -59,6 +95,7 @@ static void run_child_process(char **argv, t_env *env,
 {
 	char *path;
 	char **envp;
+	struct stat path_stat;
 
 	reset_signals_in_child();
 
@@ -79,11 +116,30 @@ static void run_child_process(char **argv, t_env *env,
 	path = resolve_command_path(argv[0], env);
 	if (!path)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(argv[0], STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
+		if (ft_strchr(argv[0], '/'))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			perror(argv[0]);
+		}
+		else
+		{
+			ft_putstr_fd(argv[0], STDERR_FILENO);
+			ft_putendl_fd(": command not found", STDERR_FILENO);
+		}
 		cleanup_shell(shell);
 		exit(127);
+	}
+	if (stat(path, &path_stat) == 0)
+	{
+		if (S_ISDIR(path_stat.st_mode))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(path, STDERR_FILENO);
+			ft_putendl_fd(": is a directory", STDERR_FILENO);
+			free(path);
+			cleanup_shell(shell);
+			exit(126);
+		}
 	}
 	envp = env_to_char_array(env);
 	if (!envp)
@@ -142,14 +198,12 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 {
 	pid_t pid;
 	int status;
-	char **argv;
+	t_ast *tmp;
+	int heredoc_status;
 
-	// Recherche du vrai noeud CMD à exécuter
 	cmd_node = find_cmd_node(ast_root);
-
-	// --- Traiter tous les heredocs AVANT toute exécution ---
-	t_ast *tmp = ast_root;
-	int heredoc_status = 0;
+	tmp = ast_root;
+	heredoc_status = 0;
 	while (tmp)
 	{
 		if (tmp->type == HEREDOC)
@@ -158,42 +212,47 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 			if (heredoc_status == 130) // SIGINT reçu pendant heredoc
 			{
 				if (shell->heredoc_fd != -1)
-				{
 					close(shell->heredoc_fd);
-					shell->heredoc_fd = -1;
-				}
+				shell->heredoc_fd = -1;
 				return (130);
 			}
 		}
 		tmp = tmp->right;
 	}
-	// ------------------------------------------------------
-
-	// Cas heredoc seul : pas de commande à exécuter
-	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
+	if (!cmd_node || !cmd_node->args)
+		return (0);
+	filter_empty_args(cmd_node->args);
+	if (!cmd_node->args[0])
 		return (0);
 	if (is_builtin(cmd_node))
 		return (builtin_exec(cmd_node, shell));
-	else
+	pid = fork();
+	if (pid < 0)
 	{
-		argv = cmd_node->args;
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("minishell: fork");
-			return (1);
-		}
-		if (pid == 0)
-			run_child_process(argv, env, ast_root, shell);
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(pid, &status, 0);
-		init_signals();
-		if (shell->heredoc_fd != -1)
-		{
-			close(shell->heredoc_fd);
-			shell->heredoc_fd = -1;
-		}
-		return (handle_child_status(status));
+		perror("minishell: fork");
+		return (1);
 	}
+	if (pid == 0)
+		run_child_process(cmd_node->args, env, ast_root, shell);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	init_signals();
+	if (shell->heredoc_fd != -1)
+	{
+		close(shell->heredoc_fd);
+		shell->heredoc_fd = -1;
+	}
+	return (handle_child_status(status));
+}
+
+void free_string_array(char **arr)
+{
+	if (!arr)
+		return;
+	for (int i = 0; arr[i]; i++)
+	{
+		free(arr[i]);
+	}
+	free(arr);
 }

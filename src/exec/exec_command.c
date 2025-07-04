@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 17:12:13 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ static int handle_child_status(int status)
 	// Si l'enfant a été tué par un signal
 	if (WIFSIGNALED(status))
 	{
-		if (WTERMSIG(status) == SIGINT)
+		if (WTERMSIG(status) == SIGINT)ishell>
 			write(STDOUT_FILENO, "\n", 1);
 		else if (WTERMSIG(status) == SIGQUIT)
 			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);

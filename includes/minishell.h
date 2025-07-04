@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 15:52:43 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,12 @@ int ft_export(t_ast *node, t_shell *data);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 void sort_list(t_env **export_list);
+void	add_new_node(t_env *new_node, t_env **env);
+void	create_add_new_node(char *key, char *value, t_env **env);
+void	print_export_list(t_env *export_list);
+void	ft_swap(t_env *i, t_env *j);
+void	sort_list(t_env **export_list);
+
 // ! ----------------------- SIGNALS --------------------------
 
 #include "expansion.h"

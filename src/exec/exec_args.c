@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 13:23:05 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ int validate_command(t_ast *cmd_node)
 	if (!cmd_node->args[0])
 		return (0);
 	if (cmd_node->args[0][0] == '\0')
-	{
-		ft_putendl_fd(": command not found", STDERR_FILENO);
-		return (0);
-	}
+		return (-1);
 	return (1);
 }

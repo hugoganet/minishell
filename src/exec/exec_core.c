@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 13:22:24 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,16 @@
 int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 {
 	int heredoc_status;
+	int validation_result;
 
 	cmd_node = find_cmd_node(ast_root);
 	heredoc_status = process_heredocs(ast_root, shell);
 	if (heredoc_status == 130)
 		return (130);
-	if (!validate_command(cmd_node))
+	validation_result = validate_command(cmd_node);
+	if (validation_result == -1)
+		return (0); // Commande vide : retourner 0 comme Bash
+	if (!validation_result)
 		return (127);
 	if (is_builtin(cmd_node))
 		return (builtin_exec(cmd_node, shell));

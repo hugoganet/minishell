@@ -93,6 +93,7 @@ int is_heredoc_delimiter_quoted(const char *delimiter);
 
 char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell);
 char *clean_heredoc_delimiter(const char *delimiter);
+char *expand_and_clean_delimiter(const char *delimiter, t_shell *shell);
 
 // !===========================================================================
 // !                           HEREDOC_SIGNALS.C                             =

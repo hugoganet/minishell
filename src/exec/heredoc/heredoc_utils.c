@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:54:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 16:33:06 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,28 +79,30 @@ void close_pipe_fds(int pipefd[2])
 }
 
 /**
- * @brief Détermine si le délimiteur heredoc est quoté.
+ * @brief Détermine si le délimiteur heredoc contient des quotes.
  *
  * Analyse le délimiteur pour détecter :
- * - <<EOF    → pas de quotes (expansion activée)
- * - <<'EOF'  → quotes simples (expansion désactivée)
- * - <<"EOF"  → quotes doubles (expansion désactivée)
+ * - <<EOF      → pas de quotes (expansion activée)
+ * - <<'EOF'    → quotes simples (expansion désactivée)
+ * - <<"EOF"    → quotes doubles (expansion désactivée)
+ * - <<ho"la"   → contient des quotes (expansion désactivée)
+ * - <<h'ol'a   → contient des quotes (expansion désactivée)
  *
- * @param delimiter Le délimiteur original (ex: "EOF", "'EOF'", "\"EOF\"")
- * @return 1 si le délimiteur est quoté (expansion désactivée), 0 sinon
+ * @param delimiter Le délimiteur original (ex: "EOF", "'EOF'", "ho\"la\"")
+ * @return 1 si le délimiteur contient des quotes (expansion désactivée), 0 sinon
  */
 int is_heredoc_delimiter_quoted(const char *delimiter)
 {
-	int len;
+	int i;
 
 	if (!delimiter)
 		return (0);
-	len = ft_strlen(delimiter);
-	if (len < 2)
-		return (0);
-	if (delimiter[0] == '\'' && delimiter[len - 1] == '\'')
-		return (1);
-	if (delimiter[0] == '"' && delimiter[len - 1] == '"')
-		return (1);
+	i = 0;
+	while (delimiter[i])
+	{
+		if (delimiter[i] == '\'' || delimiter[i] == '"')
+			return (1);
+		i++;
+	}
 	return (0);
 }

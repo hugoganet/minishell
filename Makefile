@@ -44,14 +44,18 @@ SRC = 	main.c \
 		env/env.c \
 		env/env_utils.c \
 		env/var_utils.c \
-		exec/exec_cmd.c \
-		exec/resolve_command_path.c \
-		exec/pipe.c \
+		exec/exec_core.c \
+		exec/exec_command.c \
+		exec/exec_args.c \
+		exec/exec_free.c \
+		exec/path_resolution.c \
+		exec/pipe_execution.c \
 		exec/redirection.c \
-		exec/heredoc/heredoc_expansion_utils.c \
+		exec/exec_utils.c \
+		exec/heredoc/heredoc_core.c \
 		exec/heredoc/heredoc_utils.c \
-		exec/heredoc/handle_heredoc.c \
-		exec/heredoc/heredoc_signal_utils.c \
+		exec/heredoc/heredoc_expansion.c \
+		exec/heredoc/heredoc_signals.c \
 		signals/signals.c \
 		built-in/builtin_exec.c\
 		built-in/cd.c\

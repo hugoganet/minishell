@@ -1,43 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_expansion_utils.c                          :+:      :+:    :+:   */
+/*   heredoc_expansion.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:57:18 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 11:14:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Détermine si le délimiteur heredoc est quoté.
- *
- * Analyse le délimiteur pour détecter :
- * - <<EOF    → pas de quotes (expansion activée)
- * - <<'EOF'  → quotes simples (expansion désactivée)
- * - <<"EOF"  → quotes doubles (expansion désactivée)
- *
- * @param delimiter Le délimiteur original (ex: "EOF", "'EOF'", "\"EOF\"")
- * @return 1 si le délimiteur est quoté (expansion désactivée), 0 sinon
- */
-int is_heredoc_delimiter_quoted(const char *delimiter)
-{
-	int len;
-
-	if (!delimiter)
-		return (0);
-	len = ft_strlen(delimiter);
-	if (len < 2)
-		return (0);
-	if (delimiter[0] == '\'' && delimiter[len - 1] == '\'')
-		return (1);
-	if (delimiter[0] == '"' && delimiter[len - 1] == '"')
-		return (1);
-	return (0);
-}
+#include "exec.h"
 
 /**
  * @brief Expanse les variables dans une ligne de heredoc si nécessaire.

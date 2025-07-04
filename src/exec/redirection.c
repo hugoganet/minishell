@@ -6,11 +6,12 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:30:08 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 17:06:18 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "exec.h"
 
 /**
  * @brief Applique les redirections dans le processus parent.

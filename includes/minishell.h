@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/03 11:50:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 // ! ----------------------- VAR GLOBALE --------------
 
@@ -119,7 +120,7 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
-// Définition des couleurs ANSI
+// Définition des couleurs ANSI pour l'affiche de l'AST
 #define COLOR_CMD "\033[1;36m"	   // Cyan clair
 #define COLOR_ARG "\033[1;34m"	   // Bleu
 #define COLOR_PIPE "\033[1;32m"	   // Vert
@@ -162,22 +163,16 @@ void pretty_print_ast(t_ast *node, int depth, const char *label);
 const char *token_type_str(t_token_type type);
 const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);
-int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
-t_ast *find_cmd_node(t_ast *node);
 void print_ast_cmd_node(char **argv);
 void free_split(char **split);
 char *get_env_value(t_env *env, const char *key);
 char **env_to_char_array(t_env *env);
-char *resolve_command_path(char *cmd_name, t_env *env);
 int ft_strcmp(char *s1, const char *s2);
 void free_ast(t_ast *node);
-int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell);
 void free_env_list(t_env *env);
 void cleanup_shell(t_shell *shell);
 void print_env_list(t_env *env);
-int setup_redirections(t_ast *node);
 t_env *create_env_pair(const char *key, const char *value);
-int handle_heredoc(char *token_str, t_shell *shell);
 int builtin_exec(t_ast *node, t_shell *data);
 int is_builtin(t_ast *node);
 int ft_cd(t_ast *node, t_shell *data);
@@ -187,28 +182,13 @@ int ft_pwd();
 int ft_unset(t_ast *node, t_shell *data);
 int ft_exit(t_ast *node, t_shell *data);
 int ft_export(t_ast *node, t_shell *data);
-int apply_parent_redirections(t_ast *node, t_shell *shell);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 bool is_token_delim(char c);
 void sort_list(t_env **export_list);
-char *remove_quotes(char *str);
-
-// ! ----------------------- HEREDOC --------------------------
-// Heredoc utilities
-int init_heredoc_pipe(int pipefd[2]);
-int validate_heredoc_token(char *token_str, int pipefd[2]);
-char *clean_heredoc_delimiter(const char *delimiter);
-int is_heredoc_delimiter_quoted(const char *delimiter);
-int is_delimiter_line(char *line, char *delimiter_clean);
-// Set signal handler for heredoc
-void set_heredoc_sigint(struct sigaction *sa_old);
-// Restore original signal handler after heredoc
-void restore_sigint(const struct sigaction *sa_old);
-// Close pipe file descriptors
-void close_pipe_fds(int pipefd[2]);
-char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell);
+// ! ----------------------- SIGNALS --------------------------
 
 #include "expansion.h"
+#include "exec.h"
 
 #endif

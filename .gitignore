@@ -20,3 +20,5 @@ project_structure_miniShell.txt
 minishell_project_structure_goal.txt
 
 test/logs
+test/log
+test/file

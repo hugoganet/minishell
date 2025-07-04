@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:59:32 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/02 11:30:40 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/04 11:02:52 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_cd(t_ast *node, t_shell *data)
 		return (1);
 	}
 	update_env(&data->env_list, "OLDPWD", oldpwd);
-	update_env(&data->export_list, "OLPWD", oldpwd);
+	update_env(&data->export_list, "OLDPWD", oldpwd);
 	update_env(&data->env_list, "PWD", newpwd);
 	update_env(&data->export_list, "PWD", newpwd);
 	free(oldpwd);

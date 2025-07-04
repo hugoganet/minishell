@@ -6,35 +6,12 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 11:44:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 16:04:51 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Copie une chaîne source vers une destination.
- *
- * Cette fonction copie caractère par caractère la chaîne source vers
- * la destination et termine par un caractère nul.
- *
- * @param dest La chaîne de destination (doit être allouée)
- * @param src La chaîne source à copier
- * @return La chaîne de destination
- */
-char *ft_strcpy(char *dest, char *src)
-{
-	int i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
 
 /**
  * @brief Incrémente la variable SHLVL dans l'environnement.

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/18 19:09:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 23:03:25 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static t_env *init_minimal_env(void)
 	char cwd[PATH_MAX];
 
 	// Crée SHLVL=1
-	head = create_env_pair("SHLVL", "1");
+	head = create_env_pair("SHLVL", "0");
 	if (!head)
 		return (NULL);
 	// Récupère le répertoire courant pour initialiser PWD

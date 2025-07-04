@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:49:20 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 16:58:04 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/03 09:33:10 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,37 +54,28 @@ static void free_child_exec(char *path, char **envp, t_shell *shell)
 	cleanup_shell(shell);
 }
 
-/**
- * @brief Exécute une commande dans un processus enfant.
- *
- * - Applique les redirections
- * - Résout le path de la commande
- * - Convertit l'env en tableau char **
- * - Lance execve
- *
- * @param argv Tableau d'arguments
- * @param env Liste chaînée de l'environnement
- * @param ast Arbre AST courant (pour les redirections)
- * @param shell Structure principale du shell (pour cleanup)
- */
 static void run_child_process(char **argv, t_env *env,
 							  t_ast *ast, t_shell *shell)
 {
 	char *path;
 	char **envp;
 
-	// Active les signaux par défaut dans le processus enfant
 	reset_signals_in_child();
-	// Si le nœud actuel est un heredoc, on applique la redirection stdin
-	if (ast->type == HEREDOC)
-		handle_heredoc(ast->str, shell);
-	// Applique toutes les autres redirections (> >> <)
+
+	// Si un heredoc a été traité, on redirige l'entrée standard
+	if (shell->heredoc_fd != -1)
+	{
+		if (dup2(shell->heredoc_fd, STDIN_FILENO) == -1)
+			perror("minishell: dup2 heredoc");
+		close(shell->heredoc_fd);
+		shell->heredoc_fd = -1;
+	}
+
 	if (setup_redirections(ast) != 0)
 	{
 		cleanup_shell(shell);
 		exit(1);
 	}
-	// Résout le chemin absolu vers l'exécutable
 	path = resolve_command_path(argv[0], env);
 	if (!path)
 	{
@@ -94,8 +85,6 @@ static void run_child_process(char **argv, t_env *env,
 		cleanup_shell(shell);
 		exit(127);
 	}
-
-	// Construit le tableau d'environnement (char **)
 	envp = env_to_char_array(env);
 	if (!envp)
 	{
@@ -103,8 +92,6 @@ static void run_child_process(char **argv, t_env *env,
 		cleanup_shell(shell);
 		exit(1);
 	}
-
-	// Exécute la commande avec execve
 	if (execve(path, argv, envp) == -1)
 	{
 		perror("minishell: execve");
@@ -159,32 +146,54 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 
 	// Recherche du vrai noeud CMD à exécuter
 	cmd_node = find_cmd_node(ast_root);
+
+	// --- Traiter tous les heredocs AVANT toute exécution ---
+	t_ast *tmp = ast_root;
+	int heredoc_status = 0;
+	while (tmp)
+	{
+		if (tmp->type == HEREDOC)
+		{
+			heredoc_status = handle_heredoc(tmp->str, shell);
+			if (heredoc_status == 130) // SIGINT reçu pendant heredoc
+			{
+				if (shell->heredoc_fd != -1)
+				{
+					close(shell->heredoc_fd);
+					shell->heredoc_fd = -1;
+				}
+				return (130);
+			}
+		}
+		tmp = tmp->right;
+	}
+	// ------------------------------------------------------
+
+	// Cas heredoc seul : pas de commande à exécuter
 	if (!cmd_node || !cmd_node->args || !cmd_node->args[0])
-		return (1);
+		return (0);
 	if (is_builtin(cmd_node))
 		return (builtin_exec(cmd_node, shell));
 	else
 	{
 		argv = cmd_node->args;
-
-		// Fork du processus
 		pid = fork();
 		if (pid < 0)
 		{
 			perror("minishell: fork");
 			return (1);
 		}
-		// Enfant : exécute la commande
 		if (pid == 0)
 			run_child_process(argv, env, ast_root, shell);
-		// Parent : ignore temporairement SIGINT et SIGQUIT
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		// Attend la fin du processus enfant
 		waitpid(pid, &status, 0);
-		// Réactive les signaux du shell (readline)
 		init_signals();
-		// Gère le code de retour du processus
+		if (shell->heredoc_fd != -1)
+		{
+			close(shell->heredoc_fd);
+			shell->heredoc_fd = -1;
+		}
 		return (handle_child_status(status));
 	}
 }

@@ -6,37 +6,43 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/29 16:58:01 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "syntax.h"
 
 /**
  * @brief Crée un nouveau token avec sa valeur et son type.
  *
+ * Alloue la mémoire pour un nouveau token et initialise ses champs.
+ * Le pointeur 'next' est initialisé à NULL.
+ *
  * @param str Le texte du token
- * @param type  Le type (enum)
- * @return t_token* Le pointeur vers le nouveau token
+ * @param type Le type (enum)
+ * @return t_token* Le pointeur vers le nouveau token, ou NULL en cas d'erreur
  */
 t_token *token_new(char *str, t_token_type type)
 {
-	t_token *token; // Pointeur vers le token
+	t_token *token;
 
-	token = malloc(sizeof(t_token)); // Allocation de mémoire pour le token
+	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->str = str;	// Assigner la valeur du token
-	token->type = type; // Assigner le type du token
-	token->next = NULL; // Initialiser le pointeur suivant à NULL
+	token->str = str;
+	token->type = type;
+	token->next = NULL;
 	return (token);
 }
 
 /**
  * @brief Ajoute un token à la fin de la liste.
  *
- * @param head Début de la liste
- * @param last Dernier élément actuel
+ * Gère l'ajout d'un nouveau token à la fin d'une liste chaînée.
+ * Met à jour les pointeurs de tête et de fin de liste.
+ *
+ * @param head Pointeur vers le début de la liste
+ * @param last Pointeur vers le dernier élément actuel
  * @param new Nouveau token à ajouter
  */
 void append_token(t_token **head, t_token **last, t_token *new)

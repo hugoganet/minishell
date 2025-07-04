@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 16:33:06 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ int process_heredocs(t_ast *ast_root, t_shell *shell)
 	{
 		if (tmp->type == HEREDOC)
 		{
+			// Fermer l'ancien heredoc_fd s'il existe avant d'en créer un nouveau
+			if (shell->heredoc_fd != -1)
+			{
+				close(shell->heredoc_fd);
+				shell->heredoc_fd = -1;
+			}
 			heredoc_status = handle_heredoc(tmp->str, shell);
 			if (heredoc_status == 130)
 			{
@@ -102,7 +108,7 @@ static int process_heredoc_input_line(char *line, char *delimiter_clean,
  * @param expand_enabled 1 si l'expansion est activée, 0 sinon
  * @param shell Les données du shell
  * @param pipefd Descripteur de pipe en écriture
- * @return 1 si lecture normale, 0 si interrompue par signal
+ * @return 1 si lecture normale, 0 si interrompue par signal ou EOF
  */
 static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
 							  t_shell *shell, int pipefd)
@@ -112,13 +118,20 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
 
 	while (1)
 	{
+		printf("heredoc> ");
+		fflush(stdout); // Assure que le prompt est affiché avant de lire
 		line = get_next_line(STDIN_FILENO);
+		// Vérifier signal d'interruption
 		if (g_signal == SIGINT)
 		{
 			if (line)
 				free(line);
-			return (0); // Interruption par signal
+			printf("\n"); // Passer à la ligne après l'interruption
+			return (0);	  // Interruption par signal
 		}
+		// Vérifier EOF (Ctrl+D)
+		if (!line)
+			return (0); // EOF atteint
 		result = process_heredoc_input_line(line, delimiter_clean,
 											expand_enabled, shell, pipefd);
 		if (result <= 0)
@@ -146,7 +159,7 @@ int handle_heredoc(char *token_str, t_shell *shell)
 	set_heredoc_sigint(&sa_old);
 	if (init_heredoc_pipe(pipefd) != 0 || validate_heredoc_token(token_str, pipefd) != 0)
 		return (restore_sigint(&sa_old), 1);
-	delimiter_clean = clean_heredoc_delimiter(token_str + 2);
+	delimiter_clean = expand_and_clean_delimiter(token_str + 2, shell);
 	if (!delimiter_clean)
 		return (close_pipe_fds(pipefd), restore_sigint(&sa_old), 1);
 	read_result = read_heredoc_lines(delimiter_clean, !is_heredoc_delimiter_quoted(token_str + 2), shell, pipefd[1]);
@@ -154,7 +167,11 @@ int handle_heredoc(char *token_str, t_shell *shell)
 	close(pipefd[1]);
 	restore_sigint(&sa_old);
 	if (read_result == 0)
-		return (close(pipefd[0]), g_signal = 0, 130);
+	{
+		close(pipefd[0]);
+		g_signal = 0;
+		return (130);
+	}
 	shell->heredoc_fd = pipefd[0];
 	return (0);
 }

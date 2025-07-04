@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:57:18 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 16:33:06 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell)
 }
 
 /**
- * @brief Nettoie le délimiteur en retirant les quotes si présentes.
+ * @brief Nettoie le délimiteur en retirant toutes les quotes.
  *
  * Transforme :
  * - 'EOF' → EOF
  * - "EOF" → EOF
+ * - ho"la" → hola
+ * - h'ol'a → hola
  * - EOF   → EOF (inchangé)
  *
  * @param delimiter Le délimiteur original
@@ -50,12 +52,58 @@ char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell)
  */
 char *clean_heredoc_delimiter(const char *delimiter)
 {
-	int len;
+	char *cleaned;
+	int i, j;
 
 	if (!delimiter)
 		return (NULL);
-	len = ft_strlen(delimiter);
-	if (is_heredoc_delimiter_quoted(delimiter))
-		return (ft_substr(delimiter, 1, len - 2));
-	return (ft_strdup(delimiter));
+	cleaned = malloc(ft_strlen(delimiter) + 1);
+	if (!cleaned)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (delimiter[i])
+	{
+		if (delimiter[i] != '\'' && delimiter[i] != '"')
+			cleaned[j++] = delimiter[i];
+		i++;
+	}
+	cleaned[j] = '\0';
+	return (cleaned);
+}
+
+/**
+ * @brief Expanse les variables dans le délimiteur puis nettoie les guillemets.
+ *
+ * Cette fonction traite le délimiteur en deux étapes :
+ * 1. Expansion des variables ($VAR, $"VAR", etc.)
+ * 2. Nettoyage des guillemets
+ *
+ * Exemples :
+ * - $"hola"$"b" → "" (si les variables n'existent pas)
+ * - $HOME → /home/user (puis nettoie les guillemets s'il y en a)
+ * - "EOF" → EOF
+ *
+ * @param delimiter Le délimiteur original
+ * @param shell Les données du shell pour l'expansion
+ * @return Le délimiteur expansé et nettoyé
+ */
+char *expand_and_clean_delimiter(const char *delimiter, t_shell *shell)
+{
+	char *expanded;
+	char *cleaned;
+
+	if (!delimiter)
+		return (NULL);
+	
+	// Étape 1 : Expanser les variables dans le délimiteur
+	expanded = expand_variables((char *)delimiter, shell->env_list, shell->last_exit_status);
+	if (!expanded)
+		return (NULL);
+	
+	// Étape 2 : Nettoyer les guillemets du délimiteur expansé
+	cleaned = clean_heredoc_delimiter(expanded);
+	free(expanded);
+	
+	return (cleaned);
 }

@@ -638,13 +638,13 @@ launch_test()
 		# Valgrind est utilisé pour détecter les fuites mémoire
 		
 		# Vérifier que l'exécutable existe
-		if [ ! -f "./Minishell" ]; then
-			echo "ERREUR: L'exécutable ./Minishell n'existe pas !"
+		if [ ! -f "./minishell" ]; then
+			echo "ERREUR: L'exécutable ./minishell n'existe pas !"
 			echo "Assurez-vous que la compilation a réussi avec 'make'"
 			return 1
 		fi
 		
-		MINISHELL="${VALGRIND} ${MEMCHECK} ${LOG_VALGRIND}${LOG_FILE}${ID}.vlgrnd ./Minishell"
+		MINISHELL="${VALGRIND} ${MEMCHECK} ${LOG_VALGRIND}${LOG_FILE}${ID}.vlgrnd ./minishell"
 
 		# EXÉCUTION DU TEST AVEC BASH (RÉFÉRENCE)
 		bash --posix -c	"${TEST[i]}"				> ${OUTFILE_BASH} 2>&1

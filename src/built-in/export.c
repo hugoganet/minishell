@@ -6,46 +6,13 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 18:31:00 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:47:03 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// /* Exporter des variables
-// Definir une variable qui ne serait dispo que dans shell courant ex : VAR=25
-// Export va l'integrer aux variables d'env qui se trouve dans **env
-// */
-
-void	add_new_node(t_env *new_node, t_env **env)
-{
-	t_env	*curr;
-
-	if (!*env)
-		*env = new_node;
-	else
-	{
-		curr = *env;
-		while(curr->next)
-			curr = curr->next;
-		curr->next = new_node;
-	}
-}
-
-void	create_add_new_node(char *key, char *value, t_env **env)
-{
-	t_env	*new_node;
-	
-	new_node = ft_calloc(1, sizeof(t_env));
-	if (!new_node)
-		return ;
-	new_node->key = ft_strdup(key);
-	new_node->value = value ? ft_strdup(value) : NULL;
-	new_node->next = NULL;
-	add_new_node(new_node, env);
-}
-
-int	update_env_value(t_env *env, char *key, char *value)
+int	update_existing_env_value(t_env *env, char *key, char *value)
 {
 	while (env)
 	{
@@ -60,141 +27,61 @@ int	update_env_value(t_env *env, char *key, char *value)
 	return (0);
 }
 
-void	print_export_list(t_env *export_list)
+static void	upadate_or_add_env(t_shell *data, char *key, char *value)
 {
-	t_env	*curr;
-
-	curr = export_list;
-	while(curr)
+	if (!update_existing_env_value(data->env_list, key, value)
+		&& ft_is_valid(key))
+		create_add_new_node(key, value, &data->env_list);
+	if (!update_existing_env_value(data->export_list, key, value)
+		&& ft_is_valid(key))
 	{
-		printf("export ");
-		if (curr->value == NULL)
-			printf("%s\n", curr->key);
-		else
-		{
-			printf("%s", curr->key);
-			printf("=");
-        	printf("\"%s\"\n", curr->value);
-		}
-        curr = curr->next;
+		create_add_new_node(key, value, &data->export_list);
+		sort_list(&data->export_list);
 	}
 }
 
-void	ft_swap(t_env *i, t_env *j)
+static int	export_equal(char *arg, t_shell *data)
 {
-	char	*tmp_key;
-	char	*tmp_value;
+	int		j;
+	char	*key;
+	char	*value;
 
-	tmp_key = i->key;
-	i->key = j->key;
-	j->key = tmp_key;
-	tmp_value = i->value;
-	i->value = j->value;
-	j->value = tmp_value;
-}
-
-void	sort_list(t_env **export_list)
-{
-	t_env	*i;
-	t_env	*j;
-	
-	i = *export_list;
-	if(!export_list)
-		return;
-	while (i)
+	j = 0;
+	while (arg[j] && arg[j] != '=')
+				j++;
+	key = ft_substr(arg, 0, j);
+	if (!ft_is_valid(key))
 	{
-		j= i->next;
-		while (j)
-		{
-			if (ft_strcmp(i->key, j->key) > 0)
-			{
-				ft_swap(i, j);
-				continue;
-			}
-			j = j->next;
-		}
-		i = i->next;
+		ft_putstr_fd("Minishell: export: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(" not a valid identifier\n", 2);
+		free(key);
+		return (1);
 	}
+	value = ft_substr(arg, j + 1, ft_strlen(arg) - (j + 1));
+	upadate_or_add_env(data, key, value);
+	free(key);
+	free(value);
+	return (0);
 }
 
 int	ft_export(t_ast *node, t_shell *data)
 {
-	int	i;
-	int	j;
-	char	*key;
-	char	*value;
-	
+	int		i;
+
 	i = 1;
 	if (!node->args[1])
 		print_export_list(data->export_list);
-	while(node->args[i])
-	{
-		j = 0;
+	while (node->args[i])
+	{	
 		if (!ft_strchr(node->args[i], '=') && ft_is_valid(node->args[i]))
 		{	
 			create_add_new_node(node->args[i], NULL, &data->export_list);
 			sort_list(&data->export_list);
 		}
-		else
-		{
-			while (node->args[i][j] && node->args[i][j] != '=')
-				j++;
-			key = ft_substr(node->args[i], 0, j);
-			if(!ft_is_valid(key))
-			{
-				ft_putstr_fd("Minishell: export: ", 2);
-				ft_putstr_fd(node->args[i], 2);
-				ft_putstr_fd(" not a valid identifier\n", 2);
-				return (1);
-			}
-			value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
-			if (!update_env_value(data->env_list, key, value) && !update_env_value(data->export_list, key, value)
-				&& ft_is_valid(key))
-			{
-				create_add_new_node(key, value, &data->env_list);
-				create_add_new_node(key, value, &data->export_list);
-				sort_list(&data->export_list);
-			}
-			free(key);
-			free(value);
-		}
+		else if (export_equal(node->args[i], data))
+			return (1);
 		i++;
 	}
 	return (0);
 }
-
-//ANCIENNE FONCTION
-// int	ft_export(t_ast *node, t_shell *data)
-// {
-// 	int	i;
-// 	int	j;
-// 	char	*key;
-// 	char	*value;
-	
-// 	i = 1;
-// 	if (!node->args[1])
-// 		print_export_list(export_list);
-// 	while(node->args[i])
-// 	{
-// 		j = 0;
-// 		if (!ft_strchr(node->args[i], '='))
-// 			return (1);
-// 		while (node->args[i][j] && node->args[i][j] != '=')
-// 			j++;
-// 		key = ft_substr(node->args[i], 0, j);
-// 		if(!ft_is_valid(key))
-// 		{
-// 			ft_putstr_fd("Minishell: export: ", 2);
-// 			ft_putstr_fd(node->args[i], 2);
-// 			ft_putstr_fd(" not a valid identifier\n", 2);
-// 			return (1);
-// 		}
-// 		value = ft_substr(node->args[i], j + 1, ft_strlen(node->args[i]) - (j + 1));
-// 		if (!update_env_value(data->env_list, key, value) && ft_is_valid(key))
-// 			create_add_new_node(key, value, &data->env_list);
-// 		free(key);
-// 		free(value);
-// 		i++;
-// 	}
-// 	return (0);
-// }

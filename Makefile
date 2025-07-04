@@ -23,34 +23,48 @@ SRC = 	main.c \
 		utils/print_env_list.c \
 		utils/print_ast.c \
 		utils/cleanup.c \
+		utils/export_utils.c \
 		input/loop.c \
 		input/prompt.c \
-		syntax/syntax_check.c \
+		syntax/validation/input_validation.c \
+		syntax/validation/pipe_validation.c \
+		syntax/validation/redirection_validation.c \
+		syntax/validation/parentheses_validation.c \
+		syntax/validation/braces_validation.c \
+		syntax/validation/validation.c \
+		syntax/tokenization/token_parsing.c \
+		syntax/tokenization/token_reading.c \
+		syntax/tokenization/tokenize_core.c \
+		syntax/tokenization/token_type_utils.c \
+		syntax/tokenization/token_validation.c \
+		syntax/tokenization/build_token_list.c \
+		syntax/parsing/refine_token_type.c \
+		syntax/parsing/logic_groups.c \
 		syntax/syntax_utils.c \
-		syntax/tokenize.c \
-		syntax/token_utils.c \
-		syntax/validation.c \
-		syntax/refine_token_type.c \
 		parsing/process_input.c \
-		syntax/build_token_list.c \
+		parsing/expansion/expansion.c \
+		parsing/expansion/expansion_ast.c \
+		parsing/expansion/expansion_quotes.c \
+		parsing/expansion/expansion_specials.c \
+		parsing/expansion/expansion_utils.c \
 		ast/ast_builder.c \
 		ast/ast_executor.c \
 		env/init_env.c \
-		env/var_expand.c \
-		env/var_utils.c \
 		env/env.c \
 		env/env_utils.c \
-		env/copy_var_content.c \
-		env/find_var.c \
-		env/join_str.c \
-		env/quotes.c \
-		env/quote_utils.c \
-		env/var_special.c \
-		exec/exec_cmd.c \
-		exec/resolve_command_path.c \
-		exec/pipe.c \
+		env/var_utils.c \
+		exec/exec_core.c \
+		exec/exec_command.c \
+		exec/exec_args.c \
+		exec/exec_free.c \
+		exec/path_resolution.c \
+		exec/pipe_execution.c \
 		exec/redirection.c \
-		exec/heredoc.c \
+		exec/exec_utils.c \
+		exec/heredoc/heredoc_core.c \
+		exec/heredoc/heredoc_utils.c \
+		exec/heredoc/heredoc_expansion.c \
+		exec/heredoc/heredoc_signals.c \
 		signals/signals.c \
 		built-in/builtin_exec.c\
 		built-in/cd.c\
@@ -96,10 +110,14 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/syntax
 	mkdir -p $(OBJ_DIR)/ast
 	mkdir -p $(OBJ_DIR)/env
-	mkdir -p $(OBJ_DIR)/input
+	mkdir -p $(OBJ_DIR)/expansion
 	mkdir -p $(OBJ_DIR)/init
 	mkdir -p $(OBJ_DIR)/parsing
 	mkdir -p $(OBJ_DIR)/utils
+	mkdir -p $(OBJ_DIR)/exec
+	mkdir -p $(OBJ_DIR)/exec/heredoc
+	mkdir -p $(OBJ_DIR)/built-in
+	mkdir -p $(OBJ_DIR)/signals
 
 # Générer les librairies des sous-projets
 $(LIBFT):

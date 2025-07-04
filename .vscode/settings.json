@@ -2,7 +2,8 @@
 	"files.associations": {
 		"minishell.h": "c",
 		"fcntl.h": "c",
-		"wait.h": "c"
+		"wait.h": "c",
+		"expansion.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

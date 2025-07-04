@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:18:46 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/18 13:12:34 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/02 20:55:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,18 @@ static void set_echoctl_off(void)
 	// Cette ligne rend les modifications actives dans le terminal interactif du shell.
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
-
-/**
- * @brief Efface la ligne courante et repositionne readline.
- */
-static void clear_readline_line(void)
-{
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
 /**
  * @brief Handler pour SIGINT (Ctrl-C).
  *
- * Ne fait que : nouvelle ligne + signal à readline + set de g_signal.
+ * Affiche une nouvelle ligne et marque le signal reçu.
  */
 static void handle_sigint(int sig)
 {
+	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
-	g_signal = sig;
-	clear_readline_line();
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 /**
  * @brief Active les handlers pour le shell interactif (readline).

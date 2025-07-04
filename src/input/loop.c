@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 20:50:18 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/02 22:36:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void shell_loop(t_shell *shell)
 			cleanup_shell(shell);
 			exit(0);
 		}
+
 		// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
 		// l'entrée et on continue à la boucle.
 		// Sinon, on traite l'entrée.

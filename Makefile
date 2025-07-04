@@ -25,19 +25,27 @@ SRC = 	main.c \
 		utils/cleanup.c \
 		input/loop.c \
 		input/prompt.c \
-		syntax/syntax_check.c \
+		syntax/validation/input_validation.c \
+		syntax/validation/pipe_validation.c \
+		syntax/validation/redirection_validation.c \
+		syntax/validation/parentheses_validation.c \
+		syntax/validation/braces_validation.c \
+		syntax/validation/validation.c \
+		syntax/tokenization/token_parsing.c \
+		syntax/tokenization/token_reading.c \
+		syntax/tokenization/tokenize_core.c \
+		syntax/tokenization/token_type_utils.c \
+		syntax/tokenization/token_validation.c \
+		syntax/tokenization/build_token_list.c \
+		syntax/parsing/refine_token_type.c \
+		syntax/parsing/logic_groups.c \
 		syntax/syntax_utils.c \
-		syntax/tokenize.c \
-		syntax/token_utils.c \
-		syntax/validation.c \
-		syntax/refine_token_type.c \
 		parsing/process_input.c \
 		parsing/expansion/expansion.c \
 		parsing/expansion/expansion_ast.c \
 		parsing/expansion/expansion_quotes.c \
 		parsing/expansion/expansion_specials.c \
 		parsing/expansion/expansion_utils.c \
-		syntax/build_token_list.c \
 		ast/ast_builder.c \
 		ast/ast_executor.c \
 		env/init_env.c \

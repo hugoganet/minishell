@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,27 +136,21 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list);
 char **copy_env(char **envp);
 void free_env(char **env);
 char *prompt_readline(void);
-int is_line_empty(char *input);
-int has_unclosed_quotes(char *input);
-int has_invalid_pipes(char *input);
-int has_invalid_redirections(char *input);
-int has_unmatched_parentheses(char *input);
-int has_unclosed_braces(char *input);
-int is_syntax_valid(char *input, t_shell *shell);
-int is_parenthesis_empty(char *input, int i);
-void update_quote_state(char *quote_state, char c);
 void shell_loop(t_shell *shell);
-t_token *tokenize(char *input);
-t_token *token_new(char *str, t_token_type type);
-t_token_type get_token_type(char *str);
 void process_input(char *input, t_shell *shell);
 void free_token_list(t_token *head);
 void print_token_list(t_token *tokens, char *title);
-bool is_redirection(t_token_type type);
-void refine_token_types(t_token *head);
-char *parse_quoted_token(char *input, int *i);
-void append_token(t_token **head, t_token **last, t_token *new);
-int validate_token_sequence(t_token *head);
+t_env *init_env_list(char **envp);
+t_ast *build_ast(t_token *node);
+void pretty_print_ast(t_ast *node, int depth, const char *label);
+const char *token_type_str(t_token_type type);
+const char *token_color(t_token_type type);
+int execute_ast(t_ast *node, t_env *env, t_shell *shell);
+void print_ast_cmd_node(char **argv);
+void free_split(char **split);
+char *get_env_value(t_env *env, const char *key);
+char **env_to_char_array(t_env *env);
+int ft_strcmp(char *s1, const char *s2);
 t_env *init_env_list(char **envp);
 t_ast *build_ast(t_token *node);
 void pretty_print_ast(t_ast *node, int depth, const char *label);
@@ -184,11 +178,11 @@ int ft_exit(t_ast *node, t_shell *data);
 int ft_export(t_ast *node, t_shell *data);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
-bool is_token_delim(char c);
 void sort_list(t_env **export_list);
 // ! ----------------------- SIGNALS --------------------------
 
 #include "expansion.h"
 #include "exec.h"
+#include "syntax.h"
 
 #endif

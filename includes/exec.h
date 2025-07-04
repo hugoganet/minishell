@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 09:15:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int execute_fork_process(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *
 void filter_empty_args(char **args);
 int validate_command(t_ast *cmd_node);
 
-// !==========================================================================
+// !===========================================================================
 // !                             EXEC_FREE.C                                 =
-// !==========================================================================
+// !===========================================================================
 
 void free_child_exec(char *path, char **envp, t_shell *shell);
 void free_string_array(char **arr);

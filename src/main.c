@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/01 20:49:57 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/03 19:07:58 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,40 +52,40 @@ char *prompt_readline_tester(void)
 	return (input);
 }
 
- void shell_loop_tester(t_shell *shell)
+void shell_loop_tester(t_shell *shell)
 {
 	char *input;
 
-		// Affiche le prompt et lit l'entrée utilisateur
-		input = prompt_readline_tester();
-		if (!input)
-		{
-			// Si l'entrée est NULL (Ctrl+D) ou erreur de lecture on sort du loop
-			cleanup_shell(shell);
-			exit(0);
-		}
-		// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
-		// l'entrée et on continue à la boucle.
-		// Sinon, on traite l'entrée.
-		if (!is_line_empty(input))
-		{
-			if (!is_syntax_valid(input, shell))
-				process_input(input, shell);
-		}
-		free(input);
-		// On nettoie les ressources allouées par le shell après chaque entrée.
-		free_ast(shell->ast);
-		shell->ast = NULL;
-		free_token_list(shell->tokens);
-		shell->tokens = NULL;
-		// Pas de cleanup_shell() ici car on garde l'env entre les commandes
+	// Affiche le prompt et lit l'entrée utilisateur
+	input = prompt_readline_tester();
+	if (!input)
+	{
+		// Si l'entrée est NULL (Ctrl+D) ou erreur de lecture on sort du loop
+		cleanup_shell(shell);
+		exit(0);
+	}
+	// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
+	// l'entrée et on continue à la boucle.
+	// Sinon, on traite l'entrée.
+	if (!is_line_empty(input))
+	{
+		if (!is_syntax_valid(input, shell))
+			process_input(input, shell);
+	}
+	free(input);
+	// On nettoie les ressources allouées par le shell après chaque entrée.
+	free_ast(shell->ast);
+	shell->ast = NULL;
+	free_token_list(shell->tokens);
+	shell->tokens = NULL;
+	// Pas de cleanup_shell() ici car on garde l'env entre les commandes
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	t_shell	shell; // Structure du shell
-	t_env	*env_list; // Liste chaînée d'environnement
-	char	*input;
+	t_shell shell;	 // Structure du shell
+	t_env *env_list; // Liste chaînée d'environnement
+	char *input;
 
 	(void)argc;
 	(void)argv;
@@ -116,15 +116,18 @@ int main(int argc, char **argv, char **envp)
 		shell.tokens = NULL;
 	}
 	else if (!isatty(STDIN_FILENO))
-        shell_loop_tester(&shell);
+		shell_loop_tester(&shell);
 	else
 		shell_loop(&shell);
-
+	if (argc > 1)
+	{
+		cleanup_shell(&shell);
+		return (shell.last_exit_status);
+	}
 	cleanup_shell(&shell);
 	return (0);
 }
 
- 
 /* int main(int argc, char **argv, char **envp)
 {
 	t_shell shell; // Structure du shell

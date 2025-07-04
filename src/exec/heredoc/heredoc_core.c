@@ -1,17 +1,65 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_heredoc.c                                   :+:      :+:    :+:   */
+/*   heredoc_core.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/03 09:58:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "exec.h"
 #include <signal.h>
+
+/**
+ * @brief Configure les redirections heredoc dans le processus enfant.
+ *
+ * @param shell Structure du shell contenant le fd heredoc
+ */
+void setup_heredoc_redirection(t_shell *shell)
+{
+	if (shell->heredoc_fd != -1)
+	{
+		if (dup2(shell->heredoc_fd, STDIN_FILENO) == -1)
+			perror("minishell: dup2 heredoc");
+		close(shell->heredoc_fd);
+		shell->heredoc_fd = -1;
+	}
+}
+
+/**
+ * @brief Traite tous les heredocs présents dans l'AST.
+ *
+ * @param ast_root Racine de l'AST
+ * @param shell Structure du shell
+ * @return Code de retour (130 si SIGINT, 0 sinon)
+ */
+int process_heredocs(t_ast *ast_root, t_shell *shell)
+{
+	t_ast *tmp;
+	int heredoc_status;
+
+	tmp = ast_root;
+	while (tmp)
+	{
+		if (tmp->type == HEREDOC)
+		{
+			heredoc_status = handle_heredoc(tmp->str, shell);
+			if (heredoc_status == 130)
+			{
+				if (shell->heredoc_fd != -1)
+					close(shell->heredoc_fd);
+				shell->heredoc_fd = -1;
+				return (130);
+			}
+		}
+		tmp = tmp->right;
+	}
+	return (0);
+}
 
 /**
  * @brief Traite une ligne du heredoc.
@@ -86,7 +134,7 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
  * dans shell->heredoc_fd pour une redirection future.
  *
  * @param token_str Le token complet du heredoc (ex: "<<EOF", "<<'END'")
- * @param shell Structure principale du shell contenant les variables d’environnement
+ * @param shell Structure principale du shell contenant les variables d'environnement
  * @return 0 si succès, 130 si interruption SIGINT, 1 si erreur
  */
 int handle_heredoc(char *token_str, t_shell *shell)

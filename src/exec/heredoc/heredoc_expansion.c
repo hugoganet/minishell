@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:57:18 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 18:12:36 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/04 18:35:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,15 @@ char *expand_and_clean_delimiter(const char *delimiter, t_shell *shell)
 
 	if (!delimiter)
 		return (NULL);
-	
+
 	// Étape 1 : Expanser les variables dans le délimiteur
 	expanded = expand_variables((char *)delimiter, shell->env_list, shell->last_exit_status);
 	if (!expanded)
 		return (NULL);
-	
+
 	// Étape 2 : Nettoyer les guillemets du délimiteur expansé
 	cleaned = clean_heredoc_delimiter(expanded);
 	free(expanded);
-	
+
 	return (cleaned);
 }

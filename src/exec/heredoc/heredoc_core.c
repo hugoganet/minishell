@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/05 19:24:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 19:42:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int process_heredoc_input_line(char *line, char *delimiter_clean,
 	if (is_delimiter_line(line, delimiter_clean))
 	{
 		free(line);
-		write(pipefd, "\n", 1);
 		return (0);
 	}
 	if (g_signal == SIGINT)

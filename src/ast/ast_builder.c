@@ -6,23 +6,13 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 14:37:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:27:18 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-int	token_priority(t_token_type type)
-{
-	if (type == PIPE)
-		return (1);
-	else if (is_redirection(type))
-		return (2);
-	else if (type == CMD)
-		return (3);
-	return (4);
-}
 
 void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le tab du noeud AST
 {
@@ -35,36 +25,47 @@ void	fill_args(t_token *node, t_ast *new_ast) // Remplir avec les arguments le t
 	ptr = node;
 	ptr = ptr->next;
 	// On compte le nombre d'arguments (ARG) après le noeud CMD
-	while (ptr && ptr->type == ARG)
+	while (ptr && ptr->type != CMD && ptr->type != PIPE)
 	{
-		i++;
+		if (ptr && ptr->type == ARG)
+			i++;
 		ptr = ptr->next;
 	}
 	// On alloue un tableau de chaînes de caractères pour les arguments
 	// On ajoute 1 pour le CMD lui-même
-	new_ast->args = malloc((i + 2) * sizeof(char *));
+	new_ast->args = ft_calloc((i + 2), sizeof(char *));
 	if (!new_ast->args)
 		return ;
 	// On réinitialise le pointeur sur le token de départ (CMD)
 	ptr = node;
 	// On remplit le tableau avec les arguments
-	while (j < (i + 1))
+	new_ast->args[j] = ft_strdup(ptr->str);
+	j++;
+	ptr = ptr->next;
+	while (ptr && ptr->type != CMD && ptr->type != PIPE)
 	{
-		// 
-		new_ast->args[j] = ft_strdup(ptr->str);
-		if (!new_ast->args[j])
+		while (j < (i + 1))
 		{
-			while (--j >= 0)
-				free(new_ast->args[j]);
-			free(new_ast->args);
-			new_ast->args = NULL;
-			return ;
+			if (ptr->type == ARG)
+			{
+				new_ast->args[j] = ft_strdup(ptr->str);
+				if (!new_ast->args[j])
+				{
+					while (--j >= 0)
+						free(new_ast->args[j]);
+					free(new_ast->args);
+					new_ast->args = NULL;
+					return ;
+				}
+				j++;
+			}
+			ptr = ptr->next;
 		}
-		j++;
 		ptr = ptr->next;
 	}
-	new_ast->args[j] = NULL;
+	new_ast->args[j] = NULL;	
 }
+
 
 t_ast	*cmd_new_ast_node(t_token *node)
 {
@@ -104,6 +105,17 @@ t_ast	*new_ast_node(t_token *node)
 	new_ast->type = node->type;
 	new_ast->str = node->str;
 	return (new_ast);
+}
+
+int	token_priority(t_token_type type)
+{
+	if (type == PIPE)
+		return (1);
+	else if (is_redirection(type))
+		return (2);
+	else if (type == CMD)
+		return (3);
+	return (4);
 }
 
 /*Fonction pour trouver sur quel token il faut creer un noeud d'ast en calculant leur priorite */

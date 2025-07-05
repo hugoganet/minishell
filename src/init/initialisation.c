@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/03 08:24:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 18:22:41 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 	shell->tokens = NULL;
 	shell->ast = NULL;
 	shell->last_exit_status = 0;
-	shell->heredoc_fd = -1; // Valeur par défaut pour le descripteur de fichier heredoc
+	shell->heredoc_fds = NULL;// Liste chaînée des descripteurs de fichier heredoc
 	// Copie de l'environnement dans la structure shell
 	shell->env = copy_env(envp);
 	if (!shell->env)

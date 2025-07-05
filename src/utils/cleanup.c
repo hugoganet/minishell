@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:25:16 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 19:35:46 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 19:00:08 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,6 @@ void cleanup_shell(t_shell *shell)
 		free_env_list(shell->export_list);
 		shell->export_list = NULL;
 	}
+	close_all_heredoc_fds(shell);
+	free_all_heredoc_fds(shell);
 }

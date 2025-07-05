@@ -65,6 +65,7 @@ SRC = 	main.c \
 		exec/heredoc/heredoc_utils.c \
 		exec/heredoc/heredoc_expansion.c \
 		exec/heredoc/heredoc_signals.c \
+		exec/heredoc/heredoc_fd_utils.c \
 		signals/signals.c \
 		built-in/builtin_exec.c\
 		built-in/cd.c\

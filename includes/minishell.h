@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/04 15:52:43 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:12:34 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ typedef struct s_env t_env;
 typedef struct s_ast t_ast;
 typedef struct s_token t_token;
 
+typedef struct s_heredoc_fd
+{
+	int fd;
+	struct s_heredoc_fd *next;
+} t_heredoc_fd;
+
 typedef struct s_shell
 {
 	char **env;
@@ -53,7 +59,7 @@ typedef struct s_shell
 	t_token *tokens;
 	t_ast *ast;
 	int last_exit_status;
-	int heredoc_fd;
+	t_heredoc_fd *heredoc_fds; // Liste chaînée des fd heredoc
 } t_shell;
 
 /**
@@ -179,11 +185,33 @@ int ft_export(t_ast *node, t_shell *data);
 int increment_shlvl(t_env *env_list);
 int ft_is_valid(char *args);
 void sort_list(t_env **export_list);
-void	add_new_node(t_env *new_node, t_env **env);
-void	create_add_new_node(char *key, char *value, t_env **env);
-void	print_export_list(t_env *export_list);
-void	ft_swap(t_env *i, t_env *j);
-void	sort_list(t_env **export_list);
+void add_new_node(t_env *new_node, t_env **env);
+void create_add_new_node(char *key, char *value, t_env **env);
+void print_export_list(t_env *export_list);
+void ft_swap(t_env *i, t_env *j);
+void sort_list(t_env **export_list);
+
+/**
+ * @brief Ajoute un fd de heredoc à la liste chaînée du shell.
+ *
+ * @param shell Pointeur vers la structure principale du shell
+ * @param fd    Descripteur de fichier à ajouter
+ */
+void add_heredoc_fd(t_shell *shell, int fd);
+
+/**
+ * @brief Ferme tous les descripteurs de heredoc présents dans la liste du shell.
+ *
+ * @param shell Pointeur vers la structure principale du shell
+ */
+void close_all_heredoc_fds(t_shell *shell);
+
+/**
+ * @brief Libère la mémoire de la liste chaînée des fd heredoc du shell.
+ *
+ * @param shell Pointeur vers la structure principale du shell
+ */
+void free_all_heredoc_fds(t_shell *shell);
 
 // ! ----------------------- SIGNALS --------------------------
 

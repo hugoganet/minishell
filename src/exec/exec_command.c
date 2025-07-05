@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 17:24:59 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:12:28 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,8 @@ int execute_fork_process(t_ast *cmd_node, t_env *env,
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	init_signals();
-	if (shell->heredoc_fd != -1)
-	{
-		close(shell->heredoc_fd);
-		shell->heredoc_fd = -1;
-	}
+	// Fermer tous les fd heredoc ouverts après l'exécution du process
+	close_all_heredoc_fds(shell);
+	free_all_heredoc_fds(shell);
 	return (handle_child_status(status));
 }

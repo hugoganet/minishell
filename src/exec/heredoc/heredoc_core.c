@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/05 17:49:40 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 19:24:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@
  */
 void setup_heredoc_redirection(t_shell *shell)
 {
-	if (shell->heredoc_fd != -1)
+	// Utilise le premier fd de la liste chaînée pour la redirection
+	if (shell->heredoc_fds && shell->heredoc_fds->fd != -1)
 	{
-		if (dup2(shell->heredoc_fd, STDIN_FILENO) == -1)
+		if (dup2(shell->heredoc_fds->fd, STDIN_FILENO) == -1)
 			perror("minishell: dup2 heredoc");
-		close(shell->heredoc_fd);
-		shell->heredoc_fd = -1;
+		close(shell->heredoc_fds->fd);
+		shell->heredoc_fds->fd = -1; // Marque comme fermé, la libération mémoire se fait ailleurs
 	}
 }
 
@@ -39,26 +40,18 @@ void setup_heredoc_redirection(t_shell *shell)
  */
 int process_heredocs(t_ast *ast_root, t_shell *shell)
 {
-	t_ast *tmp;
+	t_ast *tmp = ast_root;
 	int heredoc_status;
 
-	tmp = ast_root;
 	while (tmp)
 	{
 		if (tmp->type == HEREDOC)
 		{
-			// Fermer l'ancien heredoc_fd s'il existe avant d'en créer un nouveau
-			if (shell->heredoc_fd != -1)
-			{
-				close(shell->heredoc_fd);
-				shell->heredoc_fd = -1;
-			}
 			heredoc_status = handle_heredoc(tmp->str, shell);
 			if (heredoc_status == 130)
 			{
-				if (shell->heredoc_fd != -1)
-					close(shell->heredoc_fd);
-				shell->heredoc_fd = -1;
+				close_all_heredoc_fds(shell);
+				free_all_heredoc_fds(shell);
 				return (130);
 			}
 		}
@@ -141,7 +134,6 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
 		if (result <= 0)
 			return (result == 0);
 	}
-		
 }
 
 /**
@@ -180,6 +172,7 @@ int handle_heredoc(char *token_str, t_shell *shell)
 		return (130);
 	}
 	// Ce fd contient tout ce que l’utilisateur a tapé, prêt à être lu.
-	shell->heredoc_fd = pipefd[0];
+	add_heredoc_fd(shell, pipefd[0]);
+	// shell->heredoc_fd = pipefd[0]; // Ancien code, à retirer
 	return (0);
 }

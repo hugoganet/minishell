@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 19:35:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 17:49:40 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static int process_heredoc_input_line(char *line, char *delimiter_clean,
 	if (is_delimiter_line(line, delimiter_clean))
 	{
 		free(line);
+		write(pipefd, "\n", 1);
 		return (0);
 	}
 	if (g_signal == SIGINT)
@@ -118,7 +119,7 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
 
 	while (1)
 	{
-		printf("heredoc> ");
+		printf("> ");
 		fflush(stdout); // Assure que le prompt est affiché avant de lire
 		line = get_next_line(STDIN_FILENO);
 		// Vérifier signal d'interruption
@@ -126,17 +127,21 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
 		{
 			if (line)
 				free(line);
-			printf("\n"); // Passer à la ligne après l'interruption
-			return (0);	  // Interruption par signal
+			printf("\n");
+			return (0);
 		}
-		// Vérifier EOF (Ctrl+D)
-		if (!line)
-			return (0); // EOF atteint
+		if (!line) // EOF (Ctrl+D)
+		{
+			printf("\n");
+			return (0);
+		}
 		result = process_heredoc_input_line(line, delimiter_clean,
 											expand_enabled, shell, pipefd);
+		// si result == -1, on a eu un signal d'interruption
 		if (result <= 0)
 			return (result == 0);
 	}
+		
 }
 
 /**
@@ -152,7 +157,8 @@ static int read_heredoc_lines(char *delimiter_clean, int expand_enabled,
  */
 int handle_heredoc(char *token_str, t_shell *shell)
 {
-	int pipefd[2], read_result;
+	int pipefd[2];
+	int read_result;
 	char *delimiter_clean;
 	struct sigaction sa_old;
 
@@ -164,6 +170,7 @@ int handle_heredoc(char *token_str, t_shell *shell)
 		return (close_pipe_fds(pipefd), restore_sigint(&sa_old), 1);
 	read_result = read_heredoc_lines(delimiter_clean, !is_heredoc_delimiter_quoted(token_str + 2), shell, pipefd[1]);
 	free(delimiter_clean);
+	// On ferme l'extrémité écriture du pipe
 	close(pipefd[1]);
 	restore_sigint(&sa_old);
 	if (read_result == 0)
@@ -172,6 +179,7 @@ int handle_heredoc(char *token_str, t_shell *shell)
 		g_signal = 0;
 		return (130);
 	}
+	// Ce fd contient tout ce que l’utilisateur a tapé, prêt à être lu.
 	shell->heredoc_fd = pipefd[0];
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:54:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 19:25:07 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 16:22:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ int is_delimiter_line(char *line, char *delimiter_clean)
 	// Supprimer le caractère de nouvelle ligne à la fin de la ligne
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
-	printf("[DEBUG] Comparing line: '%s' with delimiter_clean: '%s'\n", line, delimiter_clean);
+	// printf("[DEBUG] Comparing line: '%s' with delimiter_clean: '%s'\n", line, delimiter_clean);
 	// Vérifie si la ligne correspond exactement au délimiteur
 	if (ft_strncmp(line, delimiter_clean, delim_len) == 0 && line[delim_len] == '\0')
 	{
-		printf("[DEBUG] Line matches delimiter_clean\n");
+		// printf("[DEBUG] Line matches delimiter_clean\n");
 		return (1);
 	}
-	printf("[DEBUG] Line does not match delimiter_clean\n");
+	// printf("[DEBUG] Line does not match delimiter_clean\n");
 	return (0);
 }
 

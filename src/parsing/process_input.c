@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/05 19:39:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 19:49:02 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void process_input(char *input, t_shell *shell)
 	}
 	// Ajoute le pointer des tokens à la structure du shell pour free proprement
 	shell->tokens = tokens;
-	// print_token_list(tokens);
+	// print_token_list(tokens, "TOKEN");
 	ast_root = build_ast(tokens);
 	if (!ast_root)
 	{

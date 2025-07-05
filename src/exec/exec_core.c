@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_core.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 13:22:24 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/05 18:10:58 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	if (!validation_result)
 		return (127);
 	if (is_builtin(cmd_node))
+	{
+		if (is_redirection(ast_root->type) == true)
+			apply_parent_redirections(ast_root, shell);
 		return (builtin_exec(cmd_node, shell));
+	}
 	return (execute_fork_process(cmd_node, env, ast_root, shell));
 }

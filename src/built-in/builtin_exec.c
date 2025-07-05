@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:08:23 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/01 22:01:06 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:42:35 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	is_builtin(t_ast *node)
 	if (!node->args[0])
 		return (0);
 	if (ft_strcmp(node->args[0], "echo") == 0
-			|| ft_strcmp(node->args[0], "env") == 0
-			|| ft_strcmp(node->args[0], "cd") == 0
-			|| ft_strcmp(node->args[0], "unset") == 0
-			|| ft_strcmp(node->args[0], "pwd") == 0
-			|| ft_strcmp(node->args[0], "export") == 0
-			|| ft_strcmp(node->args[0], "exit") == 0)
+		|| ft_strcmp(node->args[0], "env") == 0
+		|| ft_strcmp(node->args[0], "cd") == 0
+		|| ft_strcmp(node->args[0], "unset") == 0
+		|| ft_strcmp(node->args[0], "pwd") == 0
+		|| ft_strcmp(node->args[0], "export") == 0
+		|| ft_strcmp(node->args[0], "exit") == 0)
 		return (1);
 	return (0);
 }

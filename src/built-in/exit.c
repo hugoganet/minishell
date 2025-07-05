@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hganet <hganet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:24:18 by bernard           #+#    #+#             */
-/*   Updated: 2025/06/24 18:22:10 by hganet           ###   ########.fr       */
+/*   Updated: 2025/07/05 14:43:33 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
  * @param str La chaîne à vérifier
  * @return int 1 si c'est un nombre valide, 0 sinon
  */
-static int ft_is_valid_number(char *str)
+static int	ft_is_valid_number(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str == NULL || *str == '\0')
 		return (0);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	if (str[i] == '\0') // Si la chaîne est seulement "+" ou "-"
+	if (str[i] == '\0')
 		return (0);
 	while (str[i])
 	{
@@ -45,9 +45,9 @@ static int ft_is_valid_number(char *str)
  * @param node Noeud AST de la commande exit
  * @return `int` Code de sortie (ne retourne que si une erreur est rencontrée)
  */
-int ft_exit(t_ast *node, t_shell *data)
+int	ft_exit(t_ast *node, t_shell *data)
 {
-	unsigned char status;
+	unsigned char	status;
 
 	ft_putstr_fd("exit\n", STDERR_FILENO);
 	// Par défaut, utilise le dernier code de sortie

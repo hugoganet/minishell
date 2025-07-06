@@ -11,6 +11,7 @@ void expand_ast_arguments(t_ast *node, t_shell *shell)
 {
 	int i;
 	char *expanded_arg;
+	bool expanded_to_empty;
 
 	if (!node)
 		return;
@@ -24,12 +25,23 @@ void expand_ast_arguments(t_ast *node, t_shell *shell)
 		while (node->args[i])
 		{
 			// Appelle la fonction d'expansion pour chaque argument
-			expanded_arg = expand_variables(node->args[i], shell->env_list, shell->last_exit_status);
+			expanded_arg = expand_variables_with_flag(node->args[i], shell->env_list, shell->last_exit_status, &expanded_to_empty);
 			if (expanded_arg)
 			{
-				// Si l'argument expansé n'est pas vide, on le remplace dans l'AST
-				free(node->args[i]);
-				node->args[i] = expanded_arg;
+				// Si l'argument expansé est vide à cause d'une expansion de variable échouée,
+				// on le marque en préfixant avec un caractère spécial qui sera filtré plus tard
+				if (expanded_to_empty && ft_strlen(expanded_arg) == 0)
+				{
+					free(expanded_arg);
+					free(node->args[i]);
+					node->args[i] = ft_strdup("\x01"); // Caractère spécial pour marquer l'argument à supprimer
+				}
+				else
+				{
+					// Si l'argument expansé n'est pas vide, on le remplace dans l'AST
+					free(node->args[i]);
+					node->args[i] = expanded_arg;
+				}
 			}
 			i++;
 		}

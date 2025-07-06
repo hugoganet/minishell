@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 17:36:22 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/05 17:36:25 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:47:47 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
  * @param i L'index de lecture dans la chaîne d'entrée.
  * @param in_single_quotes Flag pour l'état des quotes simples.
  * @param in_double_quotes Flag pour l'état des quotes doubles.
+ * @param expanded_to_empty Flag pour indiquer si une variable s'est expansée en chaîne vide.
  */
 typedef struct s_expansion_state
 {
@@ -36,6 +37,7 @@ typedef struct s_expansion_state
 	int i;
 	bool in_single_quotes;
 	bool in_double_quotes;
+	bool expanded_to_empty;
 } t_expansion_state;
 
 // --- Fonctions principales (expansion.c) ---
@@ -50,6 +52,17 @@ typedef struct s_expansion_state
  * @return Une nouvelle chaîne allouée avec les variables expansées.
  */
 char *expand_variables(const char *input, t_env *env_list, int last_exit_status);
+
+/**
+ * @brief Version de expand_variables qui retourne aussi si l'expansion a résulté en chaîne vide.
+ *
+ * @param input La chaîne de caractères à traiter.
+ * @param env_list La liste des variables d'environnement.
+ * @param last_exit_status Le code de retour de la dernière commande.
+ * @param expanded_to_empty Pointeur vers un booléen qui sera mis à true si l'expansion donne une chaîne vide.
+ * @return Une nouvelle chaîne allouée avec les variables expansées.
+ */
+char *expand_variables_with_flag(const char *input, t_env *env_list, int last_exit_status, bool *expanded_to_empty);
 
 // --- Gestion des quotes (expansion_quotes.c) ---
 

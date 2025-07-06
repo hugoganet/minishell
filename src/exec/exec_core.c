@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 16:11:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 20:47:44 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	heredoc_status = process_heredocs(ast_root, shell);
 	if (heredoc_status == 130)
 		return (130);
+
+	// Filtrer les arguments vides résultant d'expansions échouées
+	if (cmd_node && cmd_node->args)
+		filter_empty_args(cmd_node->args);
+
 	validation_result = validate_command(cmd_node);
 	if (validation_result == -1)
 	{
@@ -110,6 +115,11 @@ int exec_cmd_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *s
 	int validation_result;
 
 	cmd_node = find_cmd_node(ast_root);
+
+	// Filtrer les arguments vides résultant d'expansions échouées
+	if (cmd_node && cmd_node->args)
+		filter_empty_args(cmd_node->args);
+
 	validation_result = validate_command(cmd_node);
 	if (validation_result == -1)
 	{

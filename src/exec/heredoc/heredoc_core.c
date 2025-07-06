@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/05 19:42:36 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 11:03:55 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,24 @@
  */
 void setup_heredoc_redirection(t_shell *shell)
 {
-	// Utilise le premier fd de la liste chaînée pour la redirection
-	if (shell->heredoc_fds && shell->heredoc_fds->fd != -1)
+	t_heredoc_fd *last_heredoc = NULL;
+	t_heredoc_fd *current = shell->heredoc_fds;
+
+	// Trouve le dernier heredoc dans la liste (le plus récent)
+	while (current)
 	{
-		if (dup2(shell->heredoc_fds->fd, STDIN_FILENO) == -1)
+		if (current->fd != -1)
+			last_heredoc = current;
+		current = current->next;
+	}
+
+	// Utilise le dernier fd de heredoc pour la redirection
+	if (last_heredoc && last_heredoc->fd != -1)
+	{
+		if (dup2(last_heredoc->fd, STDIN_FILENO) == -1)
 			perror("minishell: dup2 heredoc");
-		close(shell->heredoc_fds->fd);
-		shell->heredoc_fds->fd = -1; // Marque comme fermé, la libération mémoire se fait ailleurs
+		close(last_heredoc->fd);
+		last_heredoc->fd = -1; // Marque comme fermé, la libération mémoire se fait ailleurs
 	}
 }
 
@@ -89,6 +100,7 @@ static int process_heredoc_input_line(char *line, char *delimiter_clean,
 	if (line)
 	{
 		write(pipefd, line, ft_strlen(line));
+		write(pipefd, "\n", 1); // Ajoute un saut de ligne pour séparer les entrées
 		free(line);
 	}
 	return (1);

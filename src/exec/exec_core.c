@@ -6,45 +6,12 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 10:41:37 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
-
-/**
- * @brief Sauvegarde les descripteurs de fichier stdin et stdout.
- *
- * @param saved_stdin Pointeur pour stocker le descripteur stdin sauvegardé
- * @param saved_stdout Pointeur pour stocker le descripteur stdout sauvegardé
- * @return 0 en cas de succès, 1 en cas d'erreur
- */
-static int save_std_descriptors(int *saved_stdin, int *saved_stdout)
-{
-	*saved_stdin = dup(STDIN_FILENO);
-	*saved_stdout = dup(STDOUT_FILENO);
-	if (*saved_stdin == -1 || *saved_stdout == -1)
-	{
-		perror("dup");
-		return (1);
-	}
-	return (0);
-}
-
-/**
- * @brief Restaure les descripteurs de fichier originaux et les ferme.
- *
- * @param saved_stdin Descripteur stdin sauvegardé
- * @param saved_stdout Descripteur stdout sauvegardé
- */
-static void restore_std_descriptors(int saved_stdin, int saved_stdout)
-{
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-}
 
 /**
  * @brief Exécute un builtin avec des redirections appliquées correctement.
@@ -120,4 +87,35 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 		return (builtin_exec(cmd_node, shell));
 	}
 	return (execute_fork_process(cmd_node, env, ast_root, shell));
+}
+
+/**
+ * @brief Exécute une commande sans traiter les heredocs (pour les processus enfants de pipe).
+ *
+ * Version spéciale d'exec_cmd utilisée dans les processus enfants des pipes,
+ * où les heredocs ont déjà été traités par le processus parent.
+ *
+ * @param cmd_node Le nœud CMD (ou un nœud supérieur contenant le CMD)
+ * @param env Liste des variables d'environnement
+ * @param ast_root Racine de l'AST courant
+ * @param shell Structure du shell principal
+ * @return Code de retour de la commande exécutée
+ */
+int exec_cmd_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
+{
+	int validation_result;
+
+	cmd_node = find_cmd_node(ast_root);
+	validation_result = validate_command(cmd_node);
+	if (validation_result == -1)
+		return (0);
+	if (!validation_result)
+		return (127);
+	if (is_builtin(cmd_node))
+	{
+		if (is_redirection(ast_root->type) == true)
+			return (exec_builtin_with_redirections_no_heredoc(cmd_node, ast_root, shell));
+		return (builtin_exec(cmd_node, shell));
+	}
+	return (execute_fork_process_no_heredoc(cmd_node, env, ast_root, shell));
 }

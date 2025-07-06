@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:25:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 10:56:09 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,67 @@ int is_directory(char *path)
 		}
 	}
 	return (0);
+}
+
+/**
+ * @brief Sauvegarde les descripteurs de fichier stdin et stdout.
+ *
+ * @param saved_stdin Pointeur pour stocker le descripteur stdin sauvegardé
+ * @param saved_stdout Pointeur pour stocker le descripteur stdout sauvegardé
+ * @return 0 en cas de succès, 1 en cas d'erreur
+ */
+int save_std_descriptors(int *saved_stdin, int *saved_stdout)
+{
+	*saved_stdin = dup(STDIN_FILENO);
+	*saved_stdout = dup(STDOUT_FILENO);
+	if (*saved_stdin == -1 || *saved_stdout == -1)
+	{
+		perror("dup");
+		return (1);
+	}
+	return (0);
+}
+
+/**
+ * @brief Restaure les descripteurs de fichier originaux et les ferme.
+ *
+ * @param saved_stdin Descripteur stdin sauvegardé
+ * @param saved_stdout Descripteur stdout sauvegardé
+ */
+void restore_std_descriptors(int saved_stdin, int saved_stdout)
+{
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+}
+
+/**
+ * @brief Exécute un builtin avec redirections sans traiter les heredocs.
+ *
+ * Version utilisée dans les processus enfants de pipe où les heredocs
+ * ont déjà été traités par le processus parent.
+ *
+ * @param cmd_node Le nœud contenant la commande builtin
+ * @param ast_root Le nœud racine contenant les redirections
+ * @param shell Structure du shell principal
+ * @return Code de retour du builtin exécuté
+ */
+int exec_builtin_with_redirections_no_heredoc(t_ast *cmd_node, t_ast *ast_root,
+											  t_shell *shell)
+{
+	int saved_stdin;
+	int saved_stdout;
+	int result;
+
+	if (save_std_descriptors(&saved_stdin, &saved_stdout) != 0)
+		return (1);
+	if (setup_redirections(ast_root) != 0)
+	{
+		restore_std_descriptors(saved_stdin, saved_stdout);
+		return (1);
+	}
+	result = builtin_exec(cmd_node, shell);
+	restore_std_descriptors(saved_stdin, saved_stdout);
+	return (result);
 }

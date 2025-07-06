@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 09:15:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 19:35:39 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 // !===========================================================================
 
 int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
+int exec_cmd_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
 
 // !===========================================================================
 // !                            EXEC_COMMAND.C                               =
@@ -27,6 +28,7 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
 
 t_ast *find_cmd_node(t_ast *node);
 int execute_fork_process(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
+int execute_fork_process_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
 
 // !===========================================================================
 // !                             EXEC_ARGS.C                                 =
@@ -49,6 +51,10 @@ void free_string_array(char **arr);
 void reset_signals_in_child(void);
 void print_command_not_found_error(char *cmd_name);
 int is_directory(char *path);
+int save_std_descriptors(int *saved_stdin, int *saved_stdout);
+void restore_std_descriptors(int saved_stdin, int saved_stdout);
+int exec_builtin_with_redirections_no_heredoc(t_ast *cmd_node, t_ast *ast_root,
+											  t_shell *shell);
 
 // !===========================================================================
 // !                           PATH_RESOLUTION.C                             =

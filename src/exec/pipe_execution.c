@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:06:22 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 12:02:32 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,15 @@ static int execute_left_pid(int fd[2], pid_t *left_pid, t_ast *node, t_env *env,
 		return (1);
 	if (*left_pid == 0)
 	{
+		// Configurer les redirections heredoc AVANT de fermer les fd
+		setup_heredoc_redirection(shell);
 		// Redirige stdout vers l'extrémité d'écriture du pipe
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		status = execute_ast(node->left, env, shell);
+		// Fermer tous les fd heredoc hérités du parent (après utilisation)
+		close_all_heredoc_fds(shell);
+		status = exec_cmd_no_heredoc(node->left, env, node->left, shell);
 		cleanup_shell(shell);
 		exit(status);
 	}
@@ -96,7 +100,9 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		status = execute_ast(node->right, env, shell);
+		// Fermer tous les fd heredoc hérités du parent
+		close_all_heredoc_fds(shell);
+		status = exec_cmd_no_heredoc(node->right, env, node->right, shell);
 		cleanup_shell(shell);
 		exit(status);
 	}
@@ -106,7 +112,8 @@ static int execute_right_pid(int fd[2], pid_t *right_pid, t_ast *node, t_env *en
 /**
  * @brief Exécute un nœud de type PIPE de l'AST.
  *
- * Crée un pipe, fork deux processus (gauche et droit),
+ * Traite d'abord tous les heredocs au niveau parent,
+ * puis crée un pipe, fork deux processus (gauche et droit),
  * connecte leur stdin/stdout via le pipe, puis attend leur fin.
  *
  * @param node Le nœud de type PIPE
@@ -118,7 +125,12 @@ int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
 {
 	int fd[2];
 	pid_t left_pid, right_pid;
+	int heredoc_status;
 
+	// Traiter tous les heredocs dans le processus parent AVANT de créer les pipes
+	heredoc_status = process_heredocs(node->left, shell);
+	if (heredoc_status == 130)
+		return (130);
 	if (pipe(fd) == -1)
 	{
 		perror("minishell: pipe");

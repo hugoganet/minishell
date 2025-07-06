@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:25:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 16:32:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,6 @@ void reset_signals_in_child(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-}
-
-/**
- * @brief Affiche le message d'erreur approprié pour une commande non trouvée.
- *
- * @param cmd_name Nom de la commande
- */
-void print_command_not_found_error(char *cmd_name)
-{
-	if (ft_strchr(cmd_name, '/'))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		perror(cmd_name);
-	}
-	else
-	{
-		ft_putstr_fd(cmd_name, STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
-	}
 }
 
 /**

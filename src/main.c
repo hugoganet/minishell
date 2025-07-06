@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 14:36:07 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 16:11:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void shell_loop_tester(t_shell *shell)
 		cleanup_shell(shell);
 		exit(0);
 	}
-	// Si l'entrée est vide, ou si il y a une erreur de syntaxe, on ne traite pas
-	// l'entrée et on continue à la boucle.
-	// Sinon, on traite l'entrée.
+	// Si l'entrée est vide (que des espaces), on ne traite pas l'entrée.
+	// Si l'entrée contient des quotes vides ("" ou ''), on la traite comme une commande.
+	// Sinon, on traite l'entrée normalement.
 	if (!is_line_empty(input))
 	{
 		if (!is_syntax_valid(input, shell))

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 16:11:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,11 @@ int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 		return (130);
 	validation_result = validate_command(cmd_node);
 	if (validation_result == -1)
-		return (0); // Commande vide : retourner 0 comme Bash
+	{
+		// Commande vide : afficher l'erreur et retourner 127 comme Bash
+		print_command_not_found_error("");
+		return (127);
+	}
 	if (!validation_result)
 		return (127);
 	if (is_builtin(cmd_node))
@@ -108,7 +112,11 @@ int exec_cmd_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *s
 	cmd_node = find_cmd_node(ast_root);
 	validation_result = validate_command(cmd_node);
 	if (validation_result == -1)
-		return (0);
+	{
+		// Commande vide : afficher l'erreur et retourner 127 comme Bash
+		print_command_not_found_error("");
+		return (127);
+	}
 	if (!validation_result)
 		return (127);
 	if (is_builtin(cmd_node))

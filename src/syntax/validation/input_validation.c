@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 16:11:52 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
  * Parcourt la chaîne d'entrée pour détecter si elle ne contient que des
  * caractères d'espacement (espaces et tabulations). Une ligne NULL est
  * considérée comme vide.
+ *
+ * Note: Les quotes vides ("" ou '') ne sont PAS considérées comme une ligne vide
+ * car elles représentent une commande vide qui doit être traitée.
  *
  * @param input La ligne entrée par l'utilisateur.
  * @return int 1 si vide, 0 sinon.

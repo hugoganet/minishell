@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_args.c                                        :+:      :+:    :+:   */
+/*   print_exec_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 16:30:06 by hugoganet        ###   ########.fr       */
+/*   Created: 2025/07/06 16:33:31 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/07/06 16:34:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 #include "exec.h"
 
 /**
- * @brief Valide la commande avant l'exécution.
+ * @brief Affiche le message d'erreur approprié pour une commande non trouvée.
  *
- * @param cmd_node Nœud de commande à valider
- * @return 1 si valide, 0 sinon, -1 si commande vide
+ * @param cmd_name Nom de la commande
  */
-int validate_command(t_ast *cmd_node)
+void print_command_not_found_error(char *cmd_name)
 {
-	if (!cmd_node || !cmd_node->args)
-		return (0);
-	if (!cmd_node->args[0])
-		return (0);
-	// Seule la commande elle-même (args[0]) vide est considérée comme "commande vide"
-	if (cmd_node->args[0][0] == '\0')
-		return (-1);
-	return (1);
+	if (ft_strchr(cmd_name, '/'))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		perror(cmd_name);
+	}
+	else
+	{
+		ft_putstr_fd(cmd_name, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	}
 }

@@ -6,12 +6,13 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 12:29:37 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+#include <errno.h>
 
 /**
  * @brief Cherche récursivement le premier noeud de type CMD.
@@ -96,9 +97,10 @@ static void run_child_process(char **argv, t_env *env,
 	}
 	if (execve(path, argv, envp) == -1)
 	{
-		perror("minishell: execve");
+		if (errno != ENOEXEC)
+			perror("minishell: execve");
 		free_child_exec(path, envp, shell);
-		exit(126);
+		exit(127);
 	}
 }
 
@@ -130,7 +132,8 @@ static void run_child_process_no_heredoc(char **argv, t_env *env,
 	}
 	if (execve(path, argv, envp) == -1)
 	{
-		perror("minishell: execve");
+		if (errno != ENOEXEC)
+			perror("minishell: execve");
 		free_child_exec(path, envp, shell);
 		exit(127);
 	}

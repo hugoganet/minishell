@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:13 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/06 16:38:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 16:41:36 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,25 @@ static void upadate_or_add_env(t_shell *data, char *key, char *value)
 	}
 }
 
+static int handle_invalid_export(char *arg)
+{
+	ft_putstr_fd("Minishell: export: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(" not a valid identifier\n", 2);
+	return (1);
+}
+
+static int export_without_value(char *arg, t_shell *data)
+{
+	if (ft_is_valid(arg))
+	{
+		create_add_new_node(arg, NULL, &data->export_list);
+		sort_list(&data->export_list);
+		return (0);
+	}
+	return (handle_invalid_export(arg));
+}
+
 static int export_equal(char *arg, t_shell *data)
 {
 	int j;
@@ -50,11 +69,8 @@ static int export_equal(char *arg, t_shell *data)
 	key = ft_substr(arg, 0, j);
 	if (!ft_is_valid(key))
 	{
-		ft_putstr_fd("Minishell: export: ", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(" not a valid identifier\n", 2);
 		free(key);
-		return (1);
+		return (handle_invalid_export(arg));
 	}
 	value = ft_substr(arg, j + 1, ft_strlen(arg) - (j + 1));
 	upadate_or_add_env(data, key, value);
@@ -71,23 +87,16 @@ int ft_export(t_ast *node, t_shell *data)
 	i = 1;
 	error_status = 0;
 	if (!node->args[1])
+	{
 		print_export_list(data->export_list);
+		return (0);
+	}
 	while (node->args[i])
 	{
-		if (!ft_strchr(node->args[i], '=') && ft_is_valid(node->args[i]))
-		{
-			create_add_new_node(node->args[i], NULL, &data->export_list);
-			sort_list(&data->export_list);
-		}
-		else if (!ft_strchr(node->args[i], '=') && !ft_is_valid(node->args[i]))
-		{
-			ft_putstr_fd("Minishell: export: ", 2);
-			ft_putstr_fd(node->args[i], 2);
-			ft_putstr_fd(" not a valid identifier\n", 2);
-			error_status = 1;
-		}
-		else if (export_equal(node->args[i], data))
-			error_status = 1;
+		if (ft_strchr(node->args[i], '='))
+			error_status |= export_equal(node->args[i], data);
+		else
+			error_status |= export_without_value(node->args[i], data);
 		i++;
 	}
 	return (error_status);

@@ -6,11 +6,12 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:23 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 16:46:51 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 10:51:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "ast.h"
 
 /**
  * @brief Exécute récursivement un arbre de syntaxe AST.

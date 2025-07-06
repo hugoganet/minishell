@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/05 19:12:34 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 10:51:13 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include "ast.h"
 
 // ! ----------------------- VAR GLOBALE --------------
 
@@ -42,8 +43,6 @@ extern volatile sig_atomic_t g_signal;
 // ! ----------------------- STRUCTURES --------------
 
 typedef struct s_env t_env;
-typedef struct s_ast t_ast;
-typedef struct s_token t_token;
 
 typedef struct s_heredoc_fd
 {
@@ -61,53 +60,6 @@ typedef struct s_shell
 	int last_exit_status;
 	t_heredoc_fd *heredoc_fds; // Liste chaînée des fd heredoc
 } t_shell;
-
-/**
- * @enum e_token_type
- * @brief Représente le type d'un token dans la ligne de commande.
- */
-typedef enum e_token_type
-{
-	PIPE,		  /**< Pipe '|' */
-	REDIR_INPUT,  /**< Redirection d'entrée '<' */
-	REDIR_OUTPUT, /**< Redirection de sortie '>' */
-	REDIR_APPEND, /**< Redirection en append '>>' */
-	HEREDOC,	  /**< Heredoc '<<' */
-	WORD,		  /**< Mot (commande ou argument) */
-	CMD,		  /**< Commande (premier mot d'une ligne) */
-	ARG,		  /**< Argument (mot après la commande) */
-	FILES,		  /**< Fichiers (après une redirection) */
-} t_token_type;
-
-typedef struct s_token
-{
-	char *str;
-	t_token_type type;
-	struct s_token *next;
-} t_token;
-
-typedef struct s_redir t_redir;
-
-typedef struct s_redir
-{
-	t_token *type;
-	char *file;
-	t_redir *next;
-} t_redir;
-
-typedef struct s_ast t_ast;
-
-typedef struct s_ast
-{
-	t_token_type type;
-	char *str;
-	t_redir *redir;
-	t_ast *left;
-	t_ast *right;
-	char **args; // fonction compte nb d'arg apres et malloc char **
-	int fd_in;
-	int fd_out;
-} t_ast;
 
 /**
  * @struct s_env
@@ -147,23 +99,13 @@ void process_input(char *input, t_shell *shell);
 void free_token_list(t_token *head);
 void print_token_list(t_token *tokens, char *title);
 t_env *init_env_list(char **envp);
-t_ast *build_ast(t_token *node);
-void pretty_print_ast(t_ast *node, int depth, const char *label);
-const char *token_type_str(t_token_type type);
-const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);
-void print_ast_cmd_node(char **argv);
 void free_split(char **split);
 char *get_env_value(t_env *env, const char *key);
 char **env_to_char_array(t_env *env);
 int ft_strcmp(char *s1, const char *s2);
 t_env *init_env_list(char **envp);
-t_ast *build_ast(t_token *node);
-void pretty_print_ast(t_ast *node, int depth, const char *label);
-const char *token_type_str(t_token_type type);
-const char *token_color(t_token_type type);
 int execute_ast(t_ast *node, t_env *env, t_shell *shell);
-void print_ast_cmd_node(char **argv);
 void free_split(char **split);
 char *get_env_value(t_env *env, const char *key);
 char **env_to_char_array(t_env *env);

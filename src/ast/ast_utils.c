@@ -33,6 +33,9 @@ int token_priority(t_token_type type)
 /**
  * @brief Trouve le token de plus faible priorité pour diviser l'AST.
  *
+ * Pour les pipes, on trouve le dernier (le plus à droite) pour créer
+ * une associativité à droite nécessaire pour l'exécution correcte.
+ *
  * @param node Le nœud de départ
  * @param end Le nœud de fin (exclus)
  * @return Le token à utiliser pour diviser, ou NULL si aucun trouvé
@@ -51,10 +54,18 @@ t_token *token_to_split(t_token *node, t_token *end)
 	while (ptr && ptr != end)
 	{
 		current_priority = token_priority(ptr->type);
-		if ((current_priority < lowest_priority) && current_priority < 4)
+		// Pour les pipes, on prend le dernier de même priorité (associativité à droite)
+		// Pour les autres opérateurs, on prend le premier (associativité à gauche)
+		if (current_priority < lowest_priority && current_priority < 4)
 		{
 			to_split = ptr;
 			lowest_priority = current_priority;
+		}
+		else if (current_priority == lowest_priority && current_priority == 1)
+		{
+			// Si c'est un pipe et qu'on a déjà trouvé un pipe de même priorité,
+			// on prend le plus récent (plus à droite)
+			to_split = ptr;
 		}
 		ptr = ptr->next;
 	}

@@ -10,3 +10,45 @@
     ...
     fun:add_history
 }
+{
+    leak xrealloc
+    Memcheck:Leak
+    ...
+    fun:xrealloc
+}
+{
+    leak rl_extend_line_buffer
+    Memcheck:Leak
+    ...
+    fun:rl_extend_line_buffer
+}
+{
+    leak rl_insert_text
+    Memcheck:Leak
+    ...
+    fun:rl_insert_text
+}
+{
+    leak rl_bracketed_paste_begin
+    Memcheck:Leak
+    ...
+    fun:rl_bracketed_paste_begin
+}
+{
+    leak _rl_dispatch_subseq
+    Memcheck:Leak
+    ...
+    fun:_rl_dispatch_subseq
+}
+{
+    leak readline_internal_char
+    Memcheck:Leak
+    ...
+    fun:readline_internal_char
+}
+{
+    leak libreadline_general
+    Memcheck:Leak
+    ...
+    obj:*/libreadline.so*
+}

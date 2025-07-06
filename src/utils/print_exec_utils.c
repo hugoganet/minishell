@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 16:33:31 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 16:34:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/06 20:19:47 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,5 @@ void print_command_not_found_error(char *cmd_name)
 		ft_putstr_fd(cmd_name, STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	}
+	fflush(stderr);
 }

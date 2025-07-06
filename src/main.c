@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 16:11:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 09:03:41 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ void shell_loop_tester(t_shell *shell)
 		cleanup_shell(shell);
 		exit(0);
 	}
+
+	// Vérifier si SIGINT a été reçu pendant readline
+	if (g_signal == SIGINT)
+	{
+		shell->last_exit_status = 130;
+		g_signal = 0;
+	}
+
 	// Si l'entrée est vide (que des espaces), on ne traite pas l'entrée.
 	// Si l'entrée contient des quotes vides ("" ou ''), on la traite comme une commande.
 	// Sinon, on traite l'entrée normalement.

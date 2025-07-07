@@ -65,6 +65,7 @@ SRC = 	main.c \
 		exec/pipe/pipe_simple.c \
 		exec/pipe/pipe_simple_child.c \
 		exec/pipe/pipe_complex.c \
+		exec/pipe/pipe_complex_utils.c \
 		exec/pipe/pipe_utils.c \
 		exec/pipe/pipe_child_utils.c \
 		exec/pipe/pipe_cleanup.c \

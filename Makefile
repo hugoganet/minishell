@@ -18,14 +18,15 @@ LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 SRC = 	main.c \
 		init/initialisation.c \
 		utils/init_error.c \
-		utils/print_token_list.c \
 		utils/free_utils.c \
-		utils/print_env_list.c \
-		utils/print_ast.c \
+		utils/free_utils_2.c \
 		utils/cleanup.c \
 		utils/export_utils.c \
-		utils/print_exec_utils.c \
 		utils/builtins_utils.c \
+		utils/print_utils/print_env_list.c \
+		utils/print_utils/print_exec_utils.c \
+		utils/print_utils/print_ast.c \
+		utils/print_utils/print_token_list.c \
 		input/loop.c \
 		input/prompt.c \
 		syntax/validation/input_validation.c \

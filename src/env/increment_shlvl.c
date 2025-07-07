@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_utils.c                                        :+:      :+:    :+:   */
+/*   increment_shlvl.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:32:00 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 14:28:13 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:13:51 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +26,7 @@
  * @return int 0 en cas de succès, 1 en cas d'erreur
  */
 
-static int if_no_shlvl(t_env **shlvl_node, t_env **env_list)
+static int	if_no_shlvl(t_env **shlvl_node, t_env **env_list)
 {
 	*shlvl_node = create_env_pair("SHLVL", "1");
 	if (!*shlvl_node)
@@ -37,36 +36,22 @@ static int if_no_shlvl(t_env **shlvl_node, t_env **env_list)
 	return (0);
 }
 
-int increment_shlvl(t_env *env_list)
+int	increment_shlvl(t_env *env_list)
 {
-	t_env *shlvl_node;
-	int level;
-	char *new_value;
+	t_env	*shlvl_node;
+	int		level;
+	char	*new_value;
 
 	shlvl_node = env_list;
-	while (shlvl_node)
-	{
-		if (ft_strcmp(shlvl_node->key, "SHLVL") == 0)
-			break;
+	while (shlvl_node && ft_strcmp(shlvl_node->key, "SHLVL") != 0)
 		shlvl_node = shlvl_node->next;
-	}
-	if (!shlvl_node)
-	{
-		if (if_no_shlvl(&shlvl_node, &env_list))
-			return (1);
-	}
+	if (!shlvl_node && if_no_shlvl(&shlvl_node, &env_list))
+		return (1);
 	level = ft_atoi(shlvl_node->value);
 	if (level < 0)
 		level = 1;
-	else
-	{
-		// Incrémenter la valeur
-		level++;
-		// Si la valeur dépasse 999, la réinitialiser à 1 (comportement de Bash)
-		if (level > 999)
-			level = 1;
-	}
-	// Convertir la nouvelle valeur en chaîne de caractères
+	else if (++level > 999)
+		level = 1;
 	new_value = ft_itoa(level);
 	if (!new_value)
 		return (1);

@@ -6,15 +6,15 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 17:36:22 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 17:29:05 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 18:57:17 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANSION_H
-#define EXPANSION_H
+# define EXPANSION_H
 
-#include "minishell.h" // Ou les en-têtes nécessaires
-#include <stdbool.h>
+# include "minishell.h"
+# include <stdbool.h>
 
 /**
  * @brief Structure pour gérer l'état de l'expansion.
@@ -28,19 +28,22 @@
  * @param i L'index de lecture dans la chaîne d'entrée.
  * @param in_single_quotes Flag pour l'état des quotes simples.
  * @param in_double_quotes Flag pour l'état des quotes doubles.
- * @param expanded_to_empty Flag pour indiquer si une variable s'est expansée en chaîne vide.
+ * @param expanded_to_empty Flag pour indiquer si une variable s'est
+ *							 expansée en chaîne vide.
  */
 typedef struct s_expansion_state
 {
-	const char *input;
-	char *output;
-	int i;
-	bool in_single_quotes;
-	bool in_double_quotes;
-	bool expanded_to_empty;
-} t_expansion_state;
+	const char	*input;
+	char		*output;
+	int			i;
+	bool		in_single_quotes;
+	bool		in_double_quotes;
+	bool		expanded_to_empty;
+}	t_expansion_state;
 
-// --- Fonctions principales (expansion.c) ---
+// !===========================================================================
+// !                             EXPANSION.C                                 =
+// !===========================================================================
 
 /**
  * @brief Point d'entrée principal pour l'expansion des variables.
@@ -51,20 +54,26 @@ typedef struct s_expansion_state
  * @param last_exit_status Le code de retour de la dernière commande.
  * @return Une nouvelle chaîne allouée avec les variables expansées.
  */
-char *expand_variables(const char *input, t_env *env_list, int last_exit_status);
+char	*expand_variables(const char *input, t_env *env_list,
+			int last_exit_status);
 
 /**
- * @brief Version de expand_variables qui retourne aussi si l'expansion a résulté en chaîne vide.
+ * @brief Version de expand_variables qui retourne aussi si l'expansion a
+ *		  résulté en chaîne vide.
  *
  * @param input La chaîne de caractères à traiter.
  * @param env_list La liste des variables d'environnement.
  * @param last_exit_status Le code de retour de la dernière commande.
- * @param expanded_to_empty Pointeur vers un booléen qui sera mis à true si l'expansion donne une chaîne vide.
+ * @param expanded_to_empty Pointeur vers un booléen qui sera mis à true si
+ *								 l'expansion donne une chaîne vide.
  * @return Une nouvelle chaîne allouée avec les variables expansées.
  */
-char *expand_variables_with_flag(const char *input, t_env *env_list, int last_exit_status, bool *expanded_to_empty);
+char	*expand_variables_with_flag(const char *input, t_env *env_list,
+			int last_exit_status, bool *expanded_to_empty);
 
-// --- Gestion des quotes (expansion_quotes.c) ---
+// !===========================================================================
+// !                         EXPANSION_QUOTES.C                              =
+// !===========================================================================
 
 /**
  * @brief Met à jour l'état des quotes (simples/doubles) en fonction du
@@ -72,9 +81,11 @@ char *expand_variables_with_flag(const char *input, t_env *env_list, int last_ex
  *
  * @param state L'état actuel de l'expansion.
  */
-void expansion_update_quote_state(t_expansion_state *state);
+void	expansion_update_quote_state(t_expansion_state *state);
 
-// --- Gestion des variables spéciales (expansion_specials.c) ---
+// !===========================================================================
+// !                        EXPANSION_SPECIALS.C                             =
+// !===========================================================================
 
 /**
  * @brief Gère l'expansion d'une variable spéciale (ex: $?, $$).
@@ -83,9 +94,12 @@ void expansion_update_quote_state(t_expansion_state *state);
  * @param last_exit_status Le code de retour de la dernière commande.
  * @return Le contenu de la variable spéciale, ou NULL si non applicable.
  */
-char *expand_special_variable(t_expansion_state *state, int last_exit_status);
+char	*expand_special_variable(t_expansion_state *state,
+			int last_exit_status);
 
-// --- Fonctions utilitaires (expansion_utils.c) ---
+// !===========================================================================
+// !                         EXPANSION_UTILS.C                               =
+// !===========================================================================
 
 /**
  * @brief Extrait le nom d'une variable à partir de la position actuelle.
@@ -95,7 +109,7 @@ char *expand_special_variable(t_expansion_state *state, int last_exit_status);
  * @param start_index L'index de début (après le '$').
  * @return Le nom de la variable (chaîne allouée).
  */
-char *extract_variable_name(const char *input, int start_index);
+char	*extract_variable_name(const char *input, int start_index);
 
 /**
  * @brief Recherche la valeur d'une variable dans l'environnement.
@@ -104,19 +118,26 @@ char *extract_variable_name(const char *input, int start_index);
  * @param env_list L'environnement sous forme de liste chaînée.
  * @return La valeur de la variable (chaîne allouée), ou NULL si non trouvée.
  */
-char *get_env_variable(const char *var_name, t_env *env_list);
+char	*get_env_variable(const char *var_name, t_env *env_list);
 
 /**
- * @brief Traverse l'AST et expanse les variables dans les arguments des commandes.
+ * @brief Traverse l'AST et expanse les variables dans les arguments des
+ *		  commandes.
  *
  * @param node Le nœud racine de l'AST à traiter.
- * @param shell La structure principale du shell contenant l'environnement et le statut.
+ * @param shell La structure principale du shell contenant l'environnement
+ *				  et le statut.
  */
-void expand_ast_arguments(t_ast *node, t_shell *shell);
+void	expand_ast_arguments(t_ast *node, t_shell *shell);
 
-bool is_translated_string(const char *input, int dollar_pos);
-char *extract_translated_string(const char *input, int dollar_pos, int *end_pos);
-void append_to_output(t_expansion_state *state, const char *to_add);
-void append_and_free(t_expansion_state *state, char *value);
+// !===========================================================================
+// !                      EXPANSION_UTILS2.C                                 =
+// !===========================================================================
+
+bool	is_translated_string(const char *input, int dollar_pos);
+char	*extract_translated_string(const char *input, int dollar_pos,
+			int *end_pos);
+void	append_to_output(t_expansion_state *state, const char *to_add);
+void	append_and_free(t_expansion_state *state, char *value);
 
 #endif

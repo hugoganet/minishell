@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "ast.h"
+#include "pipe.h"
 
 /**
  * @brief Exécute récursivement un arbre de syntaxe AST.

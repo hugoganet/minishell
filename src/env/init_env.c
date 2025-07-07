@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 14:00:40 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:12:29 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +113,6 @@ static t_env	*init_minimal_env(void)
 	t_env	*pwd;
 	char	cwd[PATH_MAX];
 
-	// Crée SHLVL=1 (won't be incremented since this is a minimal environment)
 	head = create_env_pair("SHLVL", "1");
 	if (!head)
 		return (NULL);

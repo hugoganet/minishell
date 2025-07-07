@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 15:48:59 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/04 15:51:18 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:50:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	create_add_new_node(char *key, char *value, t_env **env)
 	if (!new_node)
 		return ;
 	new_node->key = ft_strdup(key);
-	new_node->value = value ? ft_strdup(value) : NULL;
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->key = NULL;
 	new_node->next = NULL;
 	add_new_node(new_node, env);
 }

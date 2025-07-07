@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:25:16 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 14:54:20 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:57:01 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@
  *
  * @param shell Pointeur vers la structure principale du shell.
  */
-void	cleanup_shell(t_shell *shell)
+static void	cleanup_shell_data(t_shell *shell)
 {
-	if (!shell)
-		return ;
 	if (shell->env_list)
 	{
 		free_env_list(shell->env_list);
@@ -49,6 +47,13 @@ void	cleanup_shell(t_shell *shell)
 		free_env_list(shell->export_list);
 		shell->export_list = NULL;
 	}
+}
+
+void	cleanup_shell(t_shell *shell)
+{
+	if (!shell)
+		return ;
+	cleanup_shell_data(shell);
 	close_all_heredoc_fds(shell);
 	free_all_heredoc_fds(shell);
 }

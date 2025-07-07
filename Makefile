@@ -22,7 +22,6 @@ SRC = 	main.c \
 		utils/free_utils.c \
 		utils/free_utils_2.c \
 		utils/cleanup.c \
-		utils/export_utils.c \
 		utils/builtins_utils.c \
 		utils/print_utils/print_env_list.c \
 		utils/print_utils/print_exec_utils.c \
@@ -94,6 +93,7 @@ SRC = 	main.c \
 		built-in/unset.c\
 		built-in/exit.c \
 		built-in/export.c \
+		built-in/export_utils.c \
 	
 
 # Rassembler les sources

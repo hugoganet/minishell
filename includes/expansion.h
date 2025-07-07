@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 17:36:22 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 21:40:16 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 21:43:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ bool	try_expand_special_vars(t_expansion_state *state, int last_exit_status);
  * @param start_index L'index de début (après le '$').
  * @return Le nom de la variable (chaîne allouée).
  */
-char *extract_variable_name(const char *input, int start_index);
+char	*extract_variable_name(const char *input, int start_index);
 
 /**
  * @brief Recherche la valeur d'une variable dans l'environnement.

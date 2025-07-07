@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:01:56 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/03/20 13:36:46 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:12:09 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*free_strjoin(char *s1, char *s2)
 	{
 		free (s1);
 		return (NULL);
-	}	
+	}
 	temp = ft_strjoin(s1, s2);
 	free(s1);
 	return (temp);

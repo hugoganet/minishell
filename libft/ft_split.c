@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:39:35 by elaudrez          #+#    #+#             */
-/*   Updated: 2024/12/03 13:35:40 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:13:08 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_countword(const char *s, char c)
 			while (s[i] && !ft_isdelim(s[i], c))
 				i++;
 		}
-	}	
+	}
 	return (nbm);
 }
 

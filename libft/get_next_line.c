@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:01:21 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/26 18:12:19 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 21:12:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,6 @@ char	*get_next_line(int fd)
 		free (stash);
 		stash = NULL;
 	}
-	// On libère la stash quand elle ne contient plus rien (juste "\0" -> !*stash)
-	// pour éviter qu’un malloc inutile (1 byte) reste après un pipe.
-	// Sans ce free, un "still reachable" est signalé par Valgrind.
 	return (line);
 }
 

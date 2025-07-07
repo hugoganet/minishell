@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:06:29 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/04/03 14:23:04 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:11:58 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 int	ft_printa(unsigned long nb, char *base)
-{	
+{
 	if (!nb)
 	{
 		write(1, "(nil)", 5);

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 17:36:22 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 18:57:17 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 21:40:16 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ void	expansion_update_quote_state(t_expansion_state *state);
  */
 char	*expand_special_variable(t_expansion_state *state,
 			int last_exit_status);
+bool	try_expand_special_vars(t_expansion_state *state, int last_exit_status);
 
 // !===========================================================================
 // !                         EXPANSION_UTILS.C                               =
 // !===========================================================================
-
 /**
  * @brief Extrait le nom d'une variable à partir de la position actuelle.
  *        Ex: pour "$USER_VAR", extrait "USER_VAR".
@@ -109,7 +109,7 @@ char	*expand_special_variable(t_expansion_state *state,
  * @param start_index L'index de début (après le '$').
  * @return Le nom de la variable (chaîne allouée).
  */
-char	*extract_variable_name(const char *input, int start_index);
+char *extract_variable_name(const char *input, int start_index);
 
 /**
  * @brief Recherche la valeur d'une variable dans l'environnement.
@@ -139,5 +139,6 @@ char	*extract_translated_string(const char *input, int dollar_pos,
 			int *end_pos);
 void	append_to_output(t_expansion_state *state, const char *to_add);
 void	append_and_free(t_expansion_state *state, char *value);
+int		init_expansion_state(t_expansion_state *state, const char *input);
 
 #endif

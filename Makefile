@@ -17,6 +17,7 @@ LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 # Fichiers sources
 SRC = 	main.c \
 		init/initialisation.c \
+		init/shlvl_utils.c \
 		utils/init_error.c \
 		utils/free_utils.c \
 		utils/free_utils_2.c \

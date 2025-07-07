@@ -96,6 +96,14 @@ t_env	*create_env_pair(const char *key, const char *value);
 int		increment_shlvl(t_env *env_list);
 
 // !===========================================================================
+// !                           SHLVL_UTILS.C                                 =
+// !===========================================================================
+
+int		shlvl_exists_in_envp(char **envp);
+int		ensure_shlvl_is_one(t_env *env_list);
+void	configure_shlvl(char **envp, t_env *env_list);
+
+// !===========================================================================
 // !                             CLEANUP.C                                   =
 // !===========================================================================
 

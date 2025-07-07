@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 18:18:04 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/06/25 11:49:03 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 21:14:23 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,9 @@ char	*ft_itoa(int n)
 
 	nbr = (long)n;
 	len = n_len(nbr);
-	// str = malloc((len + 1) * sizeof(char));
 	str = ft_calloc((len + 1), sizeof(char));
-	// Conditional jump or move depends on uninitialised value(s)
-	//    at 0x10EE68: ft_itoa (in /home/hganet/minishell/Minishell)
-	//    by 0x10C4D3: increment_shlvl (var_utils.c:84)
-	//    by 0x1092BB: init_shell (initialisation.c:43)
-	//    by 0x10919B: main (main.c:35)
-	//  Uninitialised value was created by a heap allocation
-	//    at 0x4885250: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-arm64-linux.so)
-	//    by 0x10EE0B: ft_itoa (in /home/hganet/minishell/Minishell)
-	//    by 0x10C4D3: increment_shlvl (var_utils.c:84)
-	//    by 0x1092BB: init_shell (initialisation.c:43)
-	//    by 0x10919B: main (main.c:35)
 	if (!str)
-	return (NULL);
-	// str[len] = '\0';
+		return (NULL);
 	if (nbr < 0)
 	{
 		nbr = -nbr;
@@ -63,7 +50,6 @@ char	*ft_itoa(int n)
 	}
 	while (len > 0)
 	{
-		// ! Si nbr > 0, on lit str[0] avant qu'il ne soit initialisé
 		if (str[0] == '-' && nbr == 0)
 			break ;
 		str[len - 1] = nbr % 10 + '0';

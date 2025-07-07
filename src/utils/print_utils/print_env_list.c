@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:46:52 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/03 14:55:10 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 22:05:35 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
  *
  * @param env La tête de la liste chaînée d'environnement.
  */
-void print_env_list(t_env *env)
+void	print_env_list(t_env *env)
 {
-	t_env *current;
+	t_env	*current;
 
 	current = env;
 	if (!current)
 	{
 		printf("No environment variables set.\n");
-		return;
+		return ;
 	}
 	printf("\n=== Environment Variables ===\n");
 	while (current)

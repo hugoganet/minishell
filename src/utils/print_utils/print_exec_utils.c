@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 16:33:31 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 20:19:47 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 22:04:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  *
  * @param cmd_name Nom de la commande
  */
-void print_command_not_found_error(char *cmd_name)
+void	print_command_not_found_error(char *cmd_name)
 {
 	if (ft_strchr(cmd_name, '/'))
 	{

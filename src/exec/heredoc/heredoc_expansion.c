@@ -17,22 +17,24 @@
  * @brief Expanse les variables dans une ligne de heredoc si nécessaire.
  *
  * Cette fonction applique l'expansion de variables uniquement si le délimiteur
- * original n'était pas quoté. Si il était quoté, la ligne est retournée telle quelle.
+ * original n'était pas quoté. Si il était quoté, la ligne est retournée
+ * telle quelle.
  *
  * @param line La ligne à traiter
  * @param expand_enabled 1 si l'expansion doit être appliquée, 0 sinon
  * @param shell Les données du shell pour l'expansion
  * @return La ligne traitée (expansée ou non selon le cas)
  */
-char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell)
+char	*expand_heredoc_line(char *line, int expand_enabled, t_shell *shell)
 {
-	char *expanded_line;
+	char	*expanded_line;
 
 	if (!line)
 		return (NULL);
 	if (!expand_enabled)
 		return (line);
-	expanded_line = expand_variables(line, shell->env_list, shell->last_exit_status);
+	expanded_line = expand_variables(line, shell->env_list,
+			shell->last_exit_status);
 	free(line);
 	return (expanded_line);
 }
@@ -50,10 +52,11 @@ char *expand_heredoc_line(char *line, int expand_enabled, t_shell *shell)
  * @param delimiter Le délimiteur original
  * @return Une copie allouée du délimiteur nettoyé
  */
-char *clean_heredoc_delimiter(const char *delimiter)
+char	*clean_heredoc_delimiter(const char *delimiter)
 {
-	char *cleaned;
-	int i, j;
+	char	*cleaned;
+	int		i;
+	int		j;
 
 	if (!delimiter)
 		return (NULL);
@@ -88,21 +91,18 @@ char *clean_heredoc_delimiter(const char *delimiter)
  * @param shell Les données du shell pour l'expansion
  * @return Le délimiteur expansé et nettoyé
  */
-char *expand_and_clean_delimiter(const char *delimiter, t_shell *shell)
+char	*expand_and_clean_delimiter(const char *delimiter, t_shell *shell)
 {
-	char *expanded;
-	char *cleaned;
+	char	*expanded;
+	char	*cleaned;
 
 	if (!delimiter)
 		return (NULL);
-	// Étape 1 : Expanser les variables dans le délimiteur
-	expanded = expand_variables((char *)delimiter, shell->env_list, shell->last_exit_status);
+	expanded = expand_variables((char *)delimiter, shell->env_list,
+			shell->last_exit_status);
 	if (!expanded)
 		return (NULL);
-
-	// Étape 2 : Nettoyer les guillemets du délimiteur expansé
 	cleaned = clean_heredoc_delimiter(expanded);
 	free(expanded);
-
 	return (cleaned);
 }

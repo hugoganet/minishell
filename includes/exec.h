@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 09:15:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 12:06:21 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 17:20:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #define EXEC_H
 
 #include "minishell.h"
+
+typedef struct s_heredoc_fd
+{
+	int fd;
+	struct s_heredoc_fd *next;
+} t_heredoc_fd;
 
 // !===========================================================================
 // !                              EXEC_CORE.C                                =
@@ -82,6 +88,7 @@ int setup_redirections(t_ast *node);
 void setup_heredoc_redirection(t_shell *shell);
 int process_heredocs(t_ast *ast_root, t_shell *shell);
 int handle_heredoc(char *token_str, t_shell *shell);
+int process_heredoc_main(char *token_str, t_shell *shell, int pipefd[2], char *delimiter_clean);
 
 // !===========================================================================
 // !                            HEREDOC_UTILS.C                              =

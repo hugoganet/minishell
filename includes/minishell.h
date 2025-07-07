@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 15:19:39 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:20:26 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ extern volatile sig_atomic_t g_signal;
 // ! ----------------------- STRUCTURES --------------
 
 typedef struct s_env t_env;
-
-typedef struct s_heredoc_fd
-{
-	int fd;
-	struct s_heredoc_fd *next;
-} t_heredoc_fd;
 
 typedef struct s_shell
 {

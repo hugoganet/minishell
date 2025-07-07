@@ -14,16 +14,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void add_heredoc_fd(t_shell *shell, int fd)
+void	add_heredoc_fd(t_shell *shell, int fd)
 {
-	t_heredoc_fd *new_fd;
-	t_heredoc_fd *cur;
+	t_heredoc_fd	*new_fd;
+	t_heredoc_fd	*cur;
 
 	if (fd < 0)
-		return; // Ne pas ajouter de fd invalide
+		return ;
 	new_fd = ft_calloc(sizeof(t_heredoc_fd), 1);
 	if (!new_fd)
-		return;
+		return ;
 	new_fd->fd = fd;
 	new_fd->next = NULL;
 	if (!shell->heredoc_fds)
@@ -37,9 +37,11 @@ void add_heredoc_fd(t_shell *shell, int fd)
 	}
 }
 
-void close_all_heredoc_fds(t_shell *shell)
+void	close_all_heredoc_fds(t_shell *shell)
 {
-	t_heredoc_fd *cur = shell->heredoc_fds;
+	t_heredoc_fd	*cur;
+
+	cur = shell->heredoc_fds;
 	while (cur)
 	{
 		if (cur->fd != -1)
@@ -48,10 +50,12 @@ void close_all_heredoc_fds(t_shell *shell)
 	}
 }
 
-void free_all_heredoc_fds(t_shell *shell)
+void	free_all_heredoc_fds(t_shell *shell)
 {
-	t_heredoc_fd *cur = shell->heredoc_fds;
-	t_heredoc_fd *tmp;
+	t_heredoc_fd	*cur;
+	t_heredoc_fd	*tmp;
+
+	cur = shell->heredoc_fds;
 	while (cur)
 	{
 		tmp = cur->next;

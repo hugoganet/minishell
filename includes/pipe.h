@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:04:24 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 17:06:50 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 17:21:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
  * to execute within a complex pipeline. It holds references to the command
  * array, pipe file descriptors, process IDs, and shell environment.
  * 
- * @var commands Array of AST command nodes to execute in the pipeline
- * @var pipes 2D array of pipe file descriptors [pipe_index][read/write]
- * @var pids Array of process IDs for all processes in the pipeline
- * @var cmd_count Total number of commands in the pipeline
- * @var index Current command index (position in the pipeline)
- * @var env Pointer to the environment variables list
- * @var shell Pointer to the main shell structure
+ * @param commands Array of AST command nodes to execute in the pipeline
+ * @param pipes 2D array of pipe file descriptors [pipe_index][read/write]
+ * @param pids Array of process IDs for all processes in the pipeline
+ * @param cmd_count Total number of commands in the pipeline
+ * @param index Current command index (position in the pipeline)
+ * @param env Pointer to the environment variables list
+ * @param shell Pointer to the main shell structure
  */
 typedef struct s_pipeline_ctx
 {
@@ -50,10 +50,10 @@ typedef struct s_pipeline_ctx
  * pipeline with multiple commands. It contains allocated arrays for commands,
  * pipes, and process IDs, along with a count of successfully created pipes.
  * 
- * @var commands Array of pointers to AST command nodes
- * @var pipes 2D array of pipe file descriptors [pipe_index][0=read, 1=write]
- * @var pids Array of process IDs for forked child processes
- * @var pipes_created Number of pipes successfully created (cmd_count-1)
+ * @param commands Array of pointers to AST command nodes
+ * @param pipes 2D array of pipe file descriptors [pipe_index][0=read, 1=write]
+ * @param pids Array of process IDs for forked child processes
+ * @param pipes_created Number of pipes successfully created (cmd_count-1)
  */
 typedef struct s_pipeline_data
 {
@@ -72,13 +72,13 @@ typedef struct s_pipeline_data
  * when passing data between pipeline functions, improving code readability
  * and maintainability.
  * 
- * @var commands Array of AST command nodes to execute
- * @var pipes 2D array of pipe file descriptors
- * @var pids Array to store process IDs of created child processes
- * @var cmd_count Total number of commands in the pipeline
- * @var index Current command index being processed
- * @var env Environment variables for command execution
- * @var shell Main shell state and configuration
+ * @param commands Array of AST command nodes to execute
+ * @param pipes 2D array of pipe file descriptors
+ * @param pids Array to store process IDs of created child processes
+ * @param cmd_count Total number of commands in the pipeline
+ * @param index Current command index being processed
+ * @param env Environment variables for command execution
+ * @param shell Main shell state and configuration
  */
 typedef struct s_pipeline_params
 {
@@ -100,11 +100,11 @@ typedef struct s_pipeline_params
  * process IDs, and necessary execution context for both left and right
  * side commands.
  * 
- * @var fd Array of pipe file descriptors [0=read_end, 1=write_end]
- * @var pid Array of process IDs [0=left_process, 1=right_process]
- * @var node Pointer to the AST pipe node containing both commands
- * @var env Environment variables for command execution
- * @var shell Main shell state and configuration
+ * @param fd Array of pipe file descriptors [0=read_end, 1=write_end]
+ * @param pid Array of process IDs [0=left_process, 1=right_process]
+ * @param node Pointer to the AST pipe node containing both commands
+ * @param env Environment variables for command execution
+ * @param shell Main shell state and configuration
  */
 typedef struct s_simple_pipe_ctx
 {

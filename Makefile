@@ -55,7 +55,7 @@ SRC = 	main.c \
 		env/init_env.c \
 		env/env.c \
 		env/env_utils.c \
-		env/var_utils.c \
+		env/increment_shlvl.c \
 		exec/exec_core.c \
 		exec/exec_command.c \
 		exec/exec_args.c \

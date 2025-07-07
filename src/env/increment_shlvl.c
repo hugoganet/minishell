@@ -27,17 +27,17 @@
  * @return int 0 en cas de succès, 1 en cas d'erreur
  */
 
- static int	if_no_shlvl(t_env **shlvl_node, t_env **env_list)
- {
+static int if_no_shlvl(t_env **shlvl_node, t_env **env_list)
+{
 	*shlvl_node = create_env_pair("SHLVL", "1");
 	if (!*shlvl_node)
 		return (1);
 	(*shlvl_node)->next = (*env_list)->next;
 	(*env_list)->next = *shlvl_node;
 	return (0);
- }
+}
 
-int	increment_shlvl(t_env *env_list)
+int increment_shlvl(t_env *env_list)
 {
 	t_env *shlvl_node;
 	int level;

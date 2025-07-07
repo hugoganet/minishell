@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:00:49 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param str Token brut
  * @return t_token_type Type du token
  */
-t_token_type get_token_type(char *str)
+t_token_type	get_token_type(char *str)
 {
 	if (!str)
 		return (WORD);
@@ -47,9 +47,10 @@ t_token_type get_token_type(char *str)
  * @param type Le type du token à vérifier
  * @return true si c'est une redirection (<, >, <<, >>), false sinon
  */
-bool is_redirection(t_token_type type)
+bool	is_redirection(t_token_type type)
 {
-	return (type == REDIR_INPUT || type == REDIR_OUTPUT || type == REDIR_APPEND || type == HEREDOC);
+	return (type == REDIR_INPUT || type == REDIR_OUTPUT
+		|| type == REDIR_APPEND || type == HEREDOC);
 }
 
 /**
@@ -61,7 +62,7 @@ bool is_redirection(t_token_type type)
  * @param type Le type du token à vérifier
  * @return true si c'est un opérateur logique, false sinon
  */
-bool is_logical_operator(t_token_type type)
+bool	is_logical_operator(t_token_type type)
 {
 	return (type == PIPE);
 }

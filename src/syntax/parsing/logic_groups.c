@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   logic_groups.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 19:48:36 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:56:50 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param ptr Pointeur vers le token courant
  * @return Pointeur vers le token suivant à traiter
  */
-static t_token *set_first_command(t_token *ptr)
+static t_token	*set_first_command(t_token *ptr)
 {
 	if (ptr != NULL && ptr->type == WORD)
 	{
@@ -36,7 +36,7 @@ static t_token *set_first_command(t_token *ptr)
  *
  * @param ptr Pointeur vers le premier token à traiter
  */
-static void process_operators_and_redirections(t_token *ptr)
+static void	process_operators_and_redirections(t_token *ptr)
 {
 	while (ptr != NULL)
 	{
@@ -45,9 +45,9 @@ static void process_operators_and_redirections(t_token *ptr)
 			ptr = ptr->next;
 			ptr->type = CMD;
 		}
-		else if ((ptr->type == REDIR_INPUT || ptr->type == REDIR_APPEND ||
-				  ptr->type == REDIR_OUTPUT || ptr->type == HEREDOC) &&
-				 ptr->next)
+		else if ((ptr->type == REDIR_INPUT || ptr->type == REDIR_APPEND
+				|| ptr->type == REDIR_OUTPUT || ptr->type == HEREDOC)
+			&& ptr->next)
 		{
 			ptr = ptr->next;
 			ptr->type = FILES;
@@ -64,9 +64,9 @@ static void process_operators_and_redirections(t_token *ptr)
  *
  * @param node Pointeur vers le début de la liste de tokens
  */
-static void set_command_arguments(t_token *node)
+static void	set_command_arguments(t_token *node)
 {
-	t_token *ptr;
+	t_token	*ptr;
 
 	ptr = node;
 	while (ptr != NULL)
@@ -93,9 +93,9 @@ static void set_command_arguments(t_token *node)
  * @param node Pointeur vers le pointeur de début de liste de tokens
  * @return Pointeur vers le début de la liste modifiée
  */
-t_token *is_logic(t_token **node)
+t_token	*is_logic(t_token **node)
 {
-	t_token *ptr;
+	t_token	*ptr;
 
 	ptr = *node;
 	ptr = set_first_command(ptr);

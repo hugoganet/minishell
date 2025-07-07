@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_token_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:58:19 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
  * @param type Le type (enum)
  * @return t_token* Le pointeur vers le nouveau token, ou NULL en cas d'erreur
  */
-t_token *token_new(char *str, t_token_type type)
+t_token	*token_new(char *str, t_token_type type)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
@@ -45,7 +45,7 @@ t_token *token_new(char *str, t_token_type type)
  * @param last Pointeur vers le dernier élément actuel
  * @param new Nouveau token à ajouter
  */
-void append_token(t_token **head, t_token **last, t_token *new)
+void	append_token(t_token **head, t_token **last, t_token *new)
 {
 	if (!*head)
 		*head = new;

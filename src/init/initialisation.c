@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/05 18:22:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:38:00 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 	//Initialisation de la liste chainee de l'environnement de export
 	shell->export_list = init_env_list(envp);
 	sort_list(&shell->export_list);
-	
-	// Initialisation de la liste chaînée d'environnement
+	// Initialisation de la liste chaînée d'environnement ou un env minimal si 'env -i'
 	env_list = init_env_list(envp);
 	if (!env_list)
 	{
@@ -57,7 +56,6 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 		ft_putendl_fd("minishell: warning: failed to increment SHLVL", 2);
 		// On continue malgré l'erreur - ce n'est pas critique
 	}
-
 	// Maintenant, nous devons synchroniser env avec env_list car SHLVL a été modifié
 	if (shell->env)
 	{

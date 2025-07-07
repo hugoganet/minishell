@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 23:03:25 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:00:40 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@
  * @param env_var Chaîne de type "KEY=VALUE".
  * @return int 0 en cas de succès, 1 en cas d’erreur d’allocation.
  */
-int init_env_list_node(t_env *node, char *env_var)
+int	init_env_list_node(t_env *node, char *env_var)
 {
-	char *equal;
+	char	*equal;
 
 	if (!node || !env_var)
 		return (1);
-
 	equal = ft_strchr(env_var, '=');
 	if (equal)
 	{
@@ -40,7 +39,6 @@ int init_env_list_node(t_env *node, char *env_var)
 		node->key = ft_strdup(env_var);
 		node->value = NULL;
 	}
-	// Vérifie les erreurs d’allocation
 	if (!node->key || (equal && !node->value))
 		return (1);
 	return (0);
@@ -52,9 +50,9 @@ int init_env_list_node(t_env *node, char *env_var)
  * @param env_var Variable d’environnement au format "KEY=VALUE"
  * @return t_env* Nœud initialisé ou NULL en cas d’erreur
  */
-static t_env *create_env_node(char *env_var)
+static t_env	*create_env_node(char *env_var)
 {
-	t_env *node;
+	t_env	*node;
 
 	node = malloc(sizeof(t_env));
 	if (!node)
@@ -79,15 +77,18 @@ static t_env *create_env_node(char *env_var)
  * @param value La valeur associée (ex : "/home/user")
  * @return t_env* Le nœud alloué ou NULL en cas d’échec
  */
-t_env *create_env_pair(const char *key, const char *value)
+t_env	*create_env_pair(const char *key, const char *value)
 {
-	t_env *node;
+	t_env	*node;
 
 	node = malloc(sizeof(t_env));
 	if (!node)
 		return (NULL);
 	node->key = ft_strdup(key);
-	node->value = value ? ft_strdup(value) : NULL;
+	if (value)
+		node->value = ft_strdup(value);
+	else
+		node->value = NULL;
 	node->next = NULL;
 	if (!node->key || (value && !node->value))
 	{
@@ -106,19 +107,15 @@ t_env *create_env_pair(const char *key, const char *value)
  *
  * @return t_env* La liste minimale ou NULL en cas d’erreur d’allocation
  */
-static t_env *init_minimal_env(void)
+static t_env	*init_minimal_env(void)
 {
-	t_env *head;
-	t_env *pwd;
-	// PATH_MAX est une constante définie par POSIX dans <limits.h> 
-	// qui donne la longueur maximale d’un chemin absolu valide (en général 4096).
-	char cwd[PATH_MAX];
+	t_env	*head;
+	t_env	*pwd;
+	char	cwd[PATH_MAX];
 
-	// Crée SHLVL=1
 	head = create_env_pair("SHLVL", "0");
 	if (!head)
 		return (NULL);
-	// Récupère le répertoire courant pour initialiser PWD
 	if (getcwd(cwd, sizeof(cwd)))
 	{
 		pwd = create_env_pair("PWD", cwd);
@@ -141,18 +138,16 @@ static t_env *init_minimal_env(void)
  * @param envp Le tableau de chaînes "KEY=VALUE" fourni au main
  * @return t_env* La tête de la liste chaînée ou NULL en cas d’échec
  */
-t_env *init_env_list(char **envp)
+t_env	*init_env_list(char **envp)
 {
-	t_env *head;
-	t_env *node;
-	t_env *last;
+	t_env	*head;
+	t_env	*node;
+	t_env	*last;
 
-	// Si envp est vide, on initialise une env minimale
 	if (!envp || !envp[0])
 		return (init_minimal_env());
 	head = NULL;
 	last = NULL;
-	// Pour chaque variable "KEY=VALUE", on crée un nœud t_env
 	while (*envp)
 	{
 		node = create_env_node(*envp++);

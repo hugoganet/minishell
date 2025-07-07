@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:59:29 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
  * @param input La chaîne d'entrée à analyser (doit être non-NULL)
  * @param i Pointeur vers l'index à avancer (doit être non-NULL)
  */
-void skip_spaces(char *input, int *i)
+void	skip_spaces(char *input, int *i)
 {
 	if (!input || !i)
-		return;
+		return ;
 	while (input[*i] && (input[*i] == ' ' || input[*i] == '\t'))
 		(*i)++;
 }
@@ -45,9 +45,10 @@ void skip_spaces(char *input, int *i)
  * @param c Le caractère à tester
  * @return true si c'est un séparateur (espace, tab, symbole shell), false sinon
  */
-bool is_token_delim(char c)
+bool	is_token_delim(char c)
 {
-	return (c == ' ' || c == '\t' || c == '<' || c == '>' || c == '|' || c == '\0');
+	return (c == ' ' || c == '\t' || c == '<' || c == '>' || c == '|'
+		|| c == '\0');
 }
 
 /**
@@ -60,12 +61,13 @@ bool is_token_delim(char c)
  * @param i Pointeur vers l'index courant (sera avancé)
  * @return char* Segment alloué ou NULL en cas d'erreur
  */
-char *read_word_segment(char *input, int *i)
+char	*read_word_segment(char *input, int *i)
 {
-	int start;
+	int	start;
 
 	start = *i;
-	while (input[*i] && input[*i] != '\'' && input[*i] != '"' && !is_token_delim(input[*i]))
+	while (input[*i] && input[*i] != '\'' && input[*i] != '"'
+		&& !is_token_delim(input[*i]))
 		(*i)++;
 	return (ft_substr(input, start, *i - start));
 }
@@ -80,9 +82,9 @@ char *read_word_segment(char *input, int *i)
  * @param segment Nouveau segment à ajouter (sera libéré)
  * @return char* Nouvelle chaîne concaténée ou NULL en cas d'erreur
  */
-char *join_and_free(char *result, char *segment)
+char	*join_and_free(char *result, char *segment)
 {
-	char *temp;
+	char	*temp;
 
 	if (!result)
 		return (segment);

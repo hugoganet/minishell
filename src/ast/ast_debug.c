@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_debug.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:50:57 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/05/28 11:51:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 11:02:25 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  *
  * @param depth Niveau de profondeur dans l'arbre
  */
-static void print_indent(int depth)
+static void	print_indent(int depth)
 {
 	int i = 0;
 

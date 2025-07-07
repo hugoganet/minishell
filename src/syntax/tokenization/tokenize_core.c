@@ -3,29 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_core.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 20:02:03 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:03:38 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
 
 /**
- * @brief Lit un token complet (quote, mot ou opérateur) à partir de l'index donné
+ * @brief Lit un token complet (quote, mot ou opérateur) à partir de l'index
+ * donné
  *
- * Crée systématiquement un nouveau token dès qu'un bloc (mot, quote ou opérateur) est détecté.
- * Gère les différents types de tokens : redirections combinées, mots complets, opérateurs.
+ * Crée systématiquement un nouveau token dès qu'un bloc (mot, quote ou
+ * opérateur) est détecté.
+ * Gère les différents types de tokens : redirections combinées, mots
+ * complets, opérateurs.
  *
  * @param input Ligne utilisateur
  * @param i Pointeur vers l'index actuel (sera mis à jour)
  * @return t_token* Un token alloué, ou NULL en cas d'erreur
  */
-static t_token *get_next_token(char *input, int *i)
+static t_token	*get_next_token(char *input, int *i)
 {
-	char *content;
-	t_token_type type;
+	char			*content;
+	t_token_type	type;
 
 	if ((input[*i] == '<' || input[*i] == '>') && input[*i] != '\0')
 		content = read_redir_and_file(input, i);
@@ -51,10 +54,10 @@ static t_token *get_next_token(char *input, int *i)
  * @param last Pointeur vers le dernier élément
  * @return int 0 en cas de succès, -1 en cas d'erreur
  */
-static int process_and_add_token(char *input, int *i, t_token **head,
-								 t_token **last)
+static int	process_and_add_token(char *input, int *i, t_token **head,
+								t_token **last)
 {
-	t_token *new;
+	t_token	*new;
 
 	new = get_next_token(input, i);
 	if (!new && input[*i])
@@ -78,7 +81,7 @@ static int process_and_add_token(char *input, int *i, t_token **head,
  * @param head Pointeur vers la tête de liste
  * @return int 0 en cas de succès, -1 en cas d'erreur syntaxique
  */
-static int finalize_tokens(t_token **head)
+static int	finalize_tokens(t_token **head)
 {
 	refine_token_types(*head);
 	if (validate_token_sequence(*head))
@@ -90,7 +93,8 @@ static int finalize_tokens(t_token **head)
 }
 
 /**
- * @brief Fonction principale de découpage : transforme la ligne en une liste de tokens
+ * @brief Fonction principale de découpage : transforme la ligne en une
+ * liste de tokens
  *
  * Parcourt la chaîne d'entrée caractère par caractère, identifie les tokens
  * et les ajoute à une liste chaînée. Effectue ensuite le post-traitement
@@ -99,11 +103,11 @@ static int finalize_tokens(t_token **head)
  * @param input Chaîne entrée par l'utilisateur
  * @return t_token* Liste chaînée des tokens, ou NULL en cas d'erreur
  */
-t_token *tokenize(char *input)
+t_token	*tokenize(char *input)
 {
-	t_token *head;
-	t_token *last;
-	int i;
+	t_token	*head;
+	t_token	*last;
+	int		i;
 
 	head = NULL;
 	last = NULL;

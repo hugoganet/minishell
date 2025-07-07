@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:45:34 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/17 12:01:23 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:53:23 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -18,13 +17,12 @@
  *
  * @param head Le pointeur vers le premier token de la liste.
  */
-void free_token_list(t_token *head)
+void	free_token_list(t_token *head)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (head == NULL)
-		return;
-
+		return ;
 	while (head)
 	{
 		tmp = head->next;
@@ -40,9 +38,9 @@ void free_token_list(t_token *head)
  *
  * @param split Le tableau de chaînes de caractères à libérer.
  */
-void free_split(char **split)
+void	free_split(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (split && split[i])
@@ -53,18 +51,18 @@ void free_split(char **split)
 /**
  * @brief Libère récursivement un arbre de syntaxe abstraite (AST).
  *
- * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres gauche et droit,
+ * Cette fonction libère chaque nœud de l'AST, y compris ses sous-arbres
+ * gauche et droit,
  * ainsi que le tableau `args` si présent (dans les nœuds CMD).
  *
  * @param ast Pointeur vers la racine de l'AST à libérer.
  */
-void free_ast(t_ast *ast)
+void	free_ast(t_ast *ast)
 {
-	int i;
+	int	i;
 
 	if (!ast)
-		return;
-	// Libération récursive
+		return ;
 	if (ast->left)
 	{
 		free_ast(ast->left);
@@ -75,7 +73,6 @@ void free_ast(t_ast *ast)
 		free_ast(ast->right);
 		ast->right = NULL;
 	}
-	// Libération du tableau d’arguments
 	if (ast->args)
 	{
 		i = 0;
@@ -92,14 +89,13 @@ void free_ast(t_ast *ast)
  *
  * @param env Le tableau de chaînes alloué à libérer.
  */
-void free_env(char **env)
+void	free_env(char **env)
 {
-	int i = 0;
+	int	i;
 
-	// Libère chaque chaîne dans le tableau
+	i = 0;
 	while (env && env[i])
 		free(env[i++]);
-	// Libère le tableau lui-même
 	free(env);
 }
 
@@ -108,9 +104,9 @@ void free_env(char **env)
  *
  * @param env La liste chaînée d'environnement à libérer.
  */
-void free_env_list(t_env *env_list)
+void	free_env_list(t_env *env_list)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	while (env_list)
 	{

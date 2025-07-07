@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_validation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:05:46 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param i L'index du premier caractère de redirection
  * @return int 2 si double redirection, 1 si simple
  */
-static int get_redirection_length(char *input, int i)
+static int	get_redirection_length(char *input, int i)
 {
 	if (input[i + 1] == input[i])
 		return (2);
@@ -39,7 +39,7 @@ static int get_redirection_length(char *input, int i)
  * @param i L'index de départ
  * @return int Le nouvel index après les espaces
  */
-static int skip_whitespace(char *input, int i)
+static int	skip_whitespace(char *input, int i)
 {
 	while (input[i] == ' ' || input[i] == '\t')
 		i++;
@@ -56,9 +56,10 @@ static int skip_whitespace(char *input, int i)
  * @param i L'index à vérifier
  * @return int 1 si invalide, 0 si valide
  */
-static int is_invalid_after_redir(char *input, int i)
+static int	is_invalid_after_redir(char *input, int i)
 {
-	return (input[i] == '\0' || input[i] == '|' || input[i] == '<' || input[i] == '>');
+	return (input[i] == '\0' || input[i] == '|'
+		|| input[i] == '<' || input[i] == '>');
 }
 
 /**
@@ -71,11 +72,11 @@ static int is_invalid_after_redir(char *input, int i)
  * @param input La ligne utilisateur
  * @return int 1 si erreur, 0 si syntaxe correcte
  */
-int has_invalid_redirections(char *input)
+int	has_invalid_redirections(char *input)
 {
-	int i;
-	char quote_state;
-	int redir_len;
+	int		i;
+	char	quote_state;
+	int		redir_len;
 
 	i = 0;
 	quote_state = 0;
@@ -89,7 +90,7 @@ int has_invalid_redirections(char *input)
 			i = skip_whitespace(input, i);
 			if (is_invalid_after_redir(input, i))
 				return (1);
-			continue;
+			continue ;
 		}
 		i++;
 	}

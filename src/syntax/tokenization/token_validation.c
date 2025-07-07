@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:02:13 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@
  * @param i Pointeur vers l'index courant (pointant sur la quote ouvrante)
  * @return char* Sous-chaîne allouée (avec les quotes), ou NULL en cas d'erreur
  */
-char *parse_quoted_token(char *input, int *i)
+char	*parse_quoted_token(char *input, int *i)
 {
-	char quote;
-	int start;
-	int end;
-	char *token_new;
+	char	quote;
+	int		start;
+	int		end;
+	char	*token_new;
 
 	quote = input[*i];
 	start = *i;
@@ -56,10 +56,10 @@ char *parse_quoted_token(char *input, int *i)
  * @param token Le token fautif
  * @return int Toujours 1 (pour être utilisé directement dans un return)
  */
-int print_syntax_error(char *token)
+int	print_syntax_error(char *token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token '",
-				 STDERR_FILENO);
+		STDERR_FILENO);
 	ft_putstr_fd(token, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
 	return (1);
@@ -77,16 +77,18 @@ int print_syntax_error(char *token)
  * @param head Pointeur vers le premier token de la liste
  * @return int 0 si la séquence est valide, 1 sinon
  */
-int validate_token_sequence(t_token *head)
+int	validate_token_sequence(t_token *head)
 {
-	t_token *prev;
-	t_token *curr;
+	t_token	*prev;
+	t_token	*curr;
 
 	prev = NULL;
 	curr = head;
 	while (curr)
 	{
-		if ((is_logical_operator(curr->type) && !prev) || (prev && is_logical_operator(prev->type) && is_logical_operator(curr->type)))
+		if ((is_logical_operator(curr->type) && !prev)
+			|| (prev && is_logical_operator(prev->type)
+				&& is_logical_operator(curr->type)))
 			return (print_syntax_error(curr->str));
 		prev = curr;
 		curr = curr->next;

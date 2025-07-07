@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_validation.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:05:02 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
  * @param input Ligne entrée par l'utilisateur
  * @return int 1 si erreur, 0 si syntaxe correcte
  */
-int has_invalid_pipes(char *input)
+int	has_invalid_pipes(char *input)
 {
-	int i;
-	char quote_state;
+	int		i;
+	char	quote_state;
 
 	i = 0;
 	quote_state = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:25:16 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/05 19:00:08 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:54:20 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
  *
  * @param shell Pointeur vers la structure principale du shell.
  */
-void cleanup_shell(t_shell *shell)
+void	cleanup_shell(t_shell *shell)
 {
 	if (!shell)
-		return;
+		return ;
 	if (shell->env_list)
 	{
 		free_env_list(shell->env_list);

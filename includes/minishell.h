@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/06 10:51:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 13:50:30 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,11 @@ void create_add_new_node(char *key, char *value, t_env **env);
 void print_export_list(t_env *export_list);
 void ft_swap(t_env *i, t_env *j);
 void sort_list(t_env **export_list);
+void	free_args_on_error(char **args, int index);
+int	parse_sign(char *str, int *sign);
+int	will_overflow_negative(long long result, int digit);
+int	handle_invalid_export(char *arg);
+
 
 /**
  * @brief Ajoute un fd de heredoc à la liste chaînée du shell.

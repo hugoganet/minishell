@@ -115,7 +115,10 @@ typedef struct s_simple_pipe_ctx
 	t_shell		*shell;
 }	t_simple_pipe_ctx;
 
-// Pipe simple
+// !===========================================================================
+// !                           PIPE_SIMPLE.C                                 =
+// !===========================================================================
+
 int		execute_simple_pipe(t_ast *node, t_env *env, t_shell *shell);
 int		execute_left_pid(t_simple_pipe_ctx *ctx);
 int		execute_right_pid(t_simple_pipe_ctx *ctx);
@@ -127,7 +130,10 @@ void	setup_right_child_process(t_simple_pipe_ctx *ctx);
 int		wait_for_children(pid_t left_pid, pid_t right_pid);
 int		handle_pipe_execution_error(int fd[2], pid_t left_pid);
 
-// Pipe complexe
+// !===========================================================================
+// !                          PIPE_COMPLEX.C                                 =
+// !===========================================================================
+
 int		execute_complex_pipeline(t_ast *node, t_env *env, t_shell *shell);
 int		setup_pipeline_execution(t_ast *node, t_pipeline_data *data,
 			t_shell *shell);
@@ -136,7 +142,10 @@ int		wait_for_all_processes(pid_t *pids, int cmd_count);
 void	setup_child_context(t_pipeline_ctx *ctx, t_pipeline_params *params);
 int		create_child_process(t_pipeline_params *params);
 
-// Utilitaires pipeline
+// !===========================================================================
+// !                         PIPELINE_UTILS.C                                =
+// !===========================================================================
+
 int		count_pipeline_commands(t_ast *node);
 void	extract_pipeline_commands(t_ast *node, t_ast **commands, int *index);
 bool	is_complex_pipeline(t_ast *node);
@@ -144,10 +153,16 @@ int		allocate_pipeline_resources(int cmd_count, t_ast ***commands,
 			int ***pipes, pid_t **pids);
 int		create_all_pipes(int **pipes, int cmd_count);
 
-// Utilitaires FD pipeline
+// !===========================================================================
+// !                        PIPELINE_FD_UTILS.C                              =
+// !===========================================================================
+
 void	close_parent_pipes(int **pipes, int cmd_count);
 
-// Utilitaires enfants pipeline
+// !===========================================================================
+// !                      PIPELINE_CHILD_UTILS.C                             =
+// !===========================================================================
+
 void	setup_child_pipes(int **pipes, int cmd_count, int child_index,
 			t_shell *shell);
 void	setup_child_stdin(int **pipes, int child_index, t_shell *shell);
@@ -156,7 +171,10 @@ void	setup_child_stdout(int **pipes, int child_index, int cmd_count,
 void	close_all_child_pipes(int **pipes, int cmd_count);
 void	execute_pipeline_child(t_pipeline_ctx *ctx);
 
-// Cleanup pipeline
+// !===========================================================================
+// !                       PIPELINE_CLEANUP.C                                =
+// !===========================================================================
+
 void	cleanup_pipeline_resources(t_ast **commands, int **pipes, pid_t *pids,
 			int pipes_created);
 void	cleanup_pipeline_memory_only(t_ast **commands, int **pipes,
@@ -166,13 +184,22 @@ void	cleanup_child_memory_early(t_ast **commands, int **pipes, pid_t *pids,
 void	terminate_child_processes(pid_t *pids, int count);
 void	initialize_pipeline_pids(pid_t *pids, int cmd_count);
 
-// Heredoc pipeline
+// !===========================================================================
+// !                       PIPELINE_HEREDOC.C                                =
+// !===========================================================================
+
 int		process_all_heredocs(t_ast **commands, int cmd_count, t_shell *shell);
 
-// Statut pipeline
+// !===========================================================================
+// !                       PIPELINE_STATUS.C                                 =
+// !===========================================================================
+
 int		handle_process_exit_status(int status);
 
-// Fonction principale
+// !===========================================================================
+// !                           PIPE_MAIN.C                                   =
+// !===========================================================================
+
 int		execute_pipe_node(t_ast *node, t_env *env, t_shell *shell);
 
 #endif

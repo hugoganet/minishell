@@ -19,55 +19,91 @@
 // !                           VALIDATION MODULE                             =
 // !===========================================================================
 
-// validation/input_validation.c
+// !===========================================================================
+// !                        INPUT_VALIDATION.C                               =
+// !===========================================================================
+
 int is_line_empty(char *input);
 int has_unclosed_quotes(char *input);
 
-// validation/pipe_validation.c
+// !===========================================================================
+// !                         PIPE_VALIDATION.C                               =
+// !===========================================================================
+
 int has_invalid_pipes(char *input);
 
-// validation/redirection_validation.c
+// !===========================================================================
+// !                      REDIRECTION_VALIDATION.C                           =
+// !===========================================================================
+
 int has_invalid_redirections(char *input);
 
-// validation/parentheses_validation.c
+// !===========================================================================
+// !                      PARENTHESES_VALIDATION.C                           =
+// !===========================================================================
+
 int has_unmatched_parentheses(char *input);
 
-// validation/braces_validation.c
+// !===========================================================================
+// !                        BRACES_VALIDATION.C                              =
+// !===========================================================================
+
 int has_unclosed_braces(char *input);
 
-// validation/validation.c
+// !===========================================================================
+// !                            VALIDATION.C                                 =
+// !===========================================================================
+
 int is_syntax_valid(char *input, t_shell *shell);
 
 // !===========================================================================
 // !                         TOKENIZATION MODULE                             =
 // !===========================================================================
 
-// tokenization/token_parsing.c
+// !===========================================================================
+// !                          TOKEN_PARSING.C                                =
+// !===========================================================================
+
 void skip_spaces(char *input, int *i);
 bool is_token_delim(char c);
 char *read_word_segment(char *input, int *i);
 char *join_and_free(char *result, char *segment);
 
-// tokenization/token_reading.c
+// !===========================================================================
+// !                          TOKEN_READING.C                                =
+// !===========================================================================
+
 char *read_next_segment(char *input, int *i);
 char *read_complete_token(char *input, int *i);
 char *read_operator(char *input, int *i);
 char *read_redir_and_file(char *input, int *i);
 
-// tokenization/tokenize_core.c
+// !===========================================================================
+// !                          TOKENIZE_CORE.C                                =
+// !===========================================================================
+
 t_token *tokenize(char *input);
 
-// tokenization/token_type_utils.c
+// !===========================================================================
+// !                        TOKEN_TYPE_UTILS.C                               =
+// !===========================================================================
+
 t_token_type get_token_type(char *str);
 bool is_redirection(t_token_type type);
 bool is_logical_operator(t_token_type type);
 
-// tokenization/token_validation.c
+// !===========================================================================
+// !                        TOKEN_VALIDATION.C                               =
+// !===========================================================================
+
 char *parse_quoted_token(char *input, int *i);
 int print_syntax_error(char *token);
 int validate_token_sequence(t_token *head);
 
-// tokenization/build_token_list.c
+// !===========================================================================
+// !                        BUILD_TOKEN_LIST.C                               =
+// !===========================================================================
+
 t_token *token_new(char *str, t_token_type type);
 void append_token(t_token **head, t_token **last, t_token *new);
 
@@ -75,17 +111,26 @@ void append_token(t_token **head, t_token **last, t_token *new);
 // !                           PARSING MODULE                                =
 // !===========================================================================
 
-// parsing/refine_token_type.c
+// !===========================================================================
+// !                        REFINE_TOKEN_TYPE.C                              =
+// !===========================================================================
+
 void refine_token_types(t_token *head);
 
-// parsing/logic_groups.c
+// !===========================================================================
+// !                          LOGIC_GROUPS.C                                 =
+// !===========================================================================
+
 t_token *is_logic(t_token **node);
 
 // !===========================================================================
 // !                             CORE MODULE                                 =
 // !===========================================================================
 
-// core/syntax_utils.c
+// !===========================================================================
+// !                          SYNTAX_UTILS.C                                 =
+// !===========================================================================
+
 void update_quote_state(char *quote_state, char c);
 int is_parenthesis_empty(char *input, int i);
 

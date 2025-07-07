@@ -13,26 +13,15 @@
 #include "minishell.h"
 #include "exec.h"
 
-/**
- * @brief Initialise les signaux dans le processus enfant.
- *
- * Permet à l'enfant de recevoir normalement les signaux SIGINT et SIGQUIT.
- */
-void reset_signals_in_child(void)
+void	reset_signals_in_child(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
 
-/**
- * @brief Vérifie si le chemin pointe vers un répertoire.
- *
- * @param path Chemin à vérifier
- * @return 1 si c'est un répertoire, 0 sinon
- */
-int is_directory(char *path)
+int	is_directory(char *path)
 {
-	struct stat path_stat;
+	struct stat	path_stat;
 
 	if (stat(path, &path_stat) == 0)
 	{
@@ -47,14 +36,7 @@ int is_directory(char *path)
 	return (0);
 }
 
-/**
- * @brief Sauvegarde les descripteurs de fichier stdin et stdout.
- *
- * @param saved_stdin Pointeur pour stocker le descripteur stdin sauvegardé
- * @param saved_stdout Pointeur pour stocker le descripteur stdout sauvegardé
- * @return 0 en cas de succès, 1 en cas d'erreur
- */
-int save_std_descriptors(int *saved_stdin, int *saved_stdout)
+int	save_std_descriptors(int *saved_stdin, int *saved_stdout)
 {
 	*saved_stdin = dup(STDIN_FILENO);
 	*saved_stdout = dup(STDOUT_FILENO);
@@ -66,13 +48,7 @@ int save_std_descriptors(int *saved_stdin, int *saved_stdout)
 	return (0);
 }
 
-/**
- * @brief Restaure les descripteurs de fichier originaux et les ferme.
- *
- * @param saved_stdin Descripteur stdin sauvegardé
- * @param saved_stdout Descripteur stdout sauvegardé
- */
-void restore_std_descriptors(int saved_stdin, int saved_stdout)
+void	restore_std_descriptors(int saved_stdin, int saved_stdout)
 {
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -80,23 +56,12 @@ void restore_std_descriptors(int saved_stdin, int saved_stdout)
 	close(saved_stdout);
 }
 
-/**
- * @brief Exécute un builtin avec redirections sans traiter les heredocs.
- *
- * Version utilisée dans les processus enfants de pipe où les heredocs
- * ont déjà été traités par le processus parent.
- *
- * @param cmd_node Le nœud contenant la commande builtin
- * @param ast_root Le nœud racine contenant les redirections
- * @param shell Structure du shell principal
- * @return Code de retour du builtin exécuté
- */
-int exec_builtin_with_redirections_no_heredoc(t_ast *cmd_node, t_ast *ast_root,
-											  t_shell *shell)
+int	exec_builtin_with_redirections_no_heredoc(t_ast *cmd_node, t_ast *ast_root,
+		t_shell *shell)
 {
-	int saved_stdin;
-	int saved_stdout;
-	int result;
+	int	saved_stdin;
+	int	saved_stdout;
+	int	result;
 
 	if (save_std_descriptors(&saved_stdin, &saved_stdout) != 0)
 		return (1);

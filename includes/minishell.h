@@ -33,6 +33,12 @@
 #include <sys/stat.h>
 #include "ast.h"
 
+typedef struct s_heredoc_fd
+{
+	int					fd;
+	struct s_heredoc_fd	*next;
+}	t_heredoc_fd;
+
 // ! ----------------------- VAR GLOBALE --------------
 
 // extern : la variable est déclarée ici, mais définie ailleurs (dans signals.c).

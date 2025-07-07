@@ -124,6 +124,8 @@ Tests cover:
 - Error handling and exit statuses
 
 ## Development Notes
+- Complete dyoxygen documentation for every function and structure
+- Follow strict coding standards (norminette)
 
 ### Signal Implementation
 The project uses a global signal variable pattern for communication between signal handlers and main logic. This is necessary due to readline's signal handling requirements.

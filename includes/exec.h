@@ -15,18 +15,15 @@
 
 #include "minishell.h"
 
-typedef struct s_heredoc_fd
-{
-	int fd;
-	struct s_heredoc_fd *next;
-} t_heredoc_fd;
-
 // !===========================================================================
 // !                              EXEC_CORE.C                                =
 // !===========================================================================
 
 int exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
 int exec_cmd_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
+int execute_fork_process(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
+int execute_fork_process_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell);
+void run_child_process(char **argv, t_env *env, t_ast *ast, t_shell *shell);
 
 // !===========================================================================
 // !                            EXEC_COMMAND.C                               =

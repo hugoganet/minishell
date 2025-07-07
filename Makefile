@@ -73,7 +73,9 @@ SRC = 	main.c \
 		exec/pipe/pipe_status.c \
 		exec/pipe/pipe_fd_utils.c \
 		exec/redirection.c \
+		exec/redirection_utils.c \
 		exec/exec_utils.c \
+		exec/exec_fork.c \
 		exec/heredoc/heredoc_core.c \
 		exec/heredoc/heredoc_utils.c \
 		exec/heredoc/heredoc_expansion.c \

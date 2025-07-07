@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   refine_token_type.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:13:56 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 14:57:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
  * @brief Affine les types des tokens `WORD` en `CMD` ou `ARG`.
  *
  * Cette fonction analyse la liste de tokens issue de la tokenisation initiale,
- * où tous les mots simples sont de type `WORD`. Elle les requalifie contextuellement
+ * où tous les mots simples sont de type `WORD`. Elle les requalifie
+ * contextuellement
  * en `CMD` (commande) ou `ARG` (argument), selon leur position dans la ligne.
  *
  * Règles appliquées :
@@ -27,10 +28,10 @@
  *
  * @param head Pointeur vers le premier élément de la liste chaînée de tokens.
  */
-void refine_token_types(t_token *head)
+void	refine_token_types(t_token *head)
 {
-	t_token *curr;
-	int expect_cmd;
+	t_token	*curr;
+	int		expect_cmd;
 
 	expect_cmd = 1;
 	curr = head;
@@ -39,7 +40,7 @@ void refine_token_types(t_token *head)
 		if (is_redirection(curr->type))
 		{
 			curr = curr->next;
-			continue;
+			continue ;
 		}
 		if (curr->type == WORD)
 		{

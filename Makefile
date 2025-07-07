@@ -25,6 +25,7 @@ SRC = 	main.c \
 		utils/cleanup.c \
 		utils/export_utils.c \
 		utils/print_exec_utils.c \
+		utils/builtins_utils.c \
 		input/loop.c \
 		input/prompt.c \
 		syntax/validation/input_validation.c \

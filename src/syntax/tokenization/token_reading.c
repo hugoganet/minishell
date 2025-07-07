@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:00:27 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param i Pointeur vers l'index courant (sera avancé)
  * @return char* Segment lu ou NULL en cas d'erreur
  */
-char *read_next_segment(char *input, int *i)
+char	*read_next_segment(char *input, int *i)
 {
 	if (input[*i] == '\'' || input[*i] == '"')
 		return (parse_quoted_token(input, i));
@@ -46,10 +46,10 @@ char *read_next_segment(char *input, int *i)
  * @param i Pointeur vers l'index courant (sera mis à jour au fur et à mesure)
  * @return char* Token complet alloué, ou NULL en cas d'erreur mémoire
  */
-char *read_complete_token(char *input, int *i)
+char	*read_complete_token(char *input, int *i)
 {
-	char *result;
-	char *segment;
+	char	*result;
+	char	*segment;
 
 	result = NULL;
 	while (input[*i] && !is_token_delim(input[*i]))
@@ -77,11 +77,12 @@ char *read_complete_token(char *input, int *i)
  * @param i Index à avancer
  * @return char* Opérateur alloué
  */
-char *read_operator(char *input, int *i)
+char	*read_operator(char *input, int *i)
 {
-	char *op;
+	char	*op;
 
-	if ((input[*i] == '<' && input[*i + 1] == '<') || (input[*i] == '>' && input[*i + 1] == '>'))
+	if ((input[*i] == '<' && input[*i + 1] == '<')
+		|| (input[*i] == '>' && input[*i + 1] == '>'))
 	{
 		op = ft_substr(input, *i, 2);
 		if (!op)
@@ -107,11 +108,11 @@ char *read_operator(char *input, int *i)
  * @param i Pointeur vers l'index courant (sera avancé)
  * @return char* Contenu combiné (redir + file), ou NULL si erreur
  */
-char *read_redir_and_file(char *input, int *i)
+char	*read_redir_and_file(char *input, int *i)
 {
-	char *op;
-	char *file;
-	char *combined;
+	char	*op;
+	char	*file;
+	char	*combined;
 
 	op = read_operator(input, i);
 	if (!op)

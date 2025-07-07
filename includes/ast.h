@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 10:45:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 10:51:13 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 13:27:41 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void print_ast_cmd_node(char **argv);
 bool is_redirection(t_token_type type);
 const char *token_color(t_token_type type);
 const char *token_type_str(t_token_type type);
+void	free_args_on_error(char **args, int index);
 
 #endif

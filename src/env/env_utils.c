@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 18:06:50 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/06/04 18:10:42 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 13:57:21 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
  * 
  * @param s1 Première chaîne à comparer
  * @param s2 Deuxième chaîne à comparer
- * @return Un entier négatif si s1 < s2, 0 si s1 == s2, un entier positif si s1 > s2.
+ * @return Un entier négatif si s1 < s2, 0 si s1 == s2, un entier
+ * positif si s1 > s2.
  */
 int	ft_strcmp(char *s1, const char *s2)
 {

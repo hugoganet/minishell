@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   braces_validation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 09:41:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:04:14 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param count Pointeur vers le compteur d'accolades
  * @return int 1 si erreur (fermeture sans ouverture), 0 si OK
  */
-static int handle_closing_brace(int *count)
+static int	handle_closing_brace(int *count)
 {
 	if (*count == 0)
 		return (1);
@@ -41,11 +41,11 @@ static int handle_closing_brace(int *count)
  * @param input Ligne de commande
  * @return int 1 si erreur (accolades non fermées), 0 si OK
  */
-int has_unclosed_braces(char *input)
+int	has_unclosed_braces(char *input)
 {
-	int i;
-	int count;
-	char quote_state;
+	int		i;
+	int		count;
+	char	quote_state;
 
 	i = 0;
 	count = 0;

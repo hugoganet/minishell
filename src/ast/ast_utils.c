@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 10:45:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 17:01:28 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 13:53:52 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 #include "ast.h"
 
 /**
- * @brief Détermine la priorité d'un type de token pour la construction de l'AST.
+ * @brief Détermine la priorité d'un type de token pour la construction
+ * de l'AST.
  *
  * @param type Le type de token à évaluer
- * @return La priorité du token (plus le nombre est bas, plus la priorité est haute)
+ * @return La priorité du token (plus le nombre est bas, plus la priorité
+ * est haute)
  */
-int token_priority(t_token_type type)
+int	token_priority(t_token_type type)
 {
 	if (type == PIPE)
 		return (1);
@@ -40,12 +42,12 @@ int token_priority(t_token_type type)
  * @param end Le nœud de fin (exclus)
  * @return Le token à utiliser pour diviser, ou NULL si aucun trouvé
  */
-t_token *token_to_split(t_token *node, t_token *end)
+t_token	*token_to_split(t_token *node, t_token *end)
 {
-	int current_priority;
-	int lowest_priority;
-	t_token *ptr;
-	t_token *to_split;
+	int		current_priority;
+	int		lowest_priority;
+	t_token	*ptr;
+	t_token	*to_split;
 
 	to_split = NULL;
 	current_priority = 4;
@@ -54,19 +56,13 @@ t_token *token_to_split(t_token *node, t_token *end)
 	while (ptr && ptr != end)
 	{
 		current_priority = token_priority(ptr->type);
-		// Pour les pipes, on prend le dernier de même priorité (associativité à droite)
-		// Pour les autres opérateurs, on prend le premier (associativité à gauche)
 		if (current_priority < lowest_priority && current_priority < 4)
 		{
 			to_split = ptr;
 			lowest_priority = current_priority;
 		}
 		else if (current_priority == lowest_priority && current_priority == 1)
-		{
-			// Si c'est un pipe et qu'on a déjà trouvé un pipe de même priorité,
-			// on prend le plus récent (plus à droite)
 			to_split = ptr;
-		}
 		ptr = ptr->next;
 	}
 	return (to_split);
@@ -79,10 +75,10 @@ t_token *token_to_split(t_token *node, t_token *end)
  * @param end Le nœud de fin (exclus) de la liste de tokens
  * @return Un pointeur vers le nœud AST créé, ou NULL en cas d'erreur
  */
-t_ast *spliter(t_token *node, t_token *end)
+t_ast	*spliter(t_token *node, t_token *end)
 {
-	t_ast *node_ast;
-	t_token *to_split;
+	t_ast	*node_ast;
+	t_token	*to_split;
 
 	if (!node || node == end)
 		return (NULL);
@@ -103,7 +99,8 @@ t_ast *spliter(t_token *node, t_token *end)
 }
 
 /**
- * @brief Fonction principale pour construire l'AST à partir d'une liste de tokens.
+ * @brief Fonction principale pour construire l'AST à partir d'une
+ * liste de tokens.
  *
  * Cette fonction est le point d'entrée pour la construction de l'AST.
  * Elle utilise la fonction `spliter` pour diviser les tokens en nœuds AST
@@ -112,9 +109,9 @@ t_ast *spliter(t_token *node, t_token *end)
  * @param node La liste de tokens à partir de laquelle construire l'AST
  * @return Un pointeur vers le nœud racine de l'AST, ou NULL en cas d'erreur
  */
-t_ast *build_ast(t_token *node)
+t_ast	*build_ast(t_token *node)
 {
-	t_ast *new_ast;
+	t_ast	*new_ast;
 
 	new_ast = spliter(node, NULL);
 	if (!new_ast)

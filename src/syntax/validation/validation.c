@@ -1,12 +1,12 @@
-/* ***************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 16:20:33 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/02 16:01:43 by hugoganet        ###   ########.fr       */
+/*   Created: 2025/07/07 15:06:35 by elaudrez          #+#    #+#             */
+/*   Updated: 2025/07/07 15:14:10 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,30 @@
  * @param input Ligne à analyser
  * @return int 0 si tout est bon, 1 s'il y a une erreur de syntaxe
  */
-int is_syntax_valid(char *input, t_shell *shell)
+int	is_syntax_valid(char *input, t_shell *shell)
 {
 	if (has_unclosed_quotes(input))
 	{
 		ft_putendl_fd("minishell: syntax error: unclosed quote", 2);
-		shell->last_exit_status = 2; // Set last exit status to 2 for unclosed quotes
+		shell->last_exit_status = 2;
 		return (1);
 	}
 	if (has_invalid_pipes(input))
 	{
 		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
-		shell->last_exit_status = 2; // Set last exit status to 2 for invalid pipes
+		shell->last_exit_status = 2;
 		return (1);
 	}
 	if (has_invalid_redirections(input))
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token 'redirection'", 2);
-		shell->last_exit_status = 2; // Set last exit status to 2 for invalid redirections
+		ft_putendl_fd(": syntax error near unexpected token 'redirection'", 2);
+		shell->last_exit_status = 2;
 		return (1);
 	}
 	if (has_unclosed_braces(input))
 	{
 		ft_putendl_fd("minishell: syntax error : unclosed braces", 2);
-		shell->last_exit_status = 2; // Set last exit status to 2 for invalid redirections
+		shell->last_exit_status = 2;
 		return (1);
 	}
 	return (0);

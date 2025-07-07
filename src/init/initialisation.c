@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 14:55:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:26:12 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static int	ensure_shlvl_is_one(t_env *env_list)
 			break;
 		shlvl_node = shlvl_node->next;
 	}
-	
 	// Si SHLVL n'existe pas, le créer avec la valeur "1"
 	if (!shlvl_node)
 	{
@@ -72,6 +71,7 @@ static int	ensure_shlvl_is_one(t_env *env_list)
 	shlvl_node->value = new_value;
 	return (0);
 }
+
 
 /**
  * @brief Initialise la structure du shell : copie de l'environnement,
@@ -101,8 +101,7 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 	//Initialisation de la liste chainee de l'environnement de export
 	shell->export_list = init_env_list(envp);
 	sort_list(&shell->export_list);
-	
-	// Initialisation de la liste chaînée d'environnement
+	// Initialisation de la liste chaînée d'environnement ou un env minimal si 'env -i'
 	env_list = init_env_list(envp);
 	if (!env_list)
 	{
@@ -130,7 +129,6 @@ void init_shell(t_shell *shell, char **envp, t_env *env_list)
 			ft_putendl_fd("minishell: warning: failed to set SHLVL", 2);
 		}
 	}
-
 	// Maintenant, nous devons synchroniser env avec env_list car SHLVL a été modifié
 	if (shell->env)
 	{

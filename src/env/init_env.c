@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -114,8 +115,8 @@ static t_env *init_minimal_env(void)
 	// qui donne la longueur maximale d’un chemin absolu valide (en général 4096).
 	char cwd[PATH_MAX];
 
-	// Crée SHLVL=1
-	head = create_env_pair("SHLVL", "0");
+	// Crée SHLVL=1 (won't be incremented since this is a minimal environment)
+	head = create_env_pair("SHLVL", "1");
 	if (!head)
 		return (NULL);
 	// Récupère le répertoire courant pour initialiser PWD

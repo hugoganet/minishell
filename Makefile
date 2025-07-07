@@ -69,6 +69,7 @@ SRC = 	main.c \
 		exec/pipe/pipe_cleanup.c \
 		exec/pipe/pipe_heredoc.c \
 		exec/pipe/pipe_status.c \
+		exec/pipe/pipe_fd_utils.c \
 		exec/redirection.c \
 		exec/exec_utils.c \
 		exec/heredoc/heredoc_core.c \
@@ -126,6 +127,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/parsing
 	mkdir -p $(OBJ_DIR)/utils
 	mkdir -p $(OBJ_DIR)/exec
+	mkdir -p $(OBJ_DIR)/exec/pipe
 	mkdir -p $(OBJ_DIR)/exec/heredoc
 	mkdir -p $(OBJ_DIR)/built-in
 	mkdir -p $(OBJ_DIR)/signals

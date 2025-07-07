@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -54,12 +55,15 @@ int increment_shlvl(t_env *env_list)
 	level = ft_atoi(shlvl_node->value);
 	// Si la valeur n'est pas numérique ou est négative, réinitialiser à 1
 	if (level < 0)
-		level = 0;
-	// Incrémenter la valeur
-	level++;
-	// Si la valeur dépasse 999, la réinitialiser à 1 (comportement de Bash)
-	if (level > 999)
 		level = 1;
+	else
+	{
+		// Incrémenter la valeur
+		level++;
+		// Si la valeur dépasse 999, la réinitialiser à 1 (comportement de Bash)
+		if (level > 999)
+			level = 1;
+	}
 	// Convertir la nouvelle valeur en chaîne de caractères
 	new_value = ft_itoa(level);
 	if (!new_value)

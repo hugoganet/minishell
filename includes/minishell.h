@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 17:34:18 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 17:49:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,9 @@ void	free_args_on_error(char **args, int index);
 int	parse_sign(char *str, int *sign);
 int	will_overflow_negative(long long result, int digit);
 int	handle_invalid_export(char *arg);
-
+bool	is_valid_var_start(char c);
+bool	is_valid_var_char(char c);
+bool	is_translated_string(const char *input, int dollar_pos);
 
 /**
  * @brief Ajoute un fd de heredoc à la liste chaînée du shell.

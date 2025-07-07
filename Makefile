@@ -48,7 +48,8 @@ SRC = 	main.c \
 		parsing/expansion/expansion_ast.c \
 		parsing/expansion/expansion_quotes.c \
 		parsing/expansion/expansion_specials.c \
-		parsing/expansion/expansion_utils.c \
+		parsing/expansion/expansion_utils1.c \
+		parsing/expansion/expansion_utils2.c \
 		ast/ast_builder.c \
 		ast/ast_utils.c \
 		ast/ast_executor.c \

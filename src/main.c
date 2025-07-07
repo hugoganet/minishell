@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:26:05 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 09:03:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 15:27:28 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,56 +52,17 @@ char *prompt_readline_tester(void)
 	return (input);
 }
 
-void shell_loop_tester(t_shell *shell)
-{
-	char *input;
-
-	// Affiche le prompt et lit l'entrée utilisateur
-	input = prompt_readline_tester();
-	if (!input)
-	{
-		// Si l'entrée est NULL (Ctrl+D) ou erreur de lecture on sort du loop
-		cleanup_shell(shell);
-		exit(0);
-	}
-
-	// Vérifier si SIGINT a été reçu pendant readline
-	if (g_signal == SIGINT)
-	{
-		shell->last_exit_status = 130;
-		g_signal = 0;
-	}
-
-	// Si l'entrée est vide (que des espaces), on ne traite pas l'entrée.
-	// Si l'entrée contient des quotes vides ("" ou ''), on la traite comme une commande.
-	// Sinon, on traite l'entrée normalement.
-	if (!is_line_empty(input))
-	{
-		if (!is_syntax_valid(input, shell))
-			process_input(input, shell);
-	}
-	free(input);
-	// On nettoie les ressources allouées par le shell après chaque entrée.
-	free_ast(shell->ast);
-	shell->ast = NULL;
-	free_token_list(shell->tokens);
-	shell->tokens = NULL;
-	// Pas de cleanup_shell() ici car on garde l'env entre les commandes
-}
-
 int main(int argc, char **argv, char **envp)
 {
-	t_shell shell;	 // Structure du shell
-	t_env *env_list; // Liste chaînée d'environnement
+	t_shell shell;
+	t_env *env_list;
 	char *input;
 
 	(void)argc;
 	(void)argv;
 	env_list = NULL;
 	input = NULL;
-	// Initialise les signaux pour le shell
 	init_signals();
-	// Initialise le shell avec l'environnement
 	init_shell(&shell, envp, env_list);
 	if (!shell.env || !shell.env_list)
 	{
@@ -109,7 +70,7 @@ int main(int argc, char **argv, char **envp)
 		cleanup_shell(&shell);
 		exit(1);
 	}
-	if (argc > 1) // Utilisé le tester uniquement
+	if (argc > 1)
 	{
 		input = ft_strdup(argv[1]);
 		if (input && !is_line_empty(input))
@@ -122,16 +83,11 @@ int main(int argc, char **argv, char **envp)
 		shell.ast = NULL;
 		free_token_list(shell.tokens);
 		shell.tokens = NULL;
-	}
-	else if (!isatty(STDIN_FILENO))
-		shell_loop_tester(&shell);
-	else
-		shell_loop(&shell);
-	if (argc > 1)
-	{
 		cleanup_shell(&shell);
 		return (shell.last_exit_status);
 	}
+	else
+		shell_loop(&shell);
 	cleanup_shell(&shell);
 	return (0);
 }

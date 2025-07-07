@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 16:11:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 16:02:49 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
  * @param input La ligne entrée par l'utilisateur.
  * @return int 1 si vide, 0 sinon.
  */
-int is_line_empty(char *input)
+int	is_line_empty(char *input)
 {
-	int i;
+	int	i;
 
 	if (!input)
 		return (1);
@@ -51,10 +51,10 @@ int is_line_empty(char *input)
  * @param input La ligne entrée par l'utilisateur.
  * @return int 1 si une quote est non fermée, 0 sinon.
  */
-int has_unclosed_quotes(char *input)
+int	has_unclosed_quotes(char *input)
 {
-	int i;
-	char quote_state;
+	int		i;
+	char	quote_state;
 
 	i = 0;
 	quote_state = 0;

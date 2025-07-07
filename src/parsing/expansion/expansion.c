@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 13:06:24 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 20:47:47 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 16:18:40 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 
 /**
  * @brief Initialise l'état de l'expansion.
- * 		  Alloue de la mémoire pour la chaîne de sortie et initialise les variables
+ * 		  Alloue de la mémoire pour la chaîne de sortie et
+ * initialise les variables
  * 		  d'état.
  *
  * @param state L'état d'expansion à initialiser.
  * @param input La chaîne d'entrée à traiter.
  * @return `1` en cas de succès, `0` en cas d'échec
  */
-int init_expansion_state(t_expansion_state *state, const char *input)
+int	init_expansion_state(t_expansion_state *state, const char *input)
 {
 	state->input = input;
 	state->output = ft_strdup("");
@@ -41,20 +42,19 @@ int init_expansion_state(t_expansion_state *state, const char *input)
  *
  * @param state L'état actuel de l'expansion.
  * @param last_exit_status Le code de retour de la dernière commande.
- * @return `true` si une variable spéciale a été trouvée et expansée, false sinon.
+ * @return `true` si une variable spéciale a été trouvée et expansée,
+ * false sinon.
  */
-static bool try_expand_special_vars(t_expansion_state *state,
+static bool	try_expand_special_vars(t_expansion_state *state,
 									int last_exit_status)
 {
-	char *var_value;
-	int end_pos;
+	char	*var_value;
+	int		end_pos;
 
 	var_value = extract_translated_string(state->input, state->i, &end_pos);
 	if (var_value)
 	{
-		// Si c'est une translated string, on l'ajoute à la sortie
 		append_and_free(state, var_value);
-		// On met à jour l'index pour continuer après la translated string
 		state->i = end_pos;
 		return (true);
 	}
@@ -68,16 +68,17 @@ static bool try_expand_special_vars(t_expansion_state *state,
 }
 
 /**
- * @brief Extrait le nom d'une variable régulière à partir de la position actuelle.
+ * @brief Extrait le nom d'une variable régulière à partir de la
+ * position actuelle.
  *        Gère la syntaxe ${VAR} ou $VAR.
  *
  * @param state L'état actuel de l'expansion.
  * @param env_list La liste des variables d'environnement.
  */
-static void expand_regular_variable(t_expansion_state *state, t_env *env_list)
+static void	expand_regular_variable(t_expansion_state *state, t_env *env_list)
 {
-	char *var_name;
-	char *var_value;
+	char	*var_name;
+	char	*var_value;
 
 	var_name = extract_variable_name(state->input, state->i + 1);
 	if (var_name && *var_name)
@@ -90,7 +91,6 @@ static void expand_regular_variable(t_expansion_state *state, t_env *env_list)
 		}
 		// Si on a une variable valide, on l'expanse et l'ajoute à state->output
 		append_and_free(state, var_value);
-
 		// On saute le nom de la var + le '$' et '{}'
 		if (state->input[state->i + 1] == '{')
 			state->i += ft_strlen(var_name) + 3;
@@ -118,11 +118,11 @@ static void expand_regular_variable(t_expansion_state *state, t_env *env_list)
  * @param env_list La liste des variables d'environnement.
  * @param last_exit_status Le code de retour de la dernière commande.
  */
-static void handle_dollar(t_expansion_state *state, t_env *env_list,
-						  int last_exit_status)
+static void	handle_dollar(t_expansion_state *state, t_env *env_list,
+			int last_exit_status)
 {
 	if (try_expand_special_vars(state, last_exit_status))
-		return;
+		return ;
 	expand_regular_variable(state, env_list);
 }
 
@@ -133,14 +133,15 @@ static void handle_dollar(t_expansion_state *state, t_env *env_list,
  * @param env_list L'environnement.
  * @param last_exit_status Le code de retour de la dernière commande.
  */
-static void handle_char(t_expansion_state *state, t_env *env_list,
+static void	handle_char(t_expansion_state *state, t_env *env_list,
 						int last_exit_status)
 {
-	char c;
-	char char_to_add[2];
+	char	c;
+	char	char_to_add[2];
 
 	c = state->input[state->i];
-	if ((c == '\'' && !state->in_double_quotes) || (c == '"' && !state->in_single_quotes))
+	if ((c == '\'' && !state->in_double_quotes)
+		|| (c == '"' && !state->in_single_quotes))
 	{
 		expansion_update_quote_state(state);
 		state->i++;
@@ -167,9 +168,10 @@ static void handle_char(t_expansion_state *state, t_env *env_list,
  * @param last_exit_status Le code de retour de la dernière commande.
  * @return `char *` Une nouvelle chaîne allouée avec les variables expansées.
  */
-char *expand_variables(const char *input, t_env *env_list, int last_exit_status)
+char	*expand_variables(const char *input, t_env *env_list,
+		int last_exit_status)
 {
-	t_expansion_state state;
+	t_expansion_state	state;
 
 	if (!init_expansion_state(&state, input))
 		return (NULL);
@@ -180,29 +182,30 @@ char *expand_variables(const char *input, t_env *env_list, int last_exit_status)
 }
 
 /**
- * @brief Version de expand_variables qui retourne aussi si l'expansion a résulté en chaîne vide.
+ * @brief Version de expand_variables qui retourne aussi si
+ * l'expansion a résulté en chaîne vide.
  *
  * @param input La chaîne de caractères à traiter.
  * @param env_list La liste des variables d'environnement.
  * @param last_exit_status Le code de retour de la dernière commande.
- * @param expanded_to_empty Pointeur vers un booléen qui sera mis à true si l'expansion donne une chaîne vide.
+ * @param expanded_to_empty Pointeur vers un booléen qui sera mis à true
+ * si l'expansion donne une chaîne vide.
  * @return Une nouvelle chaîne allouée avec les variables expansées.
  */
-char *expand_variables_with_flag(const char *input, t_env *env_list, int last_exit_status, bool *expanded_to_empty)
+char	*expand_variables_with_flag(const char *input, t_env *env_list,
+	int last_exit_status, bool *expanded_to_empty)
 {
-	t_expansion_state state;
+	t_expansion_state	state;
 
 	if (!init_expansion_state(&state, input))
 		return (NULL);
 	// On parcourt la chaîne d'entrée caractère par caractère
 	while (state.input[state.i])
 		handle_char(&state, env_list, last_exit_status);
-
 	// Si la chaîne d'entrée contenait une variable et que le résultat est vide
 	if (state.expanded_to_empty && ft_strlen(state.output) == 0)
 		*expanded_to_empty = true;
 	else
 		*expanded_to_empty = false;
-
 	return (state.output);
 }

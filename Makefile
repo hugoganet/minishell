@@ -62,6 +62,14 @@ SRC = 	main.c \
 		exec/exec_free.c \
 		exec/path_resolution.c \
 		exec/pipe/pipe_execution.c \
+		exec/pipe/pipe_simple.c \
+		exec/pipe/pipe_simple_child.c \
+		exec/pipe/pipe_complex.c \
+		exec/pipe/pipe_utils.c \
+		exec/pipe/pipe_child_utils.c \
+		exec/pipe/pipe_cleanup.c \
+		exec/pipe/pipe_heredoc.c \
+		exec/pipe/pipe_status.c \
 		exec/redirection.c \
 		exec/exec_utils.c \
 		exec/heredoc/heredoc_core.c \

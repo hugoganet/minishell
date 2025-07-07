@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 13:50:30 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:19:39 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <stdbool.h>
-#include <linux/limits.h> // ! raised an error on macOs, check .vscode/settings.json : "C_Cpp.errorSquiggles": "disabled"
+#if defined(__linux__)
+#include <linux/limits.h>
+#elif defined(__APPLE__)
+#include <limits.h>
+#else
+#include <limits.h>
+#endif
 #include "libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>

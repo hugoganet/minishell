@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   free_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 13:01:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 18:03:20 by hugoganet        ###   ########.fr       */
+/*   Created: 2025/07/07 18:05:42 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/07/07 18:06:21 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Affiche le prompt et lit l'entrée utilisateur.
- * On ne gère pas SIGQUIT ici car il faut l'ignorer dans le processus readline.
- *
- * @return La ligne lue.
- */
-char	*prompt_readline(void)
+void	free_loop(char *input, t_shell *shell)
 {
-	char	*input;
-
-	if (!isatty(STDIN_FILENO))
-		return (get_next_line(STDIN_FILENO));
-	input = readline("minishell> ");
-	if (input && *input)
-		add_history(input);
-	return (input);
+	free(input);
+	free_ast(shell->ast);
+	shell->ast = NULL;
+	free_token_list(shell->tokens);
+	shell->tokens = NULL;
 }

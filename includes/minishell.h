@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 17:49:14 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/07 18:07:15 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,27 +146,10 @@ int	handle_invalid_export(char *arg);
 bool	is_valid_var_start(char c);
 bool	is_valid_var_char(char c);
 bool	is_translated_string(const char *input, int dollar_pos);
+void free_loop(char *input, t_shell *shell);
 
-/**
- * @brief Ajoute un fd de heredoc à la liste chaînée du shell.
- *
- * @param shell Pointeur vers la structure principale du shell
- * @param fd    Descripteur de fichier à ajouter
- */
 void add_heredoc_fd(t_shell *shell, int fd);
-
-/**
- * @brief Ferme tous les descripteurs de heredoc présents dans la liste du shell.
- *
- * @param shell Pointeur vers la structure principale du shell
- */
 void close_all_heredoc_fds(t_shell *shell);
-
-/**
- * @brief Libère la mémoire de la liste chaînée des fd heredoc du shell.
- *
- * @param shell Pointeur vers la structure principale du shell
- */
 void free_all_heredoc_fds(t_shell *shell);
 
 // ! ----------------------- SIGNALS --------------------------

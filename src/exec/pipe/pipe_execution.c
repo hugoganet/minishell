@@ -26,12 +26,9 @@
  * @param shell Structure principale du shell
  * @return Code de retour de la dernière commande du pipeline
  */
-int execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
+int	execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
 {
-	// Si c'est un pipeline complexe (plus de 2 commandes)
 	if (is_complex_pipeline(node))
 		return (execute_complex_pipeline(node, env, shell));
-
-	// Sinon, utiliser l'ancienne logique pour les pipes simples
 	return (execute_simple_pipe(node, env, shell));
 }

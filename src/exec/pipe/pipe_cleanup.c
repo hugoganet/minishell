@@ -1,17 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_cleanup.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/07/07 16:00:00 by hugoganet        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipe.h"
 
-void cleanup_pipeline_resources(t_ast **commands, int **pipes, pid_t *pids, int pipes_created);
-void cleanup_pipeline_memory_only(t_ast **commands, int **pipes, pid_t *pids, int pipes_created);
-void cleanup_child_memory_early(t_ast **commands, int **pipes, pid_t *pids, int pipes_created);
-void terminate_child_processes(pid_t *pids, int count);
-void initialize_pipeline_pids(pid_t *pids, int cmd_count);
+void	cleanup_pipeline_resources(t_ast **commands, int **pipes,
+			pid_t *pids, int pipes_created);
+void	cleanup_pipeline_memory_only(t_ast **commands, int **pipes,
+			pid_t *pids, int pipes_created);
+void	cleanup_child_memory_early(t_ast **commands, int **pipes,
+			pid_t *pids, int pipes_created);
+void	terminate_child_processes(pid_t *pids, int count);
+void	initialize_pipeline_pids(pid_t *pids, int cmd_count);
 
-void cleanup_pipeline_resources(t_ast **commands, int **pipes, pid_t *pids, int pipes_created)
+void	cleanup_pipeline_resources(t_ast **commands, int **pipes,
+			pid_t *pids, int pipes_created)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	// Nettoyage des pipes
 	if (pipes)
 	{
 		while (i < pipes_created)
@@ -26,20 +41,18 @@ void cleanup_pipeline_resources(t_ast **commands, int **pipes, pid_t *pids, int 
 		}
 		free(pipes);
 	}
-
-	// Nettoyage des autres allocations
 	if (commands)
 		free(commands);
 	if (pids)
 		free(pids);
 }
 
-void cleanup_pipeline_memory_only(t_ast **commands, int **pipes, pid_t *pids, int pipes_created)
+void	cleanup_pipeline_memory_only(t_ast **commands, int **pipes,
+			pid_t *pids, int pipes_created)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	// Libérer la mémoire des pipes sans les fermer (déjà fermés)
 	if (pipes)
 	{
 		while (i < pipes_created)
@@ -50,41 +63,37 @@ void cleanup_pipeline_memory_only(t_ast **commands, int **pipes, pid_t *pids, in
 		}
 		free(pipes);
 	}
-
-	// Nettoyage des autres allocations
 	if (commands)
 		free(commands);
 	if (pids)
 		free(pids);
 }
 
-void cleanup_child_memory_early(t_ast **commands, int **pipes, pid_t *pids, int pipes_created)
+void	cleanup_child_memory_early(t_ast **commands, int **pipes,
+			pid_t *pids, int pipes_created)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	// Libérer seulement la mémoire des structures de données,
-	// PAS les fd des pipes qui sont encore utilisés
 	if (pipes)
 	{
 		while (i < pipes_created)
 		{
 			if (pipes[i])
-				free(pipes[i]); // Libère le malloc de int[2] mais garde les fd ouverts
+				free(pipes[i]);
 			i++;
 		}
 		free(pipes);
 	}
-
 	if (commands)
 		free(commands);
 	if (pids)
 		free(pids);
 }
 
-void terminate_child_processes(pid_t *pids, int count)
+void	terminate_child_processes(pid_t *pids, int count)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < count)
@@ -93,7 +102,6 @@ void terminate_child_processes(pid_t *pids, int count)
 			kill(pids[i], SIGTERM);
 		i++;
 	}
-	// Attendre que les processus se terminent
 	i = 0;
 	while (i < count)
 	{
@@ -103,9 +111,9 @@ void terminate_child_processes(pid_t *pids, int count)
 	}
 }
 
-void initialize_pipeline_pids(pid_t *pids, int cmd_count)
+void	initialize_pipeline_pids(pid_t *pids, int cmd_count)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < cmd_count)

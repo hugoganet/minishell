@@ -1,53 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_simple_child.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/07/07 16:00:00 by hugoganet        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipe.h"
 
-void setup_left_child_process(int fd[2], t_ast *node, t_env *env, t_shell *shell);
-void setup_right_child_process(int fd[2], t_ast *node, t_env *env, t_shell *shell);
-int wait_for_children(pid_t left_pid, pid_t right_pid);
-int handle_pipe_execution_error(int fd[2], pid_t left_pid);
-// close_pipe_fds si elle existe
+void	setup_left_child_process(t_simple_pipe_ctx *ctx);
+void	setup_right_child_process(t_simple_pipe_ctx *ctx);
+int		wait_for_children(pid_t left_pid, pid_t right_pid);
+int		handle_pipe_execution_error(int fd[2], pid_t left_pid);
 
-void setup_left_child_process(int fd[2], t_ast *node, t_env *env, t_shell *shell)
+void	setup_left_child_process(t_simple_pipe_ctx *ctx)
 {
-	int status;
+	int	status;
 
 	reset_signals_in_child();
-	setup_heredoc_redirection(shell);
-	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	signal(SIGPIPE, SIG_DFL);
+	setup_heredoc_redirection(ctx->shell);
+	if (dup2(ctx->fd[1], STDOUT_FILENO) == -1)
 	{
 		perror("minishell: dup2");
-		cleanup_shell(shell);
+		cleanup_shell(ctx->shell);
 		exit(1);
 	}
-	close(fd[0]);
-	close(fd[1]);
-	close_all_heredoc_fds(shell);
-	status = exec_cmd_no_heredoc(node->left, env, node->left, shell);
-	cleanup_shell(shell);
+	close(ctx->fd[0]);
+	close(ctx->fd[1]);
+	close_all_heredoc_fds(ctx->shell);
+	status = exec_cmd_no_heredoc(ctx->node->left, ctx->env, ctx->node->left,
+			ctx->shell);
+	cleanup_shell(ctx->shell);
 	exit(status);
 }
 
-void setup_right_child_process(int fd[2], t_ast *node, t_env *env, t_shell *shell)
+void	setup_right_child_process(t_simple_pipe_ctx *ctx)
 {
-	int status;
+	int	status;
 
 	reset_signals_in_child();
-	if (dup2(fd[0], STDIN_FILENO) == -1)
+	signal(SIGPIPE, SIG_DFL);
+	if (dup2(ctx->fd[0], STDIN_FILENO) == -1)
 	{
 		perror("minishell: dup2");
-		cleanup_shell(shell);
+		cleanup_shell(ctx->shell);
 		exit(1);
 	}
-	close(fd[0]);
-	close(fd[1]);
-	close_all_heredoc_fds(shell);
-	status = exec_cmd_no_heredoc(node->right, env, node->right, shell);
-	cleanup_shell(shell);
+	close(ctx->fd[0]);
+	close(ctx->fd[1]);
+	close_all_heredoc_fds(ctx->shell);
+	status = exec_cmd_no_heredoc(ctx->node->right, ctx->env, ctx->node->right,
+			ctx->shell);
+	cleanup_shell(ctx->shell);
 	exit(status);
 }
 
-int wait_for_children(pid_t left_pid, pid_t right_pid)
+int	wait_for_children(pid_t left_pid, pid_t right_pid)
 {
-	int status;
+	int	status;
 
 	waitpid(left_pid, &status, 0);
 	waitpid(right_pid, &status, 0);
@@ -64,7 +79,7 @@ int wait_for_children(pid_t left_pid, pid_t right_pid)
 	return (1);
 }
 
-int handle_pipe_execution_error(int fd[2], pid_t left_pid)
+int	handle_pipe_execution_error(int fd[2], pid_t left_pid)
 {
 	close_pipe_fds(fd);
 	if (left_pid > 0)

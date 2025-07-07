@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_status.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
+/*   Updated: 2025/07/07 16:00:00 by hugoganet        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipe.h"
 
-int handle_process_exit_status(int status)
+int	handle_process_exit_status(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

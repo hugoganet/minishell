@@ -59,6 +59,7 @@ void execute_pipeline_child(t_ast **commands, int **pipes, pid_t *pids,
 	int status;
 
 	reset_signals_in_child();
+	signal(SIGPIPE, SIG_DFL);
 	setup_heredoc_redirection(shell);
 	current_cmd = commands[index];
 	setup_child_pipes(pipes, cmd_count, index, shell);

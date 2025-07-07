@@ -11,6 +11,7 @@ void setup_left_child_process(int fd[2], t_ast *node, t_env *env, t_shell *shell
 	int status;
 
 	reset_signals_in_child();
+	signal(SIGPIPE, SIG_DFL);
 	setup_heredoc_redirection(shell);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 	{
@@ -31,6 +32,7 @@ void setup_right_child_process(int fd[2], t_ast *node, t_env *env, t_shell *shel
 	int status;
 
 	reset_signals_in_child();
+	signal(SIGPIPE, SIG_DFL);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		perror("minishell: dup2");

@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:11:28 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 16:19:04 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:01:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Initialise l'état de l'expansion.
+ * 		  Alloue de la mémoire pour la chaîne de sortie et
+ * initialise les variables
+ * 		  d'état.
+ *
+ * @param state L'état d'expansion à initialiser.
+ * @param input La chaîne d'entrée à traiter.
+ * @return `1` en cas de succès, `0` en cas d'échec
+ */
+int	init_expansion_state(t_expansion_state *state, const char *input)
+{
+	state->input = input;
+	state->output = ft_strdup("");
+	if (!state->output)
+		return (0);
+	state->i = 0;
+	state->in_single_quotes = false;
+	state->in_double_quotes = false;
+	state->expanded_to_empty = false;
+	return (1);
+}
 
 /**
  * @brief Vérifie si un caractère peut commencer un nom de variable valide.

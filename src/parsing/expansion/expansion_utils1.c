@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:08:41 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 16:13:42 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:01:10 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,21 @@ char	*get_env_variable(const char *var_name, t_env *env_list)
  * @return Le contenu de la translated string (chaîne allouée), ou
  * NULL si invalide.
  */
-char	*extract_translated_string(const char *input, int dollar_pos, int *end_pos)
+char	*extract_translated_string(
+		const char *input, int dollar_pos, int *end_pos)
 {
-	int start;
-	int len;
-	int i;
+	int	start;
+	int	len;
+	int	i;
 
 	if (!is_translated_string(input, dollar_pos))
 		return (NULL);
-	start = dollar_pos + 2; // Après $"
+	start = dollar_pos + 2;
 	i = start;
-	// Trouver le guillemet fermant (quotes déjà validées au parsing)
 	while (input[i] && input[i] != '"')
 		i++;
 	len = i - start;
-	*end_pos = i + 1; // Position après le guillemet fermant
+	*end_pos = i + 1;
 	return (ft_substr(input, start, len));
 }
 
@@ -115,14 +115,15 @@ void	append_to_output(t_expansion_state *state, const char *to_add)
 	char	*temp;
 
 	if (!to_add)
-		return;
+		return ;
 	temp = ft_strjoin(state->output, to_add);
 	free(state->output);
 	state->output = temp;
 }
 
 /**
- * @brief Ajoute une chaîne de caractères à la sortie de l'expansion et la libère.
+ * @brief Ajoute une chaîne de caractères à la sortie de l'expansion
+ * et la libère.
  *
  * @param state L'état de l'expansion.
  * @param value La chaîne à ajouter (sera libérée par la fonction).
@@ -130,7 +131,7 @@ void	append_to_output(t_expansion_state *state, const char *to_add)
 void	append_and_free(t_expansion_state *state, char *value)
 {
 	if (!value)
-		return;
+		return ;
 	append_to_output(state, value);
 	free(value);
 }

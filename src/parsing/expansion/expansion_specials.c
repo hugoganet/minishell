@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_specials.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:07:27 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 16:08:33 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:01:39 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,34 @@ char	*expand_special_variable(t_expansion_state *state, int last_exit_status)
 		return (ft_strdup("minishell"));
 	}
 	return (NULL);
+}
+
+/**
+ * @brief Essaie d'expander les variables spéciales ou les translated strings.
+ *		  Gère les variables spéciales comme $?, $0, $"".
+ *
+ * @param state L'état actuel de l'expansion.
+ * @param last_exit_status Le code de retour de la dernière commande.
+ * @return `true` si une variable spéciale a été trouvée et expansée,
+ * false sinon.
+ */
+bool	try_expand_special_vars(t_expansion_state *state, int last_exit_status)
+{
+	char	*var_value;
+	int		end_pos;
+
+	var_value = extract_translated_string(state->input, state->i, &end_pos);
+	if (var_value)
+	{
+		append_and_free(state, var_value);
+		state->i = end_pos;
+		return (true);
+	}
+	var_value = expand_special_variable(state, last_exit_status);
+	if (var_value)
+	{
+		append_and_free(state, var_value);
+		return (true);
+	}
+	return (false);
 }

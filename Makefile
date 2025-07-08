@@ -1,20 +1,143 @@
-# Nom de l'exécutable
+# ==============================================================================
+# MINISHELL MAKEFILE - Enhanced with Dynamic Color-Gradient Progress Bars
+# ==============================================================================
+
+# Project Configuration
 NAME = minishell
 
-# Dossiers personnalisés
+# Directory Structure
 SRC_DIR = src
 OBJ_DIR = executables
 INCL_DIR = includes
 LIBFT_DIR = libft
 
-BREW_READLINE := $(shell brew --prefix readline)
+# Readline Configuration (macOS with Homebrew)
+BREW_READLINE := $(shell brew --prefix readline 2>/dev/null || echo "/usr/local")
 
-# Commandes et options de compilation
+# Progress Bar Configuration
+PROGRESS_WIDTH := 50
+
+# Compilation Settings
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLINE)/include
 LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 
-# Fichiers sources
+# ==============================================================================
+# MODULAR PROGRESS BAR FUNCTIONS
+# ==============================================================================
+
+# Function: Calculate RGB values for smooth red-to-green transition
+# Parameters: $(1) = current progress (0-100), $(2) = color component (r/g/b)
+define calc_color_component
+$(shell \
+	progress=$(1); \
+	if [ "$(2)" = "r" ]; then \
+		echo $$((255 - progress * 255 / 100)); \
+	elif [ "$(2)" = "g" ]; then \
+		echo $$((progress * 255 / 100)); \
+	else \
+		echo 0; \
+	fi \
+)
+endef
+
+# Function: Generate ANSI color code for current progress percentage
+# Parameters: $(1) = progress percentage (0-100)
+define get_gradient_color
+$(shell \
+	progress=$(1); \
+	r=$$(echo $$((255 - progress * 255 / 100))); \
+	g=$$(echo $$((progress * 255 / 100))); \
+	printf "\033[38;2;%d;%d;0m" $$r $$g \
+)
+endef
+
+# Function: Render dynamic progress bar with gradient colors
+# Parameters: $(1) = current, $(2) = total, $(3) = description
+# This is the core function that handles all progress bar rendering logic
+define render_progress_bar
+	$(eval CURRENT := $(1))
+	$(eval TOTAL := $(2))
+	$(eval DESCRIPTION := $(3))
+	$(eval PERCENTAGE := $(shell echo $$(($(CURRENT) * 100 / $(TOTAL)))))
+	$(eval FILLED := $(shell echo $$(($(CURRENT) * $(PROGRESS_WIDTH) / $(TOTAL)))))
+	$(eval EMPTY := $(shell echo $$(($(PROGRESS_WIDTH) - $(FILLED)))))
+	$(eval GRADIENT_COLOR := $(call get_gradient_color,$(PERCENTAGE)))
+	@printf "\r\033[K$(GRADIENT_COLOR)"
+	@if [ $(FILLED) -gt 0 ]; then \
+		for i in $$(seq 1 $(FILLED)); do printf "■"; done; \
+	fi
+	@printf "\033[90m"
+	@if [ $(EMPTY) -gt 0 ]; then \
+		for i in $$(seq 1 $(EMPTY)); do printf "░"; done; \
+	fi
+	@printf "\033[0m $(PERCENTAGE)%% - $(DESCRIPTION)"
+	@if [ $(CURRENT) -eq $(TOTAL) ]; then \
+		printf "\n"; \
+	fi
+endef
+
+# Function: Display final success or error message with visual enhancement
+# Parameters: $(1) = success/error, $(2) = message, $(3) = details
+define show_final_message
+	@echo ""
+	@if [ "$(1)" = "success" ]; then \
+		printf "\033[1;32m✅ $(2)\033[0m"; \
+	else \
+		printf "\033[1;31m❌ $(2)\033[0m"; \
+	fi
+	@if [ "$(3)" != "" ]; then \
+		printf " $(3)"; \
+	fi
+	@echo ""
+	@echo ""
+	@echo ""
+endef
+
+# Function: Animated progress for compilation with file-by-file tracking
+# This function updates the progress bar for each compiled file
+define show_compilation_progress
+	$(eval TOTAL_FILES := $(words $(SRC)))
+	$(eval CURRENT_FILE := $(shell if [ -f .build_count ]; then cat .build_count; else echo 0; fi))
+	$(eval CURRENT_FILE := $(shell echo $$(($(CURRENT_FILE) + 1))))
+	@echo $(CURRENT_FILE) > .build_count
+	$(call render_progress_bar,$(CURRENT_FILE),$(TOTAL_FILES),compiling minishell)
+	@if [ $(CURRENT_FILE) -eq $(TOTAL_FILES) ]; then rm -f .build_count; fi
+endef
+
+# Function: Animated progress for cleaning operations
+# Parameters: $(1) = step number, $(2) = total steps, $(3) = operation description
+define show_cleanup_progress
+	$(eval STEP := $(1))
+	$(eval TOTAL_STEPS := $(2))
+	$(eval OPERATION := $(3))
+	$(call render_progress_bar,$(STEP),$(TOTAL_STEPS),$(OPERATION))
+	@sleep 0.2
+endef
+
+# Function: Smooth animated progress with variable steps
+# Parameters: $(1) = start, $(2) = end, $(3) = total, $(4) = description
+define show_smooth_progress
+	@for i in $$(seq $(1) $(2)); do \
+		percentage=$$(($$i * 100 / $(3))); \
+		filled=$$(($$i * 50 / $(3))); \
+		empty=$$((50 - $$filled)); \
+		r=$$((255 - $$percentage * 255 / 100)); \
+		g=$$(($$percentage * 255 / 100)); \
+		printf "\r\033[K\033[38;2;%d;%d;0m" $$r $$g; \
+		if [ $$filled -gt 0 ]; then for j in $$(seq 1 $$filled); do printf "■"; done; fi; \
+		printf "\033[90m"; \
+		if [ $$empty -gt 0 ]; then for j in $$(seq 1 $$empty); do printf "░"; done; fi; \
+		printf "\033[0m $$percentage%% - $(4)"; \
+		sleep 0.03; \
+	done; \
+	printf "\n"
+endef
+
+# ==============================================================================
+# SOURCE FILES CONFIGURATION
+# ==============================================================================
+
 SRC = 	main.c \
 		init/initialisation.c \
 		init/shlvl_utils.c \
@@ -94,67 +217,94 @@ SRC = 	main.c \
 		built-in/exit.c \
 		built-in/export.c \
 		built-in/export_utils.c \
-	
 
-# Rassembler les sources
+# Path Resolution
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
-
-# Fichiers objets
 OBJS = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRCS:.c=.o))
 
-# Liens vers les librairies des sous-projets
+# Library Configuration
 LIBFT = $(LIBFT_DIR)/libft.a
-
-# Drapeaux pour les librairies
 LIBS = -L$(LIBFT_DIR) -lft
 INC = -I$(LIBFT_DIR) -I$(INCL_DIR)
 
-# Règle par défaut
-all: $(LIBFT) $(NAME)
+# ==============================================================================
+# BUILD RULES
+# ==============================================================================
 
-# Compilation de l'exécutable
+# Default rule: Build everything with enhanced progress tracking
+all: $(LIBFT) init_build_env $(NAME)
+	@if [ ! -f .compilation_happened ]; then \
+		echo "\033[1;32m✅ Everything is up to date! No compilation needed.\033[0m"; \
+	fi
+	@rm -f .compilation_happened .compilation_started
+
+# Initialize build environment and clean previous build artifacts
+init_build_env:
+	@rm -f .build_count .compilation_started .compilation_happened
+
+# Main executable linking with progress indication
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft $(LDFLAGS)
-	@echo "Compilation réussie de $(NAME)"
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft $(LDFLAGS)
+	$(call show_final_message,success,Build completed successfully!,Executable '$(NAME)' ready)
 
-# Règle pour compiler les objets dans SRC (autres fichiers)
+# Individual object file compilation with progress tracking
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@mkdir -p $(dir $@) 
-	@echo "Compilation de $< en $@"
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	@if [ ! -f .compilation_started ]; then \
+		echo "\033[1;34m🔨 Starting minishell compilation...\033[0m"; \
+		touch .compilation_started; \
+	fi
+	@touch .compilation_happened
+	$(call show_compilation_progress)
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-# Création du dossier des fichiers objets, y compris les sous-dossiers
+# Create object directory structure (mirrors source structure)
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-	mkdir -p $(OBJ_DIR)/input
-	mkdir -p $(OBJ_DIR)/syntax
-	mkdir -p $(OBJ_DIR)/ast
-	mkdir -p $(OBJ_DIR)/env
-	mkdir -p $(OBJ_DIR)/expansion
-	mkdir -p $(OBJ_DIR)/init
-	mkdir -p $(OBJ_DIR)/parsing
-	mkdir -p $(OBJ_DIR)/utils
-	mkdir -p $(OBJ_DIR)/exec
-	mkdir -p $(OBJ_DIR)/exec/pipe
-	mkdir -p $(OBJ_DIR)/exec/heredoc
-	mkdir -p $(OBJ_DIR)/built-in
-	mkdir -p $(OBJ_DIR)/signals
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/input
+	@mkdir -p $(OBJ_DIR)/syntax/validation
+	@mkdir -p $(OBJ_DIR)/syntax/tokenization
+	@mkdir -p $(OBJ_DIR)/syntax/parsing
+	@mkdir -p $(OBJ_DIR)/ast
+	@mkdir -p $(OBJ_DIR)/env
+	@mkdir -p $(OBJ_DIR)/init
+	@mkdir -p $(OBJ_DIR)/parsing/expansion
+	@mkdir -p $(OBJ_DIR)/utils/print_utils
+	@mkdir -p $(OBJ_DIR)/exec/pipe
+	@mkdir -p $(OBJ_DIR)/exec/heredoc
+	@mkdir -p $(OBJ_DIR)/built-in
+	@mkdir -p $(OBJ_DIR)/signals
 
-# Générer les librairies des sous-projets
+# Libft compilation with progress indication
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	@echo "\033[1;34m📚 Starting libft compilation...\033[0m"
+	@touch .compilation_happened
+	$(call show_smooth_progress,0,39,39,compiling libft program)
+	@$(MAKE) -C $(LIBFT_DIR) -s
+	$(call show_final_message,success,Libft compiled successfully!,)
 
-# Nettoyer les objets et librairies compilés y compris les sous-dossiers dans executable/
+# ==============================================================================
+# CLEANUP RULES WITH ENHANCED PROGRESS BARS
+# ==============================================================================
+
+# Clean intermediate files with animated progress
 clean:
-	rm -rf $(OBJ_DIR)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@echo "\033[1;33m🧹 Starting cleanup process...\033[0m"
+	$(call show_smooth_progress,0,30,30,cleaning project objects)
+	@rm -rf $(OBJ_DIR) 2>/dev/null || true
+	@rm -f .build_count .compilation_started 2>/dev/null || true
+	@$(MAKE) -C $(LIBFT_DIR) clean -s 2>/dev/null || true
+	$(call show_final_message,success,Cleanup completed!,Object files and temporary files removed)
 
+# Full clean including executables
 fclean: clean
-	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	@echo "\033[1;33m🗑️  Removing executables...\033[0m"
+	$(call show_smooth_progress,0,15,15,removing executables)
+	@rm -f $(NAME) 2>/dev/null || true
+	@$(MAKE) -C $(LIBFT_DIR) fclean -s 2>/dev/null || true
+	$(call show_final_message,success,Full cleanup completed!,All executables and libraries removed)
 
-# Tout reconstruire
+# Rebuild everything from scratch
 re: fclean all
 
-# Pas de fichiers de sortie ici
-.PHONY: all clean fclean re
+# Phony targets (not actual files)
+.PHONY: all clean fclean re init_build_env

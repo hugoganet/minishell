@@ -6,18 +6,11 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 16:00:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 18:26:35 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
-
-int		count_pipeline_commands(t_ast *node);
-void	extract_pipeline_commands(t_ast *node, t_ast **commands, int *index);
-bool	is_complex_pipeline(t_ast *node);
-int		allocate_pipeline_resources(int cmd_count, t_ast ***commands,
-			int ***pipes, pid_t **pids);
-int		create_all_pipes(int **pipes, int cmd_count);
 
 int	count_pipeline_commands(t_ast *node)
 {

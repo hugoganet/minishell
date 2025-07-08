@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 21:26:11 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 17:51:16 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,63 +33,25 @@ static void	init_shell_vars(t_shell *shell)
  *
  * @param shell Pointeur vers la structure à initialiser.
  * @param envp Environnement système (non modifiable directement).
- * @param env_list Liste chaînée d'environnement.
  */
-void	init_shell(t_shell *shell, char **envp, t_env *env_list)
+void	init_shell(t_shell *shell, char **envp)
 {
 	init_shell_vars(shell);
-	shell->env = copy_env(envp);
-	if (!shell->env)
-	{
-		ft_putendl_fd("minishell: error: failed to copy environment", 2);
-		exit(1);
-	}
+	// Copie le char **envp dans une liste chainée ou initialise un env minimum si env -i
+	shell->env_list = init_env_list(envp);
+	// Copie envp dans une liste chaînée d'environnement (idem ligne du dessus mais celle ci sera triée et utilisée pour l'export)
 	shell->export_list = init_env_list(envp);
+	// Tri par ordre alphabétique les variables d'environnement la liste chainée (pour l'export)
 	sort_list(&shell->export_list);
-	env_list = init_env_list(envp);
-	if (!env_list)
+	// 'copie' la liste chainée dans un tableau de char ** pour execve, ce qui revient à faire une copie de envp
+	shell->env = env_to_char_array(shell->env_list);
+	// En cas d'erreur d'alloc, on nettoie et quitte
+	if (!shell->env_list || !shell->env || !shell->export_list)
 	{
 		ft_putendl_fd(
 			"minishell: error: failed to initialize environment list", 2);
-		free_env(shell->env);
-		exit(1);
+			cleanup_shell(shell);
+			exit(1);
+	}	
+	configure_shlvl(envp, shell->env_list);
 	}
-	shell->env_list = env_list;
-	configure_shlvl(envp, env_list);
-	if (shell->env)
-	{
-		free_env(shell->env);
-		shell->env = env_to_char_array(env_list);
-	}
-}
-
-/**
- * @brief Copie l'environnement système dans un tableau de chaînes alloué.
- *
- * @param envp L'environnement original (reçu dans main).
- * @return char** Une copie modifiable de l'environnement.
- */
-char	**copy_env(char **envp)
-{
-	int		i;
-	char	**env;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	env = ft_calloc((i + 1), sizeof(char *));
-	if (!env)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		env[i] = strdup(envp[i]);
-		if (!env[i])
-		{
-			free_env(env);
-			return (NULL);
-		}
-		i++;
-	}
-	return (env);
-}

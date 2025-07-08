@@ -25,3 +25,7 @@ minishell.subject.pdf
 test/logs
 test/log
 test/file
+
+CLAUDE.md
+
+minishell_complete_tests_serie.csv

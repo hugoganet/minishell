@@ -23,7 +23,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -I$(LIBFT_DIR) -I$(INCL_DIR) -I$(BREW_READLIN
 LDFLAGS = -L$(BREW_READLINE)/lib -lreadline -pthread
 
 # ==============================================================================
-# MODULAR PROGRESS BAR FUNCTIONS (DRY & SOC Principles)
+# MODULAR PROGRESS BAR FUNCTIONS
 # ==============================================================================
 
 # Function: Calculate RGB values for smooth red-to-green transition
@@ -236,7 +236,7 @@ all: $(LIBFT) init_build_env $(NAME)
 	@if [ ! -f .compilation_happened ]; then \
 		echo "\033[1;32m✅ Everything is up to date! No compilation needed.\033[0m"; \
 	fi
-	@rm -f .compilation_happened
+	@rm -f .compilation_happened .compilation_started
 
 # Initialize build environment and clean previous build artifacts
 init_build_env:
@@ -308,6 +308,7 @@ re: fclean all
 
 # Phony targets (not actual files)
 .PHONY: all clean fclean re init_build_env
+<<<<<<< HEAD
 
 # ==============================================================================
 # MAKEFILE DESIGN NOTES
@@ -337,3 +338,5 @@ re: fclean all
 #    - Clear separation between configuration and implementation
 # 
 # ==============================================================================
+=======
+>>>>>>> commented

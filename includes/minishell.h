@@ -38,6 +38,20 @@
 
 extern volatile sig_atomic_t	g_signal;
 
+/**
+ * @struct s_env
+ * @brief Structure représentant une variable d'environnement dans une liste
+ * chaînée.
+ * 
+ * Cette structure représente une variable d'environnement individuelle du shell.
+ * Elle stocke le nom de la variable (clé), sa valeur, et un pointeur vers la
+ * prochaine variable d'environnement dans la liste chaînée. Cela permet une
+ * gestion dynamique de l'environnement et une manipulation facile des variables.
+ * 
+ * @param key Le nom de la variable d'environnement (ex: "HOME", "PATH")
+ * @param value La valeur associée à la variable d'environnement
+ * @param next Pointeur vers la prochaine variable d'environnement dans la liste
+ */
 typedef struct s_env
 {
 	char			*key;
@@ -45,6 +59,26 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+/**
+ * @struct s_shell
+ * @brief Structure principale contenant l'état global du shell.
+ * 
+ * Cette structure centralise toutes les informations d'état du shell, incluant
+ * l'environnement sous deux formats (tableau et liste), les tokens actuels,
+ * l'arbre de syntaxe abstraite, le code de sortie de la dernière commande,
+ * et les descripteurs de fichiers des heredocs. Elle est passée à travers
+ * toutes les fonctions principales du shell pour maintenir la cohérence d'état.
+ * 
+ * @param env Variables d'environnement sous forme de tableau (pour execve)
+ * @param env_list Variables d'environnement sous forme de liste chaînée
+ *                 (pour manipulation)
+ * @param export_list Liste des variables exportées (pour la commande export)
+ * @param tokens Liste chaînée des tokens de la ligne de commande actuelle
+ * @param ast Arbre de syntaxe abstraite de la commande actuelle
+ * @param last_exit_status Code de retour de la dernière commande exécutée
+ * @param heredoc_fds Liste chaînée des descripteurs de fichiers des
+ *                    heredocs ouverts
+ */
 typedef struct s_shell
 {
 	char			**env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:18:46 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 16:06:00 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/08 12:35:59 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ static void	handle_sigint(int sig)
 }
 
 /**
- * 	// On ignore SIGQUIT dans le shell interactif
- * // Désactive l'affichage des caractères de contrôle (comme ^C)
-	// on ignore le signal SIGPIPE pour éviter les erreurs de pipe cassé
-	// (par exemple, si un processus enfant est terminé avant que le parent
-	// n'ait fini d'écrire dans le pipe ex : `sleep 1234 | ls`)
- * 
  * @brief Active les handlers pour le shell interactif (readline).
+ * 
+ * On ignore le signal SIGPIPE pour éviter les erreurs de pipe cassé
+ * (par exemple, si un processus enfant est terminé avant que le parent
+ * n'ait fini d'écrire dans le pipe ex : `sleep 1234 | ls`)
  */
 void	init_signals(void)
 {

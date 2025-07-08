@@ -17,19 +17,23 @@
 
 /**
  * @struct s_pipeline_ctx
- * @brief Context structure for pipeline child process execution
+ * @brief Structure de contexte pour l'exécution des processus enfants
+ * dans un pipeline
  * 
- * This structure contains all the necessary information for a child process
- * to execute within a complex pipeline. It holds references to the command
- * array, pipe file descriptors, process IDs, and shell environment.
+ * Cette structure contient toutes les informations nécessaires pour qu'un
+ * processus
+ * enfant s'exécute dans un pipeline complexe. Elle maintient les références vers
+ * le tableau des commandes, les descripteurs de fichiers des pipes, les IDs des
+ * processus, et l'environnement du shell.
  * 
- * @param commands Array of AST command nodes to execute in the pipeline
- * @param pipes 2D array of pipe file descriptors [pipe_index][read/write]
- * @param pids Array of process IDs for all processes in the pipeline
- * @param cmd_count Total number of commands in the pipeline
- * @param index Current command index (position in the pipeline)
- * @param env Pointer to the environment variables list
- * @param shell Pointer to the main shell structure
+ * @param commands Tableau des nœuds de commandes AST à exécuter dans le pipeline
+ * @param pipes Tableau 2D des descripteurs de fichiers des pipes
+ *              [index_pipe][lecture/écriture]
+ * @param pids Tableau des IDs de processus pour tous les processus du pipeline
+ * @param cmd_count Nombre total de commandes dans le pipeline
+ * @param index Index de la commande actuelle (position dans le pipeline)
+ * @param env Pointeur vers la liste des variables d'environnement
+ * @param shell Pointeur vers la structure principale du shell
  */
 typedef struct s_pipeline_ctx
 {
@@ -44,16 +48,19 @@ typedef struct s_pipeline_ctx
 
 /**
  * @struct s_pipeline_data
- * @brief Main data structure for complex pipeline execution
+ * @brief Structure de données principale pour l'exécution d'un pipeline
+ * complexe
  * 
- * This structure holds all the essential data needed for executing a complex
- * pipeline with multiple commands. It contains allocated arrays for commands,
- * pipes, and process IDs, along with a count of successfully created pipes.
+ * Cette structure contient toutes les données essentielles nécessaires pour
+ * exécuter un pipeline complexe avec plusieurs commandes. Elle contient les
+ * tableaux alloués pour les commandes, les pipes, et les IDs de processus,
+ * ainsi qu'un compteur des pipes créés avec succès.
  * 
- * @param commands Array of pointers to AST command nodes
- * @param pipes 2D array of pipe file descriptors [pipe_index][0=read, 1=write]
- * @param pids Array of process IDs for forked child processes
- * @param pipes_created Number of pipes successfully created (cmd_count-1)
+ * @param commands Tableau de pointeurs vers les nœuds de commandes AST
+ * @param pipes Tableau 2D des descripteurs de fichiers des pipes
+ *              [index_pipe][0=lecture, 1=écriture]
+ * @param pids Tableau des IDs de processus pour les processus enfants forkés
+ * @param pipes_created Nombre de pipes créés avec succès (cmd_count-1)
  */
 typedef struct s_pipeline_data
 {
@@ -65,20 +72,22 @@ typedef struct s_pipeline_data
 
 /**
  * @struct s_pipeline_params
- * @brief Parameter structure for pipeline process creation
+ * @brief Structure de paramètres pour la création de processus de
+ * pipeline
  * 
- * This structure encapsulates all parameters needed for creating and managing
- * pipeline processes. It's used to reduce the number of function parameters
- * when passing data between pipeline functions, improving code readability
- * and maintainability.
+ * Cette structure encapsule tous les paramètres nécessaires pour créer et gérer
+ * les processus de pipeline. Elle est utilisée pour réduire le nombre de
+ * paramètres
+ * de fonctions lors du passage de données entre les fonctions de pipeline,
+ * améliorant la lisibilité et la maintenabilité du code.
  * 
- * @param commands Array of AST command nodes to execute
- * @param pipes 2D array of pipe file descriptors
- * @param pids Array to store process IDs of created child processes
- * @param cmd_count Total number of commands in the pipeline
- * @param index Current command index being processed
- * @param env Environment variables for command execution
- * @param shell Main shell state and configuration
+ * @param commands Tableau des nœuds de commandes AST à exécuter
+ * @param pipes Tableau 2D des descripteurs de fichiers des pipes
+ * @param pids Tableau pour stocker les IDs des processus enfants créés
+ * @param cmd_count Nombre total de commandes dans le pipeline
+ * @param index Index de la commande actuellement traitée
+ * @param env Variables d'environnement pour l'exécution des commandes
+ * @param shell État et configuration principale du shell
  */
 typedef struct s_pipeline_params
 {
@@ -93,18 +102,24 @@ typedef struct s_pipeline_params
 
 /**
  * @struct s_simple_pipe_ctx
- * @brief Context structure for simple two-command pipe execution
+ * @brief Structure de contexte pour l'exécution d'un pipe simple à deux
+ * commandes
  * 
- * This structure is used specifically for simple pipes (cmd1 | cmd2) where
- * only two commands are involved. It contains the pipe file descriptors,
- * process IDs, and necessary execution context for both left and right
- * side commands.
+ * Cette structure est utilisée spécifiquement pour les pipes simples
+ * (cmd1 | cmd2)
+ * où seulement deux commandes sont impliquées. Elle contient les
+ * descripteurs
+ * de fichiers du pipe, les IDs de processus, et le contexte d'exécution
+ * nécessaire
+ * pour les commandes côté gauche et côté droit.
  * 
- * @param fd Array of pipe file descriptors [0=read_end, 1=write_end]
- * @param pid Array of process IDs [0=left_process, 1=right_process]
- * @param node Pointer to the AST pipe node containing both commands
- * @param env Environment variables for command execution
- * @param shell Main shell state and configuration
+ * @param fd Tableau des descripteurs de fichiers du pipe
+ *           [0=bout_lecture, 1=bout_écriture]
+ * @param pid Tableau des IDs de processus
+ *            [0=processus_gauche, 1=processus_droit]
+ * @param node Pointeur vers le nœud AST du pipe contenant les deux commandes
+ * @param env Variables d'environnement pour l'exécution des commandes
+ * @param shell État et configuration principale du shell
  */
 typedef struct s_simple_pipe_ctx
 {

@@ -17,19 +17,24 @@
 # include <stdbool.h>
 
 /**
- * @brief Structure pour gérer l'état de l'expansion.
- * 	  Contient la chaîne d'entrée, la chaîne de sortie,
- *    l'index de lecture, et les états des quotes.
- *    Cette structure est utilisée pour suivre l'état de l'expansion
- *    des variables dans la chaîne d'entrée.
+ * @struct s_expansion_state
+ * @brief Structure pour gérer l'état de l'expansion des variables.
+ * 
+ * Cette structure maintient l'état durant le processus d'expansion des variables
+ * dans une chaîne de caractères. Elle suit la position actuelle dans la chaîne
+ * d'entrée, accumule le résultat dans la chaîne de sortie, et maintient l'état
+ * des guillemets pour déterminer si l'expansion doit avoir lieu. Elle permet
+ * également de détecter si une expansion a résulté en une chaîne vide.
  *
- * @param input La chaîne d'entrée à traiter.
- * @param output La chaîne de sortie après expansion.
- * @param i L'index de lecture dans la chaîne d'entrée.
- * @param in_single_quotes Flag pour l'état des quotes simples.
- * @param in_double_quotes Flag pour l'état des quotes doubles.
- * @param expanded_to_empty Flag pour indiquer si une variable s'est
- *							 expansée en chaîne vide.
+ * @param input La chaîne d'entrée à traiter pour l'expansion
+ * @param output La chaîne de sortie accumulée après expansion
+ * @param i L'index de lecture actuel dans la chaîne d'entrée
+ * @param in_single_quotes Flag indiquant si on est à l'intérieur de
+ *                        guillemets simples
+ * @param in_double_quotes Flag indiquant si on est à l'intérieur de
+ *                        guillemets doubles
+ * @param expanded_to_empty Flag indiquant si une variable s'est expansée
+ *                         en chaîne vide
  */
 typedef struct s_expansion_state
 {

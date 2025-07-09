@@ -17,35 +17,31 @@
  *
  * Ferme et libère tous les pipes créés, puis libère les tableaux de commandes et de pids.
  *
- * @param commands Tableau des nœuds de commande du pipeline
- * @param pipes Tableau des pipes (tableaux de 2 descripteurs)
- * @param pids Tableau des PIDs des processus enfants
- * @param pipes_created Nombre de pipes effectivement créés
+ * @param ctx Contexte du pipeline contenant toutes les ressources
  */
-void cleanup_pipeline_resources(t_ast **commands, int **pipes,
-								pid_t *pids, int pipes_created)
+void cleanup_pipeline_resources(t_pipeline_context *ctx)
 {
 	int i;
 
 	i = 0;
-	if (pipes)
+	if (ctx->pipes)
 	{
-		while (i < pipes_created)
+		while (i < ctx->pipes_created)
 		{
-			if (pipes[i])
+			if (ctx->pipes[i])
 			{
-				close(pipes[i][0]);
-				close(pipes[i][1]);
-				free(pipes[i]);
+				close(ctx->pipes[i][0]);
+				close(ctx->pipes[i][1]);
+				free(ctx->pipes[i]);
 			}
 			i++;
 		}
-		free(pipes);
+		free(ctx->pipes);
 	}
-	if (commands)
-		free(commands);
-	if (pids)
-		free(pids);
+	if (ctx->commands)
+		free(ctx->commands);
+	if (ctx->pids)
+		free(ctx->pids);
 }
 
 /**
@@ -53,31 +49,27 @@ void cleanup_pipeline_resources(t_ast **commands, int **pipes,
  *
  * Libère les tableaux de pipes, commandes et pids, mais ne ferme pas les descripteurs de pipe.
  *
- * @param commands Tableau des nœuds de commande du pipeline
- * @param pipes Tableau des pipes (tableaux de 2 descripteurs)
- * @param pids Tableau des PIDs des processus enfants
- * @param pipes_created Nombre de pipes effectivement créés
+ * @param ctx Contexte du pipeline contenant toutes les ressources
  */
-void cleanup_pipeline_memory_only(t_ast **commands, int **pipes,
-								  pid_t *pids, int pipes_created)
+void cleanup_pipeline_memory_only(t_pipeline_context *ctx)
 {
 	int i;
 
 	i = 0;
-	if (pipes)
+	if (ctx->pipes)
 	{
-		while (i < pipes_created)
+		while (i < ctx->pipes_created)
 		{
-			if (pipes[i])
-				free(pipes[i]);
+			if (ctx->pipes[i])
+				free(ctx->pipes[i]);
 			i++;
 		}
-		free(pipes);
+		free(ctx->pipes);
 	}
-	if (commands)
-		free(commands);
-	if (pids)
-		free(pids);
+	if (ctx->commands)
+		free(ctx->commands);
+	if (ctx->pids)
+		free(ctx->pids);
 }
 
 /**
@@ -90,8 +82,7 @@ void cleanup_pipeline_memory_only(t_ast **commands, int **pipes,
  * @param pids Tableau des PIDs des processus enfants
  * @param pipes_created Nombre de pipes effectivement créés
  */
-void cleanup_child_memory_early(t_ast **commands, int **pipes,
-								pid_t *pids, int pipes_created)
+void cleanup_child_memory_early(t_ast **commands, int **pipes, pid_t *pids, int pipes_created)
 {
 	int i;
 

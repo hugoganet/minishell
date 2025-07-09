@@ -23,15 +23,15 @@
  * @param shell Structure principale du shell
  * @return 0 si succès, 1 ou 130 en cas d'erreur ou d'interruption heredoc
  */
-static int execute_pipeline_setup(t_ast *node, t_pipeline_data *data,
+static int execute_pipeline_setup(t_ast *node, t_pipeline_context *ctx,
 								  t_shell *shell)
 {
 	int setup_result;
 
-	data->commands = NULL;
-	data->pipes = NULL;
-	data->pids = NULL;
-	setup_result = setup_pipeline_execution(node, data, shell);
+	ctx->commands = NULL;
+	ctx->pipes = NULL;
+	ctx->pids = NULL;
+	setup_result = setup_pipeline_execution(node, ctx, shell);
 	if (setup_result != 0)
 		return (setup_result);
 	signal(SIGINT, SIG_IGN);
@@ -50,23 +50,18 @@ static int execute_pipeline_setup(t_ast *node, t_pipeline_data *data,
  * @param shell Structure principale du shell
  * @return 0 si succès, 1 en cas d'erreur
  */
-static int execute_pipeline_process(t_ast *node, t_pipeline_data *data,
+static int execute_pipeline_process(t_ast *node, t_pipeline_context *ctx,
 									t_env *env, t_shell *shell)
 {
-	t_pipeline_params params;
 	int setup_result;
 
-	params.commands = data->commands;
-	params.pipes = data->pipes;
-	params.pids = data->pids;
-	params.cmd_count = count_pipeline_commands(node);
-	params.env = env;
-	params.shell = shell;
-	setup_result = create_pipeline_processes(&params);
+	ctx->cmd_count = count_pipeline_commands(node);
+	ctx->env = env;
+	ctx->shell = shell;
+	setup_result = create_pipeline_processes(ctx);
 	if (setup_result != 0)
 	{
-		cleanup_pipeline_resources(data->commands, data->pipes, data->pids,
-								   data->pipes_created);
+		cleanup_pipeline_resources(ctx);
 		init_signals();
 		return (1);
 	}
@@ -86,24 +81,23 @@ static int execute_pipeline_process(t_ast *node, t_pipeline_data *data,
  */
 int execute_complex_pipeline(t_ast *node, t_env *env, t_shell *shell)
 {
-	t_pipeline_data data;
+	t_pipeline_context ctx;
 	int setup_result;
 
 	// Initialisation de la structure de données du pipeline, on ouvre les pipes, on process tous les heredocs,
-	// on extrait les commandes de l'AST dans le tableau data->commands.
-	setup_result = execute_pipeline_setup(node, &data, shell);
+	// on extrait les commandes de l'AST dans le tableau ctx.commands.
+	setup_result = execute_pipeline_setup(node, &ctx, shell);
 	if (setup_result != 0)
 		return (setup_result);
 	// On exécute le processus pour chaque commande du pipeline.
-	setup_result = execute_pipeline_process(node, &data, env, shell);
+	setup_result = execute_pipeline_process(node, &ctx, env, shell);
 	if (setup_result != 0)
 	return (setup_result);
 	// On ferme les pipes dans le processus parent, car il n'en a plus besoin.
-	close_parent_pipes(data.pipes, count_pipeline_commands(node));
+	close_parent_pipes(ctx.pipes, ctx.cmd_count);
 	// On attend la fin de tous les processus enfants du pipeline,
 	// et on retourne le code de retour de la dernière commande du pipeline.
-	setup_result = wait_for_all_processes(data.pids,
-										  count_pipeline_commands(node));
+	setup_result = wait_for_all_processes(ctx.pids, ctx.cmd_count);
 	// On réinitialise les signaux pour le shell principal,
 	// car on a terminé l'exécution du pipeline.
 	init_signals();
@@ -112,8 +106,7 @@ int execute_complex_pipeline(t_ast *node, t_env *env, t_shell *shell)
 	free_all_heredoc_fds(shell);
 	// On nettoie la mémoire des tableaux (pipes, commands, pids),
 	// mais ne ferme pas les descripteurs de pipe car ils ont déjà été fermés.
-	cleanup_pipeline_memory_only(data.commands, data.pipes, data.pids,
-								 data.pipes_created);
+	cleanup_pipeline_memory_only(&ctx);
 	return (setup_result);
 }
 
@@ -127,7 +120,7 @@ int execute_complex_pipeline(t_ast *node, t_env *env, t_shell *shell)
  * @param data Structure de données du pipeline à remplir
  * @return 0 si succès, 1 sinon
  */
-static int setup_pipeline_resources(t_ast *node, t_pipeline_data *data)
+static int setup_pipeline_resources(t_ast *node, t_pipeline_context *ctx)
 {
 	int cmd_count;
 
@@ -135,18 +128,17 @@ static int setup_pipeline_resources(t_ast *node, t_pipeline_data *data)
 	cmd_count = count_pipeline_commands(node);
 	if (cmd_count <= 0)
 		return (1);
-	// On alloue les ressources nécessaires pour le pipeline dans la structure data
-	if (allocate_pipeline_resources(cmd_count, &data->commands,
-									&data->pipes, &data->pids) != 0)
+	// On alloue les ressources nécessaires pour le pipeline dans la structure ctx
+	if (allocate_pipeline_resources(cmd_count, &ctx->commands,
+									&ctx->pipes, &ctx->pids) != 0)
 		return (1);
 	// On crée tous les pipes nécessaires pour le pipeline et on store le nombre de pipes créés.
-	data->pipes_created = create_all_pipes(data->pipes, cmd_count);
+	ctx->pipes_created = create_all_pipes(ctx->pipes, cmd_count);
 	// Si le nombre de pipes créés n'est pas égal à (cmd_count - 1), c'est ne erreur dans la création des pipes,
 	// on nettoie et retourne une erreur.
-	if (data->pipes_created != cmd_count - 1)
+	if (ctx->pipes_created != cmd_count - 1)
 	{
-		cleanup_pipeline_resources(data->commands, data->pipes,
-								   data->pids, data->pipes_created);
+		cleanup_pipeline_resources(ctx);
 		return (1);
 	}
 	return (0);
@@ -163,7 +155,7 @@ static int setup_pipeline_resources(t_ast *node, t_pipeline_data *data)
  * @param shell Structure principale du shell
  * @return 0 si succès, 1 ou 130 en cas d'erreur ou d'interruption heredoc
  */
-int setup_pipeline_execution(t_ast *node, t_pipeline_data *data,
+int setup_pipeline_execution(t_ast *node, t_pipeline_context *ctx,
 							 t_shell *shell)
 {
 	int index;
@@ -173,20 +165,19 @@ int setup_pipeline_execution(t_ast *node, t_pipeline_data *data,
 	// structure de données du pipeline à remplir.
 	// On alloue les ressources nécessaires pour le pipeline.
 	// On crée tous les pipes nécessaires pour le pipeline. (cmd_count - 1 pipes)
-	if (setup_pipeline_resources(node, data) != 0)
+	if (setup_pipeline_resources(node, ctx) != 0)
 		return (1);
 	index = 0;
 	// On compte le nombre de commandes dans l'AST.
 	cmd_count = count_pipeline_commands(node);
-	// On extrait les commandes de l'AST dans le tableau data->commands.
-	extract_pipeline_commands(node, data->commands, &index);
+	// On extrait les commandes de l'AST dans le tableau ctx->commands.
+	extract_pipeline_commands(node, ctx->commands, &index);
 	// On process tous les heredocs de l'AST, un par un, et on stock les fds de lecture dans la structure heredoc_fds.
-	if (process_all_heredocs(data->commands, cmd_count, shell) == 130)
+	if (process_all_heredocs(ctx->commands, cmd_count, shell) == 130)
 	{
 		// Si un heredoc a été interrompu par l'utilisateur,
 		// on nettoie les ressources du pipeline et on retourne 130.
-		cleanup_pipeline_resources(data->commands, data->pipes,
-								   data->pids, data->pipes_created);
+		cleanup_pipeline_resources(ctx);
 		return (130);
 	}
 	return (0);

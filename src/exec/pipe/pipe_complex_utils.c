@@ -21,15 +21,15 @@
  * @param ctx Pointeur vers la structure de contexte à remplir
  * @param params Paramètres du pipeline (commandes, pipes, pids, etc.)
  */
-void setup_child_context(t_pipeline_child_ctx *ctx, t_pipeline_params *params)
+void setup_child_context(t_pipeline_child_ctx *child_ctx, t_pipeline_context *ctx)
 {
-	ctx->commands = params->commands;
-	ctx->pipes = params->pipes;
-	ctx->pids = params->pids;
-	ctx->cmd_count = params->cmd_count;
-	ctx->index = params->index;
-	ctx->env = params->env;
-	ctx->shell = params->shell;
+	child_ctx->commands = ctx->commands;
+	child_ctx->pipes = ctx->pipes;
+	child_ctx->pids = ctx->pids;
+	child_ctx->cmd_count = ctx->cmd_count;
+	child_ctx->index = ctx->current_index;
+	child_ctx->env = ctx->env;
+	child_ctx->shell = ctx->shell;
 }
 
 /**
@@ -41,28 +41,28 @@ void setup_child_context(t_pipeline_child_ctx *ctx, t_pipeline_params *params)
  * @param params Paramètres du pipeline (commandes, pipes, pids, etc.)
  * @return 0 si succès, 1 en cas d'erreur de fork
  */
-int create_child_process(t_pipeline_params *params)
+int create_child_process(t_pipeline_context *ctx)
 {
-	t_pipeline_child_ctx ctx;
+	t_pipeline_child_ctx child_ctx;
 
 	// On fork un nouveau processus pour exécuter la commande du pipeline.
-	params->pids[params->index] = fork();
+	ctx->pids[ctx->current_index] = fork();
 	// Si le fork échoue, on affiche une erreur et on termine les processus déjà créés.
-	if (params->pids[params->index] < 0)
+	if (ctx->pids[ctx->current_index] < 0)
 	{
 		perror("minishell: fork");
-		terminate_child_processes(params->pids, params->index);
+		terminate_child_processes(ctx->pids, ctx->current_index);
 		return (1);
 	}
-	if (params->pids[params->index] == 0)
+	if (ctx->pids[ctx->current_index] == 0)
 	{
 		// On est dans le processus enfant, on prépare le contexte d'exécution.
 		// On remplit la structure t_pipeline_child_ctx avec les informations nécessaires à l'exécution
 		// d'une commande du pipeline (commandes, pipes, pids, index, env, shell).
 		// ! En gros, on copie tous les paramètres du pipeline dans le contexte enfant.
-		setup_child_context(&ctx, params);
+		setup_child_context(&child_ctx, ctx);
 		// On exécute la commande du pipeline dans le processus enfant.
-		execute_pipeline_child(&ctx);
+		execute_pipeline_child(&child_ctx);
 	}
 	return (0);
 }
@@ -75,21 +75,21 @@ int create_child_process(t_pipeline_params *params)
  * @param params Paramètres du pipeline (commandes, pipes, pids, etc.)
  * @return 0 si succès, 1 en cas d'erreur de fork
  */
-int create_pipeline_processes(t_pipeline_params *params)
+int create_pipeline_processes(t_pipeline_context *ctx)
 {
 	int i;
 
 	// Initialisation des PIDs à -1 pour chaque commande du pipeline
-	initialize_pipeline_pids(params->pids, params->cmd_count);
+	initialize_pipeline_pids(ctx->pids, ctx->cmd_count);
 	i = 0;
 	// On parcourt le tableau des commandes et on crée un processus pour chaque commande
-	while (i < params->cmd_count)
+	while (i < ctx->cmd_count)
 	{
-		params->index = i;
-		// On passe à create_child process toute la structure de paramètres
+		ctx->current_index = i;
+		// On passe à create_child process toute la structure de contexte
 		// qui contient les commandes, pipes, pids, index, env et shell.
 		// Comme on lui passe l'index, il sait quelle commande exécuter.
-		if (create_child_process(params) != 0)
+		if (create_child_process(ctx) != 0)
 			return (1);
 		i++;
 	}

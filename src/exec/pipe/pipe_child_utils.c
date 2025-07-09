@@ -137,8 +137,7 @@ void execute_pipeline_child(t_pipeline_child_ctx *ctx)
 	close_all_heredoc_fds(ctx->shell);
 	// On free les pipes, pids et commandes inutiles
 	// pour éviter les fuites de mémoire et les erreurs de segmentation.
-	cleanup_child_memory_early(ctx->commands, ctx->pipes, ctx->pids,
-							   ctx->cmd_count - 1);
+	cleanup_child_memory_early(ctx->commands, ctx->pipes, ctx->pids, ctx->cmd_count - 1);
 	// On exécute la commande du pipeline dans le processus enfant.
 	status = exec_cmd_no_heredoc(current_cmd, ctx->env, current_cmd,
 								 ctx->shell);

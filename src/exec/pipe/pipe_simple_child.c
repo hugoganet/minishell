@@ -12,27 +12,35 @@
 
 #include "pipe.h"
 
-void	setup_left_child_process(t_simple_pipe_ctx *ctx);
-void	setup_right_child_process(t_simple_pipe_ctx *ctx);
-int		wait_for_children(pid_t left_pid, pid_t right_pid);
-int		handle_pipe_execution_error(int fd[2], pid_t left_pid);
-
+/**
+ * 
+ */
 void	setup_left_child_process(t_simple_pipe_ctx *ctx)
 {
 	int	status;
 
+	// Dans le processus enfant, on execute le comportement par défaut pour SIGIINT et SIGQUIT.
 	reset_signals_in_child();
 	signal(SIGPIPE, SIG_DFL);
+	// On check si il y'a des redirections heredoc à traiter.
+	// Si il y'en a, STDIN est redirigé vers le fd de lecture du dernier heredoc.
 	setup_heredoc_redirection(ctx->shell);
+	// On remplace STDOUT par le fd d'écriture du pipe.
 	if (dup2(ctx->fd[1], STDOUT_FILENO) == -1)
 	{
+		// SI il y'a une erreur de redirection, on affiche une erreur,
+		// on nettoie la structure shell et on quitte le processus avec un code d'erreur.
+		// On utilise perror pour afficher l'erreur système.
 		perror("minishell: dup2");
 		cleanup_shell(ctx->shell);
 		exit(1);
 	}
+	// On ferme les descripteurs de pipe inutilisés.
 	close(ctx->fd[0]);
 	close(ctx->fd[1]);
+	// On ferme tous les descripteurs de fichiers heredoc ouverts.
 	close_all_heredoc_fds(ctx->shell);
+	// On exécute la commande de gauche du pipe sans heredoc.
 	status = exec_cmd_no_heredoc(ctx->node->left, ctx->env, ctx->node->left,
 			ctx->shell);
 	cleanup_shell(ctx->shell);

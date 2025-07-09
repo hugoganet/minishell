@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 09:15:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 15:07:52 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 15:52:10 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  * ou à la fin de l'exécution des commandes. Chaque heredoc crée un pipe
  * temporaire dont le descripteur doit être géré.
  * 
- * @param fd Descripteur de fichier du pipe heredoc
+ * @param fd Descripteur de fichier du pipe heredoc. Sortie de pipe[0]
  * @param next Pointeur vers le prochain descripteur heredoc dans la liste
  */
 typedef struct s_heredoc_fd

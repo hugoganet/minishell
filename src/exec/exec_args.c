@@ -6,38 +6,47 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 20:47:47 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 16:50:35 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 
-int	validate_command(t_ast *cmd_node)
+/**
+ * @brief Valide la commande dans un nœud de l'AST.
+ * Cette fonction vérifie si la commande n'est pas NULL,
+ * si elle a au moins un argument, et si le premier argument n'est pas vide.
+ */
+int validate_command(t_ast *cmd_node)
 {
 	if (!cmd_node || !cmd_node->args)
 		return (0);
 	if (!cmd_node->args[0])
 		return (0);
-	if (cmd_node->args[0][0] == '\x01' && cmd_node->args[0][1] == '\0')
-		return (0);
 	if (cmd_node->args[0][0] == '\0')
-		return (-1);
+		return (0);
 	return (1);
 }
 
-void	filter_empty_args(char **args)
+/**
+ * @brief Filtre les arguments vides d'un tableau d'arguments.
+ * Cette fonction parcourt le tableau d'arguments et libère la mémoire
+ * des chaînes vides, tout en décalant les arguments non vides vers la gauche.
+ * Le tableau est terminé par un pointeur NULL.
+ */
+void filter_empty_args(char **args)
 {
-	int	read_idx;
-	int	write_idx;
+	int read_idx;
+	int write_idx;
 
 	if (!args)
-		return ;
+		return;
 	read_idx = 0;
 	write_idx = 0;
 	while (args[read_idx])
 	{
-		if (args[read_idx][0] == '\x01' && args[read_idx][1] == '\0')
+		if (args[read_idx][0] == '\0')
 		{
 			free(args[read_idx]);
 		}

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 15:07:40 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 16:36:49 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,20 @@ void	setup_heredoc_redirection(t_shell *shell)
 
 	last_heredoc = NULL;
 	current = shell->heredoc_fds;
+	// On parcourt la liste chaînée des descripteurs de fichiers heredoc
 	while (current)
 	{
+		// Si le descripteur de fichier n'est pas -1, on le garde en mémoire
+		// comme le dernier heredoc ouvert.
 		if (current->fd != -1)
 			last_heredoc = current;
 		current = current->next;
 	}
+	// Si on a trouvé un dernier heredoc ouvert
 	if (last_heredoc && last_heredoc->fd != -1)
 	{
+		// On duplique le descripteur de fichier du dernier heredoc
+		// vers l'entrée standard (STDIN_FILENO).
 		if (dup2(last_heredoc->fd, STDIN_FILENO) == -1)
 			perror("minishell: dup2 heredoc");
 		close(last_heredoc->fd);
@@ -66,8 +72,10 @@ int	process_heredocs(t_ast *ast_root, t_shell *shell)
 		// Si on trouve un nœud de type HEREDOC,
 		if (tmp->type == HEREDOC)
 		{
-			// 
+			// On process un heredoc
 			heredoc_status = handle_heredoc(tmp->str, shell);
+			// Si le heredoc a été interrompu par l'utilisateur (signal 130),
+			// on ferme tous les descripteurs de fichiers d'heredoc ouverts
 			if (heredoc_status == 130)
 			{
 				close_all_heredoc_fds(shell);
@@ -86,7 +94,7 @@ int	process_heredocs(t_ast *ast_root, t_shell *shell)
  * 
  * @param token_str La chaîne de caractères du token HEREDOC.
  * @param shell La structure principale du shell contenant les informations d'exécution.
- * @return `0` si l'heredoc a été traité avec succès, ou `1` en cas d'erreur.
+ * @return Le statut de l'exécution : 
  */
 int	handle_heredoc(char *token_str, t_shell *shell)
 {
@@ -107,7 +115,6 @@ int	handle_heredoc(char *token_str, t_shell *shell)
 	delimiter_clean = expand_and_clean_delimiter(token_str + 2, shell);
 	if (!delimiter_clean)
 		return (close_pipe_fds(pipefd), restore_sigint(&sa_old), 1);
-	
 	result = process_heredoc_main(shell, pipefd, delimiter_clean);
 	free(delimiter_clean);
 	restore_sigint(&sa_old);

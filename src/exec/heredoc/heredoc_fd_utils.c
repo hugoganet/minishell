@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 19:12:44 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 18:37:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 15:51:32 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @brief Ajoute un descripteur de fichier d'heredoc à la liste des heredoc_fds du shell.
+ */
 void	add_heredoc_fd(t_shell *shell, int fd)
 {
 	t_heredoc_fd	*new_fd;

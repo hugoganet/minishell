@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 15:48:59 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 22:08:07 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 16:59:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ void	ft_swap(t_env *i, t_env *j)
 	j->value = tmp_value;
 }
 
+/**
+ * @brief Trie la liste chaînée d'environnement par ordre alphabétique des clés.
+ * 
+ * @param export_list Pointeur vers la liste chaînée d'environnement à trier.
+ */
 void	sort_list(t_env **export_list)
 {
 	t_env	*i;

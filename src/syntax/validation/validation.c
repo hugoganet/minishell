@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:06:35 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 15:14:10 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:53:14 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 /**
  * @brief Vérifie si la syntaxe globale de l’entrée utilisateur est correcte.
+ * 
+ * - Quotes non fermées
+ * 
+ * - Pipes invalides (en début ou fin de ligne, ou deux pipes consécutifs)
+ * 
+ * - Redirections invalides (en début ou fin de ligne, ou deux redirections consécutives)
+ * 
+ * - Accolades non fermées
  *
  * Affecte last_exit_status à 2 en cas d’erreur.
  *

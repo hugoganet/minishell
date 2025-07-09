@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:38:44 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 18:55:26 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 17:16:26 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct s_shell
 // !===========================================================================
 
 void	init_signals(void);
-void	init_shell(t_shell *shell, char **envp, t_env *env_list);
+void	init_shell(t_shell *shell, char **envp);
 void	shell_loop(t_shell *shell);
 void	process_input(char *input, t_shell *shell);
 void	free_loop(char *input, t_shell *shell);
@@ -119,7 +119,7 @@ char	*prompt_readline(void);
 // !                           ENVIRONMENT.C                                 =
 // !===========================================================================
 
-char	**copy_env(char **envp);
+// char	**copy_env(char **envp);
 void	free_env(char **env);
 t_env	*init_env_list(char **envp);
 char	*get_env_value(t_env *env, const char *key);

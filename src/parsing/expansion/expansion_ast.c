@@ -6,22 +6,27 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 21:05:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 21:08:27 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 12:23:19 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansion.h"
 #include "minishell.h"
 
+
+/**
+ * 
+ */
 static void	expand_single_argument(char **arg, t_shell *shell)
 {
 	char	*expanded_arg;
 	bool	expanded_to_empty;
 
+	// 
 	expanded_arg = expand_variables_with_flag(*arg, shell->env_list,
 			shell->last_exit_status, &expanded_to_empty);
 	if (expanded_arg)
 	{
+		// Si le flag `expanded_to_empty` est vrai, 
 		if (expanded_to_empty && ft_strlen(expanded_arg) == 0)
 		{
 			free(expanded_arg);
@@ -48,11 +53,15 @@ void	expand_ast_arguments(t_ast *node, t_shell *shell)
 
 	if (!node)
 		return ;
+	// On traite récursivement les sous-nœuds gauche et droit.
 	expand_ast_arguments(node->left, shell);
 	expand_ast_arguments(node->right, shell);
+	// Si le noeud est une commande (CMD),
+	// et qu'il a des arguments (args)
 	if (node->type == CMD && node->args)
 	{
 		i = 0;
+		// On parcourt les arguments et on les expanse un par un.
 		while (node->args[i])
 		{
 			expand_single_argument(&node->args[i], shell);

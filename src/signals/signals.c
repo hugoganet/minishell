@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:18:46 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/08 12:35:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 16:45:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	handle_sigint(int sig)
  */
 void	init_signals(void)
 {
+	
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGPIPE, SIG_IGN);

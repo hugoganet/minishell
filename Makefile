@@ -175,8 +175,9 @@ SRC = 	main.c \
 		parsing/expansion/expansion_utils1.c \
 		parsing/expansion/expansion_utils2.c \
 		ast/ast_builder.c \
-		ast/ast_utils.c \
+		ast/ast_core.c \
 		ast/ast_executor.c \
+		ast/ast_utils.c \
 		env/init_env.c \
 		env/env.c \
 		env/env_utils.c \
@@ -308,7 +309,6 @@ re: fclean all
 
 # Phony targets (not actual files)
 .PHONY: all clean fclean re init_build_env
-<<<<<<< HEAD
 
 # ==============================================================================
 # MAKEFILE DESIGN NOTES
@@ -338,5 +338,3 @@ re: fclean all
 #    - Clear separation between configuration and implementation
 # 
 # ==============================================================================
-=======
->>>>>>> commented

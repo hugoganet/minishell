@@ -6,13 +6,19 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:54:12 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/05 19:48:56 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 15:00:12 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 
+/**
+ * @brief Initialise le pipe pour la gestion des heredocs.
+ * 
+ * @param pipefd Un tableau de deux entiers pour stocker les descripteurs de fichiers du pipe.
+ * @return 0 si l'initialisation réussit, 1 en cas d'erreur.
+ */
 int	init_heredoc_pipe(int pipefd[2])
 {
 	if (pipe(pipefd) == -1)
@@ -23,6 +29,16 @@ int	init_heredoc_pipe(int pipefd[2])
 	return (0);
 }
 
+/**
+ * @brief Valide le token de heredoc.
+ * 
+ * Cette fonction vérifie si le token de heredoc est valide (<<).
+ * Elle close les descripteurs de pipe si le token est invalide.
+ * 
+ * @param token_str Le token de heredoc à valider.
+ * @param pipefd Un tableau de deux entiers contenant les descripteurs de fichiers du pipe.
+ * @return 0 si le token est valide, 1 si le token est invalide.
+ */
 int	validate_heredoc_token(char *token_str, int pipefd[2])
 {
 	if (ft_strlen(token_str) <= 2)

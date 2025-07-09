@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 12:13:58 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 14:22:35 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ void	process_input(char *input, t_shell *shell)
 		free_token_list(tokens);
 		return ;
 	}
-	// 
+	// On parcours tous les ARGs de l'AST pour vérifier si il y'a des variables à expanser.
 	expand_ast_arguments(ast_root, shell);
+	// On set l'AST dans la structure du shell.
 	shell->ast = ast_root;
 	shell->last_exit_status = execute_ast(ast_root, shell->env_list, shell);
 }

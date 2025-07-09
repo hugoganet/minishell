@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:03:03 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 14:33:46 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int	execute_simple_pipe(t_ast *node, t_env *env, t_shell *shell)
 	int	final_status;
 	int	heredoc_result;
 
+	// On initialise le statut final à 1 par défaut,
+	// pour gérer les erreurs de pipe ou de fork.
 	final_status = 1;
+	// On traite les heredocs avant de créer le pipe,
+	// 
 	heredoc_result = process_simple_pipe_heredocs(node, shell);
 	if (heredoc_result != 0)
 		return (heredoc_result);
@@ -45,10 +49,14 @@ int	execute_simple_pipe(t_ast *node, t_env *env, t_shell *shell)
 	return (final_status);
 }
 
+/**
+ * @brief Traite les heredocs pour un pipe simple.
+ */
 int	process_simple_pipe_heredocs(t_ast *node, t_shell *shell)
 {
 	int	heredoc_status;
 
+	// On traite les heredocs dans les sous-nœuds gauche du pipe
 	heredoc_status = process_heredocs(node->left, shell);
 	if (heredoc_status == 130)
 		return (130);

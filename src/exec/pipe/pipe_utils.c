@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/08 19:03:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 14:27:06 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	count_pipeline_commands(t_ast *node)
 	// Si ce n'est ni un CMD ni un PIPE, c'est un nœud de redirection
 	// (REDIR_INPUT, REDIR_OUTPUT, REDIR_APPEND, HEREDOC), on cherche alors le 1er nœud CMD
 	// dans le sous-arbre gauche ou droit, et on ajout 1 au compteur de CMD qui sera retourné
-if (find_cmd_node(node))
+	if (find_cmd_node(node))
 		return (1);
 	return (0);
 }

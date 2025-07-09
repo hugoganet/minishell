@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/06 20:47:44 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 15:40:02 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ int	exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 	int	validation_result;
 
 	cmd_node = find_cmd_node(ast_root);
-	heredoc_status = process_heredocs(ast_root, shell);
-	if (heredoc_status == 130)
-		return (130);
 	if (cmd_node && cmd_node->args)
 		filter_empty_args(cmd_node->args);
 	validation_result = validate_command(cmd_node);
@@ -66,6 +63,9 @@ int	exec_cmd(t_ast *cmd_node, t_env *env, t_ast *ast_root, t_shell *shell)
 			return (exec_builtin_with_redirections(cmd_node, ast_root, shell));
 		return (builtin_exec(cmd_node, shell));
 	}
+	heredoc_status = process_heredocs(ast_root, shell);
+	if (heredoc_status == 130)
+		return (130);
 	return (execute_fork_process(cmd_node, env, ast_root, shell));
 }
 

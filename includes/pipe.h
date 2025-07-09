@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:04:24 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 17:21:38 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 16:18:04 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ typedef struct s_pipeline_params
  * pour les commandes côté gauche et côté droit.
  * 
  * @param fd Tableau des descripteurs de fichiers du pipe
- *           [0=bout_lecture, 1=bout_écriture]
  * @param pid Tableau des IDs de processus
  *            [0=processus_gauche, 1=processus_droit]
  * @param node Pointeur vers le nœud AST du pipe contenant les deux commandes

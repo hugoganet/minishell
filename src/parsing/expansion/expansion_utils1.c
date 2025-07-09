@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:08:41 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/07 21:01:10 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 14:06:54 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 /**
  * @brief Extrait le nom d'une variable à partir de la position actuelle.
  *        Ex: pour "$USER_VAR", extrait "USER_VAR".
- *        Gère aussi la syntaxe ${VAR}.
- *        Rejette les paramètres positionnels ($0, $1, etc.) sauf $0.
+ * Gère aussi la syntaxe ${VAR}.
+ * Rejette les paramètres positionnels ($0, $1, etc.) sauf $0.
  *
  * @param input La chaîne d'entrée.
  * @param start_index L'index de début (après le '$').
@@ -31,13 +31,17 @@ char	*extract_variable_name(const char *input, int start_index)
 	len = 0;
 	if (!input[start_index])
 		return (NULL);
+	// Si le caractère est '{', on traite la syntaxe ${VAR}.
 	if (input[start_index] == '{')
 	{
 		start_index++;
+		// On incrémente len jusqu'à trouver '}' ou la fin de la chaîne.
 		while (input[start_index + len] && input[start_index + len] != '}')
 			len++;
+		// Et on retourne la sous-chaîne.
 		return (ft_substr(input, start_index, len));
 	}
+	// Si le caractère est un chiffre, on retourne le chiffre seul.
 	if (ft_isdigit(input[start_index]))
 		return (ft_substr(input, start_index, 1));
 	if (!is_valid_var_start(input[start_index]))

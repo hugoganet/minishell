@@ -12,6 +12,16 @@
 
 #include "pipe.h"
 
+/**
+ * @brief Ferme tous les descripteurs de pipes dans le processus parent.
+ *
+ * Cette fonction est appelée dans le parent après le fork de tous les enfants du pipeline.
+ * Elle ferme les deux descripteurs (lecture et écriture) de chaque pipe,
+ * car le parent n'a plus besoin de garder ces pipes ouverts.
+ *
+ * @param pipes Tableau des pipes (tableaux de 2 descripteurs)
+ * @param cmd_count Nombre total de commandes dans le pipeline
+ */
 void	close_parent_pipes(int **pipes, int cmd_count)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 14:27:06 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:13:31 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,22 @@ void	extract_pipeline_commands(t_ast *node, t_ast **commands, int *index)
 
 	if (!node)
 		return ;
+	// Si le nœud est un PIPE, on traite récursivement les sous-nœuds gauche et droit
 	if (node->type == PIPE)
 	{
 		extract_pipeline_commands(node->left, commands, index);
 		extract_pipeline_commands(node->right, commands, index);
 		return ;
 	}
+	// Si l noeud est une commande (CMD), on l'ajoute directement au tableau
 	if (node->type == CMD)
 	{
 		commands[*index] = node;
+		// On incrémente l'index pour le prochain ajout
 		(*index)++;
 		return ;
 	}
+	// Pour les nœuds de redirection, on cherche le nœud CMD associé
 	cmd_node = find_cmd_node(node);
 	if (cmd_node)
 	{
@@ -136,6 +140,7 @@ bool	is_complex_pipeline(t_ast *node)
 int	allocate_pipeline_resources(int cmd_count, t_ast ***commands,
 		int ***pipes, pid_t **pids)
 {
+	// Alloue la mémoire pour les tableaux de commandes, pipes et pids
 	*commands = malloc(cmd_count * sizeof(t_ast *));
 	if (!*commands)
 		return (1);
@@ -165,29 +170,21 @@ int	allocate_pipeline_resources(int cmd_count, t_ast ***commands,
  * @param pipes Tableau de pointeurs int pour stocker les descripteurs de fichier des pipes
  * @param cmd_count Nombre de commandes dans le pipeline
  * @return Nombre de pipes créés avec succès, ou index du premier échec
- * 
- * @note Pour n commandes, (n-1) pipes sont nécessaires
- * @note En cas d'échec, la fonction retourne l'index où la création a échoué
- * @note Chaque pipes[i] pointe vers un tableau de 2 entiers [read_fd, write_fd]
- * @note Le tableau pipes est initialisé à NULL avant la création des pipes
- * @note En cas d'échec de l'appel système pipe(), affiche l'erreur et nettoie
  */
 int	create_all_pipes(int **pipes, int cmd_count)
 {
 	int	i;
 
 	i = 0;
+	// On parcourt le tableau des pipes et on crée chaque pipe
 	while (i < cmd_count - 1)
 	{
-		pipes[i] = NULL;
-		i++;
-	}
-	i = 0;
-	while (i < cmd_count - 1)
-	{
+		// On alloue de la mémoire pour chaque pipe (2 descripteurs)
 		pipes[i] = ft_calloc(2, sizeof(int));
 		if (!pipes[i])
 			return (i);
+		// On alloue de la mémoire pour chaque pipe (2 descripteurs initialisés à 0)
+		// L'appel à pipe() remplace ces valeurs par les vrais descripteurs de lecture/écriture
 		if (pipe(pipes[i]) == -1)
 		{
 			perror("minishell: pipe");
@@ -196,5 +193,6 @@ int	create_all_pipes(int **pipes, int cmd_count)
 		}
 		i++;
 	}
+	// On retourne le nombre de pipes créés, qui est cmd_count - 1
 	return (cmd_count - 1);
 }

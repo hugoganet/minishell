@@ -6,11 +6,12 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 16:00:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:14:27 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
+
 
 int	process_all_heredocs(t_ast **commands, int cmd_count, t_shell *shell)
 {

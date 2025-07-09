@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 00:00:00 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:52:38 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 #include "exec.h"
 #include <errno.h>
 
-static void	run_child_process_no_heredoc(char **argv, t_env *env,
-		t_ast *ast, t_shell *shell)
+/**
+ * @brief Exécute le code d'un processus enfant sans gestion d'heredoc.
+ *
+ * Configure les signaux, applique les redirections, résout le chemin de la commande,
+ * prépare l'environnement, puis exécute la commande avec execve.
+ * Nettoie les ressources et gère les erreurs d'exécution.
+ *
+ * @param argv Tableau d'arguments de la commande
+ * @param env Liste chaînée des variables d'environnement
+ * @param ast AST de la commande (pour les redirections)
+ * @param shell Structure principale du shell
+ */
+static void run_child_process_no_heredoc(char **argv, t_env *env,
+										 t_ast *ast, t_shell *shell)
 {
-	char	*path;
-	char	**envp;
+	char *path;
+	char **envp;
 
 	reset_signals_in_child();
 	if (setup_redirections(ast) != 0)
@@ -42,7 +54,16 @@ static void	run_child_process_no_heredoc(char **argv, t_env *env,
 	}
 }
 
-static int	handle_child_status(int status)
+/**
+ * @brief Analyse le statut de sortie d'un processus enfant.
+ *
+ * Gère les cas de terminaison par signal (SIGINT, SIGQUIT) et de sortie normale.
+ * Affiche les messages appropriés et retourne le code de sortie à propager au shell.
+ *
+ * @param status Statut retourné par waitpid
+ * @return Code de sortie à utiliser pour le shell
+ */
+static int handle_child_status(int status)
 {
 	if (WIFSIGNALED(status))
 	{
@@ -57,11 +78,23 @@ static int	handle_child_status(int status)
 	return (1);
 }
 
-int	execute_fork_process(t_ast *cmd_node, t_env *env,
-		t_ast *ast_root, t_shell *shell)
+/**
+ * @brief Exécute une commande dans un processus enfant avec gestion des heredocs.
+ *
+ * Fork un nouveau processus, exécute la commande (avec redirections et heredocs),
+ * gère les signaux, attend la fin du processus et retourne le code de sortie.
+ *
+ * @param cmd_node Nœud AST de la commande à exécuter
+ * @param env Liste chaînée des variables d'environnement
+ * @param ast_root AST racine (pour les redirections/heredocs)
+ * @param shell Structure principale du shell
+ * @return Code de sortie de la commande exécutée
+ */
+int execute_fork_process(t_ast *cmd_node, t_env *env,
+						 t_ast *ast_root, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	pid = fork();
 	if (pid < 0)
@@ -80,11 +113,23 @@ int	execute_fork_process(t_ast *cmd_node, t_env *env,
 	return (handle_child_status(status));
 }
 
-int	execute_fork_process_no_heredoc(t_ast *cmd_node, t_env *env,
-		t_ast *ast_root, t_shell *shell)
+/**
+ * @brief Exécute une commande dans un processus enfant sans gestion des heredocs.
+ *
+ * Fork un nouveau processus, exécute la commande (avec redirections mais sans heredocs),
+ * gère les signaux, attend la fin du processus et retourne le code de sortie.
+ *
+ * @param cmd_node Nœud AST de la commande à exécuter
+ * @param env Liste chaînée des variables d'environnement
+ * @param ast_root AST racine (pour les redirections)
+ * @param shell Structure principale du shell
+ * @return Code de sortie de la commande exécutée
+ */
+int execute_fork_process_no_heredoc(t_ast *cmd_node, t_env *env,
+									t_ast *ast_root, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	pid = fork();
 	if (pid < 0)

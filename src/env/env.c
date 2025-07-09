@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:47:04 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 13:57:04 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:31:45 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ char	**env_to_char_array(t_env *env)
 	int		count;
 	char	**array;
 
+	if (!env)
+		return (NULL);
 	count = count_env_vars(env);
 	array = ft_calloc(count + 1, sizeof(char *));
 	if (!array)

@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 12:44:43 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:55 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 18:26:16 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
  */
 int	execute_pipe_node(t_ast *node, t_env *env, t_shell *shell)
 {
+	// SI c'est un pipeline complexe (plus de 2 commandes)
 	if (is_complex_pipeline(node))
 		return (execute_complex_pipeline(node, env, shell));
 	return (execute_simple_pipe(node, env, shell));

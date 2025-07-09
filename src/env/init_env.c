@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:44:49 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 19:12:29 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/08 16:56:53 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ t_env	*init_env_list(char **envp)
 	t_env	*node;
 	t_env	*last;
 
+	// Si pas d'env (env -i)
 	if (!envp || !envp[0])
 		return (init_minimal_env());
 	head = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_core.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 15:03:38 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:06:00 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,17 @@ static int	process_and_add_token(char *input, int *i, t_token **head,
 {
 	t_token	*new;
 
+	// On traite le token à partir de l'index courant, i est mis à jour par référence
 	new = get_next_token(input, i);
+	// Si le token est NULL, mais qu'il y a encore des caractères dans l'input,
+	// cela signifie qu'il y a eu une erreur d'allocation ou de lecture
 	if (!new && input[*i])
 	{
 		ft_putendl_fd("minishell: error: failed to tokenize input", 2);
 		free_token_list(*head);
 		return (-1);
 	}
+	// Si le token n'est pas NULL, on l'ajoute à la liste
 	if (new)
 		append_token(head, last, new);
 	return (0);
@@ -75,7 +79,9 @@ static int	process_and_add_token(char *input, int *i, t_token **head,
  * @brief Effectue le post-traitement des tokens
  *
  * Applique les transformations finales sur la liste de tokens :
+ * 
  * - Affinement des types (CMD, ARG, etc.)
+ * 
  * - Validation syntaxique
  *
  * @param head Pointeur vers la tête de liste
@@ -112,13 +118,19 @@ t_token	*tokenize(char *input)
 	head = NULL;
 	last = NULL;
 	i = 0;
+	// On ignore les espaces initiaux en mettant à jour i.
 	skip_spaces(input, &i);
+	// On parcourt la chaîne d'entrée jusqu'à la fin pour traiter chaque token un par un
 	while (input[i])
 	{
+		// On passe i par référence pour qu'il soit mis à jour dans process_and_add_token
 		if (process_and_add_token(input, &i, &head, &last) == -1)
 			return (NULL);
+		// On ignore les espaces entre chaque token en mettant à jour i.
 		skip_spaces(input, &i);
 	}
+	// Si on a atteint la fin de la chaîne sans erreur, on fait un dernier traitement
+	// pour affiner les types et valider la syntaxe.
 	if (finalize_tokens(&head) == -1)
 		return (NULL);
 	return (head);

@@ -308,7 +308,6 @@ re: fclean all
 
 # Phony targets (not actual files)
 .PHONY: all clean fclean re init_build_env
-<<<<<<< HEAD
 
 # ==============================================================================
 # MAKEFILE DESIGN NOTES
@@ -338,5 +337,3 @@ re: fclean all
 #    - Clear separation between configuration and implementation
 # 
 # ==============================================================================
-=======
->>>>>>> commented

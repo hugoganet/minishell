@@ -15,36 +15,6 @@
 
 #include "minishell.h"
 
-/**
- * @struct s_pipeline_ctx
- * @brief Structure de contexte pour l'exécution des processus enfants
- * dans un pipeline
- *
- * Cette structure contient toutes les informations nécessaires pour qu'un
- * processus
- * enfant s'exécute dans un pipeline complexe. Elle maintient les références vers
- * le tableau des commandes, les descripteurs de fichiers des pipes, les IDs des
- * processus, et l'environnement du shell.
- *
- * @param commands Tableau des nœuds de commandes AST à exécuter dans le pipeline
- * @param pipes Tableau 2D des descripteurs de fichiers des pipes
- *              [index_pipe][lecture/écriture]
- * @param pids Tableau des IDs de processus pour tous les processus du pipeline
- * @param cmd_count Nombre total de commandes dans le pipeline
- * @param index Index de la commande actuelle (position dans le pipeline)
- * @param env Pointeur vers la liste des variables d'environnement
- * @param shell Pointeur vers la structure principale du shell
- */
-typedef struct s_pipeline_ctx
-{
-	t_ast **commands;
-	int **pipes;
-	pid_t *pids;
-	int cmd_count;
-	int index;
-	t_env *env;
-	t_shell *shell;
-} t_pipeline_child_ctx;
 
 /**
  * @struct s_pipeline_context
@@ -129,7 +99,6 @@ int setup_pipeline_execution(t_ast *node, t_pipeline_context *ctx,
 							 t_shell *shell);
 int create_pipeline_processes(t_pipeline_context *ctx);
 int wait_for_all_processes(pid_t *pids, int cmd_count);
-void setup_child_context(t_pipeline_child_ctx *child_ctx, t_pipeline_context *ctx);
 int create_child_process(t_pipeline_context *ctx);
 
 // !===========================================================================
@@ -159,7 +128,7 @@ void setup_child_stdin(int **pipes, int child_index, t_shell *shell);
 void setup_child_stdout(int **pipes, int child_index, int cmd_count,
 						t_shell *shell);
 void close_all_child_pipes(int **pipes, int cmd_count);
-void execute_pipeline_child(t_pipeline_child_ctx *ctx);
+void execute_pipeline_child(t_pipeline_context *ctx);
 
 // !===========================================================================
 // !                       PIPELINE_CLEANUP.C                                =

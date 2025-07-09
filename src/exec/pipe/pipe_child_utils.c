@@ -117,7 +117,7 @@ void close_all_child_pipes(int **pipes, int cmd_count)
  *
  * @param ctx Contexte d'exécution du processus enfant (commandes, pipes, env, shell, etc.)
  */
-void execute_pipeline_child(t_pipeline_child_ctx *ctx)
+void execute_pipeline_child(t_pipeline_context *ctx)
 {
 	t_ast *current_cmd;
 	int status;
@@ -128,16 +128,16 @@ void execute_pipeline_child(t_pipeline_child_ctx *ctx)
 	// On traite les redirections heredoc si nécessaire.
 	// en ramplacant STDIN par le fd de lecture du dernier heredoc.
 	setup_heredoc_redirection(ctx->shell);
-	current_cmd = ctx->commands[ctx->index];
+	current_cmd = ctx->commands[ctx->current_index];
 	// On configure les dup2 pour que chaque processus enfant lise dans le pipe précédent
 	// et écrive dans le pipe suivant.
-	setup_child_pipes(ctx->pipes, ctx->cmd_count, ctx->index, ctx->shell);
+	setup_child_pipes(ctx->pipes, ctx->cmd_count, ctx->current_index, ctx->shell);
 	// On ferme les fds des heredocs ouverts, car à ce stade ils ont été dupliqués
 	// en ramplacant STDIN par le fd de lecture du dernier heredoc.
 	close_all_heredoc_fds(ctx->shell);
 	// On free les pipes, pids et commandes inutiles
 	// pour éviter les fuites de mémoire et les erreurs de segmentation.
-	cleanup_child_memory_early(ctx->commands, ctx->pipes, ctx->pids, ctx->cmd_count - 1);
+	cleanup_child_memory_early(ctx->commands, ctx->pipes, ctx->pids, ctx->pipes_created);
 	// On exécute la commande du pipeline dans le processus enfant.
 	status = exec_cmd_no_heredoc(current_cmd, ctx->env, current_cmd,
 								 ctx->shell);

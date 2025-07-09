@@ -237,7 +237,7 @@ all: $(LIBFT) init_build_env $(NAME)
 	@if [ ! -f .compilation_happened ]; then \
 		echo "\033[1;32m✅ Everything is up to date! No compilation needed.\033[0m"; \
 	fi
-	@rm -f .compilation_happened .compilation_started
+	@rm -f .compilation_happened .compilation_started .build_count
 
 # Initialize build environment and clean previous build artifacts
 init_build_env:

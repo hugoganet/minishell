@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 19:33:33 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 20:46:50 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int execute_complex_pipeline(t_ast *node, t_env *env, t_shell *shell)
 	// On exécute le processus pour chaque commande du pipeline.
 	setup_result = execute_pipeline_process(node, &ctx, env, shell);
 	if (setup_result != 0)
-	return (setup_result);
+		return (setup_result);
 	// On ferme les pipes dans le processus parent, car il n'en a plus besoin.
 	close_parent_pipes(ctx.pipes, ctx.cmd_count);
 	// On attend la fin de tous les processus enfants du pipeline,

@@ -12,52 +12,65 @@
 
 #include "pipe.h"
 
-void	setup_child_context(t_pipeline_ctx *ctx, t_pipeline_params *params)
+/**
+ * @brief Crée un processus enfant pour une commande du pipeline.
+ *
+ * Fork un nouveau processus et exécute la commande correspondante.
+ * En cas d'échec du fork, termine les processus déjà créés.
+ *
+ * @param ctx Contexte du pipeline (commandes, pipes, pids, etc.)
+ * @return 0 si succès, 1 en cas d'erreur de fork
+ */
+int	create_child_process(t_pipeline_context *ctx)
 {
-	ctx->commands = params->commands;
-	ctx->pipes = params->pipes;
-	ctx->pids = params->pids;
-	ctx->cmd_count = params->cmd_count;
-	ctx->index = params->index;
-	ctx->env = params->env;
-	ctx->shell = params->shell;
-}
-
-int	create_child_process(t_pipeline_params *params)
-{
-	t_pipeline_ctx	ctx;
-
-	params->pids[params->index] = fork();
-	if (params->pids[params->index] < 0)
+	ctx->pids[ctx->current_index] = fork();
+	if (ctx->pids[ctx->current_index] < 0)
 	{
 		perror("minishell: fork");
-		terminate_child_processes(params->pids, params->index);
+		terminate_child_processes(ctx->pids, ctx->current_index);
 		return (1);
 	}
-	if (params->pids[params->index] == 0)
-	{
-		setup_child_context(&ctx, params);
-		execute_pipeline_child(&ctx);
-	}
+	if (ctx->pids[ctx->current_index] == 0)
+		execute_pipeline_child(ctx);
 	return (0);
 }
 
-int	create_pipeline_processes(t_pipeline_params *params)
+/**
+ * @brief Crée tous les processus enfants pour exécuter le pipeline.
+ *
+ * Parcourt toutes les commandes du pipeline, fork chaque processus et gère
+ * les erreurs.
+ *
+ * @param ctx Contexte du pipeline (commandes, pipes, pids, etc.)
+ * @return 0 si succès, 1 en cas d'erreur de fork
+ */
+int	create_pipeline_processes(t_pipeline_context *ctx)
 {
 	int	i;
 
-	initialize_pipeline_pids(params->pids, params->cmd_count);
+	initialize_pipeline_pids(ctx->pids, ctx->cmd_count);
 	i = 0;
-	while (i < params->cmd_count)
+	while (i < ctx->cmd_count)
 	{
-		params->index = i;
-		if (create_child_process(params) != 0)
+		ctx->current_index = i;
+		if (create_child_process(ctx) != 0)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
+/**
+ * @brief Attend la fin de tous les processus du pipeline et retourne le
+ * statut final.
+ *
+ * Attend chaque processus enfant, et retourne le code de sortie de la
+ * dernière commande.
+ *
+ * @param pids Tableau des PIDs des processus enfants
+ * @param cmd_count Nombre de commandes/processus dans le pipeline
+ * @return Code de retour de la dernière commande du pipeline
+ */
 int	wait_for_all_processes(pid_t *pids, int cmd_count)
 {
 	int	i;

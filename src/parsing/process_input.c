@@ -6,7 +6,7 @@
 /*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:57:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/08 18:25:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 12:13:58 by hugoganet        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ void	process_input(char *input, t_shell *shell)
 	t_token	*tokens;
 	t_ast	*ast_root;
 
+	// Créé la liste chaînée de tokens à partir de l'entrée utilisateur
 	tokens = tokenize(input);
 	if (!tokens)
 		return ;
 	shell->tokens = tokens;
+	// Crée la liste chaînée de l'AST.
 	ast_root = build_ast(tokens);
 	if (!ast_root)
 	{
@@ -37,6 +39,7 @@ void	process_input(char *input, t_shell *shell)
 		free_token_list(tokens);
 		return ;
 	}
+	// 
 	expand_ast_arguments(ast_root, shell);
 	shell->ast = ast_root;
 	shell->last_exit_status = execute_ast(ast_root, shell->env_list, shell);

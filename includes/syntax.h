@@ -3,119 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 10:22:49 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:22:36 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SYNTAX_H
-#define SYNTAX_H
+# define SYNTAX_H
 
-#include "minishell.h"
+# include "minishell.h"
 
 // !===========================================================================
 // !                        INPUT_VALIDATION.C                               =
 // !===========================================================================
 
-int is_line_empty(char *input);
-int has_unclosed_quotes(char *input);
+int				is_line_empty(char *input);
+int				has_unclosed_quotes(char *input);
 
 // !===========================================================================
 // !                         PIPE_VALIDATION.C                               =
 // !===========================================================================
 
-int has_invalid_pipes(char *input);
+int				has_invalid_pipes(char *input);
 
 // !===========================================================================
 // !                      REDIRECTION_VALIDATION.C                           =
 // !===========================================================================
 
-int has_invalid_redirections(char *input);
+int				has_invalid_redirections(char *input);
 
 // !===========================================================================
 // !                      PARENTHESES_VALIDATION.C                           =
 // !===========================================================================
 
-int has_unmatched_parentheses(char *input);
+int				has_unmatched_parentheses(char *input);
 
 // !===========================================================================
 // !                        BRACES_VALIDATION.C                              =
 // !===========================================================================
 
-int has_unclosed_braces(char *input);
+int				has_unclosed_braces(char *input);
 
 // !===========================================================================
 // !                            VALIDATION.C                                 =
 // !===========================================================================
 
-int is_syntax_valid(char *input, t_shell *shell);
+int				is_syntax_valid(char *input, t_shell *shell);
 
 // !===========================================================================
 // !                          TOKEN_PARSING.C                                =
 // !===========================================================================
 
-void skip_spaces(char *input, int *i);
-bool is_token_delim(char c);
-char *read_word_segment(char *input, int *i);
-char *join_and_free(char *result, char *segment);
+void			skip_spaces(char *input, int *i);
+bool			is_token_delim(char c);
+char			*read_word_segment(char *input, int *i);
+char			*join_and_free(char *result, char *segment);
 
 // !===========================================================================
 // !                          TOKEN_READING.C                                =
 // !===========================================================================
 
-char *read_next_segment(char *input, int *i);
-char *clean_token(char *input, int *i);
-char *read_operator(char *input, int *i);
-char *read_redir_and_file(char *input, int *i);
+char			*read_next_segment(char *input, int *i);
+char			*clean_token(char *input, int *i);
+char			*read_operator(char *input, int *i);
+char			*read_redir_and_file(char *input, int *i);
 
 // !===========================================================================
 // !                          TOKENIZE_CORE.C                                =
 // !===========================================================================
 
-t_token *tokenize(char *input);
+t_token			*tokenize(char *input);
 
 // !===========================================================================
 // !                        TOKEN_TYPE_UTILS.C                               =
 // !===========================================================================
 
-t_token_type get_token_type(char *str);
-bool is_redirection(t_token_type type);
-bool is_logical_operator(t_token_type type);
+t_token_type	get_token_type(char *str);
+bool			is_redirection(t_token_type type);
+bool			is_logical_operator(t_token_type type);
 
 // !===========================================================================
 // !                        TOKEN_VALIDATION.C                               =
 // !===========================================================================
 
-char *parse_quoted_token(char *input, int *i);
-int print_syntax_error(char *token);
-int validate_token_sequence(t_token *head);
+char			*parse_quoted_token(char *input, int *i);
+int				print_syntax_error(char *token);
+int				validate_token_sequence(t_token *head);
 
 // !===========================================================================
 // !                        BUILD_TOKEN_LIST.C                               =
 // !===========================================================================
 
-t_token *token_new(char *str, t_token_type type);
-void append_token(t_token **head, t_token **last, t_token *new);
+t_token			*token_new(char *str, t_token_type type);
+void			append_token(t_token **head, t_token **last, t_token *new);
 
 // !===========================================================================
 // !                        REFINE_TOKEN_TYPE.C                              =
 // !===========================================================================
 
-void refine_token_types(t_token *head);
+void			refine_token_types(t_token *head);
 
 // !===========================================================================
 // !                          LOGIC_GROUPS.C                                 =
 // !===========================================================================
 
-t_token *is_logic(t_token **node);
+t_token			*is_logic(t_token **node);
 
 // !===========================================================================
 // !                          SYNTAX_UTILS.C                                 =
 // !===========================================================================
 
-void update_quote_state(char *quote_state, char c);
-int is_parenthesis_empty(char *input, int i);
+void			update_quote_state(char *quote_state, char c);
+int				is_parenthesis_empty(char *input, int i);
 
 #endif

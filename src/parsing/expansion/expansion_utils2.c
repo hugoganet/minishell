@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:11:28 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/09 13:22:59 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:09:38 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,11 @@
  */
 int	init_expansion_state(t_expansion_state *state, const char *input)
 {
-	// On initialiase l'état d'expansion à l'input donné.
 	state->input = input;
-	// On alloue un pointeur pour la chaîne de sortie.
 	state->output = ft_strdup("");
 	if (!state->output)
 		return (0);
-	// On initialise l'index de la chaîne d'entrée.
 	state->i = 0;
-	// ON initialise les autres variables d'état.
 	state->in_single_quotes = false;
 	state->in_double_quotes = false;
 	state->expanded_to_empty = false;

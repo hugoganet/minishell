@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:46:40 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/09 12:00:01 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:14:37 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	parse_sign(char *str, int *sign)
 }
 
 /**
- * @brief Vérifie si un chiffre causera un dépassement pour les nombres négatifs
+ * @brief Vérifie si un chiffre causera un dépassement pour les nombres
+ * négatifs
  *
  * @param result Résultat actuel
  * @param digit Chiffre à ajouter

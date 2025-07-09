@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:28:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/08 17:51:16 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:26:02 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,16 @@ static void	init_shell_vars(t_shell *shell)
 void	init_shell(t_shell *shell, char **envp)
 {
 	init_shell_vars(shell);
-	// Copie le char **envp dans une liste chainée ou initialise un env minimum si env -i
 	shell->env_list = init_env_list(envp);
-	// Copie envp dans une liste chaînée d'environnement (idem ligne du dessus mais celle ci sera triée et utilisée pour l'export)
 	shell->export_list = init_env_list(envp);
-	// Tri par ordre alphabétique les variables d'environnement la liste chainée (pour l'export)
 	sort_list(&shell->export_list);
-	// 'copie' la liste chainée dans un tableau de char ** pour execve, ce qui revient à faire une copie de envp
 	shell->env = env_to_char_array(shell->env_list);
-	// En cas d'erreur d'alloc, on nettoie et quitte
 	if (!shell->env_list || !shell->env || !shell->export_list)
 	{
-		ft_putendl_fd(
-			"minishell: error: failed to initialize environment list", 2);
-			cleanup_shell(shell);
-			exit(1);
+		ft_putendl_fd
+			("minishell: error: failed to initialize environment list", 2);
+		cleanup_shell(shell);
+		exit(1);
 	}	
 	configure_shlvl(envp, shell->env_list);
-	}
+}

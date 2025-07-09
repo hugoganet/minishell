@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 00:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 10:45:37 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:11:39 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,9 @@ char	*read_word_segment(char *input, int *i)
 	int	start;
 
 	start = *i;
-	// On avance l'index jusqu'à la fin du mot ou jusqu'à un délimiteur
 	while (input[*i] && input[*i] != '\'' && input[*i] != '"'
 		&& !is_token_delim(input[*i]))
 		(*i)++;
-	// On extrait le segment de mot trouvé
 	return (ft_substr(input, start, *i - start));
 }
 

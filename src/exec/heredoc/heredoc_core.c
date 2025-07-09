@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_core.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:00:00 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 16:36:49 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:34:09 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 #include <signal.h>
 
 /**
- * @brief Initialise les signaux pour la gestion des heredocs dans la structure heredoc_fd.
+ * @brief Initialise les signaux pour la gestion des heredocs dans la
+ * structure heredoc_fd.
  * 
- * @param shell La structure principale du shell contenant les informations d'exécution.
+ * @param shell La structure principale du shell contenant les informations
+ * d'exécution.
  */
 void	setup_heredoc_redirection(t_shell *shell)
 {
@@ -26,26 +28,21 @@ void	setup_heredoc_redirection(t_shell *shell)
 
 	last_heredoc = NULL;
 	current = shell->heredoc_fds;
-	// On parcourt la liste chaînée des descripteurs de fichiers heredoc
 	while (current)
 	{
-		// Si le descripteur de fichier n'est pas -1, on le garde en mémoire
-		// comme le dernier heredoc ouvert.
 		if (current->fd != -1)
 			last_heredoc = current;
 		current = current->next;
 	}
-	// Si on a trouvé un dernier heredoc ouvert
 	if (last_heredoc && last_heredoc->fd != -1)
 	{
-		// On duplique le descripteur de fichier du dernier heredoc
-		// vers l'entrée standard (STDIN_FILENO).
 		if (dup2(last_heredoc->fd, STDIN_FILENO) == -1)
 			perror("minishell: dup2 heredoc");
 		close(last_heredoc->fd);
 		last_heredoc->fd = -1;
 	}
 }
+
 /**
  * @brief Traite les heredocs dans l'AST.
  * 
@@ -57,7 +54,8 @@ void	setup_heredoc_redirection(t_shell *shell)
  * et libère les ressources associées avant de retourner 130.
  * 
  * @param ast_root Le nœud racine de l'AST à traiter.
- * @param shell La structure principale du shell contenant les informations d'exécution.
+ * @param shell La structure principale du shell contenant les informations
+ * d'exécution.
  * @return `0` si tous les heredocs ont été traités avec succès,
  * 	   ou `130` si un heredoc a été interrompu par l'utilisateur.
  */
@@ -69,13 +67,9 @@ int	process_heredocs(t_ast *ast_root, t_shell *shell)
 	tmp = ast_root;
 	while (tmp)
 	{
-		// Si on trouve un nœud de type HEREDOC,
 		if (tmp->type == HEREDOC)
 		{
-			// On process un heredoc
 			heredoc_status = handle_heredoc(tmp->str, shell);
-			// Si le heredoc a été interrompu par l'utilisateur (signal 130),
-			// on ferme tous les descripteurs de fichiers d'heredoc ouverts
 			if (heredoc_status == 130)
 			{
 				close_all_heredoc_fds(shell);
@@ -89,11 +83,13 @@ int	process_heredocs(t_ast *ast_root, t_shell *shell)
 }
 
 /**
- * @brief Gère un heredoc en initialisant les signaux créant un pipe, en validant le token,
- * et en traitant l'entrée utilisateur jusqu'à ce que le délimiteur soit atteint.
+ * @brief Gère un heredoc en initialisant les signaux créant un
+ * pipe, en validant le token, et en traitant l'entrée utilisateur
+ * jusqu'à ce que le délimiteur soit atteint.
  * 
  * @param token_str La chaîne de caractères du token HEREDOC.
- * @param shell La structure principale du shell contenant les informations d'exécution.
+ * @param shell La structure principale du shell contenant les
+ * informations d'exécution.
  * @return Le statut de l'exécution : 
  */
 int	handle_heredoc(char *token_str, t_shell *shell)
@@ -103,15 +99,10 @@ int	handle_heredoc(char *token_str, t_shell *shell)
 	struct sigaction	sa_old;
 	int					result;
 
-	// On initialise le gestionnaire de signal pour SIGINT
 	set_heredoc_sigint(&sa_old);
-	// Si l'ouverture du pipe échoue ou si le token n'est pas valide,
-	// on restaure le gestionnaire de signal et on retourne une erreur.
 	if (init_heredoc_pipe(pipefd) != 0
 		|| validate_heredoc_token(token_str, pipefd) != 0)
 		return (restore_sigint(&sa_old), 1);
-	// (cas impossible, le token est déjà clean)
-	// On utilise expand_and_clean_delimiter pour gérer l'expansion des variables.
 	delimiter_clean = expand_and_clean_delimiter(token_str + 2, shell);
 	if (!delimiter_clean)
 		return (close_pipe_fds(pipefd), restore_sigint(&sa_old), 1);

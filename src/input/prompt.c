@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:01:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/07 18:03:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:08:31 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /**
  * @brief Affiche le prompt et lit l'entrée utilisateur.
- * On ne gère pas SIGQUIT ici car il faut l'ignorer dans le processus readline.
+ * On ne gère pas SIGQUIT ici car il faut l'ignorer dans le processus
+ * readline.
  *
  * @return La ligne lue.
  */

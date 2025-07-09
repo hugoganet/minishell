@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:06:35 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/08 17:53:14 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:29:01 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
  * 
  * - Pipes invalides (en début ou fin de ligne, ou deux pipes consécutifs)
  * 
- * - Redirections invalides (en début ou fin de ligne, ou deux redirections consécutives)
+ * - Redirections invalides (en début ou fin de ligne, ou deux redirections
+ * consécutives)
  * 
  * - Accolades non fermées
  *

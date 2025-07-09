@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:24:18 by bernard           #+#    #+#             */
-/*   Updated: 2025/07/07 13:49:36 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:56:05 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <limits.h>
 
 /**
- * @brief Vérifie si un chiffre causera un dépassement pour les nombres positifs
+ * @brief Vérifie si un chiffre causera un dépassement pour les nombres
+ * positifs
  *
  * @param result Résultat actuel
  * @param digit Chiffre à ajouter
@@ -27,7 +28,8 @@ static int	will_overflow_positive(long long result, int digit)
 }
 
 /**
- * @brief Vérifie si une chaîne est un nombre valide et dans les limites LLONG
+ * @brief Vérifie si une chaîne est un nombre valide et dans les limites
+ * LLONG
  *
  * @param str La chaîne à vérifier
  * @return int 1 si c'est un nombre valide et dans les limites, 0 sinon

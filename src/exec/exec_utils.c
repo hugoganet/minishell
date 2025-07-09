@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:25:59 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 17:11:20 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:07:14 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ int	is_directory(char *path)
 /**
  * @brief Sauvegarde les descripteurs de fichiers standard (stdin et stdout).
  * 
- * @param saved_stdin Pointeur vers un entier où le descripteur de stdin sera sauvegardé.
- * @param saved_stdout Pointeur vers un entier où le descripteur de stdout sera sauvegardé.
+ * @param saved_stdin Pointeur vers un entier où le descripteur de stdin
+ * sera sauvegardé.
+ * @param saved_stdout Pointeur vers un entier où le descripteur de stdout
+ * sera sauvegardé.
  * @return 0 en cas de succès, 1 en cas d'erreur.
  */
 int	save_std_descriptors(int *saved_stdin, int *saved_stdout)
@@ -70,7 +72,8 @@ void	restore_std_descriptors(int saved_stdin, int saved_stdout)
 }
 
 /**
- * @brief Exécute une commande intégrée avec des redirections, sans gestion d'heredoc.
+ * @brief Exécute une commande intégrée avec des redirections,
+ * sans gestion d'heredoc.
  * 
  * Cette fonction sauvegarde les descripteurs de fichiers standard,
  * met en place les redirections spécifiées dans l'AST,
@@ -89,18 +92,13 @@ int	exec_builtin_with_redirections_no_heredoc(t_ast *cmd_node, t_ast *ast_root,
 	int	saved_stdout;
 	int	result;
 
-	// On sauvegarde les descripteurs de fichiers standard
-	// pour pouvoir les restaurer après l'exécution de la commande.
 	if (save_std_descriptors(&saved_stdin, &saved_stdout) != 0)
 		return (1);
 	if (setup_redirections(ast_root) != 0)
 	{
-		// Si il y a une erreur de redirection,
-		// on restaure les descripteurs de fichiers standard.
 		restore_std_descriptors(saved_stdin, saved_stdout);
 		return (1);
 	}
-	// On appelle les fonctions d'exécution des commandes intégrées.
 	result = builtin_exec(cmd_node, shell);
 	restore_std_descriptors(saved_stdin, saved_stdout);
 	return (result);

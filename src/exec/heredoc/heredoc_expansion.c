@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expansion.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 09:57:18 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/04 19:35:41 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 17:58:52 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 /**
  * @brief Expanse les variables dans une ligne de heredoc si nécessaire.
  *
- * Cette fonction applique l'expansion de variables uniquement si le délimiteur
+ * Cette fonction applique l'expansion de variables uniquement si le
+ * délimiteur
  * original n'était pas quoté. Si il était quoté, la ligne est retournée
  * telle quelle.
  *

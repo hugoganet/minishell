@@ -6,7 +6,7 @@
 /*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 17:50:27 by elaudrez         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:32:18 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ t_ast	*find_cmd_node(t_ast *node)
 
 	if (!node)
 		return (NULL);
-	// Si le nœud est de type CMD, on le retourne directement
 	if (node->type == CMD)
 		return (node);
-	// Sinon, on cherche récursivement dans les sous-nœuds
 	found = find_cmd_node(node->left);
 	if (found)
 		return (found);
@@ -42,11 +40,13 @@ t_ast	*find_cmd_node(t_ast *node)
 /**
  * @brief Résout et vérifie le chemin d'une commande avant exécution
  * 
- * Cette fonction résout le chemin complet d'une commande en utilisant la variable
- * d'environnement PATH, puis vérifie que le chemin résolu n'est pas un répertoire.
- * Elle gère les erreurs en nettoyant les ressources et en sortant avec le code approprié.
+ * Cette fonction résout le chemin complet d'une commande en utilisant la
+ * variable d'environnement PATH, puis vérifie que le chemin résolu n'est pas
+ * un répertoire. Elle gère les erreurs en nettoyant les ressources et en sortant
+ * avec le code approprié.
  * 
- * @param argv Tableau d'arguments de la commande (argv[0] est le nom de la commande)
+ * @param argv Tableau d'arguments de la commande (argv[0] est le nom de
+ * la commande)
  * @param env Environnement pour la résolution du PATH
  * @param shell Structure shell pour le nettoyage en cas d'erreur
  * @return Chemin résolu de la commande (doit être libéré par l'appelant)
@@ -79,16 +79,18 @@ static char	*resolve_and_check_command(char **argv, t_env *env, t_shell *shell)
 /**
  * @brief Exécute une commande dans un processus enfant
  * 
- * Cette fonction configure et exécute une commande externe dans un processus enfant.
- * Elle gère la configuration des signaux, les redirections heredoc et d'I/O,
- * la résolution du chemin de la commande, et l'appel final à execve().
+ * Cette fonction configure et exécute une commande externe dans un
+ * processus enfant.Elle gère la configuration des signaux, les redirections
+ * heredoc et d'I/O, la résolution du chemin de la commande, et
+ * l'appel final à execve().
  * 
  * @param argv Tableau d'arguments de la commande (terminé par NULL)
  * @param env Environnement pour la résolution du PATH et l'exécution
  * @param ast Nœud AST contenant les informations de redirection
  * @param shell Structure shell pour le nettoyage et les heredocs
  * 
- * @note Cette fonction ne retourne jamais en cas de succès (remplace le processus)
+ * @note Cette fonction ne retourne jamais en cas de succès (remplace
+ * le processus)
  * @note En cas d'échec, nettoie les ressources et sort avec un code d'erreur
  * @note Les codes de sortie suivent la convention bash :
  *       - 1 : échec de redirection

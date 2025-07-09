@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:16:30 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/09 12:07:31 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:23:14 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	fill_args(t_token *node, t_ast *new_ast)
  * @param node Le token source
  * @return Un pointeur vers le nouveau nœud AST, ou NULL en cas d'erreur
  */
-t_ast *new_ast_node(t_token *node)
+t_ast	*new_ast_node(t_token *node)
 {
-	t_ast *new_ast;
+	t_ast	*new_ast;
 
 	if (!node)
 		return (NULL);

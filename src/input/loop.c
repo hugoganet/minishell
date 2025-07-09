@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:16:41 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/08 17:53:58 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:08:25 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	shell_loop(t_shell *shell)
 
 	while (1)
 	{
-		// On appele readline pour lire l'entrée de l'utilisateur
 		input = prompt_readline();
 		if (!input)
 		{
@@ -32,20 +31,16 @@ void	shell_loop(t_shell *shell)
 			cleanup_shell(shell);
 			exit(0);
 		}
-		// On reste à l'écoute de SIGINT dans le loop principal
 		if (g_signal == SIGINT)
 		{
 			shell->last_exit_status = 130;
 			g_signal = 0;
 		}
-		// Si il y'a une entrée, on la traite
 		if (!is_line_empty(input))
 		{
-			// On vérifie la syntaxe de l'entrée, et on la traite si elle est valide
 			if (!is_syntax_valid(input, shell))
 				process_input(input, shell);
 		}
-		// Après avoir traité l'entrée, on libère : l'entrée, l'AST et la liste de tokens
 		free_loop(input, shell);
 	}
 }

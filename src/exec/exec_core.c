@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_core.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 08:32:17 by hugoganet         #+#    #+#             */
-/*   Updated: 2025/07/09 16:54:28 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:06:51 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,27 +83,18 @@ int	exec_cmd_no_heredoc(t_ast *cmd_node, t_env *env, t_ast *ast_root,
 {
 	int	validation_result;
 
-	// Trouve le nœud de commande dans l'AST.
 	cmd_node = find_cmd_node(ast_root);
-	// Filtre les arguments vides de la commande.
 	if (cmd_node && cmd_node->args)
 		filter_empty_args(cmd_node->args);
-	// On vérifie que la commande est bien formée (CMD + ARG)
 	validation_result = validate_command(cmd_node);
-	// SI il y'a une erreur de validation, on retourne 127.
 	if (!validation_result)
 		return (127);
-	// Si la commande est valide, on vérifie si c'est un builtin.
 	if (is_builtin(cmd_node))
 	{
-		// Si le noeud est une redirection, on exécute le builtin
-		// avec les redirections appropriées.
 		if (is_redirection(ast_root->type) == true)
 			return (exec_builtin_with_redirections_no_heredoc(cmd_node,
 					ast_root, shell));
-		// Sinon, on exécute le builtin normalement.
 		return (builtin_exec(cmd_node, shell));
 	}
-	// Si ce n'est pas un builtin, on exécute la commande
 	return (execute_fork_process_no_heredoc(cmd_node, env, ast_root, shell));
 }

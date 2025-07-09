@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hugoganet <hugoganet@student.42.fr>        +#+  +:+       +#+        */
+/*   By: elaudrez <elaudrez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:08:41 by elaudrez          #+#    #+#             */
-/*   Updated: 2025/07/09 14:06:54 by hugoganet        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:09:24 by elaudrez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,13 @@ char	*extract_variable_name(const char *input, int start_index)
 	len = 0;
 	if (!input[start_index])
 		return (NULL);
-	// Si le caractère est '{', on traite la syntaxe ${VAR}.
 	if (input[start_index] == '{')
 	{
 		start_index++;
-		// On incrémente len jusqu'à trouver '}' ou la fin de la chaîne.
 		while (input[start_index + len] && input[start_index + len] != '}')
 			len++;
-		// Et on retourne la sous-chaîne.
 		return (ft_substr(input, start_index, len));
 	}
-	// Si le caractère est un chiffre, on retourne le chiffre seul.
 	if (ft_isdigit(input[start_index]))
 		return (ft_substr(input, start_index, 1));
 	if (!is_valid_var_start(input[start_index]))
@@ -54,8 +50,8 @@ char	*extract_variable_name(const char *input, int start_index)
 
 /**
  * @brief Recherche la valeur d'une variable dans l'environnement.
- *        Les paramètres positionnels ($1, $2, etc.) retournent NULL (vides).
- *        Seul $0 a une valeur (nom du shell, mais déjà géré par
+ *        Les paramètres positionnels ($1, $2, etc.) retournent NULL
+ * (vides). Seul $0 a une valeur (nom du shell, mais déjà géré par
  * l'expansion spéciale).
  *
  * @param var_name Le nom de la variable à rechercher.

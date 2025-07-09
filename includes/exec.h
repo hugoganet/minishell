@@ -16,11 +16,18 @@
 # include "minishell.h"
 
 /**
- * @brief Signal handler for SIGINT and SIGQUIT.
- * Cette variable est utilisée pour gérer les signaux dans le shell.
- * Elle est définie comme volatile pour indiquer au compilateur qu'elle peut
- * être modifiée par un signal, et sig_atomic_t pour garantir que les
- * modifications sont atomiques.
+ * @struct s_heredoc_fd
+ * @brief Structure représentant un descripteur de fichier heredoc dans une
+ * liste chaînée.
+ * 
+ * Cette structure maintient une liste chaînée des descripteurs de fichiers
+ * créés pour les heredocs. Elle permet de suivre tous les pipes ouverts
+ * pour les heredocs afin de pouvoir les fermer proprement en cas d'interruption
+ * ou à la fin de l'exécution des commandes. Chaque heredoc crée un pipe
+ * temporaire dont le descripteur doit être géré.
+ * 
+ * @param fd Descripteur de fichier du pipe heredoc
+ * @param next Pointeur vers le prochain descripteur heredoc dans la liste
  */
 typedef struct s_heredoc_fd
 {

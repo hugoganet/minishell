@@ -26,7 +26,19 @@ typedef struct s_shell		t_shell;
  * @brief Énumération représentant les différents types de tokens dans le shell.
  * 
  * Cette énumération définit tous les types de tokens possibles lors de
- * l'analyse lexicale d'une ligne de commande dans le shell.
+ * l'analyse lexicale d'une ligne de commande dans le shell. Chaque type
+ * correspond à un élément syntaxique spécifique qui sera traité différemment
+ * lors de la construction de l'AST et de l'exécution.
+ * 
+ * @param PIPE Token représentant l'opérateur pipe (|)
+ * @param REDIR_INPUT Token représentant la redirection d'entrée (<)
+ * @param REDIR_OUTPUT Token représentant la redirection de sortie (>)
+ * @param REDIR_APPEND Token représentant la redirection d'ajout (>>)
+ * @param HEREDOC Token représentant un heredoc (<<)
+ * @param WORD Token représentant un mot générique
+ * @param CMD Token représentant une commande
+ * @param ARG Token représentant un argument de commande
+ * @param FILES Token représentant un nom de fichier
  */
 typedef enum e_token_type
 {
